@@ -1,0 +1,37 @@
+.square{
+    position: absolute;
+    width: 669px;
+    height: 504px;
+    left: 94px;
+    top: 285px;
+}
+
+.vector{
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    
+    background: #6C63FF;
+    opacity: 0.1;
+}
+
+.textSquare{
+    position: absolute;
+    width: 546px;
+    height: 203px;
+    left: 867px;
+    top: 290px;
+}
+
+.circle1{
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+
+    background: #6C63FF;
+    opacity: 0.1;
+}
