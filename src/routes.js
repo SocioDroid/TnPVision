@@ -22,7 +22,7 @@ const routes = [
   { path: '/', element: <HomePage /> },
   {
     path: 'app',
-    element: isAuthenticated ? <DashboardLayout />: <Navigate to="/"/>,
+    element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'customers', element: <CustomerListView /> },

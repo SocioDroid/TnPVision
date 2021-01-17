@@ -15,6 +15,5 @@ export default axios.create({
   headers: {
     "Content-type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
-    // "Authorization": "Token " + Auth.getToken() 
   }
 });

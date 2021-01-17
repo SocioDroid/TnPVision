@@ -30,6 +30,10 @@ const Password = ({ className, ...rest }) => {
     });
   };
 
+  const changePassword = (event) => {
+    console.log(event);
+  }
+  
   return (
     <form
       className={clsx(classes.root, className)}
@@ -72,6 +76,7 @@ const Password = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
+            onClick = {changePassword}
           >
             Update
           </Button>

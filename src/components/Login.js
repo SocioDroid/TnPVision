@@ -97,6 +97,7 @@ function Login(props) {
 			password: ''
 		},
 		onSubmit: (values, { setSubmitting }) => {
+			
 			setSubmitting(true);
 			LoginService.login({ username: values.email, password: values.password })
 				.then(result => {
@@ -114,6 +115,7 @@ function Login(props) {
 				.catch(error => {
 					console.log(error);
 				})
+	
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email('Invalid Email').required('Required'),

@@ -2,17 +2,17 @@ import http from './HttpUrl';
 import httpauth from './AuthorizedHttpUrl'
 
 class LoginService {
-    // constructor() {
-    //     this.state = {
-    //         header: { "token": Auth.getToken() }
-    //     }
-    // }
-
+    
     login(data) {
         return http.post('/api/login/', data);
     }
+
     logout() {
         return httpauth.post('/api/logout/');
+    }
+
+    changePassword(data){
+        return httpauth.put('/api/change-password/', data)
     }
 }
 
