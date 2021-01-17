@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import  { Navigate } from 'react-router-dom';
-import {Dialog, DialogTitle, DialogActions, DialogContent, TextField, DialogContentText, Button, Grid, ButtonBase} from '@material-ui/core';
+import { Navigate } from 'react-router-dom';
+import { Dialog, DialogTitle, DialogActions, DialogContent, TextField, DialogContentText, Button, Grid, ButtonBase } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-// import ForgotPassword from './ForgotPassword'
+import ForgotPassword from './ForgotPassword'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -11,76 +11,76 @@ import loginpage from '../static/images/loginpage.svg';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import API_URL from './services/HttpUrl';
-import DataServices from './services/Services'
+import API_URL from '../services/HttpUrl';
+import DataServices from '../services/Services'
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-
+import LoginService from './../services/LoginService';
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+}
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: '100%',
 		'& > * + *': {
-		  marginTop: theme.spacing(2),
+			marginTop: theme.spacing(2),
 		},
 	},
-    textField:{
-        margin: theme.spacing(2),
+	textField: {
+		margin: theme.spacing(2),
 		justifyContent: 'flex-start',
 		marginTop: theme.spacing(-2)
-		
-    },
-    button:{
+
+	},
+	button: {
 		marginLeft: '15px',
 		height: 'auto',
-		marginTop : '6px',
+		marginTop: '6px',
 		marginBottom: 'auto',
 	},
-	dialogEffect:{
+	dialogEffect: {
 		maxWidth: 'xl',
 	},
 	image: {
 		width: '100%',
 		height: '100%',
-    },
-    img: {
+	},
+	img: {
 		margin: 'auto',
 		display: 'block',
 		maxWidth: '100%',
 		maxHeight: '100%',
 	},
-	sectionMobile:{
+	sectionMobile: {
 		display: 'flex',
-		[theme.breakpoints.up('sm')]:{
+		[theme.breakpoints.up('sm')]: {
 			variant: 'text'
 		}
 	}
 }));
 
-function Login(props){ 
+function Login(props) {
 	const classes = useStyles();
 	const [isLogin, setIsLogin] = useState('')
 
-//===================================== Dialog Box =====================================
-    const [loginOpen, setLoginOpen] = React.useState(false);
+	//===================================== Dialog Box =====================================
+	const [loginOpen, setLoginOpen] = React.useState(false);
 	const [isSubmitionCompleted, setSubmitionCompleted] = React.useState(false);
 
-    const handleLoginOpen = () => {
+	const handleLoginOpen = () => {
 		setSubmitionCompleted(false);
-        setLoginOpen(true);
-    };
-    const handleLoginClose = () => {
-        setLoginOpen(false);
-    };
+		setLoginOpen(true);
+	};
+	const handleLoginClose = () => {
+		setLoginOpen(false);
+	};
 
-//===================================== SnackBar =====================================
+	//===================================== SnackBar =====================================
 	const [open, setOpen] = React.useState(false);
 
 	const handleClick = () => {
-		setOpen(true);
+		// setOpen(true);
 	};
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -88,130 +88,115 @@ function Login(props){
 		}
 		setOpen(false);
 	};
-	
-	
+
+
 	const navigate = useNavigate();
 	const formik = useFormik({
-		initialValues:{
-			email:'', 
+		initialValues: {
+			email: '',
 			password: ''
 		},
-		onSubmit: (values, { setSubmitting}) => {
-			setSubmitting(true);
-			//console.log("Form Data", values);
-			axios({
-				method: 'post',
-				url: 'https://cors-anywhere.herokuapp.com/https://tnpvision-auth.herokuapp.com/api/login/',
-				data: {username: values.email, password: values.password }, 
-			})
-			.then((result) => {    
-					console.log(result);   					    
-					if (result.status === 200){
-						if(result.data.token !== ""){
-							localStorage.setItem("token", result.data.token);
-							
-							// if(result.data.group == 1)
-							navigate('/app/dashboard', { replace: true });
-							// else if(result.data.group == 2)
-							// 	navigate('/app/dashboard', { replace: true });
-						}
-						else{
-							console.log(result);
-							alert('Invalid User');
-						}
-					}
-					else{
-						console.log(result);
-						alert('Invalid User');
-					}
-						setSubmitionCompleted(true); 
-					   
-				})
-				.catch((error) => {
-					console.log(error);
-				})        
+		onSubmit: (values, { setSubmitting }) => {
 			
+			setSubmitting(true);
+			LoginService.login({ username: values.email, password: values.password })
+				.then(result => {
+					console.log(result.data.data);
+					if (result.status === 200 && result.data.data.token !== "") {
+						localStorage.setItem("token", result.data.data.token);
+						setOpen(true);
+						if (result.data.data.group === 1)
+							navigate('/student/dashboard', { replace: true });
+						else if (result.data.data.group === 2 || result.data.data.group === 3 || result.data.data.group === 4)
+							navigate('/employee/dashboard', { replace: true });
+					}
+					setSubmitionCompleted(true);
+				})
+				.catch(error => {
+					console.log(error);
+				})
+	
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email('Invalid Email').required('Required'),
-			password: Yup.string().min(5,'Minimum 5 characters required').required('Required'),
+			password: Yup.string().min(5, 'Minimum 5 characters required').required('Required'),
 		})
 	});
 
-    return(
+	return (
 		<div>
 			<React.Fragment>
-            	<Button className={classes.button} variant='outlined' style={{color: "white"}} onClick={handleLoginOpen}>Login</Button>
-            	<Dialog open={loginOpen} onClose={handleLoginClose} className={classes.dialogEffect} fullWidth component={'span'}>
-            	    
+				<Button className={classes.button} variant='outlined' style={{ color: "white" }} onClick={handleLoginOpen}>Login</Button>
+				<Dialog open={loginOpen} onClose={handleLoginClose} className={classes.dialogEffect} fullWidth component={'span'}>
+
 					{!isSubmitionCompleted && <React.Fragment>
-					<DialogTitle>
-					<Grid container>
-					<Grid item xs={false} sm={11}>
-						Login
+						<DialogTitle>
+							<Grid container>
+								<Grid item xs={false} sm={11}>
+									Login
 						</Grid>
-						<Grid item xs={false} sm={1} style={{textAlign:'end'}}>
-						<CancelIcon onClick={handleLoginClose} variant='contained' color="primary" />
-						</Grid>
-					</Grid>
+								<Grid item xs={false} sm={1} style={{ textAlign: 'end' }}>
+									<CancelIcon onClick={handleLoginClose} variant='contained' color="primary" />
+								</Grid>
+							</Grid>
 						</DialogTitle>
-						<Grid container justify='center' style={{marginBottom:'10px'}}>
+						<Grid container justify='center' style={{ marginBottom: '10px' }}>
 							<Grid item xs={false} sm={6}>
 								<ButtonBase className={classes.image} >
-									<img className={classes.img} alt="complex" src={loginpage}/>
+									<img className={classes.img} alt="complex" src={loginpage} />
 								</ButtonBase>
 							</Grid>
 							<Grid item xs={false} sm>
 								<form onSubmit={formik.handleSubmit}>
-	        		    			<Box border= {1} borderColor= "grey.500" margin= '10px' borderRadius= '5px'>
-	        			    			<DialogContent>
-	        			    			    <TextField
-	        								    autoFocus
-	        								    margin="dense"
+									<Box border={1} borderColor="grey.500" margin='10px' borderRadius='5px'>
+										<DialogContent>
+											<TextField
+												autoFocus
+												margin="dense"
 												id="email"
 												name="email"
-	        									label="Email Address"
-	        									type="text"
-	        									variant="outlined"
-	        									fullWidth
+												label="Email Address"
+												type="text"
+												variant="outlined"
+												fullWidth
 												required
 												onChange={formik.handleChange}
-												onBlur= {formik.handleBlur}
+												onBlur={formik.handleBlur}
 												error={formik.errors.email && formik.touched.email}
-												helperText= {(formik.errors.email && formik.touched.email) && formik.errors.email}
+												helperText={(formik.errors.email && formik.touched.email) && formik.errors.email}
 												value={formik.values.email}
-	        								/>
-	        								<TextField
-	        								    margin="dense"
+											/>
+											<TextField
+												margin="dense"
 												id="password"
 												name="password"
-	        								    label="Password"
-	        								    type="password"
-	        								    variant="outlined"
-	        								    fullWidth
+												label="Password"
+												type="password"
+												variant="outlined"
+												fullWidth
 												required
 												onChange={formik.handleChange}
-												onBlur= {formik.handleBlur}
+												onBlur={formik.handleBlur}
 												error={formik.errors.password && formik.touched.password}
-												helperText= {(formik.errors.password && formik.touched.password) && formik.errors.password}
+												helperText={(formik.errors.password && formik.touched.password) && formik.errors.password}
 												value={formik.values.password}
-	        								/>
-	        								<DialogContentText style={{marginTop: '8px'}} component={'div'}>
-	        									{/* <ForgotPassword  /> */}
-	        								</DialogContentText>
-	        							</DialogContent>
-									<DialogActions className={classes.textField}>
-										<Button onClick={handleClick} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
-											Login
+											/>
+											<DialogContentText style={{ marginTop: '8px' }} component={'div'}>
+												<ForgotPassword  />
+											</DialogContentText>
+										</DialogContent>
+										<DialogActions className={classes.textField}>
+											<Button onClick={handleClick} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
+												Login
 										</Button>
-									</DialogActions>
+										</DialogActions>
 									</Box>
 								</form>
 							</Grid>
 						</Grid>
 					</React.Fragment>
 					}
-	        	</Dialog>
+				</Dialog>
 			</React.Fragment>
 			<div className={classes.root}>
 				<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
@@ -221,8 +206,8 @@ function Login(props){
 				</Snackbar>
 			</div>
 		</div>
-		
-    );
+
+	);
 }
 
 export default Login;

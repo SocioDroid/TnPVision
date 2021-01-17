@@ -45,6 +45,16 @@ if(group == 2){
       title: 'Account'
     },
     {
+      href: '/employee/students',
+      icon: UsersIcon,
+      title: 'Students'
+    },
+    {
+      href: '/employee/employees',
+      icon: ShoppingBagIcon,
+      title: 'Employees'
+    },
+    {
       href: '/employee/settings',
       icon: SettingsIcon,
       title: 'Settings'
@@ -63,9 +73,9 @@ if(group == 2){
       title: 'Students'
     },
     {
-      href: '/employee/employee',
+      href: '/employee/employees',
       icon: ShoppingBagIcon,
-      title: 'Employee'
+      title: 'Employees'
     },
     {
       href: '/employee/account',

@@ -6,6 +6,8 @@ import EDashboardLayout from './layouts/EDashboardLayout';
 import MainLayout from './layouts/MainLayout';
 import AccountView from './views/account/AccountView';
 import CustomerListView from './views/customer/CustomerListView';
+import EmployeeListView from './views/employee/EmployeeListView';
+import StudentListView from './views/student/StudentListView';
 import DashboardView from './views/reports/DashboardView';
 import EmployeeDashboardView from './views/reports/EmployeeDashboardView';
 import StudentDashboardView from './views/reports/StudentDashboardView';
@@ -22,7 +24,7 @@ const routes = [
   { path: '/', element: <HomePage /> },
   {
     path: 'app',
-    element: isAuthenticated ? <DashboardLayout />: <Navigate to="/"/>,
+    element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'customers', element: <CustomerListView /> },
@@ -47,6 +49,8 @@ const routes = [
     element: isAuthenticated ? <EDashboardLayout />: <Navigate to="/"/>,
     children: [
       { path: 'account', element: <AccountView /> },
+      { path: 'employees', element: <EmployeeListView /> },
+      { path: 'students', element: <StudentListView /> },
       { path: 'dashboard', element: <EmployeeDashboardView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }

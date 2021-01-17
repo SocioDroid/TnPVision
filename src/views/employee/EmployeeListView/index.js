@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const EmployeeListView = () => {
   const classes = useStyles();
   const [customers] = useState(data);
-  
+
   return (
     <Page
       className={classes.root}

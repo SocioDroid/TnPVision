@@ -6,7 +6,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import axios from 'axios';
-
+import RegisterService from '../../services/RegisterService';
 
 const roles = [
     {
@@ -31,18 +31,17 @@ class RegisterContent extends React.Component {
         super();
         this.state = {
           name: "React",
-          type:'',
           showHideGender: false,
           showHideCollege: false,
           user: {
-            firstname: '',
-            middlename: '',
-            lastname: '',
-            email: '',
-            password: '',
-            repeatPassword: '',
-            gender: '',
-            college: '',
+              firstname: '',            
+              lastname: '',
+              email: '',
+              password: '',
+              repeatPassword: '',
+              gender: '',
+              college: '',
+              type:'',
         },
           
         };
@@ -59,24 +58,24 @@ class RegisterContent extends React.Component {
         });
     }
     handleSelect = (event) => {
-        console.log(event.target.value);
-        this.state.type = event.target.value;
+        this.state.user.type = event.target.value;
         this.hideComponent(event.target.value);
     }
     hideComponent(name) {
-        console.log(name);
+        console.log("Hiding : " + name);
         switch (name) {
-          case "student":
-            this.setState({ showHideGender: true });
-            this.setState({ showHideCollege: false });
-            break;
-          case "faculty":
-            this.setState({ showHideGender: false });
-            this.setState({ showHideCollege: true });
-            break;
-        }
-      }
+            case "student":
+                this.setState({ showHideGender: true });
+                this.setState({ showHideCollege: false });
+                break;
+                case "faculty":
+                    this.setState({ showHideGender: false });
+                    this.setState({ showHideCollege: true });
+                    break;
+                }
+            }
     handleChange = (event) => {
+        console.log("Selected : "+event.target.value);
         const { user } = this.state;
         user[event.target.name] = event.target.value;
         this.setState({ user });
@@ -84,18 +83,49 @@ class RegisterContent extends React.Component {
     
    
     handleSubmit = () => {
-        const { user } = this.state
-        const data = 
+        const { user } = this.state;
+        
+        console.log("Registering" + user.type);
+        if(user.type == "student")
         {
-            "username": user.email,
-            "email": user.email,
-            "password": user.password,
+            const data = 
+            {
+                "first_name": user.firstname,
+                "last_name": user.lastname,
+                "email": user.email,
+                "password": user.password,
+                "studentProfile": {
+                    "gender": user.gender
+                }
+            }
+            console.log(data);
+
+            RegisterService.registerStudent(data)
+            .then((result) => {    
+                console.log(result);
+                alert("Registration Successfull, Please login!");
+            });
         }
-        axios.post("https://cors-anywhere.herokuapp.com/http://tnpvision-auth.herokuapp.com/api/register/", data)
-        .then((result) => {    
-            console.log(result);
-            alert("Registration Successfull, Please login");
-        });
+        else if (user.type == "faculty")
+        {
+            const data = 
+            {
+                "first_name": user.firstname,
+                "last_name": user.lastname,
+                "email": user.email,
+                "password": user.password,
+                "employeeProfile": {
+                    "college": user.college
+                }
+            }
+            console.log(data);
+
+            RegisterService.registerEmployee(data)
+            .then((result) => {    
+                console.log(result);
+                alert("Registration Successfull, Please verify your email!");
+            });
+        }
 
     }
 
@@ -121,7 +151,7 @@ class RegisterContent extends React.Component {
         render() {
             const { user } = this.state;
             return (
-                <ValidatorForm onSubmit={this.handleRegister}>
+                <ValidatorForm onSubmit={this.handleSubmit}>
                 <FormLabel component="legend">Register As:</FormLabel>
                 <RadioGroup aria-label="type" name="type" >
                     <FormControlLabel value="student" control={<Radio />} label="Student" onClick={this.handleSelect}/>
@@ -203,14 +233,13 @@ class RegisterContent extends React.Component {
                 <div > 
                 <FormLabel component="legend">Gender</FormLabel>
                 <RadioGroup aria-label="gender" name="gender" onChange={this.handleChange} >
-                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                    <FormControlLabel value="female" control={<Radio />} label="Female" />
+                    <FormControlLabel value="M" control={<Radio />} label="Male" />
+                    <FormControlLabel value="F" control={<Radio />} label="Female" />
                 </RadioGroup><br/> </div>}
                 
                 {this.state.showHideCollege &&
                 <div>
-                <TextValidator
-                    required
+                <TextValidator                    
                     fullWidth
                     variant="outlined"
                     size="small"
@@ -218,14 +247,12 @@ class RegisterContent extends React.Component {
                     onChange={this.handleChange}
                     name="college"
                     type="text"
-                    validators={['isPasswordMatch', 'required']}
-                    errorMessages={['Password mismatch', 'This field is required']}
-                    value={user.repeatPassword}
+                    value={user.college}
                 />
                 <br/>
                 </div>
                 }
-                <Button color="primary" variant="contained" type="submit" onClick={this.handleSubmit}>Proceed</Button>
+                <Button color="primary" variant="contained" type="submit">Register</Button>
                 <br/>
             </ValidatorForm>
         );
