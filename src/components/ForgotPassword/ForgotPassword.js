@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import LoginService from '../services/LoginService';
+import LoginService from '../../services/LoginService';
 
 const useStyles = makeStyles((theme) => ({
     textField:{
@@ -92,86 +92,3 @@ function ForgotPassword(){
 }
 
 export default ForgotPassword;
-
-/*
-import React from 'react';
-import {Dialog, DialogTitle, DialogActions, DialogContent, TextField, Button, Link} from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import LoginService from '../services/LoginService';
-
-const useStyles = makeStyles((theme) => ({
-    textField:{
-        margin: theme.spacing(2),
-        alignSelf: 'center'
-    }
-}));
-
-function ForgetPassword(){ 
-
-    const classes = useStyles();
-
-    //const [loginOpen, setLoginOpen] = React.useState(false);
-    // const [registerOpen, setRegisterOpen] = React.useState(false);
-    const [forgotPasswordOpen, setForgotPasswordOpen] = React.useState(false);
-
-	const handleForgotPasswordOpen = () => {
-        setForgotPasswordOpen(true);
-	};
-	const handleForgotPasswordClose = () => {
-		setForgotPasswordOpen(false);
-	};
-
-	const formik = useFormik({
-		initialValues:{
-			email:''
-		},
-		onSubmit: (values, { setSubmitting }) => {
-			setSubmitting(true);
-			// LoginService.login({ username: values.email, password: values.password })
-			// 	.then(result => {
-			// 		console.log(result.data.data);
-			// 		if (result.status === 200 && result.data.data.token !== "") {
-			// 			localStorage.setItem("token", result.data.data.token);
-			// 			setOpen(true);
-			// 			if (result.data.data.group === 1)
-			// 				navigate('/student/dashboard', { replace: true });
-			// 			else if (result.data.data.group === 2 || result.data.data.group === 3 || result.data.data.group === 4)
-			// 				navigate('/employee/dashboard', { replace: true });
-			// 		}
-			// 		setSubmitionCompleted(true);
-			// 	})
-			// 	.catch(error => {
-			// 		console.log(error);
-			// 	})
-			LoginService.forgotPassword({email:values.email})
-				.then(result=> {
-					console.log(result);
-					console.log("Forgot password")
-				})
-				.catch(error =>{
-					console.log(error);
-				})
-		},
-		validationSchema: Yup.object({
-			email: Yup.string().email('Invalid Email').required('Required'),
-		})
-	});
-	
-	return(
-		<div>
-			<React.Fragment>
-                <DialogTitle>Forgot Password</DialogTitle>
-					<form oSubmit={formik.handleSubmit}>
-						
-					</form>
-	        	
-			</React.Fragment>
-        </div> 
-    );
-}
-
-export default ForgetPassword;
-*/

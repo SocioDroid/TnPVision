@@ -18,7 +18,8 @@ import ProductListView from './views/product/ProductListView';
 import SettingsView from './views/settings/SettingsView';
 import HomePage from './views/homepage/Homepage'
 import Auth from './auth'
-
+import PasswordReset from './components/ForgotPassword/PasswordReset';
+import Route from 'react-router-dom';
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
   { path: '/', element: <HomePage /> },
@@ -31,7 +32,7 @@ const routes = [
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
     ]
   },
   {
@@ -62,10 +63,11 @@ const routes = [
     children: [
       { path: 'login', element: <LoginView /> },
       { path: 'register', element: <RegisterView /> },
+      { path: 'resetpassword/:token', element:  <PasswordReset /> },
       { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
-  }
+  },
 ];
 
 

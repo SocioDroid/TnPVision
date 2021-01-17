@@ -10,6 +10,7 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Login from '../../components/Login';
 import Register from '../../components/Register/RegisterDialog';
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,

@@ -18,6 +18,14 @@ class LoginService {
     forgotPassword(data){
         return http.post("/api/password_reset/", data)
     }
+
+    validateForgotPasswordToken(data){
+        return http.post('/api/password_reset/validate_token/', data)
+    }
+
+    updateForgotPassword(data){
+        return http.post('/api/password_reset/confirm/', data)
+    }
 }
 
 export default new LoginService();

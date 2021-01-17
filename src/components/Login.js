@@ -3,22 +3,21 @@ import { Navigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogActions, DialogContent, TextField, DialogContentText, Button, Grid, ButtonBase } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import ForgotPassword from './ForgotPassword'
-// import Snackbar from '@material-ui/core/Snackbar';
-// import MuiAlert from '@material-ui/lab/Alert';
+import ForgotPassword from './ForgotPassword/ForgotPassword'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import CancelIcon from '@material-ui/icons/Cancel';
 import loginpage from '../static/images/loginpage.svg';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import API_URL from '../services/HttpUrl';
-import DataServices from '../services/Services'
+// import DataServices from '../../services/Services'
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import LoginService from './../services/LoginService';
-import CustomSnackbar from './Snackbar/snackbar'
-// function Alert(props) {
-// 	return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
+import LoginService from '../services/LoginService';
+// import CustomSnackbar from '../Snackbar/snackbar'
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -79,9 +78,9 @@ function Login(props) {
 	//===================================== SnackBar =====================================
 	const [open, setOpen] = React.useState(false);
 
-	const snackbar = () => {
-		<CustomSnackbar message="You are Logged In" />
-	};
+	// const snackbar = () => {
+	// 	<CustomSnackbar message="You are Logged In" />
+	// };
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
@@ -186,7 +185,7 @@ function Login(props) {
 											</DialogContentText>
 										</DialogContent>
 										<DialogActions className={classes.textField}>
-											<Button onClick={snackbar} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
+											<Button type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
 												Login
 										</Button>
 										</DialogActions>
@@ -199,12 +198,11 @@ function Login(props) {
 				</Dialog>
 			</React.Fragment>
 			<div className={classes.root}>
-				{/* <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+				<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
 					<Alert onClose={handleClose} severity="success">
 						This is a success message!
 					</Alert>
-				</Snackbar> */}
-				
+				</Snackbar>
 			</div>
 		</div>
 

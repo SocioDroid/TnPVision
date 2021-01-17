@@ -7,7 +7,7 @@ import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
-import Login from '../components/Login';
+import Login from '../components/Login/Login';
 import Register from '../components/Register/RegisterDialog';
 
 const useStyles = makeStyles((theme) => ({
