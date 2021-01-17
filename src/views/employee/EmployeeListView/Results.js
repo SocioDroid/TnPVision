@@ -73,9 +73,9 @@ const Results = ({ className, customers, ...rest }) => {
     setPage(newPage);
   };
 
-  /*const[ posts, setPosts] = useState([]);
+  const[ posts, setPosts] = useState([]);
     useEffect((props) => {
-      axios.get("https://cors-anywhere.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/employees")
+      axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/employees/")
       .then(res => {
           console.log(res);
           setPosts(res.data);
@@ -83,7 +83,7 @@ const Results = ({ className, customers, ...rest }) => {
       .catch( err => {
           console.log(err);
       })
-    }, [])*/
+    }, [])
 
   return (
     <Card
@@ -94,8 +94,8 @@ const Results = ({ className, customers, ...rest }) => {
                 {posts.map(post1 =>(
                     <li key={post1.id}>{post1.id} {post1.user.email} {post1.user.first_name} {post1.user.last_name} {post1.college}</li>
                 ))}
-                </ul>*/}
-
+      </ul>
+      */}
       
         <PerfectScrollbar>
           <Box minWidth={1050}>
@@ -104,7 +104,7 @@ const Results = ({ className, customers, ...rest }) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  First Name
+                  Full Name
                 </TableCell>
                 <TableCell>
                   Email
@@ -115,46 +115,33 @@ const Results = ({ className, customers, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
-        
+              
+              {posts.map((employee) => (
                 <TableRow
-                  hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  //hover
+                  key={employee.id}
+                  //selected={selectedemployeeIds.indexOf(employee.id) !== -1}
                 >
                   <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <Avatar
-                        className={classes.avatar}
-                        src={customer.avatarUrl}
-                      >
-                        {getInitials(customer.name)}
-                      </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
-                       {customer.name} 
-                      </Typography>
-                    </Box>
+                       {`${employee.user.first_name} ${employee.user.last_name}`}
                   </TableCell>
                   <TableCell>
-                    {customer.email}
+                    {employee.user.email}
                   </TableCell>
                   <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                    {/*`${employee.address.city}, ${employee.address.state}, ${employee.address.country}`*/}
+                    {employee.college}
                   </TableCell>
                 </TableRow>
               ))}
+
             </TableBody>
           </Table>
 
         </Box>
         </PerfectScrollbar>
       
+
       {/*<PerfectScrollbar>
         <Box minWidth={1050}>
           <Table>

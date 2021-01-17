@@ -4,8 +4,8 @@ import { Dialog, DialogTitle, DialogActions, DialogContent, TextField, DialogCon
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import ForgotPassword from './ForgotPassword'
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+// import Snackbar from '@material-ui/core/Snackbar';
+// import MuiAlert from '@material-ui/lab/Alert';
 import CancelIcon from '@material-ui/icons/Cancel';
 import loginpage from '../static/images/loginpage.svg';
 import { useFormik } from 'formik';
@@ -15,10 +15,10 @@ import API_URL from '../services/HttpUrl';
 import DataServices from '../services/Services'
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LoginService from './../services/LoginService';
-
-function Alert(props) {
-	return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import CustomSnackbar from './Snackbar/snackbar'
+// function Alert(props) {
+// 	return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -79,8 +79,8 @@ function Login(props) {
 	//===================================== SnackBar =====================================
 	const [open, setOpen] = React.useState(false);
 
-	const handleClick = () => {
-		// setOpen(true);
+	const snackbar = () => {
+		<CustomSnackbar message="You are Logged In" />
 	};
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -186,7 +186,7 @@ function Login(props) {
 											</DialogContentText>
 										</DialogContent>
 										<DialogActions className={classes.textField}>
-											<Button onClick={handleClick} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
+											<Button onClick={snackbar} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
 												Login
 										</Button>
 										</DialogActions>
@@ -199,11 +199,12 @@ function Login(props) {
 				</Dialog>
 			</React.Fragment>
 			<div className={classes.root}>
-				<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+				{/* <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
 					<Alert onClose={handleClose} severity="success">
 						This is a success message!
 					</Alert>
-				</Snackbar>
+				</Snackbar> */}
+				
 			</div>
 		</div>
 

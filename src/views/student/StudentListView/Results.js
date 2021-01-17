@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -72,12 +73,76 @@ const Results = ({ className, customers, ...rest }) => {
     setPage(newPage);
   };
 
+  const[ posts, setPosts] = useState([]);
+    useEffect((props) => {
+      axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/students/")
+      .then(res => {
+          console.log(res);
+          setPosts(res.data);
+      })
+      .catch( err => {
+          console.log(err);
+      })
+    }, [])
+
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <PerfectScrollbar>
+      {/*<ul>
+                {posts.map(post1 =>(
+                    <li key={post1.id}>{post1.id} {post1.user.email} {post1.user.first_name} {post1.user.last_name} {post1.college}</li>
+                ))}
+      </ul>
+      */}
+      
+        <PerfectScrollbar>
+          <Box minWidth={1050}>
+          
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  Full Name
+                </TableCell>
+                <TableCell>
+                  Email
+                </TableCell>
+                <TableCell>
+                  Gender
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              
+              {posts.map((student) => (
+                <TableRow
+                  //hover
+                  key={student.id}
+                  //selected={selectedstudentIds.indexOf(student.id) !== -1}
+                >
+                  <TableCell>
+                       {`${student.user.first_name} ${student.user.last_name}`}
+                  </TableCell>
+                  <TableCell>
+                    {student.user.email}
+                  </TableCell>
+                  <TableCell>
+                    {/*`${student.address.city}, ${student.address.state}, ${student.address.country}`*/}
+                    {student.gender}
+                  </TableCell>
+                </TableRow>
+              ))}
+
+            </TableBody>
+          </Table>
+
+        </Box>
+        </PerfectScrollbar>
+      
+
+      {/*<PerfectScrollbar>
         <Box minWidth={1050}>
           <Table>
             <TableHead>
@@ -94,7 +159,7 @@ const Results = ({ className, customers, ...rest }) => {
                   />
                 </TableCell>
                 <TableCell>
-                  Name
+                  First Name
                 </TableCell>
                 <TableCell>
                   Email
@@ -160,7 +225,66 @@ const Results = ({ className, customers, ...rest }) => {
             </TableBody>
           </Table>
         </Box>
-      </PerfectScrollbar>
+        </PerfectScrollbar>*/}
+
+      {/*<PerfectScrollbar>
+        <Box minWidth={1050}>
+          <Table>
+            <TableHead>
+              <TableRow>
+
+                <TableCell>
+                  First Name
+                </TableCell>
+                <TableCell>
+                  Email
+                </TableCell>
+                <TableCell>
+                  College
+                </TableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {customers.slice(0, limit).map((customer) => (
+                <TableRow
+                  hover
+                  key={customer.id}
+                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                >
+              
+                  <TableCell>
+                    <Box
+                      alignItems="center"
+                      display="flex"
+                    >
+                      <Avatar
+                        className={classes.avatar}
+                        src={customer.avatarUrl}
+                      >
+                        {getInitials(customer.name)}
+                      </Avatar>
+                      <Typography
+                        color="textPrimary"
+                        variant="body1"
+                      >
+                        {customer.name}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    {customer.email}
+                  </TableCell>
+                  <TableCell>
+                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+              </PerfectScrollbar>*/}
+
       <TablePagination
         component="div"
         count={customers.length}

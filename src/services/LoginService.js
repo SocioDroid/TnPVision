@@ -14,6 +14,10 @@ class LoginService {
     changePassword(data){
         return httpauth.put('/api/change-password/', data)
     }
+
+    forgotPassword(data){
+        return http.post("/api/password_reset/", data)
+    }
 }
 
 export default new LoginService();
