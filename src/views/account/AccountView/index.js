@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import Page from '../../../components/Page';
 import Profile from './Profile';
-import ProfileDetails from './ProfileDetails';
+import ProfileDetails from '../../student/StudentListView/ProfileDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {

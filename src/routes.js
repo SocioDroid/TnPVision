@@ -20,6 +20,7 @@ import HomePage from './views/homepage/Homepage'
 import Auth from './auth'
 import PasswordReset from './components/ForgotPassword/PasswordReset';
 import Route from 'react-router-dom';
+
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
   { path: '/', element: <HomePage /> },

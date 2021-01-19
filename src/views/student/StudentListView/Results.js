@@ -4,6 +4,10 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import StudentService from "../../../services/studentService";
+import useTable from "../../../components/useTable";
+import Popup from "../../../components/Popup";
+import ProfileDetails from "./ProfileDetails"
 import {
   Avatar,
   Box,
@@ -18,20 +22,35 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import getInitials from '../../../utils/getInitials';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
     marginRight: theme.spacing(2)
+  },
+  delete:{
+    backgroundColor: "red",
+    marginLeft: "5px"
   }
 }));
 
 const Results = ({ className, customers, ...rest }) => {
+
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
+
+  const [recordForEdit, setRecordForEdit] = useState(null)
+  const [openPopup, setOpenPopup] = useState(false)
+
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+
+
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -74,28 +93,50 @@ const Results = ({ className, customers, ...rest }) => {
   };
 
   const[ posts, setPosts] = useState([]);
+    // useEffect((props) => {
+    //   StudentService.getAllStudents()
+    //   .then(res => {
+    //     // console.log(res);
+    //     setPosts(res.data);
+    // })
+    // .catch( err => {
+    //       console.log(err);
+    //   })
+    // }, [])
+
     useEffect((props) => {
       axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/students/")
-      .then(res => {
-          console.log(res);
+      .then(res => {        
           setPosts(res.data);
+          
       })
       .catch( err => {
           console.log(err);
       })
     }, [])
 
+    const addOrEdit = (student, resetForm) => {
+      if (student.id == 0)
+          // StudentService.insertstudent(student)
+          console.log("Inserted");
+      else
+          console.log("Edited");
+          // StudentService.updatestudent(student)
+      resetForm()
+      setRecordForEdit(null)
+      setOpenPopup(false)
+      setPosts(StudentService.getAllStudents())
+  }
+    const openInPopup = item => {
+      setRecordForEdit(item)
+      setOpenPopup(true)
+  }
+
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
-      {/*<ul>
-                {posts.map(post1 =>(
-                    <li key={post1.id}>{post1.id} {post1.user.email} {post1.user.first_name} {post1.user.last_name} {post1.college}</li>
-                ))}
-      </ul>
-      */}
       
         <PerfectScrollbar>
           <Box minWidth={1050}>
@@ -112,11 +153,15 @@ const Results = ({ className, customers, ...rest }) => {
                 <TableCell>
                   Gender
                 </TableCell>
+                <TableCell>
+                  Action
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               
-              {posts.map((student) => (
+              {
+                posts.map((student) => (
                 <TableRow
                   //hover
                   key={student.id}
@@ -132,158 +177,24 @@ const Results = ({ className, customers, ...rest }) => {
                     {/*`${student.address.city}, ${student.address.state}, ${student.address.country}`*/}
                     {student.gender}
                   </TableCell>
+                  <TableCell>
+                  <Fab size="small" color="primary" aria-label="edit" onClick={() => { openInPopup(student.id) }}>
+                    <EditIcon />
+                  </Fab>
+                  <Fab size="small" color="secondary"  className={classes.delete} aria-label="delete">
+                    <DeleteIcon />
+                  </Fab>
+                  </TableCell>
                 </TableRow>
-              ))}
+              )
+              
+                )};
 
             </TableBody>
           </Table>
 
         </Box>
         </PerfectScrollbar>
-      
-
-      {/*<PerfectScrollbar>
-        <Box minWidth={1050}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
-                    color="primary"
-                    indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
-                <TableCell>
-                  First Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Location
-                </TableCell>
-                <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Registration date
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {customers.slice(0, limit).map((customer) => (
-                <TableRow
-                  hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.id)}
-                      value="true"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <Avatar
-                        className={classes.avatar}
-                        src={customer.avatarUrl}
-                      >
-                        {getInitials(customer.name)}
-                      </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
-                        {customer.name}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {customer.email}
-                  </TableCell>
-                  <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
-                  </TableCell>
-                  <TableCell>
-                    {customer.phone}
-                  </TableCell>
-                  <TableCell>
-                    {moment(customer.createdAt).format('DD/MM/YYYY')}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-        </PerfectScrollbar>*/}
-
-      {/*<PerfectScrollbar>
-        <Box minWidth={1050}>
-          <Table>
-            <TableHead>
-              <TableRow>
-
-                <TableCell>
-                  First Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  College
-                </TableCell>
-
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {customers.slice(0, limit).map((customer) => (
-                <TableRow
-                  hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-                >
-              
-                  <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <Avatar
-                        className={classes.avatar}
-                        src={customer.avatarUrl}
-                      >
-                        {getInitials(customer.name)}
-                      </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
-                        {customer.name}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {customer.email}
-                  </TableCell>
-                  <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-              </PerfectScrollbar>*/}
 
       <TablePagination
         component="div"
@@ -294,8 +205,17 @@ const Results = ({ className, customers, ...rest }) => {
         rowsPerPage={limit}
         rowsPerPageOptions={[5, 10, 25]}
       />
+     <Popup
+        title="Employee Form"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      >
+        <ProfileDetails
+            recordForEdit={recordForEdit}
+            addOrEdit={addOrEdit} />
+    </Popup>
     </Card>
-  );
+  )
 };
 
 Results.propTypes = {
