@@ -91,29 +91,35 @@ const Results = ({ className, customers, ...rest }) => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
-
   const[ posts, setPosts] = useState([]);
-    // useEffect((props) => {
-    //   StudentService.getAllStudents()
-    //   .then(res => {
-    //     // console.log(res);
-    //     setPosts(res.data);
-    // })
-    // .catch( err => {
-    //       console.log(err);
-    //   })
-    // }, [])
 
-    useEffect((props) => {
-      axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/students/")
+  const getAllStudents = () => {
+    axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/students/")
       .then(res => {        
           setPosts(res.data);          
       })
       .catch( err => {
           console.log(err);
       })
+  }
+
+    
+    useEffect((props) => {
+      getAllStudents();
     }, [])
 
+    const deleteStudent = (id) => {
+      console.log("Student in func : "+ id);
+      axios.delete("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/"+id)
+      .then(res => {
+          console.log("in Result  : "+res.data);
+          getAllStudents();                
+      })
+      .catch( err => {
+          console.log(err);
+      })
+
+    }
     function openPopupWithExtraData(id){
       console.log("Student in func : "+ id);
       axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/"+id)
@@ -136,7 +142,8 @@ const Results = ({ className, customers, ...rest }) => {
       resetForm()
       setRecordForEdit(null)
       setOpenPopup(false)
-      setPosts(StudentService.getAllStudents())
+      console.log("From add or edit")
+      getAllStudents();
   }
     const openInPopup = item => {
       setRecordForEdit(item)
@@ -192,14 +199,14 @@ const Results = ({ className, customers, ...rest }) => {
                   <Fab size="small" color="primary" aria-label="edit" onClick={()=>{openPopupWithExtraData(student.id)}}>
                     <EditIcon />
                   </Fab>
-                  <Fab size="small" color="secondary"  className={classes.delete} aria-label="delete">
+                  <Fab size="small" color="secondary"  className={classes.delete} aria-label="delete" onClick={()=>{deleteStudent(student.id)}}>
                     <DeleteIcon />
                   </Fab>
                   </TableCell>
                 </TableRow>
               )
               
-                )};
+                )}
 
             </TableBody>
           </Table>

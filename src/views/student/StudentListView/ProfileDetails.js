@@ -21,7 +21,7 @@ import {
 
 const useStyles = makeStyles(() => ({
   root: {}
-}));  
+}));
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -45,41 +45,39 @@ const initialFValues = {
 export default function ProfileDetails(props) {
   const [values, setValues] = useState({
     id: 0,
-    user: {
-      email: "",
-      first_name: "",
-      last_name: ""
-    },
+    email: "",
+    first_name: "",
+    last_name: "",
     gender: "M",
     isDeleted: false,
     isProfileComplete: false
   });
   const classes = useStyles();
-  
+
   const { addOrEdit, recordForEdit } = props
-  
+
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
     if ('first_name' in fieldValues)
-        temp.first_name = fieldValues.first_name ? "" : "This field is required."
+      temp.first_name = fieldValues.first_name ? "" : "This field is required."
     if ('last_name' in fieldValues)
-        temp.last_name = fieldValues.last_name ? "" : "This field is required."
+      temp.last_name = fieldValues.last_name ? "" : "This field is required."
     if ('email' in fieldValues)
-        temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+      temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
     setErrors({
-        ...temp
+      ...temp
     })
 
     if (fieldValues == values)
-        return Object.values(temp).every(x => x == "")
+      return Object.values(temp).every(x => x == "")
   }
   const {
-      valuess,
-      setValuess,
-      errors,
-      setErrors,
-      handleInputChange,
-      resetForm
+    valuess,
+    setValuess,
+    errors,
+    setErrors,
+    handleInputChange,
+    resetForm
   } = useForm(initialFValues, true, validate);
 
   const handleChange = (event) => {
@@ -88,35 +86,47 @@ export default function ProfileDetails(props) {
       [event.target.name]: event.target.value
     });
   };
-  
+
   const handleSubmit = e => {
     e.preventDefault()
     if (validate()) {
-      const data = {          
+      const data = {
         "user": {
-          "email": "aishtest6999+stud12123323@gmail.com",
-          "first_name": "test",
-          "last_name": "test"
+          "email": values.email,
+          "first_name": values.first_name,
+          "last_name": values.last_name
         },
-        "gender": "M"        
+        "gender": values.gender
       }
-      
+
       addOrEdit(values, resetForm);
+      axios.patch("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/" + values.id, data)
+        .then(res =>{
+          console.log("res", res);
+        }).catch(error => {
+
+        });
     }
   }
-  
 
+  
   useEffect(() => {
-    
-    if (recordForEdit != null)
-    {
+
+    if (recordForEdit != null) {
       setValues({
         ...values,
-       'id': recordForEdit['id'],
+        'id': recordForEdit.id,
+        'first_name':recordForEdit.user.first_name,
+        'last_name':recordForEdit.user.last_name,
+        'email':recordForEdit.user.email,
+        'gender':recordForEdit.gender,
+        'isDeleted' : recordForEdit.isDeleted,
+        'isProfileComplete': recordForEdit.isProfileComplete
       });
-      console.log("IN Detaisl : " , values);
+      console.log("IN Detaisl : ", values);
+      console.log("IN Detaisl : ", recordForEdit);
     }
-}, [recordForEdit])
+  }, [recordForEdit])
 
   return (
     <form
@@ -147,7 +157,7 @@ export default function ProfileDetails(props) {
                 name="first_name"
                 onChange={handleChange}
                 required
-                value={recordForEdit.user.first_name}
+                value={values.first_name}
                 variant="outlined"
               />
             </Grid>
@@ -162,7 +172,7 @@ export default function ProfileDetails(props) {
                 name="last_name"
                 onChange={handleChange}
                 required
-                value={recordForEdit.user.last_name}
+                value={values.last_name}
                 variant="outlined"
               />
             </Grid>
@@ -177,7 +187,7 @@ export default function ProfileDetails(props) {
                 name="email"
                 onChange={handleChange}
                 required
-                value={recordForEdit.user.email}
+                value={values.email}
                 variant="outlined"
               />
             </Grid>
@@ -196,29 +206,12 @@ export default function ProfileDetails(props) {
                 variant="outlined"
               /> */}
               <Controls.RadioGroup
-                        name="gender"
-                        label="Gender"
-                        value={recordForEdit.gender}
-                        onChange={handleInputChange}
-                        items={genderItems}
-                    />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-             <FormControl>
-              <FormControlLabel
-                  control={<MuiCheckbox
-                      name="isProfileComplete"
-                      disabled
-                      color="primary"
-                      checked={recordForEdit.isProfileComplete}
-                  />}
-                  label="Is Profile Completed  ?"
-                />
-            </FormControl>
+                name="gender"
+                label="Gender"
+                value={values.gender}
+                onChange={handleChange}
+                items={genderItems}
+              />
             </Grid>
             <Grid
               item
@@ -226,16 +219,33 @@ export default function ProfileDetails(props) {
               xs={12}
             >
               <FormControl>
-              <FormControlLabel
+                <FormControlLabel
                   control={<MuiCheckbox
-                      name="isDeleted"
-                      disabled
-                      color="primary"
-                      checked={recordForEdit.isDeleted}
+                    name="isProfileComplete"
+                    disabled
+                    color="primary"
+                    checked={values.isProfileComplete}
+                  />}
+                  label="Is Profile Completed  ?"
+                />
+              </FormControl>
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <FormControl>
+                <FormControlLabel
+                  control={<MuiCheckbox
+                    name="isDeleted"
+                    disabled
+                    color="primary"
+                    checked={values.isDeleted}
                   />}
                   label="Is Deleted ?"
                 />
-            </FormControl>
+              </FormControl>
 
             </Grid>
           </Grid>
@@ -249,6 +259,7 @@ export default function ProfileDetails(props) {
           <Button
             color="primary"
             variant="contained"
+            type="submit"
           >
             Save details
           </Button>

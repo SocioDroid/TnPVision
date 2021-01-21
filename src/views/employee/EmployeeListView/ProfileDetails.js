@@ -1,50 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import Page from '../../../components/Page';
-
+import axios from 'axios';
+import { useForm, Form } from '../../../components/useForm';
+import Controls from "../../../components/controls/Controls";
 import PropTypes from 'prop-types';
+import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
+
 import {
   Box,
   Button,
   Card,
   CardContent,
+  Grid,
   CardHeader,
   Divider,
-  Container,
-  Grid,
+  Checkbox,
   TextField,
   makeStyles
 } from '@material-ui/core';
-
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const ProfileDetails = ({ className, ...rest }) => {
-  const classes = useStyles();
+
+const initialFValues = {
+  id: 0,
+  user: {
+    email: "",
+    first_name: "",
+    last_name: ""
+  },
+  gender: "M",
+  isDeleted: false,
+  isProfileComplete: false
+}
+
+
+export default function ProfileDetails(props) {
   const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
+    id: 0,
+    email: "",
+    first_name: "",
+    last_name: "",
+    college: "",
+    isDeleted: false,
+    isProfileComplete: false
   });
+  const classes = useStyles();
+
+  const { addOrEdit, recordForEdit } = props
+
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors }
+    if ('first_name' in fieldValues)
+      temp.first_name = fieldValues.first_name ? "" : "This field is required."
+    if ('last_name' in fieldValues)
+      temp.last_name = fieldValues.last_name ? "" : "This field is required."
+    if ('email' in fieldValues)
+      temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+    setErrors({
+      ...temp
+    })
+
+    if (fieldValues == values)
+      return Object.values(temp).every(x => x == "")
+  }
+  const {
+    valuess,
+    setValuess,
+    errors,
+    setErrors,
+    handleInputChange,
+    resetForm
+  } = useForm(initialFValues, true, validate);
 
   const handleChange = (event) => {
     setValues({
@@ -53,26 +82,57 @@ const ProfileDetails = ({ className, ...rest }) => {
     });
   };
 
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (validate()) {
+      const data = {
+        "user": {
+          "email": values.email,
+          "first_name": values.first_name,
+          "last_name": values.last_name
+        },
+        "college": values.college
+      }
+
+      addOrEdit(values, resetForm);
+      axios.patch("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/employee/" + values.id, data)
+        .then(res =>{
+          console.log("res", res);
+        }).catch(error => {
+
+        });
+    }
+  }
+
+  
+  useEffect(() => {
+
+    if (recordForEdit != null) {
+      setValues({
+        ...values,
+        'id': recordForEdit.id,
+        'first_name':recordForEdit.user.first_name,
+        'last_name':recordForEdit.user.last_name,
+        'email':recordForEdit.user.email,
+        'college':recordForEdit.college,
+        'isDeleted' : recordForEdit.isDeleted,
+        'isProfileComplete': recordForEdit.isProfileComplete
+      });
+      console.log("IN Detaisl : ", values);
+      console.log("IN Detaisl : ", recordForEdit);
+    }
+  }, [recordForEdit])
+
   return (
-    <Page
-      className={classes.root}
-      title="Account"
-    >
-      <Container maxWidth="lg">
-        <Grid
-          container
-          spacing={3}
-        ></Grid>
     <form
+      onSubmit={handleSubmit}
       autoComplete="off"
       noValidate
-      className={clsx(classes.root, className)}
-      {...rest}
     >
       <Card>
         <CardHeader
           subheader="The information can be edited"
-          title="Profile"
+          title="employee Profile"
         />
         <Divider />
         <CardContent>
@@ -89,10 +149,10 @@ const ProfileDetails = ({ className, ...rest }) => {
                 fullWidth
                 helperText="Please specify the first name"
                 label="First name"
-                name="firstName"
+                name="first_name"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.first_name}
                 variant="outlined"
               />
             </Grid>
@@ -104,10 +164,10 @@ const ProfileDetails = ({ className, ...rest }) => {
               <TextField
                 fullWidth
                 label="Last name"
-                name="lastName"
+                name="last_name"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.last_name}
                 variant="outlined"
               />
             </Grid>
@@ -133,11 +193,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
+                label="College"
+                name="college"
                 onChange={handleChange}
-                type="number"
-                value={values.phone}
+                type="text"
+                value={values.college}
                 variant="outlined"
               />
             </Grid>
@@ -146,41 +206,35 @@ const ProfileDetails = ({ className, ...rest }) => {
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
+              <FormControl>
+                <FormControlLabel
+                  control={<MuiCheckbox
+                    name="isProfileComplete"
+                    disabled
+                    color="primary"
+                    checked={values.isProfileComplete}
+                  />}
+                  label="Is Profile Completed  ?"
+                />
+              </FormControl>
             </Grid>
             <Grid
               item
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              <FormControl>
+                <FormControlLabel
+                  control={<MuiCheckbox
+                    name="isDeleted"
+                    disabled
+                    color="primary"
+                    checked={values.isDeleted}
+                  />}
+                  label="Is Deleted ?"
+                />
+              </FormControl>
+
             </Grid>
           </Grid>
         </CardContent>
@@ -193,19 +247,16 @@ const ProfileDetails = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
+            type="submit"
           >
             Save details
           </Button>
         </Box>
       </Card>
     </form>
-    </Container>
-    </Page>
   );
 };
 
 ProfileDetails.propTypes = {
   className: PropTypes.string
 };
-
-export default ProfileDetails;
