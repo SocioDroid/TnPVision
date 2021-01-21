@@ -107,13 +107,24 @@ const Results = ({ className, customers, ...rest }) => {
     useEffect((props) => {
       axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/students/")
       .then(res => {        
-          setPosts(res.data);
-          
+          setPosts(res.data);          
       })
       .catch( err => {
           console.log(err);
       })
     }, [])
+
+    function openPopupWithExtraData(id){
+      console.log("Student in func : "+ id);
+      axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/"+id)
+      .then(res => {
+          console.log("in Result  : "+res.data);                
+          openInPopup(res.data);
+      })
+      .catch( err => {
+          console.log(err);
+      })
+    }
 
     const addOrEdit = (student, resetForm) => {
       if (student.id == 0)
@@ -178,7 +189,7 @@ const Results = ({ className, customers, ...rest }) => {
                     {student.gender}
                   </TableCell>
                   <TableCell>
-                  <Fab size="small" color="primary" aria-label="edit" onClick={() => { openInPopup(student.id) }}>
+                  <Fab size="small" color="primary" aria-label="edit" onClick={()=>{openPopupWithExtraData(student.id)}}>
                     <EditIcon />
                   </Fab>
                   <Fab size="small" color="secondary"  className={classes.delete} aria-label="delete">

@@ -21,7 +21,7 @@ import {
 
 const useStyles = makeStyles(() => ({
   root: {}
-}));
+}));  
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -43,7 +43,17 @@ const initialFValues = {
 
 
 export default function ProfileDetails(props) {
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState({
+    id: 0,
+    user: {
+      email: "",
+      first_name: "",
+      last_name: ""
+    },
+    gender: "M",
+    isDeleted: false,
+    isProfileComplete: false
+  });
   const classes = useStyles();
   
   const { addOrEdit, recordForEdit } = props
@@ -90,6 +100,7 @@ export default function ProfileDetails(props) {
         },
         "gender": "M"        
       }
+      
       addOrEdit(values, resetForm);
     }
   }
@@ -98,16 +109,13 @@ export default function ProfileDetails(props) {
   useEffect(() => {
     
     if (recordForEdit != null)
-    
-    axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/"+recordForEdit)
-    .then(res => {
-      console.log(res.data);
-      setValues(res.data);
-          console.log("Values : " + values.id);                  
-      })
-      .catch( err => {
-          console.log(err);
-      })
+    {
+      setValues({
+        ...values,
+       'id': recordForEdit['id'],
+      });
+      console.log("IN Detaisl : " , values);
+    }
 }, [recordForEdit])
 
   return (
@@ -139,7 +147,7 @@ export default function ProfileDetails(props) {
                 name="first_name"
                 onChange={handleChange}
                 required
-                value={values.first_name}
+                value={recordForEdit.user.first_name}
                 variant="outlined"
               />
             </Grid>
@@ -154,7 +162,7 @@ export default function ProfileDetails(props) {
                 name="last_name"
                 onChange={handleChange}
                 required
-                value={values.last_name}
+                value={recordForEdit.user.last_name}
                 variant="outlined"
               />
             </Grid>
@@ -169,7 +177,7 @@ export default function ProfileDetails(props) {
                 name="email"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={recordForEdit.user.email}
                 variant="outlined"
               />
             </Grid>
@@ -190,7 +198,7 @@ export default function ProfileDetails(props) {
               <Controls.RadioGroup
                         name="gender"
                         label="Gender"
-                        value={values.gender}
+                        value={recordForEdit.gender}
                         onChange={handleInputChange}
                         items={genderItems}
                     />
@@ -206,7 +214,7 @@ export default function ProfileDetails(props) {
                       name="isProfileComplete"
                       disabled
                       color="primary"
-                      checked={values.isProfileComplete}
+                      checked={recordForEdit.isProfileComplete}
                   />}
                   label="Is Profile Completed  ?"
                 />
@@ -223,7 +231,7 @@ export default function ProfileDetails(props) {
                       name="isDeleted"
                       disabled
                       color="primary"
-                      checked={values.isDeleted}
+                      checked={recordForEdit.isDeleted}
                   />}
                   label="Is Deleted ?"
                 />
