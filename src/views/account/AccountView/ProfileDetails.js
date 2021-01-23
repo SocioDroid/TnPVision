@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import Controls from "../../../components/controls/Controls";
+import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
 import {
   Box,
   Button,
@@ -13,35 +15,42 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+
+const genderItems = [
+  { id: 'M', title: 'Male' },
+  { id: 'F', title: 'Female' },
+  { id: 'O', title: 'Other' },
+]
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const ProfileDetails = ({ className, ...rest }) => {
+const ProfileDetails = ({ className, userData, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
+    "email" : "",
+    "first_name" : "",
+    "last_name" : "",
+    "gender" : "M",
+    "group" : 0,
+    "id" : 0,
   });
+
+  useEffect(() =>{
+    if(userData !=null){
+      setValues({
+        ...values,
+        "email" : userData.email,
+        "first_name" : userData.first_name,
+        "last_name" : userData.last_name,
+        "gender" : userData.gender,
+        "group" : userData.group,
+        "id" : userData.id,
+      })
+    }
+  },[userData])
+
 
   const handleChange = (event) => {
     setValues({
@@ -50,17 +59,18 @@ const ProfileDetails = ({ className, ...rest }) => {
     });
   };
 
+  
+
   return (
     <form
+      //onSubmit={handleSubmit}
       autoComplete="off"
       noValidate
-      className={clsx(classes.root, className)}
-      {...rest}
     >
       <Card>
         <CardHeader
           subheader="The information can be edited"
-          title="Profile"
+          title="Student Profile"
         />
         <Divider />
         <CardContent>
@@ -77,10 +87,10 @@ const ProfileDetails = ({ className, ...rest }) => {
                 fullWidth
                 helperText="Please specify the first name"
                 label="First name"
-                name="firstName"
+                name="first_name"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.first_name}
                 variant="outlined"
               />
             </Grid>
@@ -92,10 +102,10 @@ const ProfileDetails = ({ className, ...rest }) => {
               <TextField
                 fullWidth
                 label="Last name"
-                name="lastName"
+                name="last_name"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.last_name}
                 variant="outlined"
               />
             </Grid>
@@ -119,7 +129,7 @@ const ProfileDetails = ({ className, ...rest }) => {
               md={6}
               xs={12}
             >
-              <TextField
+              {/* <TextField
                 fullWidth
                 label="Phone Number"
                 name="phone"
@@ -127,6 +137,13 @@ const ProfileDetails = ({ className, ...rest }) => {
                 type="number"
                 value={values.phone}
                 variant="outlined"
+              /> */}
+              <Controls.RadioGroup
+                name="gender"
+                label="Gender"
+                value={values.gender}
+                onChange={handleChange}
+                items={genderItems}
               />
             </Grid>
             <Grid
@@ -134,41 +151,35 @@ const ProfileDetails = ({ className, ...rest }) => {
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
+              <FormControl>
+                <FormControlLabel
+                  control={<MuiCheckbox
+                    name="isProfileComplete"
+                    disabled
+                    color="primary"
+                    checked={values.isProfileComplete}
+                  />}
+                  label="Is Profile Completed  ?"
+                />
+              </FormControl>
             </Grid>
             <Grid
               item
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              <FormControl>
+                <FormControlLabel
+                  control={<MuiCheckbox
+                    name="isDeleted"
+                    disabled
+                    color="primary"
+                    checked={values.isDeleted}
+                  />}
+                  label="Is Deleted ?"
+                />
+              </FormControl>
+
             </Grid>
           </Grid>
         </CardContent>
@@ -181,6 +192,7 @@ const ProfileDetails = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
+            type="submit"
           >
             Save details
           </Button>

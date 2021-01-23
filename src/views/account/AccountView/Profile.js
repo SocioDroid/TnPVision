@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -13,6 +13,8 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import axios from "axios";
+import Auth from '../../../auth'
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
@@ -31,9 +33,9 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Profile = ({ className, ...rest }) => {
+const Profile = ({ className, userData, ...rest }) => {
   const classes = useStyles();
-
+  
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -54,7 +56,7 @@ const Profile = ({ className, ...rest }) => {
             gutterBottom
             variant="h3"
           >
-            {user.name}
+            {userData.first_name+" "+userData.last_name}
           </Typography>
           <Typography
             color="textSecondary"

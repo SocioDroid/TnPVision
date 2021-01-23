@@ -104,6 +104,7 @@ class RegisterContent extends React.Component {
             .then((result) => {    
                 console.log(result);
                 alert("Registration Successfull, Please login!");
+
             });
         }
         else if (user.type == "faculty")
@@ -147,6 +148,7 @@ class RegisterContent extends React.Component {
             //     history.push('/TPORegistration')
             // }
         }
+        
         
         render() {
             const { user } = this.state;

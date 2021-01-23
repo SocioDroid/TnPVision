@@ -133,7 +133,7 @@ const Results = ({ className, customers, ...rest }) => {
     }
 
     const addOrEdit = (student, resetForm) => {
-      if (student.id == 0)
+      if (student.id === 0)
           // StudentService.insertstudent(student)
           console.log("Inserted");
       else

@@ -6,7 +6,6 @@ import GlobalStyles from './components/GlobalStyles';
 import './mixins/chartjs';
 import theme from './theme';
 import routes from './routes';
-import { BrowserRouter, Route ,Switch} from 'react-router-dom';
 
 const App = () => {
   const routing = useRoutes(routes);

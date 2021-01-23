@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import {
   Container,
   Grid,
@@ -6,7 +6,9 @@ import {
 } from '@material-ui/core';
 import Page from '../../../components/Page';
 import Profile from './Profile';
-import ProfileDetails from '../../student/StudentListView/ProfileDetails';
+import ProfileDetails from './ProfileDetails';
+import axios from "axios";
+import Auth from '../../../auth'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +21,41 @@ const useStyles = makeStyles((theme) => ({
 
 const Account = () => {
   const classes = useStyles();
+  const [userData, setUserData] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    gender: "",
+    group: 0,
+    id: 0,
+  })
+
+  useEffect((props) => {
+    axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/user/", {
+      headers: {
+        "Content-type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "Authorization": "Token " + Auth.getToken()
+      }
+    }).then(function(res){
+      const { data} = res;
+      setUserData({
+        email: data.user.email,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
+        gender: data.gender,
+        group: data.group,
+        id: data.id,
+      });
+      // console.log("data", res.data)
+    
+    }).catch(error =>{
+      console.log(error);
+      
+    })
+  }, []);
+
+
 
   return (
     <Page
@@ -36,7 +73,7 @@ const Account = () => {
             md={6}
             xs={12}
           >
-            <Profile />
+            <Profile userData={userData} />
           </Grid>
           <Grid
             item
@@ -44,7 +81,7 @@ const Account = () => {
             md={6}
             xs={12}
           >
-            <ProfileDetails />
+            <ProfileDetails  userData={userData} />
           </Grid>
         </Grid>
       </Container>

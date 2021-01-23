@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PasswordReset = ({ route, className, ...rest }) => {
-    let { token } = useParams();
+    const { token } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [isTokenValid, setIsTokenValid] = useState(false);
 
@@ -62,6 +62,7 @@ const PasswordReset = ({ route, className, ...rest }) => {
             else {
                 console.log("Password not matching")
                 setSubmitionCompleted(false);
+                setSubmitting(false);
             }
 
         },
@@ -82,6 +83,7 @@ const PasswordReset = ({ route, className, ...rest }) => {
                 .catch(error => {
                     console.log(error)
                     setIsLoading(false);
+                    setIsTokenValid(false)
                 });
 
     })();

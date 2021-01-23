@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogActions, DialogContent, TextField, DialogContentText, Button, Grid, ButtonBase } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import ForgotPassword from './ForgotPassword/ForgotPassword'
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+//import MuiAlert from '@material-ui/lab/Alert';
 import CancelIcon from '@material-ui/icons/Cancel';
 import loginpage from '../static/images/loginpage.svg';
 import { useFormik } from 'formik';
@@ -14,10 +13,10 @@ import axios from 'axios';
 // import DataServices from '../../services/Services'
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LoginService from '../services/LoginService';
-// import CustomSnackbar from '../Snackbar/snackbar'
-function Alert(props) {
-	return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import CustomSnackbar from './Snackbar/snackbar';
+// function Alert(props) {
+// 	return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -61,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Login(props) {
 	const classes = useStyles();
-	const [isLogin, setIsLogin] = useState('')
+	const [isLogin, setIsLogin] = useState(false)
 
 	//===================================== Dialog Box =====================================
 	const [loginOpen, setLoginOpen] = React.useState(false);
@@ -78,9 +77,7 @@ function Login(props) {
 	//===================================== SnackBar =====================================
 	const [open, setOpen] = React.useState(false);
 
-	// const snackbar = () => {
-	// 	<CustomSnackbar message="You are Logged In" />
-	// };
+
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
@@ -88,6 +85,9 @@ function Login(props) {
 		setOpen(false);
 	};
 
+	const handleClick = () => {
+		setOpen(true);
+	};
 
 	const navigate = useNavigate();
 	const formik = useFormik({
@@ -103,7 +103,7 @@ function Login(props) {
 					console.log(result.data.data);
 					if (result.status === 200 && result.data.data.token !== "") {
 						localStorage.setItem("token", result.data.data.token);
-						setOpen(true);
+						setIsLogin(true)
 						if (result.data.data.group === 1)
 							navigate('/student/dashboard', { replace: true });
 						else if (result.data.data.group === 2 || result.data.data.group === 3 || result.data.data.group === 4)
@@ -113,6 +113,10 @@ function Login(props) {
 				})
 				.catch(error => {
 					console.log(error);
+					setIsLogin(false)
+					alert("Wrong Username or Password");
+					setSubmitting(false)
+
 				})
 	
 		},
@@ -185,7 +189,7 @@ function Login(props) {
 											</DialogContentText>
 										</DialogContent>
 										<DialogActions className={classes.textField}>
-											<Button type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
+											<Button onClick={handleClick} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
 												Login
 										</Button>
 										</DialogActions>
@@ -198,11 +202,10 @@ function Login(props) {
 				</Dialog>
 			</React.Fragment>
 			<div className={classes.root}>
+				{isLogin &&
 				<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-					<Alert onClose={handleClose} severity="success">
-						This is a success message!
-					</Alert>
-				</Snackbar>
+					<CustomSnackbar onClose={handleClose} severity="success" message="You are Logged In" />
+				</Snackbar>}
 			</div>
 		</div>
 

@@ -39,6 +39,7 @@ function ForgotPassword(){
 				})
 				.catch(error =>{
 					console.log(error);
+					setSubmitting(false);
 				})
 		},
 		validationSchema: Yup.object({

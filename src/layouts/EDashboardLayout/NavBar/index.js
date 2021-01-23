@@ -32,7 +32,7 @@ const user = {
 
 var items;
 let group = 2;
-if(group == 2){
+if(group === 2){
   items = [
     {
       href: '/employee/dashboard',
@@ -60,7 +60,7 @@ if(group == 2){
       title: 'Settings'
     }, 
   ]
-}else if(group == 3){
+}else if(group === 3){
   items = [
     {
       href: '/employee/dashboard',
