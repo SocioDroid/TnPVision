@@ -14,9 +14,7 @@ import axios from 'axios';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LoginService from '../services/LoginService';
 import CustomSnackbar from './Snackbar/snackbar';
-// function Alert(props) {
-// 	return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {

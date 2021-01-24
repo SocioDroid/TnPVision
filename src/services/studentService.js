@@ -1,13 +1,21 @@
 import http from './HttpUrl';
-import httpauth from './AuthorizedHttpUrl'
+import httpauth from './AuthorizedHttpUrl';
 
 class StudentService {
-    getAllStudents(data) {
-        http.get('/api/students/')
+    getAllStudents() {
+        return httpauth.get('/api/students/')
     }
 
-    getStudentDetail(data){
+    getSingleStudent(data){
+        return httpauth.get(`/api/student/${data.id}`)
+    }
+
+    getStudentDetail(){
         return httpauth.get('/api/user/')
+    }
+
+    deleteStudent(data){
+        return httpauth.delete(`/api/student/${data.id}`)
     }
 }
 

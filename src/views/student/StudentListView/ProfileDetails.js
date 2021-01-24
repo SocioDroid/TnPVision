@@ -104,7 +104,8 @@ export default function ProfileDetails(props) {
         .then(res =>{
           console.log("res", res);
         }).catch(error => {
-
+          console.log(error);
+          
         });
     }
   }

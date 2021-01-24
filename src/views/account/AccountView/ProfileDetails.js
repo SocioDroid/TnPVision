@@ -14,6 +14,8 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
+import axios from 'axios';
+import { useForm, Form } from '../../../components/useForm';
 
 
 const genderItems = [
@@ -21,6 +23,18 @@ const genderItems = [
   { id: 'F', title: 'Female' },
   { id: 'O', title: 'Other' },
 ]
+
+const initialFValues = {
+  id: 0,
+  user: {
+    email: "",
+    first_name: "",
+    last_name: ""
+  },
+  gender: "M",
+  isDeleted: false,
+  isProfileComplete: false
+}
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -37,6 +51,62 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
     "id" : 0,
   });
 
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors }
+    if ('first_name' in fieldValues)
+      temp.first_name = fieldValues.first_name ? "" : "This field is required."
+    if ('last_name' in fieldValues)
+      temp.last_name = fieldValues.last_name ? "" : "This field is required."
+    if ('email' in fieldValues)
+      temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+    setErrors({
+      ...temp
+    })
+
+    if (fieldValues == values)
+      return Object.values(temp).every(x => x == "")
+  }
+  const {
+    valuess,
+    setValuess,
+    errors,
+    setErrors,
+    handleInputChange,
+    resetForm
+  } = useForm(initialFValues, true, validate);
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    console.log("e",e);
+    
+    if (validate()) {
+      const data = {
+        "user": {
+          "email": values.email,
+          "first_name": values.first_name,
+          "last_name": values.last_name
+        },
+        "gender": values.gender,
+      }
+
+      //addOrEdit(values, resetForm);
+      axios.patch("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/" + values.id, data)
+        .then(res =>{
+          console.log("res", res);
+        }).catch(error => {
+          console.log(error);
+          
+        });
+    }
+  }
+
   useEffect(() =>{
     if(userData !=null){
       setValues({
@@ -50,20 +120,11 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
       })
     }
   },[userData])
-
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
-
-  
+ 
 
   return (
     <form
-      //onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       autoComplete="off"
       noValidate
     >
@@ -207,3 +268,4 @@ ProfileDetails.propTypes = {
 };
 
 export default ProfileDetails;
+

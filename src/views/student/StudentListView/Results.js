@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import StudentService from "../../../services/studentService";
 import useTable from "../../../components/useTable";
 import Popup from "../../../components/Popup";
 import ProfileDetails from "./ProfileDetails"
@@ -25,7 +23,7 @@ import {
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import StudentService from '../../../services/studentService';
 import getInitials from '../../../utils/getInitials';
 
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +92,7 @@ const Results = ({ className, customers, ...rest }) => {
   const[ posts, setPosts] = useState([]);
 
   const getAllStudents = () => {
-    axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/students/")
+    StudentService.getAllStudents()
       .then(res => {        
           setPosts(res.data);          
       })
@@ -110,7 +108,7 @@ const Results = ({ className, customers, ...rest }) => {
 
     const deleteStudent = (id) => {
       console.log("Student in func : "+ id);
-      axios.delete("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/"+id)
+      StudentService.deleteStudent({id: id})
       .then(res => {
           console.log("in Result  : "+res.data);
           getAllStudents();                
@@ -122,7 +120,7 @@ const Results = ({ className, customers, ...rest }) => {
     }
     function openPopupWithExtraData(id){
       console.log("Student in func : "+ id);
-      axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/"+id)
+      StudentService.getSingleStudent({id: id})
       .then(res => {
           console.log("in Result  : "+res.data);                
           openInPopup(res.data);

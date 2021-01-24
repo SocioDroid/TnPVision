@@ -9,6 +9,7 @@ import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
 import axios from "axios";
 import Auth from '../../../auth'
+import StudentService from '../../../services/studentService';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,28 +32,21 @@ const Account = () => {
   })
 
   useEffect((props) => {
-    axios.get("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/user/", {
-      headers: {
-        "Content-type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        "Authorization": "Token " + Auth.getToken()
-      }
-    }).then(function(res){
-      const { data} = res;
-      setUserData({
-        email: data.user.email,
-        first_name: data.user.first_name,
-        last_name: data.user.last_name,
-        gender: data.gender,
-        group: data.group,
-        id: data.id,
-      });
-      // console.log("data", res.data)
-    
-    }).catch(error =>{
-      console.log(error);
-      
-    })
+    StudentService.getStudentDetail()
+      .then(function(res){
+        const { data} = res;
+        setUserData({
+          email: data.user.email,
+          first_name: data.user.first_name,
+          last_name: data.user.last_name,
+          gender: data.gender,
+          group: data.group,
+          id: data.id,
+        });
+      }).catch(error =>{
+        console.log(error);
+        
+      })
   }, []);
 
 
