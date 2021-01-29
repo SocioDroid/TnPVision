@@ -14,6 +14,7 @@ import axios from 'axios';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LoginService from '../services/LoginService';
 import CustomSnackbar from './Snackbar/snackbar';
+import Auth from '../auth';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -100,7 +101,9 @@ function Login(props) {
 				.then(result => {
 					console.log(result.data.data);
 					if (result.status === 200 && result.data.data.token !== "") {
-						localStorage.setItem("token", result.data.data.token);
+						Auth.authenticateUser(result.data.data.token, result.data.data.expiry)
+						//localStorage.setItem('expiry', result.data.data.expiry); 
+						//localStorage.setItem("token", result.data.data.token);
 						setIsLogin(true)
 						if (result.data.data.group === 1)
 							navigate('/student/dashboard', { replace: true });

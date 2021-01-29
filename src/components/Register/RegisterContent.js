@@ -26,6 +26,8 @@ const roles = [
     //   label: 'TnP Officer',
     // },
 ];
+
+
 class RegisterContent extends React.Component {
     constructor() {
         super();
