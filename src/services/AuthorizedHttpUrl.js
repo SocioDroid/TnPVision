@@ -9,6 +9,9 @@
 
 import axios from "axios";
 import Auth from './../auth';
+import {Redirect } from 'react-router';
+
+
 
 export default axios.create({
   baseURL: "https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com",
@@ -16,5 +19,6 @@ export default axios.create({
     "Content-type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
     "Authorization": "Token " + Auth.getToken() 
+    // != null ? Auth.getToken : {<Redirect to="/" />}
   }
 });
