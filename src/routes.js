@@ -16,6 +16,7 @@ import RegisterView from './views/auth/RegisterView';
 import NotFoundView from './views/errors/NotFoundView';
 import ProductListView from './views/product/ProductListView';
 import SettingsView from './views/settings/SettingsView';
+import DriveView from './views/drive/companies/companyDrive';
 import HomePage from './views/homepage/Homepage'
 import Auth from './auth'
 import PasswordReset from './components/ForgotPassword/PasswordReset';
@@ -56,6 +57,7 @@ const routes = [
       { path: 'students', element: <StudentListView /> },
       { path: 'dashboard', element: <EmployeeDashboardView /> },
       { path: 'settings', element: <SettingsView /> },
+      { path: 'drive', element: <DriveView /> },
       { path: 'import', element: <ImportStudent /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]

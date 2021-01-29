@@ -21,7 +21,11 @@ import {
   User as UserIcon,
   UserPlus as UserPlusIcon,
   Users as UsersIcon,
+
+  Upload as UploadIcon,
+
   Download as DownloadIcon, 
+
 } from 'react-feather';
 import NavItem from './NavItem';
 
@@ -59,6 +63,11 @@ if(group === 2){
       href: '/employee/settings',
       icon: SettingsIcon,
       title: 'Settings'
+    },
+    {
+      href: '/employee/drive',
+      icon: UploadIcon,
+      title: 'Drive Upload'
     }, 
     {
       href: '/employee/import',
