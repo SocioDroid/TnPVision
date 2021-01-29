@@ -20,6 +20,7 @@ import HomePage from './views/homepage/Homepage'
 import Auth from './auth'
 import PasswordReset from './components/ForgotPassword/PasswordReset';
 import Route from 'react-router-dom';
+import ImportStudent from './views/ImportStudent';
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
@@ -55,6 +56,7 @@ const routes = [
       { path: 'students', element: <StudentListView /> },
       { path: 'dashboard', element: <EmployeeDashboardView /> },
       { path: 'settings', element: <SettingsView /> },
+      { path: 'import', element: <ImportStudent /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

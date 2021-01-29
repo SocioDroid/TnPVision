@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import Controls from "../../../components/controls/Controls";
 import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
+// import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {
   Box,
   Button,
@@ -16,6 +17,9 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { useForm, Form } from '../../../components/useForm';
+// import { ReactMultiEmailCustom } from 'react-multi-email-custom';
+// import 'react-multi-email-custom/style.css';
+
 
 
 const genderItems = [
@@ -42,6 +46,8 @@ const useStyles = makeStyles(() => ({
 
 const ProfileDetails = ({ className, userData, ...rest }) => {
   const classes = useStyles();
+  // const [emails,setEmails] = useState([])
+  // const myStyle = {};
   const [values, setValues] = useState({
     "email" : "",
     "first_name" : "",
@@ -96,7 +102,6 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         "gender": values.gender,
       }
 
-      //addOrEdit(values, resetForm);
       axios.patch("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/" + values.id, data)
         .then(res =>{
           console.log("res", res);
@@ -240,7 +245,31 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                   label="Is Deleted ?"
                 />
               </FormControl>
-
+              {/* <FormControl>
+              <ReactMultiEmailCustom
+                style={myStyle}
+                emails={emails}
+                onChange={_emails => {
+                  setEmails(_emails);
+                }}
+                getLabel={(
+                  email,
+                  index,
+                  removeEmail,
+                ) => {
+                  return (
+                    <label key={index}>
+                      {email}
+                      <HighlightOffIcon color="secondary" name="delete" onClick={() => removeEmail(index)} />
+                    </label>
+                  );
+                }}
+              />
+            </FormControl>
+            <FormControl>
+              <label>react-multi-email-custom value</label>
+              {emails.join(', ') || 'empty'}
+            </FormControl> */}
             </Grid>
           </Grid>
         </CardContent>
@@ -268,4 +297,3 @@ ProfileDetails.propTypes = {
 };
 
 export default ProfileDetails;
-
