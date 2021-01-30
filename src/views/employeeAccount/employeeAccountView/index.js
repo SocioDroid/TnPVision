@@ -35,7 +35,6 @@ const Account = () => {
     StudentService.getStudentDetail()
       .then(function(res){
         const { data} = res;
-        console.log("data: ",data);
         setUserData({
           email: data.user.email,
           first_name: data.user.first_name,
