@@ -23,6 +23,7 @@ import PasswordReset from './components/ForgotPassword/PasswordReset';
 import Route from 'react-router-dom';
 import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
+import AfterDriveView from './views/drive/companies/AfterDriveUpload';
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
@@ -59,6 +60,7 @@ const routes = [
       { path: 'dashboard', element: <EmployeeDashboardView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: 'drive', element: <DriveView /> },
+      { path: 'afterdrive', element: <AfterDriveView /> },
       { path: 'import', element: <ImportStudent /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]

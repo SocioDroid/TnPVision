@@ -53,7 +53,7 @@ import parse from 'html-react-parser';
   ];
 
 
-export default function Basic() {
+export default function Basic(props) {
 
     const [emails, setEmails] = useState([])
     const [drivelocation, setDrivelocation] = useState([])
@@ -116,8 +116,10 @@ export default function Basic() {
                 values.hremails= emails;
                 values.drivelocation= drivelocation;
                 console.log(values);
-                await new Promise((r) => setTimeout(r, 500));
-                alert(JSON.stringify(values, null, 2));
+                // await new Promise((r) => setTimeout(r, 500));
+                // alert(JSON.stringify(values, null, 2));
+                // //const {history} = this.props;
+                props.history.push('/employee/afterdrive');
             }}
             >  
             <Form>
