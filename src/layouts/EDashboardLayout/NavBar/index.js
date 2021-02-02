@@ -45,7 +45,7 @@ if(group === 2){
       title: 'Dashboard'
     },
     {
-      href: '/employee/account',
+      href: '/employee/empaccount',
       icon: UserIcon,
       title: 'Account'
     },
@@ -93,7 +93,7 @@ if(group === 2){
       title: 'Employees'
     },
     {
-      href: '/employee/account',
+      href: '/employee/empaccount',
       icon: UserIcon,
       title: 'Account'
     },

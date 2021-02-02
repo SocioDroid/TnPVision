@@ -22,6 +22,7 @@ import Auth from './auth'
 import PasswordReset from './components/ForgotPassword/PasswordReset';
 import Route from 'react-router-dom';
 import ImportStudent from './views/ImportStudent';
+import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
@@ -52,7 +53,7 @@ const routes = [
     path: 'employee',
     element: isAuthenticated ? <EDashboardLayout />: <Navigate to="/"/>,
     children: [
-      { path: 'account', element: <AccountView /> },
+      { path: 'empaccount', element: <EmployeeAccountView /> },
       { path: 'employees', element: <EmployeeListView /> },
       { path: 'students', element: <StudentListView /> },
       { path: 'dashboard', element: <EmployeeDashboardView /> },

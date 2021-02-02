@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, MenuItem} from '@material-ui/core';
+import {Button, MenuItem, Typography} from '@material-ui/core';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -21,10 +21,6 @@ const roles = [
         value: 'employee',
         label: 'Employee',
     },
-    // {
-        //   value: 'tnpofficer',
-    //   label: 'TnP Officer',
-    // },
 ];
 
 
@@ -44,6 +40,10 @@ class RegisterContent extends React.Component {
               gender: '',
               college: '',
               type:'',
+              mobile:'',
+              doj:'',
+              department:'',
+              designation:''
         },
           
         };
@@ -70,10 +70,12 @@ class RegisterContent extends React.Component {
                 this.setState({ showHideGender: true });
                 this.setState({ showHideCollege: false });
                 break;
-                case "faculty":
-                    this.setState({ showHideGender: false });
-                    this.setState({ showHideCollege: true });
-                    break;
+            case "faculty":
+                this.setState({ showHideGender: false });
+                this.setState({ showHideCollege: true });
+                break;
+            default:
+                break;
                 }
             }
     handleChange = (event) => {
@@ -88,7 +90,7 @@ class RegisterContent extends React.Component {
         const { user } = this.state;
         
         console.log("Registering" + user.type);
-        if(user.type == "student")
+        if(user.type === "student")
         {
             const data = 
             {
@@ -97,7 +99,11 @@ class RegisterContent extends React.Component {
                 "email": user.email,
                 "password": user.password,
                 "studentProfile": {
-                    "gender": user.gender
+                    "gender": user.gender,
+                    "mobile":user.mobile,
+                    "doj":user.doj,
+                    "department":user.department,
+                    "designation":user.designation
                 }
             }
             console.log(data);
@@ -109,7 +115,7 @@ class RegisterContent extends React.Component {
 
             });
         }
-        else if (user.type == "faculty")
+        else if (user.type === "faculty")
         {
             const data = 
             {
@@ -118,7 +124,11 @@ class RegisterContent extends React.Component {
                 "email": user.email,
                 "password": user.password,
                 "employeeProfile": {
-                    "college": user.college
+                    "college": user.college,
+                    'mobile': user.mobile,
+                    'doj': user.doj,
+                    'department': user.department,
+                    'designation': user.designation
                 }
             }
             console.log(data);
@@ -252,6 +262,49 @@ class RegisterContent extends React.Component {
                     name="college"
                     type="text"
                     value={user.college}
+                />
+                <br/>
+                <TextValidator                    
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    label="Mobile"
+                    onChange={this.handleChange}
+                    name="mobile"
+                    type="text"
+                    value={user.mobile}
+                />
+                <br/>
+                <TextValidator                    
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    onChange={this.handleChange}
+                    name="doj"
+                    type="date"
+                    value={user.doj}
+                />
+                <br/>
+                <TextValidator                    
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    label="Department"
+                    onChange={this.handleChange}
+                    name="department"
+                    type="text"
+                    value={user.department}
+                />
+                <br/>
+                <TextValidator                    
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    label="Designation"
+                    onChange={this.handleChange}
+                    name="designation"
+                    type="text"
+                    value={user.designation}
                 />
                 <br/>
                 </div>
