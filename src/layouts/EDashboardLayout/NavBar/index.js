@@ -21,9 +21,7 @@ import {
   User as UserIcon,
   UserPlus as UserPlusIcon,
   Users as UsersIcon,
-
   Upload as UploadIcon,
-
   Download as DownloadIcon, 
 
 } from 'react-feather';
@@ -73,6 +71,16 @@ if(group === 2){
       href: '/employee/import',
       icon: DownloadIcon,
       title: 'Import Student'
+    },
+    {
+      href: '/employee/companies',
+      icon: UserPlusIcon,
+      title: 'Companies'
+    },
+    {
+      href: '/employee/alldrives',
+      icon: ShoppingBagIcon,
+      title: 'All Drives'
     },
   ]
 }else if(group === 3){

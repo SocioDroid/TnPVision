@@ -16,14 +16,16 @@ import RegisterView from './views/auth/RegisterView';
 import NotFoundView from './views/errors/NotFoundView';
 import ProductListView from './views/product/ProductListView';
 import SettingsView from './views/settings/SettingsView';
-import DriveView from './views/drive/companies/companyDrive';
-import HomePage from './views/homepage/Homepage'
-import Auth from './auth'
+import DriveView from './views/drive/DriveUpload/DriveUploadForm';
+import DriveListView from './views/drive/DriveListView';
+import CompanyView from './views/drive/CompanyListView';
+import HomePage from './views/homepage/Homepage';
+import Auth from './auth';
 import PasswordReset from './components/ForgotPassword/PasswordReset';
 import Route from 'react-router-dom';
 import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
-import AfterDriveView from './views/drive/companies/AfterDriveUpload';
+import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
@@ -60,6 +62,8 @@ const routes = [
       { path: 'dashboard', element: <EmployeeDashboardView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: 'drive', element: <DriveView /> },
+      { path: 'companies', element: <CompanyView /> },
+      { path: 'alldrives', element: <DriveListView /> },
       { path: 'afterdrive', element: <AfterDriveView /> },
       { path: 'import', element: <ImportStudent /> },
       { path: '*', element: <Navigate to="/404" /> }

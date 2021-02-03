@@ -1129,3 +1129,12 @@ export const JobJocation = [
     "city": "YUKSOM"
   }
 ]
+
+export const AllBranches = [
+  {branch: 'Computer Engineering'},
+  {branch: 'Information Technology'},
+  {branch: 'Mechanical Engineering'},
+  {branch: 'Instrumentation Engineering'},
+  {branch: 'Civil Engineering'},
+  {branch: 'Electronics and Telecommunication Engineering'},
+]

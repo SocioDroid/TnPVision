@@ -11,7 +11,7 @@ import axios from "axios";
 import Auth from './../auth';
 
 export default axios.create({
-  baseURL: "https://tnpvision-cors.herokuapp.com/http://20.37.50.140:8000",
+  baseURL: "http://20.37.50.140:8000",
   headers: {
     "Content-type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
