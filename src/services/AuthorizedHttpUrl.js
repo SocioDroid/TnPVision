@@ -17,6 +17,7 @@ export default axios.create({
   headers: {
     "Content-type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
+    'Cache-Control': 'no-cache',
     "Authorization": "Token " + Auth.getToken() 
     // != null ? Auth.getToken : {<Redirect to="/" />}
   }

@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
+import { Avatar, Box, Button, Divider, Drawer, Hidden, List, Typography, makeStyles } from '@material-ui/core';
+import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon} from 'react-feather';
+  import {
   Avatar,
   Box,
   Button,
@@ -26,6 +28,7 @@ import {
 
 } from 'react-feather';
 import NavItem from './NavItem';
+import StudentService from '../../../services/studentService';
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
@@ -133,6 +136,14 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const [userData, setUserData] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    gender: "",
+    group: 0,
+    id: 0,
+  })
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -140,6 +151,25 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     }
    // eslint-disable-next-line
   }, [location.pathname]);
+
+  useEffect((props) => {
+    StudentService.getStudentDetail()
+      .then(function(res){
+        const { data} = res;
+        console.log("data: ",data);
+        setUserData({
+          email: data.user.email,
+          first_name: data.user.first_name,
+          last_name: data.user.last_name,
+          gender: data.gender,
+          group: data.group,
+          id: data.id,
+        });
+      }).catch(error =>{
+        console.log(error);
+        
+      })
+  }, []);
 
   const content = (
     <Box
@@ -164,13 +194,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+          {userData.first_name+" "+userData.last_name}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {user.jobTitle}
+          {userData.email}
         </Typography>
       </Box>
       <Divider />

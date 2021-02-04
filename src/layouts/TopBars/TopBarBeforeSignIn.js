@@ -95,7 +95,7 @@ function Header(props) {
 		<div className={classes.root}>
 			<AppBar className='header' color='primary' position='static'>
 				<Toolbar>
-					<Typography className={classes.title} variant="h6" noWrap>
+					<Typography className={classes.title} variant="h3" noWrap>
 						<Link onClick={handleHomepage} color='inherit' underline='none'>TnPVision</Link>
 					</Typography>
 					<div className={classes.sectionDesktop}>

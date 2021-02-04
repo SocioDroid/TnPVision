@@ -26,7 +26,7 @@ export default function Popup(props) {
         <Dialog open={openPopup} maxWidth="md" classes={{ paper: classes.dialogWrapper }}>
             <DialogTitle className={classes.dialogTitle}>
                 <div style={{ display: 'flex' }}>
-                    <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+                    <Typography variant="h3" component="div" style={{ flexGrow: 1 }}>
                         {title}
                     </Typography>
                     <Fab size="small" color="secondary"  className={classes.delete} onClick={()=>{setOpenPopup(false)}}>

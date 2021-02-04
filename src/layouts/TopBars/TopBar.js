@@ -11,7 +11,7 @@ import {
   Hidden,
   IconButton,
   Toolbar,
-  makeStyles
+  makeStyles, Typography
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -20,12 +20,20 @@ import Logo from '../../components/Logo';
 import LoginService from './../../services/LoginService';
 import Auth from './../../auth';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
     width: 60,
     height: 60
-  }
+  },
+  title: {
+    flexGrow: 1,
+    [theme.breakpoints.up('sm')]: {
+        display: 'block',
+        width: 'auto',
+        color: 'white'
+    },
+},
 }));
 
 const TopBar = ({
@@ -53,7 +61,7 @@ const TopBar = ({
     >
       <Toolbar>
         <RouterLink to="/">
-          <Logo />
+        <Typography className={classes.title} variant="h3" noWrap> TnPVision </Typography>
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
@@ -76,6 +84,9 @@ const TopBar = ({
             onClick={onMobileNavOpen}
           >
             <MenuIcon />
+          </IconButton>
+          <IconButton color="inherit"  onClick={logout}>
+            <InputIcon />
           </IconButton>
         </Hidden>
       </Toolbar>
