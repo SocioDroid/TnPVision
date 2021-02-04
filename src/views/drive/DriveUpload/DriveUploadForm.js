@@ -502,7 +502,7 @@
 //     }
 
 
-import React, { useState } from 'react'
+import React,{ useState, useEffect } from 'react'
 import {Formik, Form, Field, FieldArray} from 'formik'
 import {TextField} from 'formik-material-ui'
 import {Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles } from '@material-ui/core'
@@ -510,7 +510,8 @@ import { KeyboardDateTimePicker  } from 'formik-material-ui-pickers'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete} from 'formik-material-ui-lab';
-import {top100Films, JobJocation, AllBranches} from '../data';
+import {top100Films, JobJocation, AllBranches, JobJocationtemp} from '../data';
+import CompanyService from '../../../services/CompanyService';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MuiTextField from '@material-ui/core/TextField';
@@ -572,6 +573,7 @@ export default function Basic(props) {
     }
 
     const [val, setVal] = useState([0,50])
+    
     const updateRange= (e, data) =>{
         setVal(data);
     }
@@ -585,6 +587,22 @@ export default function Basic(props) {
             label: "50 CTC"
         }
     ]
+
+    const[ posts, setPosts] = useState([]);
+        const getAllCompanies = () => {
+        CompanyService.getAllCompanies()
+          .then(res => {        
+              setPosts(res.data);          
+          })
+          .catch( err => {
+              console.log(err);
+          })
+    }
+
+    useEffect((props) => {
+        getAllCompanies();
+    }, [])
+
     return(
     <div className={classes.root}>
         <Grid item container>
@@ -597,7 +615,7 @@ export default function Basic(props) {
             </Box>
             <Formik
             initialValues={{
-                eligible_branches: [{branch:"Mechanical"}],
+                eligible_branches: [{branch:null}],
                 jobtitle:'',
                 date: '',
                 login_time: 0,
@@ -613,17 +631,18 @@ export default function Basic(props) {
                 live_backlog: 0,
                 dead_backlog: 0,
                 drive_type: 'ON',
-                //autocomplete: [],
                 employment_type: 'Full Time', 
                 company: 8,
                 rounds:[{
-                    name: "Test",
-                    number: 2,
-                    description: "Test",
+                    name: "",
+                    number: 0,
+                    description: "",
                     students: []
                 }],
                 assigned_coordinators: [3],
                 assigned_volunteers: [4],
+
+                companytest: {name:''},
                 //description: '',
                 //hremails: [],
                 //joblocation: [],
@@ -635,9 +654,9 @@ export default function Basic(props) {
                 values.min_salary = val[0]
                 values.max_salary = val[1]
                 values.date = new Date(selectedDate).toISOString()
-                //console.log("salary", val);
-                //console.log("date", selectedDate);
-                
+                values.company = values.companytest.id
+            
+
                 // axios.post("https://tnpvision-cors.herokuapp.com/http://20.37.50.140:8000/api/drive", values,{
                 //     headers: {
                 //         "Content-type": "application/json",
@@ -646,36 +665,37 @@ export default function Basic(props) {
                 //       }
                 // })
 
-                // DriveService.addSingleDrive(values)
-                // .then((result) => {    
-                //     console.log(result);
-                // })
-                // .catch((error) =>{
-                //     console.log(error);
-                // });
-                // console.log(values);
+                DriveService.addSingleDrive(values)
+                .then((result) => {    
+                    console.log("Data Added:",result);
+                })
+                .catch((error) =>{
+                    console.log(error);
+                });
+                 console.log(values);
             }}
             >  
             {({values, errors}) => (
             <Form>
                 <Box margin={1} paddingBottom={2}>
-                     <Field
-                            name="eligiblebranches"
-                            multiple
-                            component={Autocomplete}
-                            options={AllBranches}
-                            getOptionLabel={(option) => option.branch}
-                            fullWidth
-                            renderInput={(params) => (
-                                <MuiTextField
-                                {...params}
-                                helperText="Add Eligible Branches"
-                                label="Eligible Branches"
-                                variant="outlined"
-                                />
-                            )}
-                        />
+                    <Field
+                        name="eligible_branches"
+                        multiple
+                        component={Autocomplete}
+                        options={AllBranches}
+                        getOptionLabel={(option) => option.branch}
+                        fullWidth
+                        renderInput={(params) => (
+                            <MuiTextField
+                            {...params}
+                            helperText="Add Eligible Branches"
+                            label="Eligible Branches"
+                            variant="outlined"
+                            />
+                        )}
+                    />
                 </Box>
+                
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -684,7 +704,22 @@ export default function Basic(props) {
                     </Grid>
                     <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
-                            <Field fullWidth component={TextField} variant="outlined" name="company" type="number" label="Company Name"  />
+                            <Field
+                                name="companytest"
+                                component={Autocomplete}
+                                options={posts}
+                                getOptionLabel={option => option.name}
+                                fullWidth
+                                renderInput={(params) => (
+                                    <MuiTextField
+                                    {...params}
+                                    helperText="Add Company"
+                                    label="Comapny Name"
+                                    variant="outlined"
+                                    />
+                                )}
+                            /> 
+                            <br/>
                         </Box>
                     </Grid>
                 </Grid>
@@ -712,32 +747,6 @@ export default function Basic(props) {
                         </Box>
                     </Grid>
                 </Grid>
-                
-                {/* <Box margin={1} paddingBottom={2}>
-                    <Typography style={{color:"grey"}} >Enter Job Description</Typography>
-                    <CKEditor 
-                        editor={ClassicEditor}
-                        onChange={handleChange}
-                    />
-                </Box> */}
-
-                {/* <Box margin={1} paddingBottom={2}>
-                    <Field
-                            name="job_location"
-                            multiple
-                            component={Autocomplete}
-                            options={JobJocation}
-                            getOptionLabel={(option) => option.city}
-                            fullWidth
-                            renderInput={(params) => (
-                                <MuiTextField
-                                {...params}
-                                label="Job Locations"
-                                variant="outlined"
-                                />
-                            )}
-                        />
-                </Box> */}
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -769,40 +778,11 @@ export default function Basic(props) {
                         </Box>
                     </Grid>
                 </Grid> 
-                
-                {/* <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                        <Box margin={1} paddingBottom={2}>
-                            <MultipleValueTextInput
-                                style={{height:"50px", color:"grey"}}
-                                onItemAdded={(item, allItems) => {setEmails(allItems)}}
-                                onItemDeleted={(item, allItems) => {setEmails(allItems)}}
-                                label="HR Emails"
-                                name="emails"
-                                placeholder="  Enter HR Emails"
-                            />
-                        </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Box margin={1} paddingBottom={2}>
-                            <MultipleValueTextInput
-                                style={{height:"50px", color:"grey"}}
-                                onItemAdded={(item, allItems) => {setDrivelocation(allItems)}}
-                                onItemDeleted={(item, allItems) => {setDrivelocation(allItems)}}
-                                label="Drive Locations"
-                                name="drive_location"
-                                placeholder="  Enter Drive Locations"
-                            />
-                            
-                        </Box>
-                    </Grid>
-                </Grid>   */}
-                
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
                         <Box margin={1} paddingBottom={2}>
                             <Field fullWidth variant="outlined" component={TextField} name="drive_location" type="text" label="Drive Location" />    
-                        </Box>
+                        </Box> 
                     </Grid>
                 </Grid>
 
@@ -901,6 +881,15 @@ export default function Basic(props) {
                                         </Grid>
                                         <Grid item>
                                             <Field 
+                                                name={`rounds[${index}].number`}
+                                                component={TextField}
+                                                label="Round Number"
+                                                variant="outlined"
+                                                type="number"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <Field 
                                                 name={`rounds[${index}].description`}
                                                 component={TextField}
                                                 label="Round Description"
@@ -915,7 +904,7 @@ export default function Basic(props) {
                                 ))}
                                 <Grid container item spacing={3}>
                                 <Grid item>
-                                    <Button variant="contained" color="primary" onClick={() => push({type:'', description:''})}>Add Round</Button>
+                                    <Button variant="contained" color="primary" onClick={() => push({name:'', number:'', description:'',students: []})}>Add Round</Button>
                                 </Grid>
                                 </Grid>
                             </React.Fragment>
