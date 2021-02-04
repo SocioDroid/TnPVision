@@ -2,7 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Button, Divider, Drawer, Hidden, List, Typography, makeStyles } from '@material-ui/core';
-import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon, 
+import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon} from 'react-feather';
+  import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  Hidden,
+  List,
+  Typography,
+  makeStyles
+} from '@material-ui/core';
+import {
+  AlertCircle as AlertCircleIcon,
+  BarChart as BarChartIcon,
+  Lock as LockIcon,
+  Settings as SettingsIcon,
+  ShoppingBag as ShoppingBagIcon,
+  User as UserIcon,
+  UserPlus as UserPlusIcon,
+  Users as UsersIcon,
+  Upload as UploadIcon,
+  Download as DownloadIcon, 
+
 } from 'react-feather';
 import NavItem from './NavItem';
 import StudentService from '../../../services/studentService';
@@ -51,6 +74,16 @@ if(group === 2){
       href: '/employee/import',
       icon: DownloadIcon,
       title: 'Import Student'
+    },
+    {
+      href: '/employee/companies',
+      icon: UserPlusIcon,
+      title: 'Companies'
+    },
+    {
+      href: '/employee/alldrives',
+      icon: ShoppingBagIcon,
+      title: 'All Drives'
     },
   ]
 }else if(group === 3){
