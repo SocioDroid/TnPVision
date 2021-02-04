@@ -520,6 +520,7 @@ import parse from 'html-react-parser';
 import DriveService from '../../../services/DriveService';
 import axios from 'axios'
 import Auth from '../../../auth';
+import VolunteerSearch from '../../testautocomplete';
 //import MomentUtils from "@date-io/moment";
 //import moment from "moment";
 
@@ -677,6 +678,9 @@ export default function Basic(props) {
             >  
             {({values, errors}) => (
             <Form>
+                <Box margin={1} paddingBottom={2}>
+                    <VolunteerSearch/>
+                </Box>
                 <Box margin={1} paddingBottom={2}>
                     <Field
                         name="eligible_branches"
