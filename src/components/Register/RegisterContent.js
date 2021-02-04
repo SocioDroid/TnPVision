@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, MenuItem, Typography} from '@material-ui/core';
-import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -14,15 +14,52 @@ const roles = [
       label: 'None',
     },
     {
-        value: 'student',
-        label: 'Student',
+        value: 'asst. professor',
+        label: 'Asst. Professor',
     },
     {
-        value: 'employee',
-        label: 'Employee',
+        value: 'principal',
+        label: 'Principal',
     },
 ];
 
+const college = [
+    {
+      value: 'none',
+      label: 'None',
+    },
+    {
+        value: 'DYPCOE',
+        label: 'DYPCOE',
+    },
+    {
+        value: 'DYPIEMR',
+        label: 'DYPIEMR',
+    },
+];
+
+const department = [
+    {
+      value: 'none',
+      label: 'None',
+    },
+    {
+        value: 'Computer',
+        label: 'Computer',
+    },
+    {
+        value: 'IT',
+        label: 'IT',
+    },
+    {
+        value: 'IT',
+        label: 'IT',
+    },
+    {
+        value: 'IT',
+        label: 'IT',
+    },
+];
 
 class RegisterContent extends React.Component {
     constructor() {
@@ -43,7 +80,7 @@ class RegisterContent extends React.Component {
               mobile:'',
               doj:'',
               department:'',
-              designation:''
+              designation:'none'
         },
           
         };
@@ -112,7 +149,10 @@ class RegisterContent extends React.Component {
             .then((result) => {    
                 console.log(result);
                 alert("Registration Successfull, Please login!");
-
+                
+            })
+            .catch((error) =>{
+                console.log(error);
             });
         }
         else if (user.type === "faculty")
@@ -296,7 +336,25 @@ class RegisterContent extends React.Component {
                     value={user.department}
                 />
                 <br/>
-                <TextValidator                    
+                            <SelectValidator
+                                fullWidth
+                                required
+                                size="small"
+                                variant="outlined"
+                                name="designation"
+                                Label="Designation"
+                                value={user.designation}
+                                validators={["required"]}
+                                errorMessages={["this field is required"]}
+                                className=""
+                            >
+                                {roles.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                    </MenuItem>
+                                ))}
+          </SelectValidator>
+                {/* <TextValidator                    
                     fullWidth
                     variant="outlined"
                     size="small"
@@ -305,7 +363,7 @@ class RegisterContent extends React.Component {
                     name="designation"
                     type="text"
                     value={user.designation}
-                />
+                /> */}
                 <br/>
                 </div>
                 }

@@ -222,7 +222,7 @@ const Results = ({ className, customers, ...rest }) => {
         rowsPerPageOptions={[5, 10, 25]}
       />
      <Popup
-        title="Employee Form"
+        title="Student Form"
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
