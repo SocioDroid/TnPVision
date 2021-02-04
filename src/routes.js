@@ -26,6 +26,8 @@ import Route from 'react-router-dom';
 import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
+import VolunteerSearch from './views/testautocomplete';
+
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
@@ -66,6 +68,7 @@ const routes = [
       { path: 'alldrives', element: <DriveListView /> },
       { path: 'afterdrive', element: <AfterDriveView /> },
       { path: 'import', element: <ImportStudent /> },
+      { path: 'auto', element: <VolunteerSearch /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
