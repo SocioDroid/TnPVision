@@ -184,8 +184,8 @@ export default function ProfileDetails(props) {
         "assigned_coordinators": recordForEdit.assigned_coordinators,
         "assigned_volunteers": recordForEdit.assigned_volunteers,
       });
-      console.log("IN Detaisl : ", values);
-      console.log("IN Detaisl : ", recordForEdit);
+      // console.log("IN Detaisl : ", values);
+      // console.log("IN Detaisl : ", recordForEdit);
     }
   }, [recordForEdit])
 
