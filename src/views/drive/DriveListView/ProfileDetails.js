@@ -7,6 +7,7 @@ import { AllBranches } from '../data';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import StudentService from '../../../services/studentService';
 import EmployeeService from '../../../services/EmployeeServices';
+import moment from 'moment';
 import {
   Box,
   Button,
@@ -97,7 +98,7 @@ export default function ProfileDetails(props) {
         //"id": values.id,
         "eligible_branches": values.eligible_branches,
         "jobtitle": values.jobtitle,
-        "date": values.date,
+        "date": values.date, 
         "login_time": values.login_time,
         "drive_location": values.drive_location,
         "min_salary": values.min_salary,
@@ -264,7 +265,7 @@ export default function ProfileDetails(props) {
                 name="date"
                 onChange={handleChange}
                 required
-                value={values.date}
+                value={moment (new Date(values.date)).format("DD/MM/YYYY hh:mm a")}
                 variant="outlined"
               />
             </Grid>

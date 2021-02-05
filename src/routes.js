@@ -83,6 +83,7 @@ const routes = [
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
+  
 ];
 
 

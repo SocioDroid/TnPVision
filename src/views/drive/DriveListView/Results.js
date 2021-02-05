@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import useTable from "../../../components/useTable";
-import Popup from "../../../components/Popup";
-import ProfileDetails from "./ProfileDetails"
+import {DriveMenuButton} from './DriveMenuButton';
 import {
   Box,
   Card,
@@ -16,10 +12,8 @@ import {
   TableRow,
   makeStyles
 } from '@material-ui/core';
-import Fab from '@material-ui/core/Fab';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,8 +30,6 @@ const useStyles = makeStyles((theme) => ({
 const Results = ({ className, ...rest }) => {
 
   const classes = useStyles();
-  const [recordForEdit, setRecordForEdit] = useState(null)
-  const [openPopup, setOpenPopup] = useState(false)
   const[ posts, setPosts] = useState([]);
 
   const getAllDrives = () => {
@@ -54,46 +46,10 @@ const Results = ({ className, ...rest }) => {
       getAllDrives();
     }, [])
 
-    const deleteDrive = (id) => {
-      console.log("Student in func : "+ id);
-      DriveService.deleteDrive({id: id})
-      .then(res => {
-          console.log("in Result  : "+res.data);
-          getAllDrives();                
-      })
-      .catch( err => {
-          console.log(err);
-      })
-
-    }
-    function openPopupWithExtraData(id){
-      console.log("Student in func : "+ id);
-      DriveService.getSingleDrive({id: id})
-      .then(res => {
-          console.log("in Result  : "+res.data);                
-          openInPopup(res.data);
-      })
-      .catch( err => {
-          console.log(err);
-      })
-    }
-
-    const addOrEdit = (drive, resetForm) => {
-      if (drive.id === 0)
-          console.log("Inserted");
-      else
-          console.log("Edited");
-      resetForm()
-      setRecordForEdit(null)
-      setOpenPopup(false)
-      console.log("From add or edit")
-      getAllDrives();
-  }
-    const openInPopup = item => {
-      setRecordForEdit(item)
-      setOpenPopup(true)
-  }
-
+  const goToEdit = (id, e) => {
+    e.preventDefault();
+    console.log(id);
+  };
   return (
     <Card
       //className={clsx(classes.root, className)}
@@ -172,12 +128,7 @@ const Results = ({ className, ...rest }) => {
                     {drive.diploma}
                   </TableCell>
                   <TableCell>
-                  <Fab size="small" color="primary" aria-label="edit" onClick={()=>{openPopupWithExtraData(drive.id)}}>
-                    <EditIcon />
-                  </Fab>
-                  <Fab size="small" color="secondary"  className={classes.delete} aria-label="delete" onClick={()=>{deleteDrive(drive.id)}}>
-                    <DeleteIcon />
-                  </Fab>
+                  <DriveMenuButton goToEdit={goToEdit} row={drive} />
                   </TableCell>
                 </TableRow>
               )
@@ -189,16 +140,6 @@ const Results = ({ className, ...rest }) => {
 
         </Box>
         </PerfectScrollbar>
-
-     <Popup
-        title="Drive Form"
-        openPopup={openPopup}
-        setOpenPopup={setOpenPopup}
-      >
-        <ProfileDetails
-            recordForEdit={recordForEdit}
-            addOrEdit={addOrEdit} />
-    </Popup>
     </Card>
   )
 };

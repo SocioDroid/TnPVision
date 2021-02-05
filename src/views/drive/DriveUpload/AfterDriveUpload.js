@@ -1,15 +1,3 @@
-// import React from 'react'
- import ProfileDetaiils from '../DriveListView/ProfileDetails'
-
-//  export default function AfterDriveUpload(){
-//     return(
-//         <div>
-//             <ProfileDetaiils/>
-//         </div>
-//     )
-//  }
-
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -17,6 +5,8 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ProfileDetaiils from '../DriveListView/ProfileDetails'
+import RoundDetails from '../rounds/RoundDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleAccordion() {
+export default function AfterDriveUpload() {
   const classes = useStyles();
 
   return (
@@ -45,6 +35,7 @@ export default function SimpleAccordion() {
             <ProfileDetaiils/>
         </AccordionDetails>
       </Accordion>
+      
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -54,9 +45,10 @@ export default function SimpleAccordion() {
           <Typography className={classes.heading}>Round Details</Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <ProfileDetaiils/>
+          <RoundDetails/>
         </AccordionDetails>
       </Accordion>
+    
     </div>
   );
 }
