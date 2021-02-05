@@ -66,7 +66,7 @@ const routes = [
       { path: 'drive', element: <DriveView /> },
       { path: 'companies', element: <CompanyView /> },
       { path: 'alldrives', element: <DriveListView /> },
-      { path: 'afterdrive', element: <AfterDriveView /> },
+      { path: 'afterdrive/:id', element: <AfterDriveView /> },
       { path: 'import', element: <ImportStudent /> },
       { path: 'auto', element: <VolunteerSearch /> },
       { path: '*', element: <Navigate to="/404" /> }

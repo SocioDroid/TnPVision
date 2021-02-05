@@ -1,16 +1,38 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import ProfileDetaiils from '../DriveListView/ProfileDetails'
+import React, { useState, useEffect } from 'react';
+import {useLocation, useParams} from 'react-router-dom'
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ProfileDetaiils from '../DriveListView/ProfileDetails'
-import RoundDetails from '../rounds/RoundDetails';
+import RoundService from '../../../services/RoundService';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import StudentListView from '../../student/StudentListView';
+import Page from '../../../components/Page';
+import { Container, } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import DriveDetails from './DriveDetails'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -18,37 +40,183 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AfterDriveUpload() {
-  const classes = useStyles();
+// -------------------------------------------------
+function createData(name, calories, fat, carbs, protein, price) {
+  return {
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+    price,
+    history: [
+      { date: '2020-01-05', customerId: '11091700', amount: 3 },
+      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+    ],
+  };
+}
+const rows = [
+  createData('Frozen yoghurt', 159,),
+  createData('Ice cream sandwich', 237),
+  createData('Eclair', 262),
+  createData('Cupcake', 305),
+  createData('Gingerbread', 356),
+];
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+function InnerTable(props){
+  // const {rows} = props;
+  // const { rounds } = props.rounds
+  // console.log(props, 'Props')
+  console.log(props.rounds, 'Props')
+  return(
+    <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell />
+              <StyledTableCell>Round Number</StyledTableCell>
+              <StyledTableCell>Round Name</StyledTableCell>
+              <StyledTableCell>Round Description</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.rounds.map((row) => (
+              <Row row={row}/>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+  )
+}
+
+const useRowStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+});
+
+function Row(props) {
+  const { row } = props;
+  console.log(row, 'row')
+  const [open, setOpen] = React.useState(false);
+  const [students, setStudents] = useState([]);
+  const classes = useRowStyles();
+  const getAllStudentOfRound = (driveId,roundId) =>{
+    RoundService.getAllStudentOfRound(driveId, roundId)
+    .then(res => {   
+      console.log("All students of rounds : ", res.data)     
+      setStudents(res.data.students);          
+    })
+    .catch( err => {
+        console.log(err);
+    })
+  }
+
+  useEffect(() => {
+    // getAllStudentOfRound(driveId, props.roundId)
+  }, []);
+
+  
 
   return (
-    <div className={classes.root}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Drive Details</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-            <ProfileDetaiils/>
-        </AccordionDetails>
-      </Accordion>
-      
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
-        >
-          <Typography className={classes.heading}>Round Details</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <RoundDetails/>
-        </AccordionDetails>
-      </Accordion>
-    
-    </div>
+    <React.Fragment>
+      <TableRow className={classes.root}>
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+         <TableCell component="th" scope="row">
+          {row.number}
+        </TableCell>
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.description}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+              <Typography variant="h3" gutterBottom component="div">
+                Student Details
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Student ID</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                  </TableRow>
+                </TableHead>
+               <TableBody>
+                  {row.students.map((studentDetails) => (
+                    <TableRow key={studentDetails.id}>
+                      <TableCell>
+                        {studentDetails.id}
+                      </TableCell>
+                       <TableCell>
+                        {studentDetails.email}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {studentDetails.user.first_name}
+                      </TableCell>
+                      <TableCell>{studentDetails.user.last_name}</TableCell>
+                    </TableRow>
+                  ))}
+                  </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell> 
+      </TableRow>
+    </React.Fragment>
+  );
+}
+
+Row.propTypes = {
+  row: PropTypes.shape({
+    calories: PropTypes.number.isRequired,
+    carbs: PropTypes.number.isRequired,
+    fat: PropTypes.number.isRequired,
+    history: PropTypes.arrayOf(
+      PropTypes.shape({
+        amount: PropTypes.number.isRequired,
+        customerId: PropTypes.string.isRequired,
+        date: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    protein: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
+// --------------------------------------------------
+
+
+export default function SimpleAccordion(props) {
+  const classes = useStyles();
+  const { id } = useParams();
+
+  return (
+    <Page className={classes.root}>          
+
+       <Container maxWidth={false}>
+         <DriveDetails drive={id} />
+         </Container>
+        <Container maxWidth={false}>    
+         </Container> 
+    </Page>
   );
 }

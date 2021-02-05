@@ -92,15 +92,19 @@ const handleClick = (event) => {
         <MenuItem
           onClick={() => {
             openPopupWithExtraData(row.id);
+            handleClose();
           }}
         >
           Edit
         </MenuItem>
         <MenuItem>
+      
           <NavLink
             className="navbar-item"
             activeClassName="is-active"
-            to="/employee/afterdrive"
+            to={{
+              pathname: "/employee/afterdrive/"+row.id,
+            }}  
           >
             Details
             </NavLink>
@@ -108,7 +112,8 @@ const handleClick = (event) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            deleteDrive(row.id);
+            deleteDrive(row.id); 
+            handleClose();
           }}
         >
           Delete
