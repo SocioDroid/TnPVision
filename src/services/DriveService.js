@@ -10,11 +10,11 @@ class DriveService {
         return HttpUrl.post('/api/drive/', data)
     }
     getSingleDrive(data){
-        return httpauth.get(`/api/drive/${data.id}`)
+        return httpauth.get(`/api/drive/${data.id}/`)
     }
 
     deleteDrive(data){
-        return http.delete(`/api/drive/${data.id}`)
+        return http.delete(`/api/drive/${data.id}/`)
     }
 }
 

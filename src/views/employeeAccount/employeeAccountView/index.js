@@ -26,22 +26,32 @@ const Account = () => {
     email: "",
     first_name: "",
     last_name: "",
-    gender: "",
     group: 0,
     id: 0,
+    college: "",
+    mobile: "",
+    doj: "",
+    department: "",
+    designation: ""
   })
 
   useEffect((props) => {
     StudentService.getStudentDetail()
       .then(function(res){
         const { data} = res;
+        console.log("data idex", data);
+        
         setUserData({
           email: data.user.email,
           first_name: data.user.first_name,
           last_name: data.user.last_name,
-          gender: data.gender,
           group: data.group,
           id: data.id,
+          college: data.college,
+          mobile: data.mobile,
+          doj: data.doj,
+          department: data.department,
+          designation: data.designation
         });
       }).catch(error =>{
         console.log(error);

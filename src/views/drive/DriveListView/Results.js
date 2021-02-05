@@ -132,12 +132,16 @@ const Results = ({ className, ...rest }) => {
                 <TableCell>
                   Diploma
                 </TableCell>
+                <TableCell>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               
               {
                 posts.map((drive) => (
+
                 <TableRow key={drive.id}>
                   <TableCell>
                     {drive.id} 
@@ -149,7 +153,8 @@ const Results = ({ className, ...rest }) => {
                     {drive.drive_location}
                   </TableCell>
                   <TableCell>
-                    {drive.date}
+                    {/* {drive.date} */}
+                    {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm a")}
                   </TableCell>
                   <TableCell>
                     {drive.min_salary}

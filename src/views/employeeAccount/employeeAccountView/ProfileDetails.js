@@ -17,16 +17,6 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { useForm, Form } from '../../../components/useForm';
-// import { ReactMultiEmailCustom } from 'react-multi-email-custom';
-// import 'react-multi-email-custom/style.css';
-
-
-
-const genderItems = [
-  { id: 'M', title: 'Male' },
-  { id: 'F', title: 'Female' },
-  { id: 'O', title: 'Other' },
-]
 
 const initialFValues = {
   id: 0,
@@ -35,7 +25,11 @@ const initialFValues = {
     first_name: "",
     last_name: ""
   },
-  gender: "M",
+    college: "",
+    mobile: "",
+    doj: "",
+    department: "",
+    designation: "",
   isDeleted: false,
   isProfileComplete: false
 }
@@ -52,9 +46,13 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
     "email" : "",
     "first_name" : "",
     "last_name" : "",
-    "gender" : "M",
     "group" : 0,
     "id" : 0,
+    "college": '',
+    "mobile": '',
+    "doj": '',
+    "department": '',
+    "designation": ''
   });
 
   const validate = (fieldValues = values) => {
@@ -99,16 +97,22 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
           "first_name": values.first_name,
           "last_name": values.last_name
         },
-        "gender": values.gender,
+        "college": values.college,
+        "mobile": values.mobile,
+        "doj": values.doj,
+        "department": values.department,
+        "designation": values.designation
       }
 
-      axios.patch("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/" + values.id, data)
+      axios.patch("http://20.37.50.140:8000/api/employee/" + values.id, data)
         .then(res =>{
           console.log("res", res);
         }).catch(error => {
           console.log(error);
           
         });
+
+        setTimeout(window.location.reload(false), 10000);
     }
   }
 
@@ -119,9 +123,13 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         "email" : userData.email,
         "first_name" : userData.first_name,
         "last_name" : userData.last_name,
-        "gender" : userData.gender,
         "group" : userData.group,
         "id" : userData.id,
+        "college": userData.college,
+        "mobile": userData.mobile,
+        "doj": userData.doj,
+        "department": userData.department,
+        "designation": userData.designation
       })
     }
   },[userData])
@@ -195,21 +203,74 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
               md={6}
               xs={12}
             >
-              {/* <TextField
+              <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
+                label="Date of Birth"
+                name="doj"
                 onChange={handleChange}
-                type="number"
-                value={values.phone}
+                required
+                value={values.doj}
                 variant="outlined"
-              /> */}
-              <Controls.RadioGroup
-                name="gender"
-                label="Gender"
-                value={values.gender}
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="College"
+                name="college"
                 onChange={handleChange}
-                items={genderItems}
+                required
+                value={values.college}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Mobile"
+                name="mobile"
+                onChange={handleChange}
+                required
+                value={values.mobile}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Department"
+                name="department"
+                onChange={handleChange}
+                required
+                value={values.department}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Designation"
+                name="designation"
+                onChange={handleChange}
+                required
+                value={values.designation}
+                variant="outlined"
               />
             </Grid>
             <Grid

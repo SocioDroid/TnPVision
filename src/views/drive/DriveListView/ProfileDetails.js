@@ -201,18 +201,12 @@ export default function ProfileDetails(props) {
         />
         <Divider />
         <CardContent>
+        <Typography variant="h6">Drive ID: {values.id}</Typography><br/><br/>
           <Grid
             container
             spacing={3}
           >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <Typography variant="h6">Drive ID: {values.id}</Typography>
-            </Grid>
-            <Grid
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -225,7 +219,7 @@ export default function ProfileDetails(props) {
                 renderInput={(params) => <TextField {...params} label="Eligible Branches" variant="outlined" />}
                 value={values.eligible_branches}
               />
-            </Grid>
+            </Grid> */}
             <Grid
               item
               md={6}
