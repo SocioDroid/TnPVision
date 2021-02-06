@@ -1,302 +1,365 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Controls from "../../../components/controls/Controls";
-import { FormControl, FormControlLabel, Checkbox as MuiCheckbox , Typography , AppBar} from '@material-ui/core';
+
 import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Divider,
-    Grid,
-    TextField,
-  } from '@material-ui/core';
-  import { useForm, Form } from '../../../components/useForm';
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  TextField,
+} from '@material-ui/core';
+import { useForm } from '../../../components/useForm';
+import axios from 'axios';
 
-  const genderItems = [
-    { id: 'M', title: 'Male' },
-    { id: 'F', title: 'Female' },
-    { id: 'O', title: 'Other' },
-  ]
+const initialFValues = {
+  tenthPercentage: 0.0,
+  tenthBoardOfExamination: "",
+  tenthYearOfPassing: 0,
+  twelthPercentage: 0,
+  twelfthBoardOfExamination: "",
+  twelfthYearOfPassing: 0,
+  isDiploma: false,
+  diplomaPercentage: 0.0,
+  diplomaBoardOfExamination: "",
+  diplomaYearOfPassing: 0,
+  EnggQualifyingExamYear: 0,
+  EnggQualifyingExamScore: 0.0,
+  fatherOccupation: "",
+  motherOccupation: "",
+  parentsEmail: "",
+  parentsMobileNumber: 0,
+  createdAt: "",
+  updatedAt: "",
+  isDeleted: false,
+  isVolunteer: true,
+  isProfileComplete: true,
+}
 
-  const initialFValues = {
-    id: 0,
-    user: {
-      email: "",
-      first_name: "",
-      last_name: ""
-    },
-    gender: "M",
+const PastAcademicData = ({ userData }) => {
+
+  const [values, setValues] = useState({
+    tenthPercentage: 0.0,
+    tenthBoardOfExamination: "",
+    tenthYearOfPassing: 0,
+    twelthPercentage: 0,
+    twelfthBoardOfExamination: "",
+    twelfthYearOfPassing: 0,
+    isDiploma: false,
+    diplomaPercentage: 0.0,
+    diplomaBoardOfExamination: "",
+    diplomaYearOfPassing: 0,
+    EnggQualifyingExamYear: 0,
+    EnggQualifyingExamScore: 0.0,
+    fatherOccupation: "",
+    motherOccupation: "",
+    parentsEmail: "",
+    parentsMobileNumber: 0,
+    createdAt: "",
+    updatedAt: "",
     isDeleted: false,
-    isProfileComplete: false
+    isVolunteer: true,
+    isProfileComplete: true,
+  });
+
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors }
+    if ('email' in fieldValues)
+      temp.email = (/$^|.+@.+..+/).test(fieldValues.parentsEmail) ? "" : "Email is not valid."
+    setErrors({
+      ...temp
+    })
+    if (fieldValues === values)
+      return Object.values(temp).every(x => x === "")
   }
 
-  const PastAcademicData =({userData}) => {
+  const {
+    errors,
+    setErrors,
+  } = useForm(initialFValues, true, validate);
 
-    const [values, setValues] = useState({
-        "tenthpercentage": "60",
-        "tenthboard": "",
-        "tenthyear": "",
-        "twelfthpercenatge": "60",
-        "twelfthboard": "",
-        "twelfthyear": "",
-        "diplomapercentage": "60",
-        "diplomaboard": "",
-        "diplomayear": "",
-        "enggqualifyyear": "",
-        "enggqualifyscore": "",
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
     });
-  
-    const validate = (fieldValues = values) => {
-      let temp = { ...errors }
-      if ('first_name' in fieldValues)
-        temp.first_name = fieldValues.first_name ? "" : "This field is required."
-      if ('last_name' in fieldValues)
-        temp.last_name = fieldValues.last_name ? "" : "This field is required."
-      if ('email' in fieldValues)
-        temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
-      setErrors({
-        ...temp
-      })
-      if (fieldValues === values)
-        return Object.values(temp).every(x => x === "")
+  };
+
+  const handleSubmit = e => {
+    console.log(values);
+    e.preventDefault()
+    console.log("e", e);
+
+    if (validate()) {
+      const pastAcadData = {
+        "tenthPercentage": values.tenthPercentage,
+        "tenthBoardOfExamination": values.tenthBoardOfExamination,
+        "tenthYearOfPassing": values.tenthYearOfPassing,
+        "twelthPercentage": values.twelthPercentage,
+        "twelfthBoardOfExamination": values.twelfthBoardOfExamination,
+        "twelfthYearOfPassing": values.twelfthYearOfPassing,
+        "isDiploma": values.isDiploma,
+        "diplomaPercentage": values.diplomaPercentage,
+        "diplomaBoardOfExamination": values.diplomaBoardOfExamination,
+        "diplomaYearOfPassing": values.diplomaYearOfPassing,
+        "EnggQualifyingExamYear": values.EnggQualifyingExamYear,
+        "EnggQualifyingExamScore": values.EnggQualifyingExamScore,
+        "fatherOccupation": values.fatherOccupation,
+        "motherOccupation": values.motherOccupation,
+        "parentsEmail": values.parentsEmail,
+        "parentsMobileNumber": values.parentsMobileNumber,
+        "isDeleted": values.isDeleted,
+        "isVolunteer": values.isVolunteer,
+        "isProfileComplete": values.isProfileComplete,
+      }
+      axios.patch("http://20.37.50.140:8000/api/student/" + values.id, pastAcadData)
+        .then(res => {
+          console.log("res", res);
+        }).catch(error => {
+          console.log(error);
+        });
+
+      setTimeout(window.location.reload(false), 40000);
     }
-  
-    const {
-      valuess,
-      setValuess,
-      errors,
-      setErrors,
-      handleInputChange,
-      resetForm
-    } = useForm(initialFValues, true, validate);
-  
-    const handleChange = (event) => {
+  }
+
+  useEffect(() => {
+    if (userData != null) {
       setValues({
         ...values,
-        [event.target.name]: event.target.value
-      });
-    };
-  
-    const handleSubmit = e => {
-      console.log(values);
-      e.preventDefault()
-      console.log("e",e);
-      
-      if (validate()) {
-        const data = {
-          "user": {
-            "email": values.email,
-            "first_name": values.first_name,
-            "last_name": values.last_name
-          },
-          "gender": values.gender,
-        }
-        // axios.patch("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/" + values.id, data)
-        //   .then(res =>{
-        //     console.log("res", res);
-        //   }).catch(error => {
-        //     console.log(error);   
-        //   });
-      }
+        "tenthPercentage": userData.tenthPercentage,
+        "tenthBoardOfExamination": userData.tenthBoardOfExamination,
+        "tenthYearOfPassing": userData.tenthYearOfPassing,
+        "twelthPercentage": userData.twelthPercentage,
+        "twelfthBoardOfExamination": userData.twelfthBoardOfExamination,
+        "twelfthYearOfPassing": userData.twelfthYearOfPassing,
+        "isDiploma": userData.isDiploma,
+        "diplomaPercentage": userData.diplomaPercentage,
+        "diplomaBoardOfExamination": userData.diplomaBoardOfExamination,
+        "diplomaYearOfPassing": userData.diplomaYearOfPassing,
+        "EnggQualifyingExamYear": userData.EnggQualifyingExamYear,
+        "EnggQualifyingExamScore": userData.EnggQualifyingExamScore,
+        "fatherOccupation": userData.fatherOccupation,
+        "motherOccupation": userData.motherOccupation,
+        "parentsEmail": userData.parentsEmail,
+        "parentsMobileNumber": userData.parentsMobileNumber,
+        "isDeleted": userData.isDeleted,
+        "isVolunteer": userData.isVolunteer,
+        "isProfileComplete": userData.isProfileComplete,
+      })
     }
-  
-    useEffect(() =>{
-      if(userData !=null){
-        setValues({
-          ...values,
-            "tenthpercentage": userData.tenthpercentage,
-            "tenthboard": userData.tenthboard,
-            "tenthyear": userData.tenthyear,
-            "twelfthpercenatge": userData.twelfthpercenatge,
-            "twelfthboard": userData.twelfthboard,
-            "twelfthyear": userData.twelfthyear,
-            "diplomapercentage": userData.diplomapercentage,
-            "diplomaboard": userData.diplomaboard,
-            "diplomayear": userData.diplomayear,
-            "enggqualifyyear": userData.enggqualifyyear,
-            "enggqualifyscore": userData.enggqualifyscore,
-        })
-      }
-    },[userData])
+  }, [userData])
 
-      return(
-          <div>
-              <form
-                onSubmit={handleSubmit}
-                autoComplete="off"
-                noValidate
-          >
-            <Card>
-              <CardHeader
-                subheader="The information can be edited"
-                title="Student Profile"
-              />
-              <Divider />
-              <CardContent>
-                <br/>
-                <Grid container spacing={3}>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      helperText="Please specify the Tenth Percentage"
-                      label="Tenth Percentage"
-                      name="tenthpercentage"
-                      onChange={handleChange}
-                      required
-                      value={values.tenthpercentage}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify the Tenth Board "
-                      label="Tenth Board of Examination"
-                      name="tenthboard"
-                      onChange={handleChange}
-                      required
-                      value={values.tenthboard}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify year of passing"
-                      label="Tenth year of Passing"
-                      name="tenthyear"
-                      onChange={handleChange}
-                      required
-                      value={values.tenthyear}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      helperText="Please specify the Twelfth Percentage"
-                      label="Twelfth Percentage"
-                      name="twelfthpercentage"
-                      onChange={handleChange}
-                      required
-                      value={values.twelfthpercentage}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify the Twelfth Board"
-                      label="Twelfth Board of Examination"
-                      name="twelfthboard"
-                      onChange={handleChange}
-                      required
-                      value={values.twelfthboard}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify year of passing"
-                      label="Twelfth year of Passing"
-                      name="twelfthyear"
-                      onChange={handleChange}
-                      required
-                      value={values.twelfthyear}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
-                    <TextField
-                      fullWidth
-                      type="number"
-                      helperText="Please specify the Diploma Percentage"
-                      label="Diploma Percentage"
-                      name="diplomapercentage"
-                      onChange={handleChange}
-                      required
-                      value={values.diplomapercentage}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify the Diploma Board"
-                      label="Diploma Board of Examination"
-                      name="diplomaboard"
-                      onChange={handleChange}
-                      required
-                      value={values.diplomaboard}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify year of passing"
-                      label="Diploma year of Passing"
-                      name="diplomapassing"
-                      onChange={handleChange}
-                      required
-                      value={values.diplomapassing}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify Engineering Qualifying Exam Year"
-                      label="Engineering Qualifying Exam Year"
-                      name="enggqualifyingyear"
-                      onChange={handleChange}
-                      required
-                      value={values.enggyear}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      helperText="Please specify Engineering Qualifying Exam Score"
-                      label="Engineering Qualifying Exam Score"
-                      name="enggqualifyingscore"
-                      onChange={handleChange}
-                      required
-                      value={values.enggqualifyingscore}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  </Grid>
-                  <Divider />
-                      <Box
-                        display="flex"
-                        justifyContent="flex-end"
-                        p={2}
-                      >
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          type="submit"
-                        >
-                          Save details
-                        </Button>
-                      </Box>
-                      </CardContent>   
-                  </Card>
-              </form> 
+  return (
+    <div>
+      <form
+        onSubmit={handleSubmit}
+        autoComplete="off"
+        noValidate
+      >
+        <Card>
+          <CardHeader
+            subheader="The information can be edited"
+            title="Student Profile"
+          />
+          <Divider />
+          <CardContent>
+            <br />
+            <Grid container spacing={3}>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Tenth Percentage"
+                  name="tenthPercentage"
+                  onChange={handleChange}
+                  required
+                  value={values.tenthPercentage}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Tenth Board of Examination"
+                  name="tenthBoardOfExamination"
+                  onChange={handleChange}
+                  required
+                  value={values.tenthBoardOfExamination}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Tenth year of Passing"
+                  name="tenthYearOfPassing"
+                  onChange={handleChange}
+                  required
+                  value={values.tenthYearOfPassing}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Twelfth Percentage"
+                  name="twelthPercentage"
+                  onChange={handleChange}
+                  required
+                  value={values.twelthPercentage}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Twelfth Board of Examination"
+                  name="twelfthBoardOfExamination"
+                  onChange={handleChange}
+                  required
+                  value={values.twelfthBoardOfExamination}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Twelfth year of Passing"
+                  name="twelfthYearOfPassing"
+                  onChange={handleChange}
+                  required
+                  value={values.twelfthYearOfPassing}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Diploma Percentage"
+                  name="diplomaPercentage"
+                  onChange={handleChange}
+                  required
+                  value={values.diplomaPercentage}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Diploma Board of Examination"
+                  name="diplomaBoardOfExamination"
+                  onChange={handleChange}
+                  required
+                  value={values.diplomaBoardOfExamination}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Diploma year of Passing"
+                  name="diplomaYearOfPassing"
+                  onChange={handleChange}
+                  required
+                  value={values.diplomaYearOfPassing}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Engineering Qualifying Exam Year"
+                  name="EnggQualifyingExamYear"
+                  onChange={handleChange}
+                  required
+                  value={values.EnggQualifyingExamYear}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Engineering Qualifying Exam Score"
+                  name="EnggQualifyingExamScore"
+                  onChange={handleChange}
+                  required
+                  value={values.EnggQualifyingExamScore}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Father Occupation"
+                  name="fatherOccupation"
+                  onChange={handleChange}
+                  required
+                  value={values.fatherOccupation}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Mother Occupation"
+                  name="motherOccupation"
+                  onChange={handleChange}
+                  required
+                  value={values.motherOccupation}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Parents Email"
+                  name="parentsEmail"
+                  onChange={handleChange}
+                  required
+                  value={values.parentsEmail}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12} >
+                <TextField
+                  fullWidth
+                  label="Parents Mobile Number"
+                  name="parentsMobileNumber"
+                  onChange={handleChange}
+                  required
+                  value={values.parentsMobileNumber}
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
+            <Divider style={{marginTop:10}} />
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              p={2}
+            >
+              <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+              >
+                Save details
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </form>
 
-          </div>
-      )
-  }
+    </div>
+  )
+}
 
-  export default PastAcademicData;
+export default PastAcademicData;

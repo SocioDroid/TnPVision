@@ -10,7 +10,7 @@ class StudentService {
         return httpauth.get(`/api/student/${data.id}`)
     }
 
-    getStudentDetail(){
+    getUserDetail(){
         return httpauth.get('/api/user/')
     }
 

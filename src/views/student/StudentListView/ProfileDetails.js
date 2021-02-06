@@ -108,14 +108,6 @@ export default function ProfileDetails(props) {
           console.log(error);  
         });
      
-      // { !recordForEdit && 
-      //   axios.post("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/student/" + values.id, data)
-      //   .then(res =>{
-      //     console.log("res", res);
-      //   }).catch(error => {
-      //     console.log(error);  
-      //   });
-      // }
     }
   }
 

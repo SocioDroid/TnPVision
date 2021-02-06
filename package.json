@@ -57,7 +57,7 @@
     "react-dropzone": "^11.2.4",
     "react-feather": "^2.0.8",
     "react-helmet": "^6.1.0",
-    "react-material-ui-form-validator": "^2.1.1",
+    "react-material-ui-form-validator": "^21.1",
     "react-multi-email-custom": "^0.3.7",
     "react-multivalue-text-input": "^0.6.2",
     "react-perfect-scrollbar": "^1.5.8",

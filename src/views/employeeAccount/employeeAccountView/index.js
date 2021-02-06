@@ -9,7 +9,7 @@ import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
 import axios from "axios";
 import Auth from '../../../auth'
-import StudentService from '../../../services/studentService';
+import EmployeeService from '../../../services/EmployeeServices';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +36,7 @@ const Account = () => {
   })
 
   useEffect((props) => {
-    StudentService.getStudentDetail()
+    EmployeeService.getEmployeeDetail()
       .then(function(res){
         const { data} = res;
         console.log("data idex", data);
