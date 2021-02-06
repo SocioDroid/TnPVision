@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { useForm } from '../../../components/useForm';
 import axios from 'axios';
+import Auth from '../../../auth';
 
 
 const initialFValues = {
@@ -93,34 +94,44 @@ const AcademicData = ({ userData }) => {
     console.log("e", e);
 
       const acadData = {
-        "collegeName": values.collegeName,
-        "branch": values.branch,
-        "prn": values.prn,
-        "sem1SGPA": values.sem1SGPA,
-        "sem1Percentage": values.sem1Percentage,
-        "sem2SGPA": values.sem2SGPA,
-        "sem2Percentage": values.sem2Percentage,
-        "sem3SGPA": values.sem3SGPA,
-        "sem3Percentage": values.sem3Percentage,
-        "sem4SGPA": values.sem4SGPA,
-        "sem4Percentage": values.sem4Percentage,
-        "sem5SGPA": values.sem5SGPA,
-        "sem5Percentage": values.sem5Percentage,
-        "enggAggCGPA": values.enggAggCGPA,
-        "enggAggPercentage": values.enggAggPercentage,
-        "liveBacklogs": values.liveBacklogs,
-        "deadBacklogs": values.deadBacklogs,
-        "educationalGap": values.educationalGap,
-        "yearDown": values.yearDown,
+        "studentProfile": {
+            "collegeName": values.collegeName,
+            "branch": values.branch,
+            "prn": values.prn,
+            "sem1SGPA": values.sem1SGPA,
+            "sem1Percentage": values.sem1Percentage,
+            "sem2SGPA": values.sem2SGPA,
+            "sem2Percentage": values.sem2Percentage,
+            "sem3SGPA": values.sem3SGPA,
+            "sem3Percentage": values.sem3Percentage,
+            "sem4SGPA": values.sem4SGPA,
+            "sem4Percentage": values.sem4Percentage,
+            "sem5SGPA": values.sem5SGPA,
+            "sem5Percentage": values.sem5Percentage,
+            "enggAggCGPA": values.enggAggCGPA,
+            "enggAggPercentage": values.enggAggPercentage,
+            "liveBacklogs": values.liveBacklogs,
+            "deadBacklogs": values.deadBacklogs,
+            "educationalGap": values.educationalGap,
+            "yearDown": values.yearDown
       }
-      axios.patch("http://20.37.50.140:8000/api/student/" + values.id, acadData)
+    }
+      
+      axios.put("http://20.37.50.140:8000/api/user/", acadData, {
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          //'Cache-Control': 'no-cache',
+          "Authorization": "Token " + Auth.getToken()
+        }
+      })
         .then(res => {
           console.log("res", res);
         }).catch(error => {
           console.log(error);
         });
 
-      setTimeout(window.location.reload(false), 40000);
+      // setTimeout(window.location.reload(false), 40000);
   }
 
   useEffect(() => {

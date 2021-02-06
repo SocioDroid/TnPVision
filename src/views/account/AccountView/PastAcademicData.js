@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { useForm } from '../../../components/useForm';
 import axios from 'axios';
+import Auth from '../../../auth';
 
 const initialFValues = {
   tenthPercentage: 0.0,
@@ -93,6 +94,7 @@ const PastAcademicData = ({ userData }) => {
 
     if (validate()) {
       const pastAcadData = {
+        "studentProfile": {
         "tenthPercentage": values.tenthPercentage,
         "tenthBoardOfExamination": values.tenthBoardOfExamination,
         "tenthYearOfPassing": values.tenthYearOfPassing,
@@ -113,14 +115,22 @@ const PastAcademicData = ({ userData }) => {
         "isVolunteer": values.isVolunteer,
         "isProfileComplete": values.isProfileComplete,
       }
-      axios.patch("http://20.37.50.140:8000/api/student/" + values.id, pastAcadData)
+    }
+      axios.put("http://20.37.50.140:8000/api/user/", pastAcadData, {
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          //'Cache-Control': 'no-cache',
+          "Authorization": "Token " + Auth.getToken()
+        }
+      })
         .then(res => {
           console.log("res", res);
         }).catch(error => {
           console.log(error);
         });
 
-      setTimeout(window.location.reload(false), 40000);
+      // setTimeout(window.location.reload(false), 40000);
     }
   }
 

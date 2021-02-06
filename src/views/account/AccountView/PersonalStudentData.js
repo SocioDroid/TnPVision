@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { useForm, Form } from '../../../components/useForm';
 import axios from 'axios';
+import Auth from '../../../auth';
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -93,6 +94,7 @@ const PersonalData = ({ userData }) => {
 
     if (validate()) {
       const data = {
+        "studentProfile": {
         "user": {
           "email": values.email,
           "first_name": values.first_name,
@@ -108,14 +110,21 @@ const PersonalData = ({ userData }) => {
         "dob": values.dob,
         "homeTown": values.homeTown
       }
-      axios.patch("http://20.37.50.140:8000/api/student/" + values.id, data)
+    }
+      axios.put("http://20.37.50.140:8000/api/user/", data, {
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          //'Cache-Control': 'no-cache',
+          "Authorization": "Token " + Auth.getToken()
+        }
+      })
         .then(res => {
           console.log("res", res);
         }).catch(error => {
           console.log(error);
         });
-
-      setTimeout(window.location.reload(false), 40000);
+      // setTimeout(window.location.reload(false), 40000);
     }
   }
 

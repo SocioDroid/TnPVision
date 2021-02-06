@@ -100,7 +100,6 @@ export default function ProfileDetails(props) {
       }
 
       addOrEdit(values, resetForm);
-      // { recordForEdit &&
       axios.patch("https://tnpvision-cors.herokuapp.com/http://20.37.50.140:8000/api/student/" + values.id, data)
         .then(res =>{
           console.log("res", res);
