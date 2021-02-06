@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import useTable from "../../../components/useTable";
-import Popup from "../../../components/Popup";
+import useTable from '../../../components/useTable';
+import Popup from '../../../components/Popup';
 // import ProfileDetails from "./ProfileDetails"
 import {
   Avatar,
@@ -17,6 +17,8 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Button,
+  IconButton,
   Typography,
   makeStyles
 } from '@material-ui/core';
@@ -25,20 +27,19 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StudentService from '../../../services/studentService';
 import getInitials from '../../../utils/getInitials';
-
-const useStyles = makeStyles((theme) => ({
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+const useStyles = makeStyles(theme => ({
   root: {},
   avatar: {
     marginRight: theme.spacing(2)
   },
-  delete:{
-    backgroundColor: "red",
-    marginLeft: "5px"
+  delete: {
+    backgroundColor: 'red',
+    marginLeft: '5px'
   }
 }));
 
-const Results = (props) => {
-
+const Results = props => {
   const classes = useStyles();
   // const students = props;
   // console.log(students.students, 'students')
@@ -87,92 +88,78 @@ const Results = (props) => {
 
   // const getAllStudents = () => {
   //   StudentService.getAllStudents()
-  //     .then(res => {        
-  //         setPosts(res.data);          
+  //     .then(res => {
+  //         setPosts(res.data);
   //     })
   //     .catch( err => {
   //         console.log(err);
   //     })
   // }
 
-    
-    // useEffect((props) => {
-    //   getAllStudents();
-    // }, [])
+  // useEffect((props) => {
+  //   getAllStudents();
+  // }, [])
 
-    // const deleteStudent = (id) => {
-    //   console.log("Student in func : "+ id);
-    //   StudentService.deleteStudent({id: id})
-    //   .then(res => {
-    //       console.log("in Result  : "+res.data);
-    //       getAllStudents();                
-    //   })
-    //   .catch( err => {
-    //       console.log(err);
-    //   })
+  // const deleteStudent = (id) => {
+  //   console.log("Student in func : "+ id);
+  //   StudentService.deleteStudent({id: id})
+  //   .then(res => {
+  //       console.log("in Result  : "+res.data);
+  //       getAllStudents();
+  //   })
+  //   .catch( err => {
+  //       console.log(err);
+  //   })
 
-    // }
-  
+  // }
 
   return (
     <Card
-      // className={clsx(classes.root, className)}
-      // {...rest}
+    // className={clsx(classes.root, className)}
+    // {...rest}
     >
-      
-        <PerfectScrollbar>
-          <Box minWidth={1050}>
-          
+      <PerfectScrollbar>
+        <Box minWidth={1050}>
           <Table>
             <TableHead>
               <TableRow>
-              <TableCell>
-                  ID
-                </TableCell>
-                <TableCell>
-                  Full Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Action
-                </TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Full Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              
-              {props.students.map((student) => (
-                <TableRow
-                  key={student.id}
-                >
+              {props.students.map(student => (
+                <TableRow key={student.id}>
                   <TableCell>{student.id}</TableCell>
                   <TableCell>
-                       {`${student.user.first_name} ${student.user.last_name}`}
+                    {`${student.user.first_name} ${student.user.last_name}`}
                   </TableCell>
+                  <TableCell>{student.user.email}</TableCell>
                   <TableCell>
-                    {student.user.email}
-                  </TableCell>           
+                    <IconButton>
+                      <NavigateNextIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
-
             </TableBody>
           </Table>
-
         </Box>
-        </PerfectScrollbar>
-{/* 
-      <TablePagination
-        component="div"
-        count={customers.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleLimitChange}
-        page={page}
-        rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
-      /> */}
+      </PerfectScrollbar>
+      {/* 
+          <TablePagination
+            component="div"
+            count={customers.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleLimitChange}
+            page={page}
+            rowsPerPage={limit}
+            rowsPerPageOptions={[5, 10, 25]}
+          /> */}
     </Card>
-  )
+  );
 };
 
 Results.propTypes = {
