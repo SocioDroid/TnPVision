@@ -233,6 +233,7 @@ export default function ProfileDetails(props) {
                 name="company"
                 onChange={handleChange}
                 required
+                InputLabelProps={{ shrink: true }} 
                 value={values.company.name}
                 variant="outlined"
               />
