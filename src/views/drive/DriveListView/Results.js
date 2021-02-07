@@ -68,6 +68,9 @@ const Results = ({ className, ...rest }) => {
                   Job Title
                 </TableCell>
                 <TableCell>
+                  Company
+                </TableCell>
+                <TableCell>
                   Drive Location
                 </TableCell>
                 <TableCell>
@@ -104,6 +107,9 @@ const Results = ({ className, ...rest }) => {
                   </TableCell>
                   <TableCell>
                     {drive.jobtitle}
+                  </TableCell>
+                  <TableCell>
+                    {drive.company.name} 
                   </TableCell>
                   <TableCell>
                     {drive.drive_location}
