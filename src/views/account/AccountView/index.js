@@ -22,28 +22,30 @@ const useStyles = makeStyles((theme) => ({
 
 const Account = () => {
   const classes = useStyles();
-  const [userData, setUserData] = useState({
-    email: "",
-    first_name: "",
-    last_name: "",
-    gender: "",
-    group: 0,
-    id: 0,
-  })
+  const [userData, setUserData] = useState({})
+  // {
+  //   email: "",
+  //   first_name: "",
+  //   last_name: "",
+  //   gender: "",
+  //   group: 0,
+  //   id: 0,
+  // }
 
   useEffect((props) => {
-    StudentService.getStudentDetail()
+    StudentService.getUserDetail()
       .then(function(res){
         const { data} = res;
         console.log("data: ",data);
-        setUserData({
-          email: data.user.email,
-          first_name: data.user.first_name,
-          last_name: data.user.last_name,
-          gender: data.gender,
-          group: data.group,
-          id: data.id,
-        });
+        setUserData(data);
+        // {
+        //   email: data.user.email,
+        //   first_name: data.user.first_name,
+        //   last_name: data.user.last_name,
+        //   gender: data.gender,
+        //   group: data.group,
+        //   id: data.id,
+        // }
       }).catch(error =>{
         console.log(error);
         

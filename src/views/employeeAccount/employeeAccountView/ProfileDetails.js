@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import Controls from "../../../components/controls/Controls";
 import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
 // import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {
@@ -13,10 +11,9 @@ import {
   Divider,
   Grid,
   TextField,
-  makeStyles
 } from '@material-ui/core';
 import axios from 'axios';
-import { useForm, Form } from '../../../components/useForm';
+import { useForm } from '../../../components/useForm';
 
 const initialFValues = {
   id: 0,
@@ -34,12 +31,7 @@ const initialFValues = {
   isProfileComplete: false
 }
 
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
-
 const ProfileDetails = ({ className, userData, ...rest }) => {
-  const classes = useStyles();
   // const [emails,setEmails] = useState([])
   // const myStyle = {};
   const [values, setValues] = useState({
@@ -67,16 +59,12 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
       ...temp
     })
 
-    if (fieldValues == values)
-      return Object.values(temp).every(x => x == "")
+    if (fieldValues === values)
+      return Object.values(temp).every(x => x === "")
   }
   const {
-    valuess,
-    setValuess,
     errors,
     setErrors,
-    handleInputChange,
-    resetForm
   } = useForm(initialFValues, true, validate);
 
   const handleChange = (event) => {

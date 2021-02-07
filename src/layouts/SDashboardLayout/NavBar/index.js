@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -23,6 +23,7 @@ import {
   Users as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
+import StudentService from '../../../services/studentService';
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
@@ -67,13 +68,39 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
-
+  const [userData, setUserData] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    gender: "",
+    group: 0,
+    id: 0,
+  })
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
    // eslint-disable-next-line
   }, [location.pathname]);
+
+  useEffect((props) => {
+    StudentService.getUserDetail()
+      .then(function(res){
+        const { data} = res;
+        console.log("data: ",data);
+        setUserData({
+          email: data.user.email,
+          first_name: data.user.first_name,
+          last_name: data.user.last_name,
+          gender: data.gender,
+          group: data.group,
+          id: data.id,
+        });
+      }).catch(error =>{
+        console.log(error);
+        
+      })
+  }, []);
 
   const content = (
     <Box
@@ -97,14 +124,16 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           className={classes.name}
           color="textPrimary"
           variant="h5"
+          noWrap
         >
-          {user.name}
+          {userData.first_name+" "+userData.last_name}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
+          noWrap
         >
-          {user.jobTitle}
+          {userData.email}
         </Typography>
       </Box>
       <Divider />

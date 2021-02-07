@@ -129,7 +129,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   }, [location.pathname]);
 
   useEffect((props) => {
-    StudentService.getStudentDetail()
+    StudentService.getUserDetail()
       .then(function(res){
         const { data} = res;
         console.log("data: ",data);
