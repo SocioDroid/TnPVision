@@ -6,11 +6,17 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Page from '../../../components/Page';
-import { Container, Divider } from '@material-ui/core';
+import { Container, Divider,Button } from '@material-ui/core';
 import ProfileDetails from '../DriveListView/ProfileDetails';
 import RoundService from '../../../services/RoundService';
 import DriveService from '../../../services/DriveService';
 import RoundDetails from './RoundDetails';
+import AccordionActions from '@material-ui/core/AccordionActions';
+import SaveIcon from '@material-ui/icons/Save';
+import { saveAs } from 'file-saver';
+
+// import Round from './Rounds';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,22 +69,17 @@ export default function DriveDetails(drive) {
     console.log('driveId', driveId);
     RoundService.getAllRounds(driveId)
       .then(res => {
-        setRounds(res.data);
+        setRounds([...res.data]);
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  const getAllStudentOfRound = (driveId, roundId) => {
-    RoundService.getAllStudentOfRound(driveId, roundId)
-      .then(res => {
-        setStudents(res.data.students);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  const exportToExcel= (round)=>{
+    saveAs('http://20.37.50.140:8000/api/drive/' + drive.drive + '/round/' + round.number + '/export/',  'Round_'+round.name+'.xlsx');    
   };
+ 
 
   useEffect(() => {
     console.log(drive, 'props');
@@ -95,6 +96,13 @@ export default function DriveDetails(drive) {
 
     getAllRounds(drive.drive);
   }, []);
+
+  const [roundNumber, setRoundNumber] = useState(0);
+  const changeUpdated = (roundNumber) =>{
+    console.log('changeUpdated before', roundNumber);
+    setRoundNumber(roundNumber);
+    console.log('changeUpdated after', roundNumber);
+  }
 
   return (
     <div>
@@ -132,8 +140,9 @@ export default function DriveDetails(drive) {
         </Typography>
         <Divider style={{ margin: 10 }} />
         {rounds.map(round => (
-          <div className={classes.root}>
+          <div className={classes.root} key={round.number}>
             <Accordion
+              style={{ margin: '10px auto' }}
               expanded={expanded === round.number}
               onChange={handleChange(round.number)}
             >
@@ -149,8 +158,19 @@ export default function DriveDetails(drive) {
                 {/* <Typography noWrap className={classes.roundDescription}></Typography> */}
               </AccordionSummary>
               <AccordionDetails className={classes.innerAccordian}>
-                <RoundDetails students={round.students} />
+                <RoundDetails  round={round} driveId={drive.drive} roundNumber={roundNumber} changeUpdated={changeUpdated}/>
               </AccordionDetails>
+              <Divider />
+              <AccordionActions>
+                <Button
+                  color="primary"
+                  className={classes.button}
+                  startIcon={<SaveIcon />}
+                  onClick={() => exportToExcel(round)}
+                >
+                  Export to excel
+                </Button>
+              </AccordionActions>
             </Accordion>
           </div>
         ))}

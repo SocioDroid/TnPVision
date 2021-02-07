@@ -6,19 +6,14 @@ class RoundsService {
     getAllRounds(driveId) {
         return http.get('/api/drive/' + driveId + '/round/')
     }
+    
     getAllStudentOfRound(driveId, roundId){
         return http.get('/api/drive/' + driveId + '/round/' + roundId)
     }    
-    // addSingleDrive(data){
-    //     return HttpUrl.post('/api/drive/', data)
-    // }
-    // getSingleDrive(data){
-    //     return httpauth.get(`/api/drive/${data.id}/`)
-    // }
 
-    // deleteDrive(data){
-    //     return http.delete(`/api/drive/${data.id}/`)
-    // }
+    addStudentToNextRound(driveId, roundId, data){
+        return http.patch('/api/drive/' + driveId + '/round/' + roundId + '/', data)
+    }
 }
 
 export default new RoundsService();

@@ -204,12 +204,9 @@ export default function SimpleAccordion(props) {
 
   return (
     <Page className={classes.root}>          
-
        <Container maxWidth={false}>
          <DriveDetails drive={id} />
          </Container>
-        <Container maxWidth={false}>    
-         </Container> 
     </Page>
   );
 }

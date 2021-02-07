@@ -28,6 +28,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import StudentService from '../../../services/studentService';
 import getInitials from '../../../utils/getInitials';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import RoundService from '../../../services/RoundService';
 const useStyles = makeStyles(theme => ({
   root: {},
   avatar: {
@@ -41,77 +42,49 @@ const useStyles = makeStyles(theme => ({
 
 const Results = props => {
   const classes = useStyles();
-  // const students = props;
-  // console.log(students.students, 'students')
-  // console.log(props.students, 'propsstudents')
-  // console.log(props, 'props')
 
-  // const handleSelectAll = (event) => {
-  //   let newSelectedCustomerIds;
+  const [round, setRound] = useState({})
+  const [students, setStudents] = useState([])
+  const [flag, setFlag] = useState(Boolean(true));
+  const changeUpdated = props.changeUpdated;
+  const roundNumber = props.roundNumber
+  const driveId = props.driveId;
 
-  //   if (event.target.checked) {
-  //     newSelectedCustomerIds = customers.map((customer) => customer.id);
-  //   } else {
-  //     newSelectedCustomerIds = [];
-  //   }
+  const getAllStudentOfRound = (driveId, roundId) => {
+    RoundService.getAllStudentOfRound(driveId, roundId)
+      .then(res => {
+        setRound(res.data)
+        setStudents([...res.data.students]);
+        changeUpdated(0)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  if(roundNumber == round.number){
+    getAllStudentOfRound(driveId, props.round.number)
+  }
 
-  //   setSelectedCustomerIds(newSelectedCustomerIds);
-  // };
+  useEffect(() => {
+    if (flag) {
+      setFlag(!flag);
+      getAllStudentOfRound(driveId, props.round.number)
+    }
+  }, [students]);
 
-  // const handleSelectOne = (event, id) => {
-  //   const selectedIndex = selectedCustomerIds.indexOf(id);
-  //   let newSelectedCustomerIds = [];
 
-  //   if (selectedIndex === -1) {
-  //     newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds, id);
-  //   } else if (selectedIndex === 0) {
-  //     newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(1));
-  //   } else if (selectedIndex === selectedCustomerIds.length - 1) {
-  //     newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelectedCustomerIds = newSelectedCustomerIds.concat(
-  //       selectedCustomerIds.slice(0, selectedIndex),
-  //       selectedCustomerIds.slice(selectedIndex + 1)
-  //     );
-  //   }
 
-  //   setSelectedCustomerIds(newSelectedCustomerIds);
-  // };
+  const putStudentToNextRound = (roundId, studentId) => {
+    console.log(roundId, driveId, studentId, 'From put student');
+    RoundService.addStudentToNextRound(driveId, roundId + 1, { student_id: studentId })
+      .then(res => {
+        console.log("Done")
+        changeUpdated(round.number + 1)
+      })
+      .catch(res => {
 
-  // const handleLimitChange = (event) => {
-  //   setLimit(event.target.value);
-  // };
-
-  // const handlePageChange = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const getAllStudents = () => {
-  //   StudentService.getAllStudents()
-  //     .then(res => {
-  //         setPosts(res.data);
-  //     })
-  //     .catch( err => {
-  //         console.log(err);
-  //     })
-  // }
-
-  // useEffect((props) => {
-  //   getAllStudents();
-  // }, [])
-
-  // const deleteStudent = (id) => {
-  //   console.log("Student in func : "+ id);
-  //   StudentService.deleteStudent({id: id})
-  //   .then(res => {
-  //       console.log("in Result  : "+res.data);
-  //       getAllStudents();
-  //   })
-  //   .catch( err => {
-  //       console.log(err);
-  //   })
-
-  // }
+      });
+  }
 
   return (
     <Card
@@ -130,7 +103,7 @@ const Results = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.students.map(student => (
+              {students.map(student => (
                 <TableRow key={student.id}>
                   <TableCell>{student.id}</TableCell>
                   <TableCell>
@@ -138,7 +111,7 @@ const Results = props => {
                   </TableCell>
                   <TableCell>{student.user.email}</TableCell>
                   <TableCell>
-                    <IconButton>
+                    <IconButton onClick={() => { putStudentToNextRound(round.number, student.id) }}>
                       <NavigateNextIcon />
                     </IconButton>
                   </TableCell>
@@ -164,7 +137,6 @@ const Results = props => {
 
 Results.propTypes = {
   className: PropTypes.string,
-  customers: PropTypes.array.isRequired
 };
 
 export default Results;
