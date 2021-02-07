@@ -270,8 +270,7 @@ export default function Basic(props) {
                                     rounds: [{
                                         name: "",
                                         number: 1,
-                                        description: "",
-                                        students: []
+                                        description: ""
                                     }],
                                     assigned_coordinators: [3],
                                     assigned_volunteers: [4],
@@ -344,6 +343,9 @@ export default function Basic(props) {
                                                                     autoComplete: 'new-password',
                                                                 }}
                                                             />}
+                                                            renderOption={option => {
+                                                                return <div>{option.name}</div>;
+                                                              }}
                                                     />
                                                 </Box>
                                             </Grid>
@@ -644,7 +646,7 @@ export default function Basic(props) {
                                                         <Grid container item spacing={3}>
                                                             <Grid item>
                                                                 <br/>
-                                                                <Button variant="contained" style={{color: "black"}} onClick={() => push({ name: '', number: values.rounds.length + 1, description: '', students: [] })}>Add Round</Button>
+                                                                <Button variant="contained" style={{color: "black"}} onClick={() => push({ name: '', number: values.rounds.length + 1, description: '' })}>Add Round</Button>
                                                             </Grid>
                                                         </Grid>
                                                     </React.Fragment>
