@@ -137,8 +137,7 @@ const Results = ({ className, ...rest }) => {
                   <DriveMenuButton goToEdit={goToEdit} row={drive} />
                   </TableCell>
                 </TableRow>
-              )
-              
+              )              
                 )}
 
             </TableBody>
