@@ -48,8 +48,6 @@ const Results = ({ className, customers, ...rest }) => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
-
-
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
@@ -104,13 +102,11 @@ const Results = ({ className, customers, ...rest }) => {
     
     useEffect((props) => {
       getAllStudents();
-    }, [])
+    }, [recordForEdit])
 
     const deleteStudent = (id) => {
-      console.log("Student in func : "+ id);
       StudentService.deleteStudent({id: id})
       .then(res => {
-          console.log("in Result  : "+res.data);
           getAllStudents();                
       })
       .catch( err => {
@@ -119,10 +115,8 @@ const Results = ({ className, customers, ...rest }) => {
 
     }
     function openPopupWithExtraData(id){
-      console.log("Student in func : "+ id);
       StudentService.getSingleStudent({id: id})
       .then(res => {
-          console.log("in Result  : "+res.data);                
           openInPopup(res.data);
       })
       .catch( err => {
@@ -140,7 +134,6 @@ const Results = ({ className, customers, ...rest }) => {
       resetForm()
       setRecordForEdit(null)
       setOpenPopup(false)
-      console.log("From add or edit")
       getAllStudents();
   }
     const openInPopup = item => {

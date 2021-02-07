@@ -145,6 +145,7 @@ export default function ProfileDetails(props) {
               md={6}
               xs={12}
             >
+       
               <TextField
                 fullWidth
                 helperText="Please specify the first name"

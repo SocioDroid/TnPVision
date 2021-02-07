@@ -68,6 +68,9 @@ const Results = ({ className, ...rest }) => {
                   Job Title
                 </TableCell>
                 <TableCell>
+                  Company
+                </TableCell>
+                <TableCell>
                   Drive Location
                 </TableCell>
                 <TableCell>
@@ -106,6 +109,9 @@ const Results = ({ className, ...rest }) => {
                     {drive.jobtitle}
                   </TableCell>
                   <TableCell>
+                    {drive.company.name} 
+                  </TableCell>
+                  <TableCell>
                     {drive.drive_location}
                   </TableCell>
                   <TableCell>
@@ -131,8 +137,7 @@ const Results = ({ className, ...rest }) => {
                   <DriveMenuButton goToEdit={goToEdit} row={drive} />
                   </TableCell>
                 </TableRow>
-              )
-              
+              )              
                 )}
 
             </TableBody>

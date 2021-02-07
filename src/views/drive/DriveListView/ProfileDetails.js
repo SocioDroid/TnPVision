@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Field } from 'formik'
 import { useForm } from '../../../components/useForm';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import { Typography, MenuItem, Avatar } from '@material-ui/core';
 import { AllBranches } from '../data';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import StudentService from '../../../services/studentService';
-import EmployeeService from '../../../services/EmployeeServices';
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
 import {
   Box,
   Button,
@@ -19,33 +22,49 @@ import {
   TextField
 } from '@material-ui/core';
 
-
-const initialFValues = {
-  id: 0,
-  eligible_branches: [{branch:""}],
-  company: [{id:"",name:"",website:"", industry:""}],
-  isDeleted: false,
-  jobtitle: "",
-  date: "",
-  login_time: 30,
-  drive_location: "",
-  min_salary:"",
-  max_salary:"",
-  tenth:60.0,
-  twelth:60.0,
-  diploma:60.0,
-  live_backlog:0,
-  dead_backlog:0,
-  drive_type:"",
-  rounds:[{name:"",number:"", description:"",students:[]}],
-  assigned_coordinators:[{id:"",first_name:"",last_name:""}],
-  assigned_volunteers:[{id:"",user: [{first_name:"",last_name:""}]}]
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    const context = this;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      timeout = null;
+      func.apply(context, args);
+    }, wait);
+  };
 }
 
+const driveType = [
+  {
+      value: 'ON',
+      label: 'ON Campus',
+  },
+  {
+      value: 'OFF',
+      label: 'OFF Campus',
+  },
+  {
+      value: 'POOL',
+      label: 'Pool Campus',
+  },
+];
 
-export default function ProfileDetails(props) {
-  
-  const [values, setValues] = useState({
+const employee_type = [
+  {
+      value: 'Full Time',
+      label: 'Full Time',
+  },
+  {
+      value: 'Internship',
+      label: 'Internship',
+  },
+];
+
+
+
+//const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+ const initialFValues = {
     id: 0,
     eligible_branches: [{branch:""}],
     company: [{id:"",name:"",website:"", industry:""}],
@@ -62,15 +81,146 @@ export default function ProfileDetails(props) {
     live_backlog:0,
     dead_backlog:0,
     drive_type:"",
-    rounds:[{name:"",number:"", description:"",students:[]}],
-    assigned_coordinators:[{id:"",first_name:"",last_name:""}],
-    assigned_volunteers:[{id:"",user: [{first_name:"",last_name:""}]}],
-  });
+    rounds:[{name:"",number:"", description:""}],
+ }
+
+const initialDValues = {
+  date: ""
+}
+export default function ProfileDetails(props) {
 
   const { addOrEdit, recordForEdit } = props
 
+  //--------------------------------------------------------------Company------------------------------------------------------------------------------------
+  const [inputValue, setInputValue] = useState("");
+  const [inputSearch, setInputSearch] = useState("");
+  const [options, setOptions] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const loading = open && options.length === 0;
+  const [company3, setCompany3] = useState({});
+
+  const debounceOnChange = React.useCallback(
+    debounce(value => {
+      setInputSearch(value);
+    }, 400),
+    []
+  );
+  
+  function handleCompanyChange(comp) {
+    setInputValue(comp);
+    debounceOnChange(comp);
+  }
+  var AllComapnies = ''
+  function handleResult() {
+      AllComapnies = company3.id;
+  }
+  useEffect(() => {
+    let active = true;
+
+    (async () => {
+      const response = await axios.get(
+        "http://20.37.50.140:8000/api/company/search/?q="+inputValue
+      );
+
+      if (active) {
+        console.log(response.data);
+        setOptions(response.data);
+      }
+    })();
+  }, [inputSearch]);
+
+  // const opt = {
+  //   id:1,
+  //   website:"www.test.com",
+  //   industry:"test",
+  //   name:"TestCompany"
+  // }
+  // const [companyarray, setCompanyarray] = React.useState(opt);
+  const [companyvalue, setCompanyvalue] = useState({id:'0',website:'www.test2.com',industry:'test2',name:'TestCompany2'});
+  
+  //---------------------------------------------------Eligible Branches-----------------------------------------------------------------------------------------------
+
+  const [eligibleBranches, setEligiblebranches] = useState([{}]);
+  const fixedOptions = [];
+  const [branchvalue, setBranchvalue] = useState([]);
+
+  const [roundDetails, setRoundDetails] = useState([
+     { number: "", name: "", description: "" }
+   ]);
+
+  const handleRoundChange = (event, roundNumber) => {
+    const {name, value} = event.target
+    
+    let newArr = [...roundDetails]; // copying the old datas array
+    let item = newArr[roundNumber];
+    item = { ...item, [event.target.name]: event.target.value };
+    newArr[roundNumber] = item;
+    setRoundDetails(newArr);
+  }
+  //------------------------------------------------------Date----------------------------------------------------------------------------------------------------------
+  const [datevalues, setDatevalues] = useState({
+    date: ""
+  })
+
+  const handDateChange = (event) => {
+    console.log("date event", new Date(event).toISOString())
+    setDatevalues({date: event})
+  }
+
+  // //------------------------------------------------------Values-------------------------------------------------------------------------------------------------------------
+  
+  const [values, setValues] = useState({
+    id: 0,
+    eligible_branches: [{branch:""}],
+    company: [{id:"",name:"",website:"", industry:""}],
+    isDeleted: false,
+    jobtitle: '',
+    //date: new Date(),
+    login_time: 0,
+    drive_location: '',
+    min_salary: 0,
+    max_salary: 0,
+    tenth: 60.0,
+    twelth: 60.0,
+    diploma: 60.0,
+    engineering: 60.0,
+    live_backlog: 0,
+    dead_backlog: 0,
+    educational_gap: 0,
+    year_down: 0,
+    drive_type: 'ON',
+    employment_type: 'Internship',
+    rounds:[{name:"", number: 1, description:"",students:[]}],
+  });
+
+  const [rname, setRname] = useState({
+    name: ''
+  })
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
+    if ('login_time' in fieldValues)
+      temp.login_time = (/^[0-9\b]+$/).test(fieldValues.login_time) ? "" : "Login Time is not valid."
+    if ('min_salary' in fieldValues)
+      temp.min_salary = (/^[0-9\b]+$/).test(fieldValues.min_salary) ? "" : "Login Time is not valid."
+    if ('max_salary' in fieldValues)
+      temp.max_salary = (/^[0-9\b]+$/).test(fieldValues.max_salary) ? "" : "Login Time is not valid."
+    if ('tenth' in fieldValues)
+      temp.tenth = (/^[0-9\b]+$/).test(fieldValues.tenth) ? "" : "Login Time is not valid."
+    if ('twelth' in fieldValues)
+      temp.twelth = (/^[0-9\b]+$/).test(fieldValues.twelth) ? "" : "Login Time is not valid."
+    if ('diploma' in fieldValues)
+      temp.diploma = (/^[0-9\b]+$/).test(fieldValues.diploma) ? "" : "Login Time is not valid."
+    if ('engineering' in fieldValues)
+      temp.engineering = (/^[0-9\b]+$/).test(fieldValues.engineering) ? "" : "Login Time is not valid."
+    if ('educational_gap' in fieldValues)
+      temp.educational_gap = (/^[0-9\b]+$/).test(fieldValues.educational_gap) ? "" : "Login Time is not valid."
+    if ('year_down' in fieldValues)
+      temp.year_down = (/^[0-9\b]+$/).test(fieldValues.year_down) ? "" : "Login Time is not valid."
+    if ('live_backlog' in fieldValues)
+      temp.login_time = (/^[0-9\b]+$/).test(fieldValues.login_time) ? "" : "Login Time is not valid."
+    if ('dead_backlog' in fieldValues)
+      temp.login_time = (/^[0-9\b]+$/).test(fieldValues.login_time) ? "" : "Login Time is not valid."
+
     setErrors({
       ...temp
     })
@@ -82,23 +232,28 @@ export default function ProfileDetails(props) {
     errors,
     setErrors,
     resetForm
-  } = useForm(initialFValues, true, validate);
+  } = useForm(initialFValues, true, validate, initialDValues);
 
   const handleChange = (event) => {
+   
+    console.log("event value: ",event.target.value)
     setValues({
       ...values,
       [event.target.name]: event.target.value
     });
+  
   };
 
+  //--------------------------------------------------------general----------------------------------------------------------------------------------------------------------
   const handleSubmit = e => {
     e.preventDefault()
+    //console.log(company3)
+    //console.log("branch:", eligibleBranches)
+    //values.date = new Date(selectedDate).toISOString();
     if (validate()) {
       const data = {
-        //"id": values.id,
-        "eligible_branches": values.eligible_branches,
+        "id": values.id,  
         "jobtitle": values.jobtitle,
-        "date": values.date, 
         "login_time": values.login_time,
         "drive_location": values.drive_location,
         "min_salary": values.min_salary,
@@ -111,60 +266,56 @@ export default function ProfileDetails(props) {
         "year_down": values.year_down,
         "live_backlog": values.live_backlog,
         "dead_backlog": values.dead_backlog,
+        "eligible_branches": branchvalue,
         "drive_type": values.drive_type,
         "employment_type": values.employment_type,
-        "company": values.company,
-        "rounds": values.rounds,
-        "assigned_coordinators": values.assigned_coordinators,
-        "assigned_volunteers": values.assigned_volunteers,
+        "company": company3.id ? company3.id : values.company.id,
+        "date": new Date(datevalues.date).toISOString(),
+        "rounds": roundDetails
       }
 
       addOrEdit(values, resetForm);
-      axios.patch("https://tnpvision-cors.herokuapp.com/http://20.37.50.140:8000/api/drive/" + values.id+"/", data)
+      axios.patch("http://20.37.50.140:8000/api/drive/" + values.id+"/", data)
         .then(res =>{
           console.log("res", res);
+          alert("Drive Updated Sucessfully");
+          setTimeout(window.location.reload(false), 5000);
         }).catch(error => {
           console.log(error);
-          
+          alert("Operation Failed");
+          setTimeout(window.location.reload(false), 5000);
         });
+
+        console.log("updated values",data)
     }
   }
-  const[ volposts, setVolposts] = useState([]);
-  const getAllVolunteers = () => {
-      StudentService.getAllStudents()
-        .then(res => {        
-          setVolposts(res.data);          
-        })
-        .catch( err => {
-            console.log(err);
-        })
-  }
-
-  const[ corposts, setCorosts] = useState([]);
-  const getAllCoordinators = () => {
-      EmployeeService.getAllEmployee()
-        .then(res => {        
-          setCorosts(res.data);          
-        })
-        .catch( err => {
-            console.log(err);
-        })
-  }
-  
   useEffect(() => {
-    getAllVolunteers();
-    getAllCoordinators();
+
     if (recordForEdit != null) {
+      
+      console.log("record to be edited", recordForEdit.rounds);
+      
+      setDatevalues({
+        ...datevalues,
+        "date": recordForEdit.date,
+      })
+      
+      setEligiblebranches({
+        ...eligibleBranches,
+        "branch": recordForEdit.eligible_branches
+      })
+      setRoundDetails([
+        // ...roundschange,
+      ...recordForEdit.rounds
+      ])
+
+      setBranchvalue(recordForEdit.eligible_branches)
+      setCompanyvalue(recordForEdit.company)
+      
       setValues({
         ...values,
-        // 'id': recordForEdit.id,
-        // 'jobtitle':recordForEdit.jobtitle,
-        // 'drive_location':recordForEdit.drive_location,
-
         "id": recordForEdit.id,
-        "eligible_branches": recordForEdit.eligible_branches,
         "jobtitle": recordForEdit.jobtitle,
-        "date": recordForEdit.date,
         "login_time": recordForEdit.login_time,
         "drive_location": recordForEdit.drive_location,
         "min_salary": recordForEdit.min_salary,
@@ -177,17 +328,20 @@ export default function ProfileDetails(props) {
         "year_down": recordForEdit.year_down,
         "live_backlog": recordForEdit.live_backlog,
         "dead_backlog": recordForEdit.dead_backlog,
-        "drive_type": recordForEdit.drive_type,
-        "employment_type": recordForEdit.employment_type,
         "company": recordForEdit.company,
+        "eligible_branches": recordForEdit.eligible_branches,
+        "date": recordForEdit.date,
+        "drive_type": recordForEdit.drive_type,
+        "employment_type": recordForEdit.employment_type, 
         "rounds": recordForEdit.rounds,
         "assigned_coordinators": recordForEdit.assigned_coordinators,
         "assigned_volunteers": recordForEdit.assigned_volunteers,
       });
-      // console.log("IN Detaisl : ", values);
-      // console.log("IN Detaisl : ", recordForEdit);
     }
   }, [recordForEdit])
+  
+
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   return (
     <form
@@ -203,24 +357,14 @@ export default function ProfileDetails(props) {
         <Divider />
         <CardContent>
         <Typography variant="h6">Drive ID: {values.id}</Typography><br/><br/>
+
           <Grid
             container
             spacing={3}
-          >
-            {/* <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <Autocomplete
-                multiple
-                options={AllBranches}
-                getOptionLabel={(option) => option.branch}
-                fullWidth
-                renderInput={(params) => <TextField {...params} label="Eligible Branches" variant="outlined" />}
-                value={values.eligible_branches}
-              />
-            </Grid> */}
+          >     
+
+{/*=====================================================Everything works fine below this========================================================= */}
+            
             <Grid
               item
               md={6}
@@ -228,23 +372,6 @@ export default function ProfileDetails(props) {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the Company"
-                label="Company"
-                name="company"
-                onChange={handleChange}
-                required
-                value={values.company.name}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Job Title"
                 label="Job Title"
                 name="jobtitle"
                 onChange={handleChange}
@@ -252,23 +379,54 @@ export default function ProfileDetails(props) {
                 value={values.jobtitle}
                 variant="outlined"
               />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
+            </Grid>      
+
+            <Grid 
+             item
+             md={6}
+             xs={12}
+             >
+              <Autocomplete
+                options={options}
+                value={companyvalue}
+                getOptionLabel={option => option.name}
+                open={open}
+                onOpen={() => {
+                  setOpen(true);
+                }}
+                onClose={() => {
+                  setOpen(false);
+                  handleCompanyChange('');
+                }}
+                loading={loading}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                }}
+                onChange={(event, newValue) => {console.log("selected value", newValue);
+                                                setCompanyvalue(newValue);
+                                                setCompany3(newValue);                                      
+                                              }}
                 fullWidth
-                helperText="Please specify the Drive Date"
-                label="Date"
-                name="date"
-                onChange={handleChange}
-                required
-                value={moment (new Date(values.date)).format("DD/MM/YYYY hh:mm a")}
-                variant="outlined"
+                renderInput={(params) => 
+                  <TextField
+                    {...params} 
+                    label="Search Company"
+                    variant="outlined"
+                    onChange={event => handleCompanyChange(event.target.value)}
+                    fullWidth
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password',
+                    }}
+                  />
+                }
+                renderOption={option => {
+                  return <div>{option.name}</div>;
+                }}
               />
-            </Grid>
+             </Grid>
+            
             <Grid
               item
               md={6}
@@ -276,157 +434,14 @@ export default function ProfileDetails(props) {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the Login Time"
+                error={errors.login_time}
                 label="Login Time"
                 name="login_time"
                 onChange={handleChange}
                 required
                 value={values.login_time}
                 variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Drive Location"
-                label="Drive Loocation"
-                name="drive_location"
-                onChange={handleChange}
-                required
-                value={values.drive_location}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Minimum Salary"
-                label="Minimum Salary"
-                name="min_salary"
-                onChange={handleChange}
-                required
-                value={values.min_salary}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Maximum Salary"
-                label="Minimum Salary"
-                name="max_salary"
-                onChange={handleChange}
-                required
-                value={values.max_salary}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Tenth Percentage Criteria"
-                label="Tenth Percentage Criteria"
-                name="tenth"
-                onChange={handleChange}
-                required
-                value={values.tenth}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Twelth Percentage Criteria"
-                label="Twelth Percentage Criteria"
-                name="twelth"
-                onChange={handleChange}
-                required
-                value={values.twelth}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Diploma Percentage Criteria"
-                label="Diploma Percentage Criteria"
-                name="diploma"
-                onChange={handleChange}
-                required
-                value={values.diploma}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Live Backlog Criteria"
-                label="Live Backlog Criteria"
-                name="live_backlog"
-                onChange={handleChange}
-                required
-                value={values.live_backlog}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Dead Backlog Criteria"
-                label="Dead Backlog Criteria"
-                name="dead_backlog"
-                onChange={handleChange}
-                required
-                value={values.dead_backlog}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Drive Type"
-                label="Drive Type"
-                name="drive_type"
-                onChange={handleChange}
-                required
-                value={values.drive_type}
-                variant="outlined"
+                type="number"
               />
             </Grid>
             <Grid
@@ -443,8 +458,295 @@ export default function ProfileDetails(props) {
                 value={values.drive_location}
                 variant="outlined"
               />
+            </Grid><Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Drive Type"
+                name="drive_type"
+                onChange={handleChange}
+                required
+                value={values.drive_type}
+                variant="outlined"
+                select
+              >
+              {driveType.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                </MenuItem>
+              ))}
+              </TextField>
+            </Grid>        
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Employment Type"
+                name="employment_type"
+                onChange={handleChange}
+                required
+                value={values.employment_type}
+                variant="outlined"
+                select
+              >
+              {employee_type.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                </MenuItem>
+              ))}
+              </TextField>
             </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.min_salary}
+                label="Minimum Salary"
+                name="min_salary"
+                onChange={handleChange}
+                required
+                value={values.min_salary}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.max_salary}
+                label="Maximum Salary"
+                name="max_salary"
+                onChange={handleChange}
+                required
+                value={values.max_salary}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.tenth}
+                label="Tenth Percentage Criteria"
+                name="tenth"
+                onChange={handleChange}
+                required
+                value={values.tenth}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.twelth}
+                label="Twelth Percentage Criteria"
+                name="twelth"
+                onChange={handleChange}
+                required
+                value={values.twelth}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.diploma}
+                label="Diploma Percentage Criteria"
+                name="diploma"
+                onChange={handleChange}
+                required
+                value={values.diploma}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.engineering}
+                label="Engineering Percentage Criteria"
+                name="engineering"
+                onChange={handleChange}
+                required
+                value={values.engineering}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.educational_gap}
+                label="Educational Gap Criteria"
+                name="educational_gap"
+                onChange={handleChange}
+                required
+                value={values.educational_gap}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                error={errors.year_down}
+                fullWidth
+                label="Year Down Criteria"
+                name="year_down"
+                onChange={handleChange}
+                required
+                value={values.year_down}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.live_backlog}
+                label="Live Backlog Criteria"
+                name="live_backlog"
+                onChange={handleChange}
+                required
+                value={values.live_backlog}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                error={errors.dead_backlog}
+                label="Dead Backlog Criteria"
+                name="dead_backlog"
+                onChange={handleChange}
+                required
+                value={values.dead_backlog}
+                variant="outlined"
+                type="number"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <Autocomplete
+                multiple
+                options={AllBranches}
+                getOptionLabel={(option) => option.branch}
+                fullWidth
+                renderInput={(params) => <TextField {...params} label="Eligible Branches" variant="outlined" />}
+                value={branchvalue}
+                onChange={(event, newValue) => {
+                  setBranchvalue([
+                    //...fixedOptions,
+                    ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
+                  ]); 
+                }}
+              />
+            </Grid>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid 
+                item
+                md={6}
+                xs={12}
+              >
+                <KeyboardDateTimePicker
+                  fullWidth
+                  label="Date of Drive"
+                  inputVariant="outlined"
+                  format="yyyy/MM/dd HH:mm"
+                  value={datevalues.date}
+                  onChange={handDateChange} 
+                />
+              </Grid>
+              </MuiPickersUtilsProvider>
           </Grid>
+          <Grid
+              item
+              md={12}
+              xs={12}
+            >
+              {roundDetails.map((_, index) => (                                                
+                    <div key={index} style={{ padding: 20 }}>
+                        <Grid container item spacing={5}>
+                            <Grid item>
+                                {/* <Typography>{index + 1}</Typography> */}
+                                <Avatar>{index + 1}</Avatar>
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    name="name"
+                                    value={roundDetails[index].name}
+                                    InputLabelProps={{ shrink: true }}  
+                                    label="Round Name"
+                        
+                                    onChange={(event) =>{handleRoundChange(event,index)}}
+                                   
+                                    variant="outlined"
+                                />
+                            </Grid>                                    
+                            <Grid item>
+                                <TextField
+                                    name="description"
+                                    value={roundDetails[index].description}    
+                                    InputLabelProps={{ shrink: true }}                                  
+                                    label="Round Description"
+                                    onChange={(event) =>{handleRoundChange(event,index)}}                                    
+                                    variant="outlined"
+                                />
+                            </Grid>                                                                                                                             
+                        </Grid>                                                
+                    </div>
+                ))}
+            </Grid>
         </CardContent>
         <Divider />
         <Box
