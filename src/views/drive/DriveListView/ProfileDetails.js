@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useForm } from '../../../components/useForm';
 import PropTypes from 'prop-types';
-import { Typography, MenuItem } from '@material-ui/core';
-import { AllBranches, top100Films } from '../data';
+import { Typography, MenuItem, Avatar } from '@material-ui/core';
+import { AllBranches } from '../data';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import StudentService from '../../../services/studentService';
-import EmployeeService from '../../../services/EmployeeServices';
-import { MuiPickersUtilsProvider, KeyboardDateTimePicker, DateTimePicker} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
 import {
@@ -20,8 +18,21 @@ import {
   Divider,
   TextField
 } from '@material-ui/core';
-import { Autocomplete as MaterialUiAutocomplete } from "@material-ui/lab";
-import { TextField as MaterialUiTextField } from "@material-ui/core";
+import { Formik, Form, Field, FieldArray } from 'formik';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
+
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    const context = this;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      timeout = null;
+      func.apply(context, args);
+    }, wait);
+  };
+}
 
 const driveType = [
   {
@@ -49,41 +60,28 @@ const employee_type = [
   },
 ];
 
-function debounce(func, wait) {
-  let timeout;
-  return function (...args) {
-      const context = this;
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-          timeout = null;
-          func.apply(context, args);
-      }, wait);
-  };
-}
 
 
-const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+//const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
  const initialFValues = {
-   id: 0,
-//   eligible_branches: [{branch:""}],
-//   company: [{id:"",name:"",website:"", industry:""}],
-//   isDeleted: false,
-   jobtitle: "",
-//   date: "",
-//   login_time: 30,
-//   drive_location: "",
-//   min_salary:"",
-//   max_salary:"",
-//   tenth:60.0,
-//   twelth:60.0,
-//   diploma:60.0,
-//   live_backlog:0,
-//   dead_backlog:0,
-//   drive_type:"",
-//   rounds:[{name:"",number:"", description:"",students:[]}],
-//   assigned_coordinators:[{id:"",first_name:"",last_name:""}],
-//   assigned_volunteers:[{id:"",user: [{first_name:"",last_name:""}]}]
+    id: 0,
+    eligible_branches: [{branch:""}],
+    company: [{id:"",name:"",website:"", industry:""}],
+    isDeleted: false,
+    jobtitle: "",
+    date: "",
+    login_time: 30,
+    drive_location: "",
+    min_salary:"",
+    max_salary:"",
+    tenth:60.0,
+    twelth:60.0,
+    diploma:60.0,
+    live_backlog:0,
+    dead_backlog:0,
+    drive_type:"",
+    rounds:[{name:"",number:"", description:""}],
  }
 
 const initialDValues = {
@@ -93,8 +91,71 @@ export default function ProfileDetails(props) {
 
   const { addOrEdit, recordForEdit } = props
 
-  const [volunteers, setVolunteers] = useState([]);
+  //--------------------------------------------------------------Company------------------------------------------------------------------------------------
+  const [inputValue, setInputValue] = useState("");
+  const [inputSearch, setInputSearch] = useState("");
+  const [options, setOptions] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const loading = open && options.length === 0;
+  const [company3, setCompany3] = useState({});
 
+  const debounceOnChange = React.useCallback(
+    debounce(value => {
+      setInputSearch(value);
+    }, 400),
+    []
+  );
+  
+  function handleCompanyChange(comp) {
+    setInputValue(comp);
+    debounceOnChange(comp);
+  }
+  var AllComapnies = ''
+  function handleResult() {
+      AllComapnies = company3.id;
+  }
+  useEffect(() => {
+    let active = true;
+
+    (async () => {
+      const response = await axios.get(
+        "http://20.37.50.140:8000/api/company/search/?q="+inputValue
+      );
+
+      if (active) {
+        console.log(response.data);
+        setOptions(response.data);
+      }
+    })();
+  }, [inputSearch]);
+
+  // const opt = {
+  //   id:1,
+  //   website:"www.test.com",
+  //   industry:"test",
+  //   name:"TestCompany"
+  // }
+  // const [companyarray, setCompanyarray] = React.useState(opt);
+  const [companyvalue, setCompanyvalue] = useState({id:'0',website:'www.test2.com',industry:'test2',name:'TestCompany2'});
+  
+  //---------------------------------------------------Eligible Branches-----------------------------------------------------------------------------------------------
+
+  const [eligibleBranches, setEligiblebranches] = useState([{}]);
+  const fixedOptions = [];
+  const [branchvalue, setBranchvalue] = useState([]);
+  
+  //------------------------------------------------------Date----------------------------------------------------------------------------------------------------------
+  const [datevalues, setDatevalues] = useState({
+    date: ""
+  })
+
+  const handDateChange = (event) => {
+    console.log("date event", new Date(event).toISOString())
+    setDatevalues({date: event})
+  }
+
+  // //------------------------------------------------------Values-------------------------------------------------------------------------------------------------------------
+  
   const [values, setValues] = useState({
     id: 0,
     eligible_branches: [{branch:""}],
@@ -115,16 +176,9 @@ export default function ProfileDetails(props) {
     educational_gap: 0,
     year_down: 0,
     drive_type: 'ON',
+    employment_type: 'Internship',
     rounds:[{name:"", number: 1, description:"",students:[]}],
-    assigned_coordinators:[{id:"",first_name:"",last_name:""}],
-    assigned_volunteers:[{id:"",user: [{first_name:"",last_name:""}]}],
   });
-
-  const [datevalues, setDatevalues] = useState({
-    date: ""
-  })
-  
-
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
     setErrors({
@@ -148,17 +202,15 @@ export default function ProfileDetails(props) {
     });
   };
 
-  const handDateChange = (event) => {
-    console.log("date event", new Date(event).toISOString())
-    setDatevalues(new Date(event).toISOString())
-  }
+  //--------------------------------------------------------general----------------------------------------------------------------------------------------------------------
   const handleSubmit = e => {
     e.preventDefault()
+    //console.log(company3)
+    //console.log("branch:", eligibleBranches)
     //values.date = new Date(selectedDate).toISOString();
     if (validate()) {
       const data = {
-        "id": values.id,
-        
+        "id": values.id,  
         "jobtitle": values.jobtitle,
         "login_time": values.login_time,
         "drive_location": values.drive_location,
@@ -172,43 +224,44 @@ export default function ProfileDetails(props) {
         "year_down": values.year_down,
         "live_backlog": values.live_backlog,
         "dead_backlog": values.dead_backlog,
-        "company": values.company,
-        
-        "date": datevalues,
-        "eligible_branches": values.eligible_branches,
+        "eligible_branches": branchvalue,
         "drive_type": values.drive_type,
         "employment_type": values.employment_type,
-        "rounds": values.rounds,
-        "assigned_coordinators": values.assigned_coordinators,
-        "assigned_volunteers": values.assigned_volunteers,
+        "company": company3.id ? company3.id : values.company.id,
+        "date": new Date(datevalues.date).toISOString(),
+
+        //"rounds": values.rounds,
       }
 
       addOrEdit(values, resetForm);
-      // axios.patch("https://tnpvision-cors.herokuapp.com/http://20.37.50.140:8000/api/drive/" + values.id+"/", data)
-      //   .then(res =>{
-      //     console.log("res", res);
-      //   }).catch(error => {
-      //     console.log(error);
-          
-      //   });
+      axios.patch("http://20.37.50.140:8000/api/drive/" + values.id+"/", data)
+        .then(res =>{
+          console.log("res", res);
+        }).catch(error => {
+          console.log(error);
+        });
 
         console.log("updated values",data)
     }
   }
-
-  
   useEffect(() => {
 
     if (recordForEdit != null) {
       
-      console.log("record to be edited", recordForEdit.assigned_volunteers);
-      
-      setVolunteers(values.assigned_volunteers)
+      console.log("record to be edited", recordForEdit.rounds);
       
       setDatevalues({
         ...datevalues,
         "date": recordForEdit.date,
       })
+      
+      setEligiblebranches({
+        ...eligibleBranches,
+        "branch": recordForEdit.eligible_branches
+      })
+
+      setBranchvalue(recordForEdit.eligible_branches)
+      setCompanyvalue(recordForEdit.company)
       
       setValues({
         ...values,
@@ -235,51 +288,10 @@ export default function ProfileDetails(props) {
         "assigned_coordinators": recordForEdit.assigned_coordinators,
         "assigned_volunteers": recordForEdit.assigned_volunteers,
       });
-       //console.log("IN Detaisl values: ", values);
-       //console.log("IN Detaisl record: ", recordForEdit);
     }
   }, [recordForEdit])
 
-  //---------------------------------------------------Volunteers Search--------------------------------------------------------------------------
-  const [options1, setOptions1] = useState([]);
-  const [open1, setOpen1] = React.useState(false);
-  const loading1 = open1 && options1.length === 0;
-  const [volunteers1, setVolunteers1] = useState([]);
-  const [inputValue1, setInputValue1] = useState("");
-  const [inputSearch1, setInputSearch1] = useState("");
-  const debounceOnChange = React.useCallback(
-      debounce(value => {
-          setInputSearch1(value);
-      }, 400),
-      []
-  );
-
-  function handleChange1(value) {
-      setInputValue1(value);
-      debounceOnChange(value);
-  }
-  const AllVolunteers = []
-  function handleResult1() {
-      for (let i = 0; i < volunteers1.length; i++) {
-          const item = volunteers1[i].id;
-          AllVolunteers[i] = item;
-      }
-      //console.log("All Volunteers: ",AllVolunteers)
-  }
-  useEffect(() => {
-      let active1 = true;
-      (async () => {
-          const response = await axios.get(
-              "http://20.37.50.140:8000/api/volunteer/search/?q=" + inputValue1
-          );
-
-          if (active1) {
-              setOptions1(response.data);
-          }
-      })();
-  }, [inputSearch1]);
-
-  //------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   return (
     <form
@@ -296,64 +308,36 @@ export default function ProfileDetails(props) {
         <CardContent>
         <Typography variant="h6">Drive ID: {values.id}</Typography><br/><br/>
 
-        <Grid
-          item
-          md={6}
-          xs={12}
-        >
-        <MaterialUiAutocomplete
-          multiple
-          filterSelectedOptions
-          options={options1}
-          getOptionLabel={option => option.first_name + " " + option.last_name}
-          values={volunteers}
-          open={open1}
-          onOpen={() => {
-              setOpen1(true);
-          }}
-          onClose={() => {
-              setOpen1(false);
-              handleChange1('');
-          }}
-          autoComplete
-          loading={loading1}
-          inputValue={inputValue1}
-          includeInputInList
-          //disableOpenOnFocus
-          onChange={(event, newValue) => { setVolunteers1(newValue) }}
-          onSelect={handleResult1}
-          renderInput={params => (
-              <MaterialUiTextField
-                  {...params}
-                  label="Search Volunteer"
-                  variant="outlined"
-                  onChange={event => handleChange1(event.target.value)}
-                  fullWidth
-              />
-          )}
-          renderOption={option => {
-              return <div>{option.first_name + " " + option.last_name}</div>;
-          }}
-      />
-      <br/><br/>
-      </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
           <Grid
             container
             spacing={3}
-          >
+          >    
+         
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+
+            </Grid>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid 
+                item
+                md={6}
+                xs={12}
+              >
+                <KeyboardDateTimePicker
+                  inputVariant="outlined"
+                  format="yyyy/MM/dd HH:mm"
+                  value={datevalues.date}
+                  onChange={handDateChange} 
+                />
+              </Grid>
+              </MuiPickersUtilsProvider>
+
+             
+
+{/*=====================================================Everything works fine below this========================================================= */}
             <Grid
               item
               md={6}
@@ -365,60 +349,61 @@ export default function ProfileDetails(props) {
                 getOptionLabel={(option) => option.branch}
                 fullWidth
                 renderInput={(params) => <TextField {...params} label="Eligible Branches" variant="outlined" />}
-                value={values.eligible_branches}
+                value={branchvalue}
+                onChange={(event, newValue) => {
+                  setBranchvalue([
+                    //...fixedOptions,
+                    ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
+                  ]); 
+                }}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Company"
-                label="Company"
-                name="company"
-                onChange={handleChange}
-                required
-                value={values.company.name}
-                variant="outlined"
-              />
-            </Grid>
-            
-            {/* <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the Drive Date"
-                //label="Date"
-                name="date"
-                type="datetime-local"
-                onChange={handDateChange}
-                required
-                //value={moment (new Date(values.date)).format("DD/MM/YYYY hh:mm a")}
-                defaultValue={datevalues.date}
-                variant="outlined"
-              />
-            </Grid> */}
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid 
-                item
-                md={6}
-                xs={12}
-              >
-                <KeyboardDateTimePicker
-                  //name="date"
-                  inputVariant="outlined"
-                  format="yyyy/MM/dd HH:mm"
-                  value={datevalues.date}
-                  onChange={handDateChange}  
+            <Grid 
+             item
+             md={6}
+             xs={12}
+             >
+                <Autocomplete
+                  options={options}
+                  value={companyvalue}
+                  getOptionLabel={option => option.name}
+                  open={open}
+                  onOpen={() => {
+                    setOpen(true);
+                  }}
+                  onClose={() => {
+                    setOpen(false);
+                    handleCompanyChange('');
+                  }}
+                  loading={loading}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                  }}
+                  onChange={(event, newValue) => {console.log("selected value", newValue);
+                                                  setCompanyvalue(newValue);
+                                                  setCompany3(newValue);                                      
+                                                }}
+                  fullWidth
+                  renderInput={(params) => 
+                    <TextField
+                      {...params} 
+                      label="Search Company"
+                      variant="outlined"
+                      onChange={event => handleCompanyChange(event.target.value)}
+                      fullWidth
+                      inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password',
+                      }}
+                    />
+                  }
+                  renderOption={option => {
+                    return <div>{option.name}</div>;
+                  }}
                 />
-              </Grid>
-              </MuiPickersUtilsProvider>
-              <Grid
+             </Grid>
+            <Grid
               item
               md={6}
               xs={12}
@@ -644,7 +629,6 @@ export default function ProfileDetails(props) {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the Drive Type"
                 label="Drive Type"
                 name="drive_type"
                 onChange={handleChange}
@@ -659,8 +643,7 @@ export default function ProfileDetails(props) {
                 </MenuItem>
               ))}
               </TextField>
-            </Grid>
-            
+            </Grid>        
             <Grid
               item
               md={6}
@@ -669,10 +652,10 @@ export default function ProfileDetails(props) {
               <TextField
                 fullWidth
                 label="Employment Type"
-                name="employee_type"
+                name="employment_type"
                 onChange={handleChange}
                 required
-                value={values.employee_type}
+                value={values.employment_type}
                 variant="outlined"
                 select
               >
