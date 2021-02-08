@@ -14,6 +14,11 @@ class RoundsService {
     addStudentToNextRound(driveId, roundId, data){
         return http.patch('/api/drive/' + driveId + '/round/' + roundId + '/', data)
     }
+
+    deleteStudentFromRound(driveId, roundId, data){
+        let url = '/api/drive/' + driveId + '/round/' + roundId + '/';
+        return http.delete(url, {data:{student_id: data}})
+    }
 }
 
 export default new RoundsService();

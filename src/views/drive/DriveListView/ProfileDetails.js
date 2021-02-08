@@ -704,7 +704,8 @@ export default function ProfileDetails(props) {
                   inputVariant="outlined"
                   format="yyyy/MM/dd HH:mm"
                   value={datevalues.date}
-                  onChange={handDateChange} 
+                  onChange={handDateChange}
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
               </MuiPickersUtilsProvider>

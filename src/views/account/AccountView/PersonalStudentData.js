@@ -94,12 +94,14 @@ const PersonalData = ({ userData }) => {
 
     if (validate()) {
       const data = {
+        "first_name": values.first_name,
+        "last_name": values.last_name,
         "studentProfile": {
-        "user": {
-          "email": values.email,
-          "first_name": values.first_name,
-          "last_name": values.last_name
-        },
+        //"user": {
+          //"email": values.email,
+        //"first_name": values.first_name,
+        //"last_name": values.last_name,
+        //},
         "gender": values.gender,
         "group": values.group,
         "id": values.id,

@@ -331,11 +331,11 @@ const AcademicData = ({ userData }) => {
               >
                 <TextField
                   fullWidth
-                  label="Engineering Aggregate SGPA"
-                  name="enggAggSGPA"
+                  label="Engineering Aggregate CGPA"
+                  name="enggAggCGPA"
                   onChange={handleChange}
                   required
-                  value={values.enggAggSGPA}
+                  value={values.enggAggCGPA}
                   variant="outlined"
                 />
               </Grid>

@@ -134,7 +134,6 @@ const Results = ({ className, customers, ...rest }) => {
       resetForm()
       setRecordForEdit(null)
       setOpenPopup(false)
-      getAllStudents();
   }
     const openInPopup = item => {
       setRecordForEdit(item)

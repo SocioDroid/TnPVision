@@ -28,6 +28,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import StudentService from '../../../services/studentService';
 import getInitials from '../../../utils/getInitials';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import RoundService from '../../../services/RoundService';
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -61,6 +62,7 @@ const Results = props => {
         console.log(err);
       });
   };
+
   if(roundNumber == round.number){
     getAllStudentOfRound(driveId, props.round.number)
   }
@@ -76,7 +78,7 @@ const Results = props => {
 
   const putStudentToNextRound = (roundId, studentId) => {
     console.log(roundId, driveId, studentId, 'From put student');
-    RoundService.addStudentToNextRound(driveId, roundId + 1, { student_id: studentId })
+    RoundService.addStudentToNextRound(driveId, roundId + 1, {student_id:studentId})
       .then(res => {
         console.log("Done")
         changeUpdated(round.number + 1)
@@ -84,6 +86,18 @@ const Results = props => {
       .catch(res => {
 
       });
+  }
+
+  const deleteStudentFromRound = (roundId, studentId) => {
+    RoundService.deleteStudentFromRound(driveId, roundId, studentId)
+      .then(res => {
+        console.log("Done")
+        changeUpdated(round.number)
+      })
+      .catch(res => {
+
+      });
+    console.log('delet clicked')
   }
 
   return (
@@ -113,6 +127,10 @@ const Results = props => {
                   <TableCell>
                     <IconButton onClick={() => { putStudentToNextRound(round.number, student.id) }}>
                       <NavigateNextIcon />
+                    </IconButton>
+
+                    <IconButton onClick={() => { deleteStudentFromRound(round.number, student.id) }}>
+                    <DeleteIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>
