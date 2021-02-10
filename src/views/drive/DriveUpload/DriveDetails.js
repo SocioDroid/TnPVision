@@ -8,6 +8,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Page from '../../../components/Page';
 import { Container, Divider, Button } from '@material-ui/core';
 import ProfileDetails from '../DriveListView/ProfileDetails';
+import VolunteerCoordinatorDetails from '../DriveUpload/VolunteerCoordinatorUpdate';
+import VolunteerUpdate from '../DriveUpload/VolunteerUpdate';
+import VolunteerUpdate2 from '../DriveUpload/VolunteerUpdate2';
+import CoordinatorUpdate from '../DriveUpload/CoordinatorUpdate';
 import RoundService from '../../../services/RoundService';
 import DriveService from '../../../services/DriveService';
 import RoundDetails from './RoundDetails';
@@ -61,7 +65,8 @@ export default function DriveDetails(drive) {
   const [rounds, setRounds] = useState([]);
   const [students, setStudents] = useState([]);
   const [recordForEdit, setRecordForEdit] = useState(null);
-
+  const [staffForEdit, setStaffForEdit] = useState(null);
+  const [studentForEdit, setStudentForEdit] = useState(null);
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -102,7 +107,26 @@ export default function DriveDetails(drive) {
       });
 
     getAllRounds(drive.drive);
+
+    DriveService.getDriveCoordinators({ id: drive.drive})
+    .then(res => {
+      setStaffForEdit(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+    DriveService.getDriveVolunteers({ id: drive.drive})
+      .then(res => {
+        setStudentForEdit(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
+
+    
+
 
   const [roundNumber, setRoundNumber] = useState(0);
   const changeUpdated = roundNumber => {
@@ -151,7 +175,7 @@ export default function DriveDetails(drive) {
       <div>
         <Typography variant="h3" color="primary">
           {recordForEdit
-            ? recordForEdit.jobtitle + ' ' + recordForEdit.company_id
+            ? recordForEdit.jobtitle + ' ' + recordForEdit.id
             : 'Drive name'}
         </Typography>
         <Divider style={{ margin: 10 }} />
@@ -258,6 +282,84 @@ export default function DriveDetails(drive) {
           </div>
         ))}
       </div>
+      <div>
+        <Typography variant="h3" color="primary">
+              Drive Manager
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <div className={classes.root}>
+          <Accordion
+            expanded={expanded === 'panel3'}
+            onChange={handleChange('panel3')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.SettingHeading}>
+                Volunteers and Co-ordinators Setting
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.innerAccordian}>
+              <VolunteerCoordinatorDetails studentForEdit={studentForEdit} staffForEdit={staffForEdit} recordForEdit={recordForEdit} />
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </div>
+      
+      <div>
+        <Typography variant="h3" color="primary">
+              Volunteers Manager
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <div className={classes.root}>
+          <Accordion
+            expanded={expanded === 'panel4'}
+            onChange={handleChange('panel4')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.SettingHeading}>
+                Volunteers Settings
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.innerAccordian}>
+              <VolunteerUpdate2 studentForEdit={studentForEdit} recordForEdit={recordForEdit}/>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </div>
+
+      <div>
+        <Typography variant="h3" color="primary">
+              Coordinators Manager
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <div className={classes.root}>
+          <Accordion
+            expanded={expanded === 'panel5'}
+            onChange={handleChange('panel5')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.SettingHeading}>
+                Coordinators Settings
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.innerAccordian}>
+              <CoordinatorUpdate staffForEdit={staffForEdit} recordForEdit={recordForEdit}/>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </div>
+
     </div>
   );
 }

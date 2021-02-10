@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import {
   Avatar,
@@ -109,8 +110,17 @@ const VolunteeringDrives = ({ className, ...rest }) => {
                           <MoneyIcon />
                         </Avatar>
                       </Grid>
+                      <Grid item>
+                        <Typography
+                            color="textSecondary"
+                            gutterBottom
+                            variant="h6"
+                          >
+                            {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm A")}
+                          </Typography>
+                      </Grid>
                     </Grid>
-                    <Box mt={2} display="flex" alignItems="center">
+                    {/* <Box mt={2} display="flex" alignItems="center">
                       <Icon
                         path={mdiCurrencyInr}
                         title="Salary Min"
@@ -136,7 +146,7 @@ const VolunteeringDrives = ({ className, ...rest }) => {
                       >
                         {numberFormat(drive.max_salary)}
                       </Typography>
-                    </Box>
+                    </Box> */}
                   </CardContent>
                 </Card>
               </a>
