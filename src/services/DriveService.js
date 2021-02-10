@@ -4,7 +4,7 @@ import HttpUrl from './HttpUrl';
 
 class DriveService {
     getAllDrives() {
-        return http.get('/api/drive/')
+        return httpauth.get('/api/drive/')
     }
     addSingleDrive(data){
         return HttpUrl.post('/api/drive/', data)
@@ -15,6 +15,9 @@ class DriveService {
 
     deleteDrive(data){
         return http.delete(`/api/drive/${data.id}/`)
+    }
+    downloadEligible(data){
+        return http.get(`/api/drive/${data.id}/eligible/`,{responseType: 'blob'})
     }
 }
 
