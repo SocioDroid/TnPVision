@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     [theme.breakpoints.up('sm')]: {
-        display: 'block',
-        width: 'auto',
-        color: 'white'
+      display: 'block',
+      width: 'auto',
+      color: 'white'
     },
-},
+  },
 }));
 
 const TopBar = ({
@@ -44,13 +44,17 @@ const TopBar = ({
   const classes = useStyles();
   const [notifications] = useState([]);
   const navigate = useNavigate();
-  const logout = () =>{
+  const logout = () => {
     LoginService.logout()
       .then(result => {
         Auth.deauthenticateUser();
-        navigate('/', { replace: true });
+        navigate('/logout', { replace: true });
       }).catch(error => {
-        console.log(error);
+        console.log("Errorrrrrr", error);
+        if (error.response.status == 401) {
+          Auth.deauthenticateUser();
+          navigate('/logout', { replace: true });
+        }
       });
   }
   return (
@@ -61,7 +65,7 @@ const TopBar = ({
     >
       <Toolbar>
         <RouterLink to="/">
-        <Typography className={classes.title} variant="h3" noWrap> TnPVision </Typography>
+          <Typography className={classes.title} variant="h3" noWrap> TnPVision </Typography>
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
@@ -74,7 +78,7 @@ const TopBar = ({
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit"  onClick={logout}>
+          <IconButton color="inherit" onClick={logout}>
             <InputIcon />
           </IconButton>
         </Hidden>
@@ -85,7 +89,7 @@ const TopBar = ({
           >
             <MenuIcon />
           </IconButton>
-          <IconButton color="inherit"  onClick={logout}>
+          <IconButton color="inherit" onClick={logout}>
             <InputIcon />
           </IconButton>
         </Hidden>

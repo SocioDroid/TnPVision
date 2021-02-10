@@ -45,48 +45,6 @@ const Results = ({ className, customers, ...rest }) => {
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [openPopup, setOpenPopup] = useState(false)
 
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
-
-  const handleSelectAll = (event) => {
-    let newSelectedCustomerIds;
-
-    if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer) => customer.id);
-    } else {
-      newSelectedCustomerIds = [];
-    }
-
-    setSelectedCustomerIds(newSelectedCustomerIds);
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedCustomerIds.indexOf(id);
-    let newSelectedCustomerIds = [];
-
-    if (selectedIndex === -1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds, id);
-    } else if (selectedIndex === 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(1));
-    } else if (selectedIndex === selectedCustomerIds.length - 1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(
-        selectedCustomerIds.slice(0, selectedIndex),
-        selectedCustomerIds.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedCustomerIds(newSelectedCustomerIds);
-  };
-
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
-  };
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
   const[ posts, setPosts] = useState([]);
 
   const getAllStudents = () => {
@@ -140,6 +98,18 @@ const Results = ({ className, customers, ...rest }) => {
       setOpenPopup(true)
   }
 
+    //Pagination
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = React.useState(0);
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -169,7 +139,7 @@ const Results = ({ className, customers, ...rest }) => {
             <TableBody>
               
               {
-                posts.map((student) => (
+                posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((student) => (
                 <TableRow
                   //hover
                   key={student.id}
@@ -200,19 +170,17 @@ const Results = ({ className, customers, ...rest }) => {
 
             </TableBody>
           </Table>
-
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            component="div"
+            count={posts.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </Box>
         </PerfectScrollbar>
-
-      <TablePagination
-        component="div"
-        count={customers.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleLimitChange}
-        page={page}
-        rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
      <Popup
         title="Student Form"
         openPopup={openPopup}

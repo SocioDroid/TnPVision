@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import {DriveMenuButton} from './DriveMenuButton';
+import { DriveMenuButton } from './DriveMenuButton';
 import {
   Box,
   Card,
@@ -10,10 +10,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  makeStyles
+  makeStyles,
+  TablePagination
 } from '@material-ui/core';
 import DriveService from '../../../services/DriveService';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     marginRight: theme.spacing(2)
   },
-  delete:{
+  delete: {
     backgroundColor: "red",
     marginLeft: "5px"
   }
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Results = ({ className, ...rest }) => {
 
   const classes = useStyles();
+
   const[ posts, setPosts] = useState([]);
   const[ isSalaryNull, setIsSalaryNull] = useState(false);
 
@@ -41,27 +42,40 @@ const Results = ({ className, ...rest }) => {
             setIsSalaryNull(true);
           }         
       })
-      .catch( err => {
-          console.log(err);
+      .catch(err => {
+        console.log(err);
       })
   }
 
-    useEffect((props) => {
-      getAllDrives();
-    }, [])
+  useEffect((props) => {
+    getAllDrives();
+  }, [])
 
   const goToEdit = (id, e) => {
     e.preventDefault();
     console.log(id);
   };
+
+  //Pagination
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(0);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Card
-      //className={clsx(classes.root, className)}
-      //{...rest}
+    //className={clsx(classes.root, className)}
+    //{...rest}
     >
-      
-        <PerfectScrollbar>
-          <Box minWidth={1050}>  
+
+      <PerfectScrollbar>
+        <Box >
           <Table>
             <TableHead>
               <TableRow>
@@ -98,8 +112,9 @@ const Results = ({ className, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              
+
               {
+                posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((drive) => (
                 posts.map((drive) => (
 
                 <TableRow key={drive.id}>
@@ -141,9 +156,18 @@ const Results = ({ className, ...rest }) => {
 
             </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            component="div"
+            count={posts.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
 
         </Box>
-        </PerfectScrollbar>
+      </PerfectScrollbar>
     </Card>
   )
 };

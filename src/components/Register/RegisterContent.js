@@ -1,6 +1,6 @@
-import React from 'react';
-import {Button, MenuItem, Typography} from '@material-ui/core';
-import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
+import React, { useState } from 'react';
+import { Button, MenuItem, Typography } from '@material-ui/core';
+import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,10 +8,13 @@ import FormLabel from '@material-ui/core/FormLabel';
 import axios from 'axios';
 import RegisterService from '../../services/RegisterService';
 
+import CustomSnackbar from '../Snackbar/CustomSnackbar';
+import Auth from '../../auth.js'
+
 const roles = [
     {
-      value: 'none',
-      label: 'None',
+        value: 'none',
+        label: 'None',
     },
     {
         value: 'asst. professor',
@@ -25,8 +28,8 @@ const roles = [
 
 const college = [
     {
-      value: 'none',
-      label: 'None',
+        value: 'none',
+        label: 'None',
     },
     {
         value: 'DYPCOE',
@@ -40,8 +43,8 @@ const college = [
 
 const department = [
     {
-      value: 'none',
-      label: 'None',
+        value: 'none',
+        label: 'None',
     },
     {
         value: 'Computer',
@@ -62,31 +65,41 @@ const department = [
 ];
 
 class RegisterContent extends React.Component {
-    constructor() {
-        super();
+
+
+    constructor(props) {
+        super(props);
         this.state = {
-          name: "React",
-          showHideGender: false,
-          showHideCollege: false,
-          user: {
-              firstname: '',            
-              lastname: '',
-              email: '',
-              password: '',
-              repeatPassword: '',
-              gender: '',
-              college: '',
-              type:'',
-              mobile:'',
-              doj:'',
-              department:'',
-              designation:'none'
-        },
-          
+            isError: false,
+            errorMessage: "",
+            name: "React",
+            showHideGender: false,
+            showHideCollege: false,
+            user: {
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: '',
+                repeatPassword: '',
+                gender: '',
+                college: '',
+                type: '',
+                mobile: '',
+                doj: '',
+                department: '',
+                designation: 'none'
+            },
+
         };
         this.hideComponent = this.hideComponent.bind(this);
-      }
+        this.changeError = this.changeError.bind(this); 
+        this.navigate = this.props.navigate;
+    }
+    
 
+    changeError = () => {
+        this.setState({ isError: !this.state.isError });
+    };
     
     componentDidMount() {
         ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -113,23 +126,25 @@ class RegisterContent extends React.Component {
                 break;
             default:
                 break;
-                }
-            }
+        }
+    }
     handleChange = (event) => {
-        console.log("Selected : "+event.target.value);
+        console.log("Selected : " + event.target.value);
         const { user } = this.state;
         user[event.target.name] = event.target.value;
         this.setState({ user });
     }
-    
-   
+
+
     handleSubmit = () => {
+        Auth.deauthenticateUser();
         const { user } = this.state;
-        
+
+
+
         console.log("Registering" + user.type);
-        if(user.type === "student")
-        {
-            const data = 
+        if (user.type === "student") {
+            const data =
             {
                 "first_name": user.firstname,
                 "last_name": user.lastname,
@@ -137,27 +152,52 @@ class RegisterContent extends React.Component {
                 "password": user.password,
                 "studentProfile": {
                     "gender": user.gender,
-                    "mobile":user.mobile,
-                    "doj":user.doj,
-                    "department":user.department,
-                    "designation":user.designation
+                    "mobile": user.mobile,
+                    "doj": user.doj,
+                    "department": user.department,
+                    "designation": user.designation
                 }
             }
             console.log(data);
 
             RegisterService.registerStudent(data)
-            .then((result) => {    
-                console.log(result);
-                alert("Registration Successfull, Please login!");
-                
-            })
-            .catch((error) =>{
-                console.log(error);
-            });
+                .then((result) => {
+                    console.log(result);
+                    alert("Registration Successfull, Please login!");
+
+                })
+                .catch(error => {
+                    const data = error.response.data ? JSON.stringify(error.response.data) : "Error!";
+                    const statuscode = error.response.status;
+
+                    switch (statuscode) {
+                        case 400:
+                            console.log(data)
+                            this.setState({ errorMessage: data });
+                            console.log("400 ERRORRR")
+                            break;
+                        case 401:
+                            this.setState({ errorMessage: "Unauthenticated ! Please login to continue " + data });
+                            console.log("401 ERRORRR")
+                            this.navigate('/login', { replace: true });
+                            break;
+                        case 403:
+                            console.log('403 error! ' + data);
+                            this.setState({ errorMessage: "403 Error. Please try again " + data });
+                            break;
+                        case 500:
+                            console.log("500 ERROR " + data);
+                            this.setState({ errorMessage: "Server Error. Please try again " + data });
+                            break
+                        default:
+                            console.log("Navin Error " + data);
+                            this.setState({ errorMessage: "New Error, add it to catch block " + data });
+                    }
+                    this.setState({ isError: true });
+                });
         }
-        else if (user.type === "faculty")
-        {
-            const data = 
+        else if (user.type === "faculty") {
+            const data =
             {
                 "first_name": user.firstname,
                 "last_name": user.lastname,
@@ -174,168 +214,198 @@ class RegisterContent extends React.Component {
             console.log(data);
 
             RegisterService.registerEmployee(data)
-            .then((result) => {    
-                console.log(result);
-                alert("Registration Successfull, Please verify your email!");
-            });
+                .then((result) => {
+                    console.log(result);
+                    alert("Registration Successfull, Please verify your email!");
+                })
+                .catch(error => {
+                    const data = error.response.data ? JSON.stringify(error.response.data) : "Error!";
+                    const statuscode = error.response.status;
+
+                    switch (statuscode) {
+                        case 400:
+                            console.log(data)
+                            this.setState({ errorMessage: data });
+                            console.log("400 ERRORRR")
+                            break;
+                        case 401:
+                            this.setState({ errorMessage: "Unauthenticated ! Please login to continue " + data });
+                            console.log("401 ERRORRR")
+                            this.navigate('/login', { replace: true });
+                            break;
+                        case 403:
+                            console.log('403 error! ' + data);
+                            this.setState({ errorMessage: "403 Error. Please try again " + data });                        
+                            break;
+                        case 500:
+                            console.log("500 ERROR " + data);
+                            this.setState({ errorMessage: "Server Error. Please try again " + data });
+                            break
+                        default:
+                            console.log("Navin Error " + data);
+                            this.setState({ errorMessage: "New Error, add it to catch block " + data });
+                    }
+                    this.setState({ isError: true });
+                });
         }
 
     }
 
-    handleRegister = () =>{
-        const {user} = this.state;
-        
+    handleRegister = () => {
+        const { user } = this.state;
+
         const selectedRole = user.role;
-        
-        if(selectedRole==='student'){
-            const {history} = this.props;
+
+        if (selectedRole === 'student') {
+            const { history } = this.props;
             history.push('/StudentRegistration')
         }
-        else if(selectedRole==='employee'){
-            const {history} = this.props;
-            history.push('/FacultyRegistration') 
+        else if (selectedRole === 'employee') {
+            const { history } = this.props;
+            history.push('/FacultyRegistration')
         }
         // else if(selectedRole==='tnpofficer'){
-            //     const {history} = this.props;
-            //     history.push('/TPORegistration')
-            // }
-        }
-        
-        
-        render() {
-            const { user } = this.state;
-            return (
+        //     const {history} = this.props;
+        //     history.push('/TPORegistration')
+        // }
+    }
+
+
+    render() {
+        const { user } = this.state;
+        return (
+            <div>
                 <ValidatorForm onSubmit={this.handleSubmit}>
-                <FormLabel component="legend">Register As:</FormLabel>
-                <RadioGroup aria-label="type" name="type" >
-                    <FormControlLabel value="student" control={<Radio />} label="Student" onClick={this.handleSelect}/>
-                    <FormControlLabel value="faculty" control={<Radio />} label="Faculty" onClick={this.handleSelect}/>
-                </RadioGroup>
-                <TextValidator
-                    autoFocus
-                    required
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="First Name"
-                    onChange={this.handleChange}
-                    name="firstname"
-                    type="text"
-                    validators={['required']}
-                    errorMessages={['This field is required']}
-                    value={user.firstname}
-                />
-                <br/>
-                <TextValidator
-                    required
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Last Name"
-                    onChange={this.handleChange}
-                    name="lastname"
-                    type="text"
-                    validators={['required']}
-                    errorMessages={['This field is required']}
-                    value={user.lastname}
-                />
-                <br/>
-                <TextValidator
-                    required
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Email Address"
-                    onChange={this.handleChange}
-                    name="email"
-                    type="email"
-                    validators={['isEmail','required']}
-                    errorMessages={['Invalid Email Address','This field is required']}
-                    value={user.email}
-                />
-                <br/>
-                <TextValidator
-                    required
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Password"
-                    onChange={this.handleChange}
-                    name="password"
-                    type="password"
-                    validators={['required']}
-                    errorMessages={['This field is required']}
-                    value={user.password}
-                />
-                <br/>
-                <TextValidator
-                    required
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Repeat password"
-                    onChange={this.handleChange}
-                    name="repeatPassword"
-                    type="password"
-                    validators={['isPasswordMatch', 'required']}
-                    errorMessages={['Password mismatch', 'This field is required']}
-                    value={user.repeatPassword}
-                />
-                <br/>
-                
-                {this.state.showHideGender && 
-                <div > 
-                <FormLabel component="legend">Gender</FormLabel>
-                <RadioGroup aria-label="gender" name="gender" onChange={this.handleChange} >
-                    <FormControlLabel value="M" control={<Radio />} label="Male" />
-                    <FormControlLabel value="F" control={<Radio />} label="Female" />
-                </RadioGroup><br/> </div>}
-                
-                {this.state.showHideCollege &&
-                <div>
-                <TextValidator                    
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="College"
-                    onChange={this.handleChange}
-                    name="college"
-                    type="text"
-                    value={user.college}
-                />
-                <br/>
-                <TextValidator                    
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Mobile"
-                    onChange={this.handleChange}
-                    name="mobile"
-                    type="text"
-                    value={user.mobile}
-                />
-                <br/>
-                <TextValidator                    
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    onChange={this.handleChange}
-                    name="doj"
-                    type="date"
-                    value={user.doj}
-                />
-                <br/>
-                <TextValidator                    
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Department"
-                    onChange={this.handleChange}
-                    name="department"
-                    type="text"
-                    value={user.department}
-                />
-                <br/>
+                    <FormLabel component="legend">Register As:</FormLabel>
+                    <RadioGroup aria-label="type" name="type" >
+                        <FormControlLabel value="student" control={<Radio />} label="Student" onClick={this.handleSelect} />
+                        <FormControlLabel value="faculty" control={<Radio />} label="Faculty" onClick={this.handleSelect} />
+                    </RadioGroup>
+                    <TextValidator
+                        autoFocus
+                        required
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        label="First Name"
+                        onChange={this.handleChange}
+                        name="firstname"
+                        type="text"
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        value={user.firstname}
+                    />
+                    <br />
+                    <TextValidator
+                        required
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        label="Last Name"
+                        onChange={this.handleChange}
+                        name="lastname"
+                        type="text"
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        value={user.lastname}
+                    />
+                    <br />
+                    <TextValidator
+                        required
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        label="Email Address"
+                        onChange={this.handleChange}
+                        name="email"
+                        type="email"
+                        validators={['isEmail', 'required']}
+                        errorMessages={['Invalid Email Address', 'This field is required']}
+                        value={user.email}
+                    />
+                    <br />
+                    <TextValidator
+                        required
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        label="Password"
+                        onChange={this.handleChange}
+                        name="password"
+                        type="password"
+                        validators={['required']}
+                        errorMessages={['This field is required']}
+                        value={user.password}
+                    />
+                    <br />
+                    <TextValidator
+                        required
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        label="Repeat password"
+                        onChange={this.handleChange}
+                        name="repeatPassword"
+                        type="password"
+                        validators={['isPasswordMatch', 'required']}
+                        errorMessages={['Password mismatch', 'This field is required']}
+                        value={user.repeatPassword}
+                    />
+                    <br />
+
+                    {this.state.showHideGender &&
+                        <div >
+                            <FormLabel component="legend">Gender</FormLabel>
+                            <RadioGroup aria-label="gender" name="gender" onChange={this.handleChange} >
+                                <FormControlLabel value="M" control={<Radio />} label="Male" />
+                                <FormControlLabel value="F" control={<Radio />} label="Female" />
+                            </RadioGroup><br /> </div>}
+
+                    {this.state.showHideCollege &&
+                        <div>
+                            <TextValidator
+                                fullWidth
+                                variant="outlined"
+                                size="small"
+                                label="College"
+                                onChange={this.handleChange}
+                                name="college"
+                                type="text"
+                                value={user.college}
+                            />
+                            <br />
+                            <TextValidator
+                                fullWidth
+                                variant="outlined"
+                                size="small"
+                                label="Mobile"
+                                onChange={this.handleChange}
+                                name="mobile"
+                                type="text"
+                                value={user.mobile}
+                            />
+                            <br />
+                            <TextValidator
+                                fullWidth
+                                variant="outlined"
+                                size="small"
+                                onChange={this.handleChange}
+                                name="doj"
+                                type="date"
+                                value={user.doj}
+                            />
+                            <br />
+                            <TextValidator
+                                fullWidth
+                                variant="outlined"
+                                size="small"
+                                label="Department"
+                                onChange={this.handleChange}
+                                name="department"
+                                type="text"
+                                value={user.department}
+                            />
+                            <br />
                             <SelectValidator
                                 fullWidth
                                 required
@@ -350,11 +420,11 @@ class RegisterContent extends React.Component {
                             >
                                 {roles.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
+                                        {option.label}
                                     </MenuItem>
                                 ))}
-          </SelectValidator>
-                {/* <TextValidator                    
+                            </SelectValidator>
+                            {/* <TextValidator                    
                     fullWidth
                     variant="outlined"
                     size="small"
@@ -364,12 +434,16 @@ class RegisterContent extends React.Component {
                     type="text"
                     value={user.designation}
                 /> */}
-                <br/>
+                            <br />
+                        </div>
+                    }
+                    <Button color="primary" variant="contained" type="submit">Register</Button>
+                    <br />
+                </ValidatorForm>
+                <div>
+                    {this.state.isError && <CustomSnackbar changeError={this.changeError} severity="error" message={this.state.errorMessage} />}
                 </div>
-                }
-                <Button color="primary" variant="contained" type="submit">Register</Button>
-                <br/>
-            </ValidatorForm>
+            </div>
         );
     }
 }

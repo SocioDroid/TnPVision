@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import { Typography, Grid, Box, ButtonBase, Paper} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './BodyContent.css'
 import homepage from '../../static/images/homepage.svg';
 import TopBar from '../../layouts/TopBars/TopBarBeforeSignIn';
+import { Navigate, useNavigate } from 'react-router-dom';
+import Auth from '../../auth';
 // /home/leet/college/Project/material-kit-react/src/layouts/MainLayout/TopBar.js
 
 const useStyles = makeStyles((theme) => ({
@@ -35,22 +37,15 @@ const useStyles = makeStyles((theme) => ({
 
 	const classes = useStyles();
 	
-	/*const[users, setUsers] = useState([]);
+	const navigate = useNavigate();
+	// const[users, setUsers] = useState([]);
 	useEffect((props) => {
-		axios.get("https://jsonplaceholder.typicode.com/todos", {
-			headers:{
-				Authorizartion: localStorage.getItem("userToken")
-			}
-		})
-		.then(res => {
-			setUsers(res.data)
-			console.log(res);
-		})
-		.catch(function (error){
-			console.log("Error Fetching Data");
-			props.showError("Session Invalid");
-		})
-	}, [])*/
+		if(Auth.isUserAuthenticated){
+			console.log("gfhdgifdgohdfoighodfhgodfho             ", Auth.getGroup())
+			// if(Auth.getGroup() == 2)
+			// 	 navigate("/employee/dashboard")
+		}	
+	}, [])
 	
 	return (
 // ========================================================== HEADER CONTENT =============================================================== 

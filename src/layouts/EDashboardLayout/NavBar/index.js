@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Button, Divider, Drawer, Hidden, List, Typography, makeStyles } from '@material-ui/core';
-import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon} from 'react-feather';
+import { AlertCircle as AlertCircleIcon, BarChart as BarChartIcon, Lock as LockIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon } from 'react-feather';
 import NavItem from './NavItem';
 import StudentService from '../../../services/studentService';
+import EmployeeServices from '../../../services/EmployeeServices';
+import Auth from '../../../auth';
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
@@ -14,7 +16,7 @@ const user = {
 
 var items;
 let group = 2;
-if(group === 2){
+if (group === 2) {
   items = [
     {
       href: '/employee/dashboard',
@@ -45,7 +47,7 @@ if(group === 2){
       href: '/employee/drive',
       icon: UploadIcon,
       title: 'Drive Upload'
-    }, 
+    },
     {
       href: '/employee/import',
       icon: DownloadIcon,
@@ -62,13 +64,13 @@ if(group === 2){
       title: 'All Drives'
     },
   ]
-}else if(group === 3){
+} else if (group === 3) {
   items = [
     {
       href: '/employee/dashboard',
       icon: BarChartIcon,
       title: 'Dashboard'
-    },  
+    },
     {
       href: '/employee/students',
       icon: UsersIcon,
@@ -88,7 +90,7 @@ if(group === 2){
       href: '/employee/settings',
       icon: SettingsIcon,
       title: 'Settings'
-    }, 
+    },
   ]
 }
 
@@ -121,18 +123,16 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     id: 0,
   })
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-   // eslint-disable-next-line
-  }, [location.pathname]);
-
-  useEffect((props) => {
-    StudentService.getUserDetail()
-      .then(function(res){
-        const { data} = res;
-        console.log("data: ",data);
+    EmployeeServices.getEmployeeDetail()
+      .then(function (res) {
+        const { data } = res;
+        console.log("data: ", data);
         setUserData({
           email: data.user.email,
           first_name: data.user.first_name,
@@ -141,11 +141,15 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           group: data.group,
           id: data.id,
         });
-      }).catch(error =>{
-        console.log(error);
-        
+      }).catch(error => {
+        if (error.response.status == 401) {
+          Auth.deauthenticateUser();
+          console.log("Deauthenticate user")
+          console.log(error)
+          navigate('/logout', { replace: true });
+        }
       })
-  }, []);
+  }, [location.pathname]);
 
   const content = (
     <Box
@@ -170,7 +174,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {userData.first_name+" "+userData.last_name}
+          {userData.first_name + " " + userData.last_name}
         </Typography>
         <Typography
           color="textSecondary"
@@ -228,7 +232,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => {},
+  onMobileClose: () => { },
   openMobile: false
 };
 

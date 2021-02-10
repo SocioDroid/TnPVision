@@ -11,7 +11,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  makeStyles
+  makeStyles,
+  TablePagination
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
@@ -90,6 +91,19 @@ const Results = ({ className, ...rest }) => {
       setOpenPopup(true)
   }
 
+  //Pagination
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(0);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+
   return (
     <Card
       // className={clsx(classes.root, className)}
@@ -117,7 +131,7 @@ const Results = ({ className, ...rest }) => {
             </TableHead>
             <TableBody>
               {
-                posts.map((company) => (
+                posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
                 <TableRow key={company.id}>
                   <TableCell>
                     {company.id} 
@@ -144,6 +158,15 @@ const Results = ({ className, ...rest }) => {
           )}
             </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            component="div"
+            count={posts.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </Box>
         </PerfectScrollbar>
 

@@ -79,7 +79,14 @@ export default function DriveDetails(drive) {
         console.log(err);
       });
   };
-
+  const addOrEdit = (drive, resetForm) => {
+    if (drive.id === 0)
+        console.log("Inserted");
+    else
+        console.log("Edited");
+    setRecordForEdit(null)
+    console.log("From add or edit")    
+}
   const exportToExcel = round => {
     RoundService.exportRoundStudents(drive.drive, round.number).then(
       ({ data }) => {
@@ -195,7 +202,7 @@ export default function DriveDetails(drive) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.innerAccordian}>
-              <ProfileDetails recordForEdit={recordForEdit} />
+              <ProfileDetails recordForEdit={recordForEdit}  addOrEdit={addOrEdit} />
             </AccordionDetails>
           </Accordion>
         </div>

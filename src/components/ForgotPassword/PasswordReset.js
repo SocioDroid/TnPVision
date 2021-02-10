@@ -14,6 +14,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import LoginService from '../../services/LoginService';
 import { useLocation, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import CustomSnackbar from '../Snackbar/CustomSnackbar';
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -26,7 +28,12 @@ const PasswordReset = ({ route, className, ...rest }) => {
     const { token } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [isTokenValid, setIsTokenValid] = useState(false);
-
+    const navigate = useNavigate();
+    const [isError, setIsError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("");
+    const changeError = () => {
+    setIsError(!isError);
+    };
     const classes = useStyles();
     const [value, setValue] = useState({
         confirm: ''
@@ -56,8 +63,34 @@ const PasswordReset = ({ route, className, ...rest }) => {
                         console.log("Password Changes successfully");
                     })
                     .catch(error => {
-                        console.log(error);
-                    })
+                        const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+                        const statuscode = error.response.status;
+              
+                        switch (statuscode) {
+                          case 400:
+                            console.log(data)
+                            setErrorMessage(data);
+                            console.log("400 ERRORRR")
+                            break;
+                          case 401:
+                            setErrorMessage("Unauthenticated ! Please login to continue "+data);
+                            console.log("401 ERRORRR")
+                            navigate('/login', { replace: true });
+                            break;  
+                          case 403:
+                            console.log('403 error! '+data);
+                            setErrorMessage("403 Error. Please try again "+data);
+                            break;
+                          case 500:
+                            console.log("500 ERROR "+data);
+                            setErrorMessage("Server Error. Please try again "+data);
+                            break
+                          default:
+                            console.log("Navin Error "+data);
+                            setErrorMessage("New Error, add it to catch block "+data);              
+                        }
+                        setIsError(true);
+                      });
             }
             else {
                 console.log("Password not matching")
@@ -81,10 +114,36 @@ const PasswordReset = ({ route, className, ...rest }) => {
                     setIsTokenValid(true)
                 })
                 .catch(error => {
-                    console.log(error)
+                    const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+                    const statuscode = error.response.status;
+          
+                    switch (statuscode) {
+                      case 400:
+                        console.log(data)
+                        setErrorMessage(data);
+                        console.log("400 ERRORRR")
+                        break;
+                      case 401:
+                        setErrorMessage("Unauthenticated ! Please login to continue "+data);
+                        console.log("401 ERRORRR")
+                        navigate('/login', { replace: true });
+                        break;  
+                      case 403:
+                        console.log('403 error! '+data);
+                        setErrorMessage("403 Error. Please try again "+data);
+                        break;
+                      case 500:
+                        console.log("500 ERROR "+data);
+                        setErrorMessage("Server Error. Please try again "+data);
+                        break
+                      default:
+                        console.log("Navin Error "+data);
+                        setErrorMessage("New Error, add it to catch block "+data);              
+                    }
+                    setIsError(true);
                     setIsLoading(false);
                     setIsTokenValid(false)
-                });
+                  });
 
     })();
 
@@ -92,11 +151,13 @@ const PasswordReset = ({ route, className, ...rest }) => {
         return (
             <div>
                 Loading
+
             </div>
         )
     }
     if (isTokenValid)
         return (
+            <div>
             <form onSubmit={formik.handleSubmit} className={clsx(classes.root, className)} {...rest}>
                 <Card>
                     <CardHeader
@@ -144,11 +205,18 @@ const PasswordReset = ({ route, className, ...rest }) => {
                     </Box>
                 </Card>
             </form>
+            <div>
+                    {isError && <CustomSnackbar changeError={changeError} severity="error" message={errorMessage} />}
+            </div>
+            </div>
         );
     else {
         return (
             <div>
                 Token is invalid
+                <div>
+                        {isError && <CustomSnackbar changeError={changeError} severity="error" message={errorMessage} />}
+                </div>
             </div>
         )
     }

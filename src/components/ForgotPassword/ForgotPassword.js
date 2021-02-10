@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState} from 'react';
 import {Dialog, DialogTitle, DialogActions, DialogContent, TextField, Button, Link} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import LoginService from '../../services/LoginService';
+import { useNavigate } from 'react-router-dom';
+import CustomSnackbar from '../Snackbar/CustomSnackbar';
 
 const useStyles = makeStyles((theme) => ({
     textField:{
@@ -14,9 +16,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ForgotPassword(){ 
-
+	const navigate = useNavigate();
+	const [isError, setIsError] = useState(false)
+	const [errorMessage, setErrorMessage] = useState("");
+	const changeError = () => {
+	setIsError(!isError);
+	};
 	const classes = useStyles();
-    const [forgotPasswordOpen, setForgotPasswordOpen] = React.useState(false);
+    const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
 	const handleForgotPasswordOpen = () => {
         setForgotPasswordOpen(true);
@@ -37,10 +44,35 @@ function ForgotPassword(){
 					console.log(result);
 					console.log("Forgot password")
 				})
-				.catch(error =>{
-					console.log(error);
-					setSubmitting(false);
-				})
+				.catch(error => {
+					const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+					const statuscode = error.response.status;
+		  
+					switch (statuscode) {
+					  case 400:
+						console.log(data)
+						setErrorMessage(data);
+						console.log("400 ERRORRR")
+						break;
+					  case 401:
+						setErrorMessage("Unauthenticated ! Please login to continue "+data);
+						console.log("401 ERRORRR")
+						navigate('/login', { replace: true });
+						break;  
+					  case 403:
+						console.log('403 error! '+data);
+						setErrorMessage("403 Error. Please try again "+data);
+						break;
+					  case 500:
+						console.log("500 ERROR "+data);
+						setErrorMessage("Server Error. Please try again "+data);
+						break
+					  default:
+						console.log("Navin Error "+data);
+						setErrorMessage("New Error, add it to catch block "+data);              
+					}
+					setIsError(true);
+				  });
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email('Invalid Email').required('Required'),
@@ -88,6 +120,9 @@ function ForgotPassword(){
 					</form>
 	        	</Dialog>
 			</React.Fragment>
+			<div>
+					{isError && <CustomSnackbar changeError={changeError} severity="error" message={errorMessage} />}
+			</div>
         </div>
     );
 }

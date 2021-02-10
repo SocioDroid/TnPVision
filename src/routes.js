@@ -30,8 +30,18 @@ import VolunteerSearch from './views/testautocomplete';
 import StudentDriveView from './views/drive/StudentDriveView'
 
 const isAuthenticated = Auth.isUserAuthenticated();
+const group = Auth.getGroup();
 const routes = [
-  { path: '/', element: <HomePage /> },
+  {
+    path: '/',
+    // element:
+    element: Auth.isUserAuthenticated() ?
+    Auth.getGroup() == 1 ? <Navigate to="/student/dashboard" />
+        : Auth.getGroup() == 2 || Auth.getGroup() == 3 || Auth.getGroup() == 4 ?
+          <Navigate to="/employee/dashboard" />
+          : <HomePage />
+      : <HomePage />,
+  },
   {
     path: 'app',
     element: <DashboardLayout />,
@@ -46,7 +56,7 @@ const routes = [
   },
   {
     path: 'student',
-    element: isAuthenticated ? <SDashboardLayout />: <Navigate to="/"/>,
+    element: isAuthenticated ? <SDashboardLayout /> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
@@ -57,7 +67,7 @@ const routes = [
   },
   {
     path: 'employee',
-    element: isAuthenticated ? <EDashboardLayout />: <Navigate to="/"/>,
+    element: isAuthenticated ? <EDashboardLayout /> : <Navigate to="/" />,
     children: [
       { path: 'empaccount', element: <EmployeeAccountView /> },
       { path: 'employees', element: <EmployeeListView /> },
@@ -75,16 +85,33 @@ const routes = [
   },
   {
     path: '/',
-    element: <MainLayout />,
     children: [
-      { path: 'login', element: <LoginView /> },
-      { path: 'register', element: <RegisterView /> },
-      { path: 'resetpassword/:token', element:  <PasswordReset /> },
+      {
+        path: 'login', element:
+        Auth.isUserAuthenticated() ? group == 1 ? <Navigate to="/student/dashboard" />
+            : group == 2 || group == 3 || group == 4
+              ? <Navigate to="/employee/dashboard" /> : <LoginView />
+            : <LoginView />,
+      },
+      {
+        path: 'register', element:
+          isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
+            : group == 2 || group == 3 || group == 4
+              ? <Navigate to="/employee/dashboard" /> : <RegisterView />
+            : <RegisterView />
+      },
+      {
+        path: 'resetpassword/:token', element: isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
+          : group == 2 || group == 3 || group == 4
+            ? <Navigate to="/employee/dashboard" /> : <PasswordReset />
+          : <PasswordReset />
+      },
+      { path: 'logout', element: <Navigate to="/" />},
       { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
-  
+
 ];
 
 
