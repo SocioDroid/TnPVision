@@ -8,15 +8,17 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Page from '../../../components/Page';
 import { Container, Divider, Button } from '@material-ui/core';
 import ProfileDetails from '../DriveListView/ProfileDetails';
+import VolunteerUpdate from '../DriveUpload/VolunteerUpdate';
+import CoordinatorUpdate from '../DriveUpload/CoordinatorUpdate';
 import RoundService from '../../../services/RoundService';
 import DriveService from '../../../services/DriveService';
 import RoundDetails from './RoundDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import SaveIcon from '@material-ui/icons/Save';
-import { saveAs } from 'file-saver';
 import PublishIcon from '@material-ui/icons/Publish';
 import axios from 'axios';
 import Auth from '../../../auth';
+
 // import Round from './Rounds';
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +63,8 @@ export default function DriveDetails(drive) {
   const [rounds, setRounds] = useState([]);
   const [students, setStudents] = useState([]);
   const [recordForEdit, setRecordForEdit] = useState(null);
-
+  const [staffForEdit, setStaffForEdit] = useState(null);
+  const [studentForEdit, setStudentForEdit] = useState(null);
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -85,13 +88,16 @@ export default function DriveDetails(drive) {
     console.log("From add or edit")    
 }
   const exportToExcel = round => {
-    saveAs(
-      'http://20.37.50.140:8000/api/drive/' +
-        drive.drive +
-        '/round/' +
-        round.number +
-        '/export/',
-      'Round_' + round.name + '.xlsx'
+    RoundService.exportRoundStudents(drive.drive, round.number).then(
+      ({ data }) => {
+        const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', 'Round_' + round.name + '.xlsx'); //any other extension
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
     );
   };
 
@@ -109,7 +115,26 @@ export default function DriveDetails(drive) {
       });
 
     getAllRounds(drive.drive);
+
+    DriveService.getDriveCoordinators({ id: drive.drive})
+    .then(res => {
+      setStaffForEdit(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+    DriveService.getDriveVolunteers({ id: drive.drive})
+      .then(res => {
+        setStudentForEdit(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
+
+    
+
 
   const [roundNumber, setRoundNumber] = useState(0);
   const changeUpdated = roundNumber => {
@@ -127,7 +152,7 @@ export default function DriveDetails(drive) {
   const handleClick = roundNumber => {
     const data = new FormData();
     data.append('file', selectedFile);
-    console.log(selectedFile)
+    console.log(selectedFile);
     axios
       .put(
         'http://20.37.50.140:8000/api/drive/' +
@@ -145,7 +170,7 @@ export default function DriveDetails(drive) {
         }
       )
       .then(res => {
-        console.log(res);
+        console.log(res);        
       })
       .catch(error => {
         console.log(error);
@@ -158,7 +183,7 @@ export default function DriveDetails(drive) {
       <div>
         <Typography variant="h3" color="primary">
           {recordForEdit
-            ? recordForEdit.jobtitle + ' ' + recordForEdit.company_id
+            ? recordForEdit.jobtitle + ' ' + recordForEdit.id
             : 'Drive name'}
         </Typography>
         <Divider style={{ margin: 10 }} />
@@ -217,41 +242,30 @@ export default function DriveDetails(drive) {
               <Divider />
               <AccordionActions>
                 <React.Fragment>
-                  <input
+                  {/* <input
                     ref={uploadInputRef}
                     type="file"
                     style={{ display: 'none' }}
                     onChange={event => handleFileChange(event)}
-                  />
-                  <div className={classes.uploadArea} >
-                                       <input type="file" name="file" onChange={event => handleFileChange(event)} />
-                                       <Button type="button" onClick={() => handleClick(round.number)} variant='contained' color='primary' className={classes.button}> Upload</Button>
-                                    </div>
-                  <Button
-                    onClick={() =>
-                      uploadInputRef.current && uploadInputRef.current.click()
-                    }
-                    variant="contained"
-                  >
-                    Upload
-                  </Button>
-                </React.Fragment>
-
-                <Button
-                  component="label"
-                  startIcon={<PublishIcon />}
-                  onClick={() => handleClick(roundNumber)}
-                >
-                  Add Students
-                  <input
-                    type="file"
-                    hidden
-                    onChange={event => {
-                      handleFileChange(event);
-                    }}
-                  />
-                </Button>
-
+                  /> */}
+                  <div className={classes.uploadArea}>
+                    <input
+                      type="file"
+                      name="file"
+                      onChange={event => handleFileChange(event)}
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => handleClick(round.number)}
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                    >
+                      {' '}
+                      Upload
+                    </Button>
+                  </div>                  
+                </React.Fragment>              
                 <Button
                   color="primary"
                   className={classes.button}
@@ -265,6 +279,84 @@ export default function DriveDetails(drive) {
           </div>
         ))}
       </div>
+      {/* <div>
+        <Typography variant="h3" color="primary">
+              Drive Manager
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <div className={classes.root}>
+          <Accordion
+            expanded={expanded === 'panel3'}
+            onChange={handleChange('panel3')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.SettingHeading}>
+                Volunteers and Co-ordinators Setting
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.innerAccordian}>
+              <VolunteerCoordinatorDetails studentForEdit={studentForEdit} staffForEdit={staffForEdit} recordForEdit={recordForEdit} />
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </div> */}
+      
+      <div>
+        <Typography variant="h3" color="primary">
+              Volunteers Manager
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <div className={classes.root}>
+          <Accordion
+            expanded={expanded === 'panel4'}
+            onChange={handleChange('panel4')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.SettingHeading}>
+                Volunteers Settings
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.innerAccordian}>
+            {studentForEdit  ? <VolunteerUpdate studentForEdit={studentForEdit} setStudentForEdit={setStudentForEdit} recordForEdit={recordForEdit}/>  : "Loading ..."}              
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </div>
+
+      <div>
+        <Typography variant="h3" color="primary">
+              Coordinators Manager
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <div className={classes.root}>
+          <Accordion
+            expanded={expanded === 'panel5'}
+            onChange={handleChange('panel5')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.SettingHeading}>
+                Coordinators Settings
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.innerAccordian}>
+            {staffForEdit  ? <CoordinatorUpdate staffForEdit={staffForEdit} setStaffForEdit={setStaffForEdit} recordForEdit={recordForEdit}/> : "Loading ....." }
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </div>
+
     </div>
   );
 }

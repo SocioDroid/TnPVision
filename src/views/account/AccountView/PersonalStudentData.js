@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Controls from "../../../components/controls/Controls";
-import { FormControl, FormControlLabel, Checkbox as MuiCheckbox, Typography, AppBar } from '@material-ui/core';
+import { FormControl, FormControlLabel, Checkbox as MuiCheckbox, Typography, AppBar, MenuItem } from '@material-ui/core';
 import {
   Box,
   Button,
@@ -15,11 +15,18 @@ import {
 import { useForm, Form } from '../../../components/useForm';
 import axios from 'axios';
 import Auth from '../../../auth';
+import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const genderItems = [
   { id: 'M', title: 'Male' },
   { id: 'F', title: 'Female' },
   { id: 'O', title: 'Other' },
+]
+const categoryItems = [
+  {id: 'SBC', title: 'SBC'},
+  {id: 'OBC', title: 'OBC'},
+  {id: 'OPEN', title: 'OPEN'},
 ]
 
 const initialFValues = {
@@ -87,6 +94,15 @@ const PersonalData = ({ userData }) => {
     });
   };
 
+  const [datevalues, setDatevalues] = useState({
+    date: ""
+  })
+
+  const handDateChange = (event) => {
+    console.log("date event", new Date(event).toISOString())
+    setDatevalues({date: event})
+  }
+
   const handleSubmit = e => {
     console.log(values);
     e.preventDefault()
@@ -109,10 +125,11 @@ const PersonalData = ({ userData }) => {
         "category": values.category,
         "PAN_number": values.PAN_number,
         "aadhar": values.aadhar,
-        "dob": values.dob,
+        "dob": JSON.stringify(datevalues.date).slice(1,11),
         "homeTown": values.homeTown
       }
     }
+    console.log("data.dob",JSON.stringify(datevalues.date).slice(1,11))
       axios.put("http://20.37.50.140:8000/api/user/", data, {
         headers: {
           "Content-type": "application/json",
@@ -132,6 +149,12 @@ const PersonalData = ({ userData }) => {
 
   useEffect(() => {
     if (userData != null) {
+      console.log(userData.dob)
+      setDatevalues({
+        ...datevalues,
+        "date": userData.dob,
+      })
+
       setValues({
         ...values,
         "email": userData.user && userData.user.email ? userData.user.email : "",
@@ -207,10 +230,10 @@ const PersonalData = ({ userData }) => {
               >
                 <TextField
                   fullWidth
+                  disabled
                   label="Email Address"
                   name="email"
                   onChange={handleChange}
-                  required
                   value={values.email}
                   variant="outlined"
                 />
@@ -243,7 +266,15 @@ const PersonalData = ({ userData }) => {
                   required
                   value={values.category}
                   variant="outlined"
-                />
+                  select
+                >
+                  {categoryItems.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.title}
+                    </MenuItem>
+                  ))} 
+              </TextField>
+                
               </Grid>
               <Grid
                 item
@@ -280,15 +311,19 @@ const PersonalData = ({ userData }) => {
                 md={6}
                 xs={12}
               >
-                <TextField
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+                <KeyboardDatePicker
                   fullWidth
                   label="Date of Birth"
-                  name="dob"
-                  onChange={handleChange}
-                  required
-                  value={values.dob}
-                  variant="outlined"
+                  inputVariant="outlined"
+                  format="yyyy/MM/dd"
+                  value={datevalues.date}
+                  onChange={handDateChange}
+                  InputLabelProps={{ shrink: true }}
                 />
+   
+              </MuiPickersUtilsProvider>
               </Grid>
               <Grid
                 item

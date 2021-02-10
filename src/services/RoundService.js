@@ -19,6 +19,9 @@ class RoundsService {
         let url = '/api/drive/' + driveId + '/round/' + roundId + '/';
         return http.delete(url, {data:{student_id: data}})
     }
+    exportRoundStudents(driveId,roundId){
+        return http.get(`/api/drive/${driveId}/round/${roundId}/export/`,{responseType: 'blob'})
+    }
 }
 
 export default new RoundsService();
