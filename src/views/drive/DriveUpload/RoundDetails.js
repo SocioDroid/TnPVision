@@ -70,7 +70,7 @@ const Results = props => {
   useEffect(() => {
     if (flag) {
       setFlag(!flag);
-      getAllStudentOfRound(driveId, props.round.number)
+      getAllStudentOfRound(driveId, props.round.number)      
     }
   }, [students]);
 

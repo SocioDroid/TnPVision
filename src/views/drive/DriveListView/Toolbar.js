@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Popup from "../../../components/Popup";
 import CompanyDrive from "../DriveUpload/DriveUploadForm";
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -34,6 +35,8 @@ const Toolbar = ({ className, ...rest }) => {
     setOpenPopup(true)
   }
   const [openPopup, setOpenPopup] = useState(false)
+
+  const navigate = useNavigate();
   const addOrEdit = (company, resetForm) => {
     if (company.id === 0)
         console.log("Inserted");
@@ -60,7 +63,7 @@ const Toolbar = ({ className, ...rest }) => {
         <Button
           color="primary"
           variant="contained"
-          onClick={()=>{openPopupWithExtraData()}}
+          onClick={()=>{navigate('/employee/drive', { replace: true });}}
         >
           Add Drive
         </Button>

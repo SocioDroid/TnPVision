@@ -8,11 +8,24 @@ import {
   Divider,
   Grid,
   TextField,
+  MenuItem,
 } from '@material-ui/core';
 import { useForm } from '../../../components/useForm';
 import axios from 'axios';
 import Auth from '../../../auth';
 
+const collegeItems = [
+  {id: 'DYPIEMR', title: 'DYPIEMR'},
+  {id: 'DYPCOE', title: 'DYPCOE'},
+]
+const DepartmentItems = [
+  {id: 'Computer', title: 'Computer Engineering'},
+  {id: 'IT', title: 'Information Technology'},
+  {id: 'Mechanical', title: 'Mechanical Engineering'},
+  {id: 'Civil', title: 'Civil Engineering'},
+  {id: 'Instrumentation', title: 'Instrumentation Engineering'},
+  {id: 'ENTC', title: 'E&TC Engineering'},
+]
 
 const initialFValues = {
   collegeName: "",
@@ -173,7 +186,7 @@ const AcademicData = ({ userData }) => {
           <CardContent>
             <br />
             <Grid container spacing={3}>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="College"
@@ -182,20 +195,34 @@ const AcademicData = ({ userData }) => {
                   required
                   value={values.collegeName}
                   variant="outlined"
-                />
+                  select
+                >
+                  {collegeItems.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.title}
+                    </MenuItem>
+                  ))} 
+              </TextField>
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
-                  fullWidth
-                  label="Branch"
-                  name="branch"
-                  onChange={handleChange}
-                  required
-                  value={values.branch}
-                  variant="outlined"
-                />
+                 fullWidth
+                 label="Branch"
+                 name="branch"
+                 onChange={handleChange}
+                 required
+                 value={values.branch}
+                 variant="outlined"
+                  select
+                >
+                  {DepartmentItems.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.title}
+                    </MenuItem>
+                  ))} 
+              </TextField>
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="PRN"

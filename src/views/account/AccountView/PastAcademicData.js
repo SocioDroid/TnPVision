@@ -177,7 +177,7 @@ const PastAcademicData = ({ userData }) => {
           <CardContent>
             <br />
             <Grid container spacing={3}>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   type="number"
@@ -189,7 +189,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="Tenth Board of Examination"
@@ -200,7 +200,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="Tenth year of Passing"
@@ -211,7 +211,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   type="number"
@@ -223,7 +223,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="Twelfth Board of Examination"
@@ -234,7 +234,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="Twelfth year of Passing"
@@ -247,7 +247,7 @@ const PastAcademicData = ({ userData }) => {
               </Grid>
               <Grid
                 item
-                md={6}
+                md={4}
                 xs={12}
               >
                 <TextField
@@ -261,7 +261,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="Diploma Board of Examination"
@@ -272,7 +272,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   label="Diploma year of Passing"

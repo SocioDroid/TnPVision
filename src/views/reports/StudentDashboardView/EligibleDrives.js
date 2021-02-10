@@ -19,6 +19,7 @@ import Auth from '../../../auth';
 import axios from 'axios';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -102,6 +103,7 @@ const EligibleDrives = ({ className, ...rest }) => {
                           {drive.employment_type}
                         </Typography>
                       </Grid>
+                     
                       <Grid item>
                         <Avatar className={classes.avatar}>
                           <MoneyIcon />
@@ -135,6 +137,16 @@ const EligibleDrives = ({ className, ...rest }) => {
                         {numberFormat(drive.max_salary)}
                       </Typography>
                     </Box>
+                    <Grid item>
+                      <br/>
+                        <Typography
+                            color="textSecondary"
+                            gutterBottom
+                            variant="h6"
+                          >
+                            {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm A")}
+                          </Typography>
+                      </Grid>
                   </CardContent>
                 </Card>
               </a>
