@@ -8,6 +8,7 @@ class LoginService {
     }
 
     logout() {
+        console.log('Logout  method')
         return httpauth.post('/api/logout/');
     }
 

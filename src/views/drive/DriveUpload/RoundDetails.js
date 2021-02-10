@@ -20,7 +20,7 @@ import {
   Button,
   IconButton,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
@@ -100,6 +100,19 @@ const Results = props => {
     console.log('delet clicked')
   }
 
+   //Pagination
+   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+   const [page, setPage] = React.useState(0);
+   const handleChangePage = (event, newPage) => {
+     setPage(newPage);
+   };
+ 
+   const handleChangeRowsPerPage = (event) => {
+     setRowsPerPage(parseInt(event.target.value, 10));
+     setPage(0);
+   };
+
+   
   return (
     <Card
     // className={clsx(classes.root, className)}
@@ -117,7 +130,7 @@ const Results = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {students.map(student => (
+              {students.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(student => (
                 <TableRow key={student.id}>
                   <TableCell>{student.id}</TableCell>
                   <TableCell>
@@ -137,18 +150,18 @@ const Results = props => {
               ))}
             </TableBody>
           </Table>
+           
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, 50]}
+            component="div"
+            count={students.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </Box>
       </PerfectScrollbar>
-      {/* 
-          <TablePagination
-            component="div"
-            count={customers.length}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handleLimitChange}
-            page={page}
-            rowsPerPage={limit}
-            rowsPerPageOptions={[5, 10, 25]}
-          /> */}
     </Card>
   );
 };

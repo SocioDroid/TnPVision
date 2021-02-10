@@ -7,6 +7,7 @@ import {withRouter} from 'react-router-dom'
 import RegisterContent from './RegisterContent';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {makeStyles, Grid, Box} from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,6 +33,8 @@ function FormDialog(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -51,7 +54,7 @@ function FormDialog(props) {
         </DialogTitle>
         <Box border= {1} borderColor= "grey.500" margin= '20px' borderRadius= '5px'>
         <DialogContent>
-            <RegisterContent/>
+            <RegisterContent navigate={navigate}/>
         </DialogContent>
         </Box>
       </Dialog>

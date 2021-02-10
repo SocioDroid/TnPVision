@@ -76,7 +76,14 @@ export default function DriveDetails(drive) {
         console.log(err);
       });
   };
-
+  const addOrEdit = (drive, resetForm) => {
+    if (drive.id === 0)
+        console.log("Inserted");
+    else
+        console.log("Edited");
+    setRecordForEdit(null)
+    console.log("From add or edit")    
+}
   const exportToExcel = round => {
     saveAs(
       'http://20.37.50.140:8000/api/drive/' +
@@ -170,7 +177,7 @@ export default function DriveDetails(drive) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.innerAccordian}>
-              <ProfileDetails recordForEdit={recordForEdit} />
+              <ProfileDetails recordForEdit={recordForEdit}  addOrEdit={addOrEdit} />
             </AccordionDetails>
           </Accordion>
         </div>

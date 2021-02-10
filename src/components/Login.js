@@ -11,11 +11,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 // import DataServices from '../../services/Services'
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
 import LoginService from '../services/LoginService';
-import CustomSnackbar from './Snackbar/snackbar';
+import CustomSnackbar from './Snackbar/CustomSnackbar';
 import Auth from '../auth';
-
+import MuiAlert from '@material-ui/lab/Alert';
+import GenerateErrorMessage from './Snackbar/ErrorMessage';
+import SDashboardLayout from '../layouts/SDashboardLayout';
+import EDashboardLayout from '../layouts/EDashboardLayout';
+// import { Navigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -59,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Login(props) {
 	const classes = useStyles();
-	const [isLogin, setIsLogin] = useState(false)
-
+	const [isError, setIsError] = useState(false)
+	const [errorMessage, setErrorMessage] = useState("");
 	//===================================== Dialog Box =====================================
 	const [loginOpen, setLoginOpen] = React.useState(false);
 	const [isSubmitionCompleted, setSubmitionCompleted] = React.useState(false);
@@ -74,52 +78,67 @@ function Login(props) {
 	};
 
 	//===================================== SnackBar =====================================
-	const [open, setOpen] = React.useState(false);
 
 
-	const handleClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return;
-		}
-		setOpen(false);
-	};
-
-	const handleClick = () => {
-		setOpen(true);
+	const changeError = () => {
+		setIsError(!isError);
 	};
 
 	const navigate = useNavigate();
+
 	const formik = useFormik({
 		initialValues: {
 			email: '',
 			password: ''
 		},
 		onSubmit: (values, { setSubmitting }) => {
-			
+
 			setSubmitting(true);
 			LoginService.login({ username: values.email, password: values.password })
 				.then(result => {
 					console.log(result.data.data);
+					setSubmitionCompleted(true);
 					if (result.status === 200 && result.data.data.token !== "") {
-						Auth.authenticateUser(result.data.data.token, result.data.data.expiry)
-						//localStorage.setItem('expiry', result.data.data.expiry); 
-						//localStorage.setItem("token", result.data.data.token);
-						setIsLogin(true)
+						Auth.authenticateUser(result.data.data.token, result.data.data.expiry, result.data.data.group)
 						if (result.data.data.group === 1)
 							navigate('/student/dashboard', { replace: true });
+							// <Navigate to="/student/dashboard" />
+							// return <SDashboardLayout /> 
 						else if (result.data.data.group === 2 || result.data.data.group === 3 || result.data.data.group === 4)
-							navigate('/employee/dashboard', { replace: true });
+							// return <EDashboardLayout /> 
+							navigate('/employee/dashboard');
+							// <Navigate to="/employee/dashboard" />
 					}
-					setSubmitionCompleted(true);
 				})
 				.catch(error => {
-					console.log(error);
-					setIsLogin(false)
-					alert("Wrong Username or Password");
-					setSubmitting(false)
-
-				})
-	
+					const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+					const statuscode = error.response.status;
+		  
+					switch (statuscode) {
+					  case 400:
+						console.log(data)
+						setErrorMessage(data);
+						console.log("400 ERRORRR")
+						break;
+					  case 401:
+						setErrorMessage("Unauthenticated ! Please login to continue "+data);
+						console.log("401 ERRORRR")
+						navigate('/employee/dashboard', { replace: true });
+						break;  
+					  case 403:
+						console.log('403 error! '+data);
+						setErrorMessage("403 Error. Please try again "+data);
+						break;
+					  case 500:
+						console.log("500 ERROR "+data);
+						setErrorMessage("Server Error. Please try again "+data);
+						break
+					  default:
+						console.log("Navin Error "+data);
+						setErrorMessage("New Error, add it to catch block "+data);              
+					}
+					setIsError(true);
+				  });
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email('Invalid Email').required('Required'),
@@ -186,11 +205,11 @@ function Login(props) {
 												value={formik.values.password}
 											/>
 											<DialogContentText style={{ marginTop: '8px' }} component={'div'}>
-												<ForgotPassword  />
+												<ForgotPassword />
 											</DialogContentText>
 										</DialogContent>
 										<DialogActions className={classes.textField}>
-											<Button onClick={handleClick} type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
+											<Button type="submit" color="primary" variant='contained' disabled={formik.isSubmitting}>
 												Login
 										</Button>
 										</DialogActions>
@@ -203,13 +222,9 @@ function Login(props) {
 				</Dialog>
 			</React.Fragment>
 			<div className={classes.root}>
-				{isLogin &&
-				<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-					<CustomSnackbar onClose={handleClose} severity="success" message="You are Logged In" />
-				</Snackbar>}
+				{isError && <CustomSnackbar changeError={changeError} severity="error" message={errorMessage} />}
 			</div>
 		</div>
-
 	);
 }
 

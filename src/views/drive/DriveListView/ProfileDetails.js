@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 import { Field } from 'formik'
 import { useForm } from '../../../components/useForm';
@@ -6,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Typography, MenuItem, Avatar } from '@material-ui/core';
 import { AllBranches } from '../data';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { MuiPickersUtilsProvider, KeyboardDateTimePicker} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -21,10 +23,12 @@ import {
   Divider,
   TextField
 } from '@material-ui/core';
+import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
+
 
 function debounce(func, wait) {
   let timeout;
-  return function(...args) {
+  return function (...args) {
     const context = this;
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -36,27 +40,27 @@ function debounce(func, wait) {
 
 const driveType = [
   {
-      value: 'ON',
-      label: 'ON Campus',
+    value: 'ON',
+    label: 'ON Campus',
   },
   {
-      value: 'OFF',
-      label: 'OFF Campus',
+    value: 'OFF',
+    label: 'OFF Campus',
   },
   {
-      value: 'POOL',
-      label: 'Pool Campus',
+    value: 'POOL',
+    label: 'Pool Campus',
   },
 ];
 
 const employee_type = [
   {
-      value: 'Full Time',
-      label: 'Full Time',
+    value: 'Full Time',
+    label: 'Full Time',
   },
   {
-      value: 'Internship',
-      label: 'Internship',
+    value: 'Internship',
+    label: 'Internship',
   },
 ];
 
@@ -64,25 +68,25 @@ const employee_type = [
 
 //const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
- const initialFValues = {
-    id: 0,
-    eligible_branches: [{branch:""}],
-    company: [{id:"",name:"",website:"", industry:""}],
-    isDeleted: false,
-    jobtitle: "",
-    date: "",
-    login_time: 30,
-    drive_location: "",
-    min_salary:"",
-    max_salary:"",
-    tenth:60.0,
-    twelth:60.0,
-    diploma:60.0,
-    live_backlog:0,
-    dead_backlog:0,
-    drive_type:"",
-    rounds:[{name:"",number:"", description:""}],
- }
+const initialFValues = {
+  id: 0,
+  eligible_branches: [{ branch: "" }],
+  company: [{ id: "", name: "", website: "", industry: "" }],
+  isDeleted: false,
+  jobtitle: "",
+  date: "",
+  login_time: 30,
+  drive_location: "",
+  min_salary: "",
+  max_salary: "",
+  tenth: 60.0,
+  twelth: 60.0,
+  diploma: 60.0,
+  live_backlog: 0,
+  dead_backlog: 0,
+  drive_type: "",
+  rounds: [{ name: "", number: "", description: "" }],
+}
 
 const initialDValues = {
   date: ""
@@ -98,28 +102,33 @@ export default function ProfileDetails(props) {
   const [open, setOpen] = React.useState(false);
   const loading = open && options.length === 0;
   const [company3, setCompany3] = useState({});
-
+  const navigate = useNavigate();
+  const [isError, setIsError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("");
+  const changeError = () => {
+    setIsError(!isError);
+  };
   const debounceOnChange = React.useCallback(
     debounce(value => {
       setInputSearch(value);
     }, 400),
     []
   );
-  
+
   function handleCompanyChange(comp) {
     setInputValue(comp);
     debounceOnChange(comp);
   }
   var AllComapnies = ''
   function handleResult() {
-      AllComapnies = company3.id;
+    AllComapnies = company3.id;
   }
   useEffect(() => {
     let active = true;
 
     (async () => {
       const response = await axios.get(
-        "http://20.37.50.140:8000/api/company/search/?q="+inputValue
+        "http://20.37.50.140:8000/api/company/search/?q=" + inputValue
       );
 
       if (active) {
@@ -136,8 +145,8 @@ export default function ProfileDetails(props) {
   //   name:"TestCompany"
   // }
   // const [companyarray, setCompanyarray] = React.useState(opt);
-  const [companyvalue, setCompanyvalue] = useState({id:'0',website:'www.test2.com',industry:'test2',name:'TestCompany2'});
-  
+  const [companyvalue, setCompanyvalue] = useState({ id: '0', website: 'www.test2.com', industry: 'test2', name: 'TestCompany2' });
+
   //---------------------------------------------------Eligible Branches-----------------------------------------------------------------------------------------------
 
   const [eligibleBranches, setEligiblebranches] = useState([{}]);
@@ -145,12 +154,12 @@ export default function ProfileDetails(props) {
   const [branchvalue, setBranchvalue] = useState([]);
 
   const [roundDetails, setRoundDetails] = useState([
-     { number: "", name: "", description: "" }
-   ]);
+    { number: "", name: "", description: "" }
+  ]);
 
   const handleRoundChange = (event, roundNumber) => {
-    const {name, value} = event.target
-    
+    const { name, value } = event.target
+
     let newArr = [...roundDetails]; // copying the old datas array
     let item = newArr[roundNumber];
     item = { ...item, [event.target.name]: event.target.value };
@@ -164,15 +173,15 @@ export default function ProfileDetails(props) {
 
   const handDateChange = (event) => {
     console.log("date event", new Date(event).toISOString())
-    setDatevalues({date: event})
+    setDatevalues({ date: event })
   }
 
   // //------------------------------------------------------Values-------------------------------------------------------------------------------------------------------------
-  
+
   const [values, setValues] = useState({
     id: 0,
-    eligible_branches: [{branch:""}],
-    company: [{id:"",name:"",website:"", industry:""}],
+    eligible_branches: [{ branch: "" }],
+    company: [{ id: "", name: "", website: "", industry: "" }],
     isDeleted: false,
     jobtitle: '',
     //date: new Date(),
@@ -190,7 +199,7 @@ export default function ProfileDetails(props) {
     year_down: 0,
     drive_type: 'ON',
     employment_type: 'Internship',
-    rounds:[{name:"", number: 1, description:"",students:[]}],
+    rounds: [{ name: "", number: 1, description: "", students: [] }],
   });
 
   const [rname, setRname] = useState({
@@ -235,13 +244,13 @@ export default function ProfileDetails(props) {
   } = useForm(initialFValues, true, validate, initialDValues);
 
   const handleChange = (event) => {
-   
-    console.log("event value: ",event.target.value)
+
+    console.log("event value: ", event.target.value)
     setValues({
       ...values,
       [event.target.name]: event.target.value
     });
-  
+
   };
 
   //--------------------------------------------------------general----------------------------------------------------------------------------------------------------------
@@ -252,7 +261,7 @@ export default function ProfileDetails(props) {
     //values.date = new Date(selectedDate).toISOString();
     if (validate()) {
       const data = {
-        "id": values.id,  
+        "id": values.id,
         "jobtitle": values.jobtitle,
         "login_time": values.login_time,
         "drive_location": values.drive_location,
@@ -275,43 +284,68 @@ export default function ProfileDetails(props) {
       }
 
       addOrEdit(values, resetForm);
-      axios.patch("http://20.37.50.140:8000/api/drive/" + values.id+"/", data)
-        .then(res =>{
+
+      axios.patch("http://20.37.50.140:8000/api/drive/" + values.id + "/", data)
+        .then(res => {
           console.log("res", res);
           alert("Drive Updated Sucessfully");
-          setTimeout(window.location.reload(false), 5000);
+          // setTimeout(window.location.reload(false), 5000);
         }).catch(error => {
-          console.log(error);
-          alert("Operation Failed");
-          setTimeout(window.location.reload(false), 5000);
+          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+          const statuscode = error.response.status;
+
+          switch (statuscode) {
+            case 400:
+              console.log(data)
+              setErrorMessage(data);
+              console.log("400 ERRORRR")
+              break;
+            case 401:
+              setErrorMessage("Unauthenticated ! Please login to continue "+data);
+              console.log("401 ERRORRR")
+              navigate('/login', { replace: true });
+              break;  
+            case 403:
+              console.log('403 error! '+data);
+              setErrorMessage("403 Error. Please try again "+data);
+              break;
+            case 500:
+              console.log("500 ERROR "+data);
+              setErrorMessage("Server Error. Please try again "+data);
+              break
+            default:
+              console.log("Navin Error "+data);
+              setErrorMessage("New Error, add it to catch block "+data);              
+          }
+          setIsError(true);
         });
 
-        console.log("updated values",data)
+      console.log("updated values", data)
     }
   }
   useEffect(() => {
 
     if (recordForEdit != null) {
-      
+
       console.log("record to be edited", recordForEdit.rounds);
-      
+
       setDatevalues({
         ...datevalues,
         "date": recordForEdit.date,
       })
-      
+
       setEligiblebranches({
         ...eligibleBranches,
         "branch": recordForEdit.eligible_branches
       })
       setRoundDetails([
         // ...roundschange,
-      ...recordForEdit.rounds
+        ...recordForEdit.rounds
       ])
 
       setBranchvalue(recordForEdit.eligible_branches)
       setCompanyvalue(recordForEdit.company)
-      
+
       setValues({
         ...values,
         "id": recordForEdit.id,
@@ -332,439 +366,446 @@ export default function ProfileDetails(props) {
         "eligible_branches": recordForEdit.eligible_branches,
         "date": recordForEdit.date,
         "drive_type": recordForEdit.drive_type,
-        "employment_type": recordForEdit.employment_type, 
+        "employment_type": recordForEdit.employment_type,
         "rounds": recordForEdit.rounds,
         "assigned_coordinators": recordForEdit.assigned_coordinators,
         "assigned_volunteers": recordForEdit.assigned_volunteers,
       });
     }
   }, [recordForEdit])
-  
+
 
   //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      autoComplete="off"
-      noValidate
-    >
-      <Card>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Drive Details"
-        />
-        <Divider />
-        <CardContent>
-        <Typography variant="h6">Drive ID: {values.id}</Typography><br/><br/>
+    <div>
+      <form
+        onSubmit={handleSubmit}
+        autoComplete="off"
+        noValidate
+      >
+        <Card>
+          <CardHeader
+            subheader="The information can be edited"
+            title="Drive Details"
+          />
+          <Divider />
+          <CardContent>
+            <Typography variant="h6">Drive ID: {values.id}</Typography><br /><br />
 
-          <Grid
-            container
-            spacing={3}
-          >     
+            <Grid
+              container
+              spacing={3}
+            >
 
-{/*=====================================================Everything works fine below this========================================================= */}
-            
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Job Title"
-                name="jobtitle"
-                onChange={handleChange}
-                required
-                value={values.jobtitle}
-                variant="outlined"
-              />
-            </Grid>      
+              {/*=====================================================Everything works fine below this========================================================= */}
 
-            <Grid 
-             item
-             md={6}
-             xs={12}
-             >
-              <Autocomplete
-                options={options}
-                value={companyvalue}
-                getOptionLabel={option => option.name}
-                open={open}
-                onOpen={() => {
-                  setOpen(true);
-                }}
-                onClose={() => {
-                  setOpen(false);
-                  handleCompanyChange('');
-                }}
-                loading={loading}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
-                }}
-                onChange={(event, newValue) => {console.log("selected value", newValue);
-                                                setCompanyvalue(newValue);
-                                                setCompany3(newValue);                                      
-                                              }}
-                fullWidth
-                renderInput={(params) => 
-                  <TextField
-                    {...params} 
-                    label="Search Company"
-                    variant="outlined"
-                    onChange={event => handleCompanyChange(event.target.value)}
-                    fullWidth
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password',
-                    }}
-                  />
-                }
-                renderOption={option => {
-                  return <div>{option.name}</div>;
-                }}
-              />
-             </Grid>
-            
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.login_time}
-                label="Login Time"
-                name="login_time"
-                onChange={handleChange}
-                required
-                value={values.login_time}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Drive Location"
-                name="drive_location"
-                onChange={handleChange}
-                required
-                value={values.drive_location}
-                variant="outlined"
-              />
-            </Grid><Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Drive Type"
-                name="drive_type"
-                onChange={handleChange}
-                required
-                value={values.drive_type}
-                variant="outlined"
-                select
-              >
-              {driveType.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                </MenuItem>
-              ))}
-              </TextField>
-            </Grid>        
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Employment Type"
-                name="employment_type"
-                onChange={handleChange}
-                required
-                value={values.employment_type}
-                variant="outlined"
-                select
-              >
-              {employee_type.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                </MenuItem>
-              ))}
-              </TextField>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.min_salary}
-                label="Minimum Salary"
-                name="min_salary"
-                onChange={handleChange}
-                required
-                value={values.min_salary}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.max_salary}
-                label="Maximum Salary"
-                name="max_salary"
-                onChange={handleChange}
-                required
-                value={values.max_salary}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.tenth}
-                label="Tenth Percentage Criteria"
-                name="tenth"
-                onChange={handleChange}
-                required
-                value={values.tenth}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.twelth}
-                label="Twelth Percentage Criteria"
-                name="twelth"
-                onChange={handleChange}
-                required
-                value={values.twelth}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.diploma}
-                label="Diploma Percentage Criteria"
-                name="diploma"
-                onChange={handleChange}
-                required
-                value={values.diploma}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.engineering}
-                label="Engineering Percentage Criteria"
-                name="engineering"
-                onChange={handleChange}
-                required
-                value={values.engineering}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.educational_gap}
-                label="Educational Gap Criteria"
-                name="educational_gap"
-                onChange={handleChange}
-                required
-                value={values.educational_gap}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                error={errors.year_down}
-                fullWidth
-                label="Year Down Criteria"
-                name="year_down"
-                onChange={handleChange}
-                required
-                value={values.year_down}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.live_backlog}
-                label="Live Backlog Criteria"
-                name="live_backlog"
-                onChange={handleChange}
-                required
-                value={values.live_backlog}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                error={errors.dead_backlog}
-                label="Dead Backlog Criteria"
-                name="dead_backlog"
-                onChange={handleChange}
-                required
-                value={values.dead_backlog}
-                variant="outlined"
-                type="number"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <Autocomplete
-                multiple
-                options={AllBranches}
-                getOptionLabel={(option) => option.branch}
-                fullWidth
-                renderInput={(params) => <TextField {...params} label="Eligible Branches" variant="outlined" />}
-                value={branchvalue}
-                onChange={(event, newValue) => {
-                  setBranchvalue([
-                    //...fixedOptions,
-                    ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
-                  ]); 
-                }}
-              />
-            </Grid>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid 
+              <Grid
                 item
                 md={6}
                 xs={12}
               >
-                <KeyboardDateTimePicker
+                <TextField
                   fullWidth
-                  label="Date of Drive"
-                  inputVariant="outlined"
-                  format="yyyy/MM/dd HH:mm"
-                  value={datevalues.date}
-                  onChange={handDateChange}
-                  InputLabelProps={{ shrink: true }}
+                  label="Job Title"
+                  name="jobtitle"
+                  onChange={handleChange}
+                  required
+                  value={values.jobtitle}
+                  variant="outlined"
                 />
               </Grid>
+
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <Autocomplete
+                  options={options}
+                  value={companyvalue}
+                  getOptionLabel={option => option.name}
+                  open={open}
+                  onOpen={() => {
+                    setOpen(true);
+                  }}
+                  onClose={() => {
+                    setOpen(false);
+                    handleCompanyChange('');
+                  }}
+                  loading={loading}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                  }}
+                  onChange={(event, newValue) => {
+                    console.log("selected value", newValue);
+                    setCompanyvalue(newValue);
+                    setCompany3(newValue);
+                  }}
+                  fullWidth
+                  renderInput={(params) =>
+                    <TextField
+                      {...params}
+                      label="Search Company"
+                      variant="outlined"
+                      onChange={event => handleCompanyChange(event.target.value)}
+                      fullWidth
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password',
+                      }}
+                    />
+                  }
+                  renderOption={option => {
+                    return <div>{option.name}</div>;
+                  }}
+                />
+              </Grid>
+
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.login_time}
+                  label="Login Time"
+                  name="login_time"
+                  onChange={handleChange}
+                  required
+                  value={values.login_time}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  label="Drive Location"
+                  name="drive_location"
+                  onChange={handleChange}
+                  required
+                  value={values.drive_location}
+                  variant="outlined"
+                />
+              </Grid><Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  label="Drive Type"
+                  name="drive_type"
+                  onChange={handleChange}
+                  required
+                  value={values.drive_type}
+                  variant="outlined"
+                  select
+                >
+                  {driveType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  label="Employment Type"
+                  name="employment_type"
+                  onChange={handleChange}
+                  required
+                  value={values.employment_type}
+                  variant="outlined"
+                  select
+                >
+                  {employee_type.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.min_salary}
+                  label="Minimum Salary"
+                  name="min_salary"
+                  onChange={handleChange}
+                  required
+                  value={values.min_salary}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.max_salary}
+                  label="Maximum Salary"
+                  name="max_salary"
+                  onChange={handleChange}
+                  required
+                  value={values.max_salary}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.tenth}
+                  label="Tenth Percentage Criteria"
+                  name="tenth"
+                  onChange={handleChange}
+                  required
+                  value={values.tenth}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.twelth}
+                  label="Twelth Percentage Criteria"
+                  name="twelth"
+                  onChange={handleChange}
+                  required
+                  value={values.twelth}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.diploma}
+                  label="Diploma Percentage Criteria"
+                  name="diploma"
+                  onChange={handleChange}
+                  required
+                  value={values.diploma}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.engineering}
+                  label="Engineering Percentage Criteria"
+                  name="engineering"
+                  onChange={handleChange}
+                  required
+                  value={values.engineering}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.educational_gap}
+                  label="Educational Gap Criteria"
+                  name="educational_gap"
+                  onChange={handleChange}
+                  required
+                  value={values.educational_gap}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  error={errors.year_down}
+                  fullWidth
+                  label="Year Down Criteria"
+                  name="year_down"
+                  onChange={handleChange}
+                  required
+                  value={values.year_down}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.live_backlog}
+                  label="Live Backlog Criteria"
+                  name="live_backlog"
+                  onChange={handleChange}
+                  required
+                  value={values.live_backlog}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  error={errors.dead_backlog}
+                  label="Dead Backlog Criteria"
+                  name="dead_backlog"
+                  onChange={handleChange}
+                  required
+                  value={values.dead_backlog}
+                  variant="outlined"
+                  type="number"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <Autocomplete
+                  multiple
+                  options={AllBranches}
+                  getOptionLabel={(option) => option.branch}
+                  fullWidth
+                  renderInput={(params) => <TextField {...params} label="Eligible Branches" variant="outlined" />}
+                  value={branchvalue}
+                  onChange={(event, newValue) => {
+                    setBranchvalue([
+                      //...fixedOptions,
+                      ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
+                    ]);
+                  }}
+                />
+              </Grid>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <KeyboardDateTimePicker
+                    fullWidth
+                    label="Date of Drive"
+                    inputVariant="outlined"
+                    format="yyyy/MM/dd HH:mm"
+                    value={datevalues.date}
+                    onChange={handDateChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
               </MuiPickersUtilsProvider>
-          </Grid>
-          <Grid
+            </Grid>
+            <Grid
               item
               md={12}
               xs={12}
             >
-              {roundDetails.map((_, index) => (                                                
-                    <div key={index} style={{ padding: 20 }}>
-                        <Grid container item spacing={5}>
-                            <Grid item>
-                                {/* <Typography>{index + 1}</Typography> */}
-                                <Avatar>{index + 1}</Avatar>
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    name="name"
-                                    value={roundDetails[index].name}
-                                    InputLabelProps={{ shrink: true }}  
-                                    label="Round Name"
-                        
-                                    onChange={(event) =>{handleRoundChange(event,index)}}
-                                   
-                                    variant="outlined"
-                                />
-                            </Grid>                                    
-                            <Grid item>
-                                <TextField
-                                    name="description"
-                                    value={roundDetails[index].description}    
-                                    InputLabelProps={{ shrink: true }}                                  
-                                    label="Round Description"
-                                    onChange={(event) =>{handleRoundChange(event,index)}}                                    
-                                    variant="outlined"
-                                />
-                            </Grid>                                                                                                                             
-                        </Grid>                                                
-                    </div>
-                ))}
+              {roundDetails.map((_, index) => (
+                <div key={index} style={{ padding: 20 }}>
+                  <Grid container item spacing={5}>
+                    <Grid item>
+                      {/* <Typography>{index + 1}</Typography> */}
+                      <Avatar>{index + 1}</Avatar>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        name="name"
+                        value={roundDetails[index].name}
+                        InputLabelProps={{ shrink: true }}
+                        label="Round Name"
+
+                        onChange={(event) => { handleRoundChange(event, index) }}
+
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        name="description"
+                        value={roundDetails[index].description}
+                        InputLabelProps={{ shrink: true }}
+                        label="Round Description"
+                        onChange={(event) => { handleRoundChange(event, index) }}
+                        variant="outlined"
+                      />
+                    </Grid>
+                  </Grid>
+                </div>
+              ))}
             </Grid>
-        </CardContent>
-        <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
+          </CardContent>
+          <Divider />
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            p={2}
           >
-            Save details
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+            >
+              Save details
           </Button>
-        </Box>
-      </Card>
-    </form>
+          </Box>
+        </Card>
+
+      </form>
+      <div>
+        {isError && <CustomSnackbar changeError={changeError} severity="error" message={errorMessage} />}
+      </div>
+    </div>
   );
 };
 

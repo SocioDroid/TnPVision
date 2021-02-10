@@ -9,6 +9,9 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Login from '../../components/Login';
 import Register from '../../components/Register/RegisterDialog';
+import Button from '@material-ui/core/Button';
+import { Navigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -88,7 +91,7 @@ function Header(props) {
 			</MenuItem>
 		</Menu>
 	);
-
+	const navigate = useNavigate();
 
 	return (
 // ========================================================== HEADER CONTENT =============================================================== 
@@ -102,8 +105,9 @@ function Header(props) {
 						<IconButton title="Toggle light/dark mode" style={{color: 'white'}} onClick={()=>changeTheme()}>
 							{theme.palette.type === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
 						</IconButton>
+						{/* <Button onClick={()=>{navigate('/login', { replace: true });}}>Login</Button> */}
 						<div><Login /></div>
-						<div><Register/></div>
+						<div><Register/></div>	
 						{/*<Button className={classes.button} variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>*/}	
 					</div>
 					<div className={classes.sectionMobile}>

@@ -9,9 +9,10 @@ class Auth {
     /* eslint-disable no-undef */
 
 
-    static authenticateUser (token, expiry) {
+    static authenticateUser (token, expiry, group) {
       localStorage.setItem("token",token)
       localStorage.setItem("expiry",expiry)
+      localStorage.setItem("group", group)
     }
   
     static authNotified () {
@@ -29,22 +30,43 @@ class Auth {
     static getReferer () {
       return localStorage.getItem('referer')
     }
+
+    static getGroup () {
+      return localStorage.getItem('group')
+    }
   
+
+    static isTokenExpired(){	
+      const getExpiry = localStorage.getItem('expiry')	
+      const getExp = JSON.parse(JSON.stringify((getExpiry)))      	
+      if ((getExp - new Date()) < 0) {	
+        localStorage.removeItem("token")	
+        localStorage.removeItem("expiry")	
+        localStorage.removeItem('group')
+        return true	
+      }
+      return false
+    }
     /**
      * Check if a user is authenticated - check if a token is saved in Local Storage
      *
      * @returns {boolean}
      */
     static isUserAuthenticated () {
-      return localStorage.getItem('token') !== null
+      // console.log('token', localStorage.getItem('token') !== null)
+      return !Auth.isTokenExpired() && localStorage.getItem('token') !== null
     }
   
+
+    
     /**
      * Deauthenticate a user. Remove a token from Local Storage.
      *
      */
     static deauthenticateUser () {
       localStorage.removeItem('token')
+      localStorage.removeItem('expiry')
+      localStorage.removeItem('group')
     }
   
     /**
