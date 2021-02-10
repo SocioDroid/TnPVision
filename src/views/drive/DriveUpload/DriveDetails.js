@@ -8,9 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Page from '../../../components/Page';
 import { Container, Divider, Button } from '@material-ui/core';
 import ProfileDetails from '../DriveListView/ProfileDetails';
-import VolunteerCoordinatorDetails from '../DriveUpload/VolunteerCoordinatorUpdate';
 import VolunteerUpdate from '../DriveUpload/VolunteerUpdate';
-import VolunteerUpdate2 from '../DriveUpload/VolunteerUpdate2';
 import CoordinatorUpdate from '../DriveUpload/CoordinatorUpdate';
 import RoundService from '../../../services/RoundService';
 import DriveService from '../../../services/DriveService';
@@ -282,7 +280,7 @@ export default function DriveDetails(drive) {
           </div>
         ))}
       </div>
-      <div>
+      {/* <div>
         <Typography variant="h3" color="primary">
               Drive Manager
         </Typography>
@@ -306,7 +304,7 @@ export default function DriveDetails(drive) {
             </AccordionDetails>
           </Accordion>
         </div>
-      </div>
+      </div> */}
       
       <div>
         <Typography variant="h3" color="primary">
@@ -328,7 +326,7 @@ export default function DriveDetails(drive) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.innerAccordian}>
-              <VolunteerUpdate2 studentForEdit={studentForEdit} recordForEdit={recordForEdit}/>
+            {studentForEdit  ? <VolunteerUpdate studentForEdit={studentForEdit} setStudentForEdit={setStudentForEdit} recordForEdit={recordForEdit}/>  : "Loading ..."}              
             </AccordionDetails>
           </Accordion>
         </div>
@@ -354,7 +352,7 @@ export default function DriveDetails(drive) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.innerAccordian}>
-              <CoordinatorUpdate staffForEdit={staffForEdit} recordForEdit={recordForEdit}/>
+            {staffForEdit  ? <CoordinatorUpdate staffForEdit={staffForEdit} setStaffForEdit={setStaffForEdit} recordForEdit={recordForEdit}/> : "Loading ....." }
             </AccordionDetails>
           </Accordion>
         </div>

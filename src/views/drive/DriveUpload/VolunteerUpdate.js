@@ -13,6 +13,7 @@ import {
   Button,
   IconButton,
   TextField,
+  TablePagination,
   Grid
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -30,37 +31,26 @@ function debounce(func, wait) {
   };
 }
 
-function Results(props) {
-  const {studentForEdit, recordForEdit } = props;
-  const [students, setStudents] = useState([]);
-  const [driveId, setDriveId] = useState();
-  const [isUpdated, setUpdated] = useState(Boolean(true));
-  const [temp, setTemp] = useState([])
-
-  if (props.studentForEdit !== null){
-    setTemp(props.studentForEdit);
-  }
-  //console.log("student which are passed from other files",studentForEdit);
+function VolunteerUpdate2(props) {
+  const {studentForEdit, setStudentForEdit, recordForEdit } = props;
 
   const deleteVolunteerForDrive = studentId => {
     DriveService.deleteDriveVolunteers(recordForEdit, studentId)
       .then(res => {
         console.log('Done', res);
-        setTemp([...res.data]);
-        setUpdated(true)
-      })
-      .catch(res => {
+        setStudentForEdit(res.data);
+    })
+    .catch(res => {
         console.log(res);
-      });
+    });
     //console.log('delete clicked')
-  };
+};
 
-  const addVolunteerForDrive = (driveId, datavalue) => {
+const addVolunteerForDrive = (driveId, datavalue) => {
     DriveService.addDriveVolunteers(driveId, datavalue)
-      .then(res => {
+    .then(res => {
         console.log('Submition', res);
-        setTemp([...res.data]);
-        setUpdated(true);
+        setStudentForEdit(res.data);
       })
       .catch(res => {
         console.log(res);
@@ -70,7 +60,7 @@ function Results(props) {
   const fixedOptions1 = [];
   const [branchvalue1, setBranchvalue1] = useState([...fixedOptions1]);
   const [options1, setOptions1] = useState([]);
-  const [open1, setOpen1] = React.useState(true);
+  const [open1, setOpen1] = React.useState(false);
   const loading1 = open1 && options1.length === 0;
   const [volunteers, setVolunteers] = useState([]);
   const [inputValue1, setInputValue1] = useState('');
@@ -86,14 +76,7 @@ function Results(props) {
     setInputValue1(value);
     debounceOnChange(value);
   }
-  //   const AllVolunteers = []
-  //   function handleResult1() {
-  //       for (let i = 0; i < volunteers.length; i++) {
-  //           const item = volunteers[i].id;
-  //           AllVolunteers[i] = item;
-  //       }
-  //       //console.log("All Volunteers: ",AllVolunteers)
-  //   }
+ 
   useEffect(() => {
     let active1 = true;
     (async () => {
@@ -115,39 +98,21 @@ function Results(props) {
     const data = {  
       student_id: data2.assigned_volunteers[0].id
     };
-    addVolunteerForDrive(driveId, data);
+    addVolunteerForDrive(recordForEdit.id, data);
     console.log('Final Volunteers List', data);
   };
-  //---------------------------------------------------------------------------------------------------------------------------------------
-  useEffect(() => {
-    if(isUpdated){
-      if (recordForEdit !== null && studentForEdit !== null) {
-        setStudents([...temp]);
-        setDriveId(recordForEdit.id);
-        console.log(
-          '-----------------------student in useeffect---------------------------',
-          students
-          );
-      }
-      else{
-        console.log("From updated")
-        setStudents([...temp]);
-      }
-      setUpdated(false);
-    }
-    //   } else {
-    //     console.log('recordforedit or studentforedit is null');
-    //   }
-    // } else {
-    //   //setStudents(studentForEdit)
-    //   isUpdated(true);
-    // }
-  }, [recordForEdit, studentForEdit, students, isUpdated]);
 
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = React.useState(0);
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
   //---------------------------------------------------------------------------------------------------------------------------------------
-  if (studentForEdit == null || recordForEdit == null) {
-    return null;
-  } else {
     return (
       <Card>
         <PerfectScrollbar>
@@ -188,8 +153,6 @@ function Results(props) {
                   loading={loading1}
                   inputValue={inputValue1}
                   includeInputInList
-                  //disableOpenOnFocus
-                  //onSelect={handleResult1}
                   renderInput={params => (
                     <TextField
                       {...params}
@@ -227,7 +190,7 @@ function Results(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {students.map(student => (
+                    {studentForEdit.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(student => (
                       <TableRow key={student.id}>
                         <TableCell>{student.id}</TableCell>
                         <TableCell>
@@ -247,23 +210,23 @@ function Results(props) {
                     ))}
                   </TableBody>
                 </Table>
+                <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 50]}
+                component="div"
+                count={studentForEdit.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
               </Grid>
             </Grid>
           </Box>
         </PerfectScrollbar>
-        {/* 
-            <TablePagination
-                component="div"
-                count={customers.length}
-                onChangePage={handlePageChange}
-                onChangeRowsPerPage={handleLimitChange}
-                page={page}
-                rowsPerPage={limit}
-                rowsPerPageOptions={[5, 10, 25]}
-            /> */}
+        
+            
       </Card>
     );
   }
-}
 
-export default Results;
+export default VolunteerUpdate2;
