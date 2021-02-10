@@ -27,7 +27,7 @@ import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
 import VolunteerSearch from './views/testautocomplete';
-
+import StudentDriveView from './views/drive/StudentDriveView'
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const routes = [
@@ -50,6 +50,7 @@ const routes = [
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
+      { path: 'drive/:id', element: <StudentDriveView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]

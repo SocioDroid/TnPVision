@@ -31,11 +31,15 @@ const Results = ({ className, ...rest }) => {
 
   const classes = useStyles();
   const[ posts, setPosts] = useState([]);
+  const[ isSalaryNull, setIsSalaryNull] = useState(false);
 
   const getAllDrives = () => {
     DriveService.getAllDrives()
       .then(res => {        
-          setPosts(res.data);          
+          setPosts(res.data); 
+          if (res.data.min_salary == 0){
+            setIsSalaryNull(true);
+          }         
       })
       .catch( err => {
           console.log(err);
@@ -77,10 +81,7 @@ const Results = ({ className, ...rest }) => {
                   Drive Date
                 </TableCell>
                 <TableCell>
-                  Minimum Salary
-                </TableCell>
-                <TableCell>
-                  Maximum Salary
+                  Salary                
                 </TableCell>
                 <TableCell>
                   Tenth
@@ -118,12 +119,10 @@ const Results = ({ className, ...rest }) => {
                     {/* {drive.date} */}
                     {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm a")}
                   </TableCell>
-                  <TableCell>
-                    {drive.min_salary}
-                  </TableCell>
-                  <TableCell>
-                    {drive.max_salary}
-                  </TableCell>
+                  {!isSalaryNull?
+                  <TableCell>                   
+                    {isSalaryNull }{drive.min_salary} - {drive.max_salary} P. A.
+                  </TableCell> : <TableCell>Not Disclosed</TableCell>}
                   <TableCell>
                     {drive.tenth}
                   </TableCell>

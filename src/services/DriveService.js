@@ -15,7 +15,6 @@ class DriveService {
     deleteDrive(data){
         return http.delete(`/api/drive/${data.id}/`)
     }
-
     getDriveVolunteers(data){
         return http.get(`/api/drive/${data.id}/volunteer/`)
     }

@@ -15,10 +15,10 @@ import DriveService from '../../../services/DriveService';
 import RoundDetails from './RoundDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import SaveIcon from '@material-ui/icons/Save';
-import { saveAs } from 'file-saver';
 import PublishIcon from '@material-ui/icons/Publish';
 import axios from 'axios';
 import Auth from '../../../auth';
+
 // import Round from './Rounds';
 
 const useStyles = makeStyles(theme => ({
@@ -81,13 +81,16 @@ export default function DriveDetails(drive) {
   };
 
   const exportToExcel = round => {
-    saveAs(
-      'http://20.37.50.140:8000/api/drive/' +
-        drive.drive +
-        '/round/' +
-        round.number +
-        '/export/',
-      'Round_' + round.name + '.xlsx'
+    RoundService.exportRoundStudents(drive.drive, round.number).then(
+      ({ data }) => {
+        const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', 'Round_' + round.name + '.xlsx'); //any other extension
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
     );
   };
 
@@ -142,7 +145,7 @@ export default function DriveDetails(drive) {
   const handleClick = roundNumber => {
     const data = new FormData();
     data.append('file', selectedFile);
-    console.log(selectedFile)
+    console.log(selectedFile);
     axios
       .put(
         'http://20.37.50.140:8000/api/drive/' +
@@ -160,7 +163,7 @@ export default function DriveDetails(drive) {
         }
       )
       .then(res => {
-        console.log(res);
+        console.log(res);        
       })
       .catch(error => {
         console.log(error);
@@ -232,41 +235,30 @@ export default function DriveDetails(drive) {
               <Divider />
               <AccordionActions>
                 <React.Fragment>
-                  <input
+                  {/* <input
                     ref={uploadInputRef}
                     type="file"
                     style={{ display: 'none' }}
                     onChange={event => handleFileChange(event)}
-                  />
-                  <div className={classes.uploadArea} >
-                                       <input type="file" name="file" onChange={event => handleFileChange(event)} />
-                                       <Button type="button" onClick={() => handleClick(round.number)} variant='contained' color='primary' className={classes.button}> Upload</Button>
-                                    </div>
-                  <Button
-                    onClick={() =>
-                      uploadInputRef.current && uploadInputRef.current.click()
-                    }
-                    variant="contained"
-                  >
-                    Upload
-                  </Button>
-                </React.Fragment>
-
-                <Button
-                  component="label"
-                  startIcon={<PublishIcon />}
-                  onClick={() => handleClick(roundNumber)}
-                >
-                  Add Students
-                  <input
-                    type="file"
-                    hidden
-                    onChange={event => {
-                      handleFileChange(event);
-                    }}
-                  />
-                </Button>
-
+                  /> */}
+                  <div className={classes.uploadArea}>
+                    <input
+                      type="file"
+                      name="file"
+                      onChange={event => handleFileChange(event)}
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => handleClick(round.number)}
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                    >
+                      {' '}
+                      Upload
+                    </Button>
+                  </div>                  
+                </React.Fragment>              
                 <Button
                   color="primary"
                   className={classes.button}
