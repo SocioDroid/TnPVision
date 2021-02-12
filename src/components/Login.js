@@ -108,6 +108,9 @@ function Login(props) {
 							// return <EDashboardLayout /> 
 							navigate('/employee/dashboard');
 							// <Navigate to="/employee/dashboard" />
+						else if (result.data.data.group === 5)							
+							navigate('/interviewer/dashboard');
+							
 					}
 				})
 				.catch(error => {
@@ -157,7 +160,7 @@ function Login(props) {
 							<Grid container>
 								<Grid item xs={false} sm={11}>
 									Login
-						</Grid>
+							</Grid>
 								<Grid item xs={false} sm={1} style={{ textAlign: 'end' }}>
 									<CancelIcon onClick={handleLoginClose} variant='contained' color="primary" />
 								</Grid>

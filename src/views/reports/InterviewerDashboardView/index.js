@@ -13,7 +13,6 @@ import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
 import TrafficByDevice from './TrafficByDevice';
-import LiveDrive from './LiveDrives';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,11 +29,10 @@ const Dashboard = (props) => {
   return (
     <Page
       className={classes.root}
-      title="Dashboard"
+      title="Interviewer Dashboard"
     >
       <Container maxWidth={false}>
-        <LiveDrive/>
-        {/* <Grid
+        <Grid
           container
           spacing={3}
         >
@@ -45,7 +43,7 @@ const Dashboard = (props) => {
             xl={3}
             xs={12}
           >
-          <Budget />
+            <Budget />
           </Grid>
           <Grid
             item
@@ -110,7 +108,7 @@ const Dashboard = (props) => {
           >
             <LatestOrders />
           </Grid>
-        </Grid> */}
+        </Grid>
       </Container>
     </Page>
   );

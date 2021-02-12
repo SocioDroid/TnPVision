@@ -19,6 +19,7 @@ import axios from 'axios';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
+import DriveService from '../../../services/DriveService'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,12 +50,13 @@ const EligibleDrives = ({ className, ...rest }) => {
     );
 
   useEffect(() => {
-    axios
-      .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
-        headers: {
-          Authorization: 'Token ' + Auth.getToken() //the token is a variable which holds the token
-        }
-      })
+    // axios
+    //   .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
+    //     headers: {
+    //       Authorization: 'Token ' + Auth.getToken() //the token is a variable which holds the token
+    //     }
+    //   })
+    DriveService.getAllDrives()
       .then(res => {
         setDrives(res.data);
         console.log('Response Received : ', res.data);
@@ -72,14 +74,14 @@ const EligibleDrives = ({ className, ...rest }) => {
     <div>
       
       <Typography variant="h3" color="primary">
-        Eligible Drives
+        Live Drives
       </Typography>
       <Divider style={{ margin: 10 }} />
       <Grid container spacing={3}>
         {drives.map(drive => {
           return (
             <Grid item lg={3} sm={6} xl={3} xs={12} key={drive.id}>
-              <a href={'/student/drive/' + drive.id}>
+              <a href={'/employee/drive/' + drive.id}>
                 <Card className={clsx(classes.root, className)} {...rest}>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
@@ -89,7 +91,7 @@ const EligibleDrives = ({ className, ...rest }) => {
                           gutterBottom
                           variant="h6"
                         >
-                          {drive.company_name}
+                          {drive.company.name}
                         </Typography>
                         <Typography noWrap color="textPrimary" variant="h3">
                           {drive.jobtitle}
