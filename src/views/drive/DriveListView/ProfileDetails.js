@@ -86,6 +86,7 @@ const initialFValues = {
   dead_backlog: 0,
   drive_type: "",
   rounds: [{ name: "", number: "", description: "" }],
+  interviewers: [],
 }
 
 const initialDValues = {

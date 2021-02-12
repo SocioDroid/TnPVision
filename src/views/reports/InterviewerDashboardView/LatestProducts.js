@@ -103,7 +103,7 @@ const LatestProducts = ({ className, ...rest }) => {
         ))}
       </List>
       <Divider />
-      {/* <Box
+      <Box
         display="flex"
         justifyContent="flex-end"
         p={2}
@@ -116,7 +116,7 @@ const LatestProducts = ({ className, ...rest }) => {
         >
           View all
         </Button>
-      </Box> */}
+      </Box>
     </Card>
   );
 };

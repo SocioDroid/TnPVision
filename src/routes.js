@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import SDashboardLayout from './layouts/SDashboardLayout';
 import EDashboardLayout from './layouts/EDashboardLayout';
+import IDashboardLayout from './layouts/IDashboardLayout';
 import MainLayout from './layouts/MainLayout';
 import AccountView from './views/account/AccountView';
 import CustomerListView from './views/customer/CustomerListView';
@@ -11,6 +12,7 @@ import StudentListView from './views/student/StudentListView';
 import DashboardView from './views/reports/DashboardView';
 import EmployeeDashboardView from './views/reports/EmployeeDashboardView';
 import StudentDashboardView from './views/reports/StudentDashboardView';
+import InterviewerDashboardView from './views/reports/InterviewerDashboardView';
 import LoginView from './views/auth/LoginView';
 import RegisterView from './views/auth/RegisterView';
 import NotFoundView from './views/errors/NotFoundView';
@@ -25,9 +27,11 @@ import PasswordReset from './components/ForgotPassword/PasswordReset';
 import Route from 'react-router-dom';
 import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
+import InterviewerAccountView from './views/InterviewerAccount/InterviewerAccountView'
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
 import VolunteerSearch from './views/testautocomplete';
 import StudentDriveView from './views/drive/StudentDriveView'
+import EmployeeDriveView from './views/drive/EmployeeDriveView'
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const group = Auth.getGroup();
@@ -80,7 +84,17 @@ const routes = [
       { path: 'afterdrive/:id', element: <AfterDriveView /> },
       { path: 'import', element: <ImportStudent /> },
       { path: 'auto', element: <VolunteerSearch /> },
+      { path: 'drive/:id', element: <EmployeeDriveView /> },
       { path: '*', element: <Navigate to="/404" /> }
+    ]
+  },
+  {
+    path: 'interviewer',
+    element: <IDashboardLayout />,
+    children: [
+      { path: 'account', element: <InterviewerAccountView /> },
+      { path: 'dashboard', element: <InterviewerDashboardView /> },
+      { path: '*', element: <Navigate to="/404" /> },
     ]
   },
   {

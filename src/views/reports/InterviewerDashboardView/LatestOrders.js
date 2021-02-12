@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import { v4 as uuid } from 'uuid';
@@ -21,8 +21,69 @@ import {
   makeStyles
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import RoundService from '../../../services/RoundService';
 
+const data = [
+  {
+    id: uuid(),
+    ref: 'CDD1049',
+    amount: 30.5,
+    customer: {
+      name: 'Ekaterina Tankova'
+    },
+    createdAt: 1555016400000,
+    status: 'pending'
+  },
+  {
+    id: uuid(),
+    ref: 'CDD1048',
+    amount: 25.1,
+    customer: {
+      name: 'Cao Yu'
+    },
+    createdAt: 1555016400000,
+    status: 'delivered'
+  },
+  {
+    id: uuid(),
+    ref: 'CDD1047',
+    amount: 10.99,
+    customer: {
+      name: 'Alexa Richardson'
+    },
+    createdAt: 1554930000000,
+    status: 'refunded'
+  },
+  {
+    id: uuid(),
+    ref: 'CDD1046',
+    amount: 96.43,
+    customer: {
+      name: 'Anje Keizer'
+    },
+    createdAt: 1554757200000,
+    status: 'pending'
+  },
+  {
+    id: uuid(),
+    ref: 'CDD1045',
+    amount: 32.54,
+    customer: {
+      name: 'Clarke Gillebert'
+    },
+    createdAt: 1554670800000,
+    status: 'delivered'
+  },
+  {
+    id: uuid(),
+    ref: 'CDD1044',
+    amount: 16.76,
+    customer: {
+      name: 'Adam Denisov'
+    },
+    createdAt: 1554670800000,
+    status: 'delivered'
+  }
+];
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -31,34 +92,20 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-
-
-const LatestOrders = ({ className, DriveId, ...rest }) => {
+const LatestOrders = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [students, setStudents] = useState([]);
-  const [flag, setFlag] = useState(Boolean(true));
-
-  useEffect(() => {
-      RoundService.getAllStudentOfRound(DriveId, 1)
-      .then(res => {
-        setStudents([...res.data.students]);
-        console.log("res ",res.data.students)
-      })
-      .catch(err => {
-        console.log(err);
-      });   
-  }, [students]);
+  const [orders] = useState(data);
 
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Round Details" />
+      <CardHeader title="Latest Orders" />
       <Divider />
       <PerfectScrollbar>
         <Box minWidth={800}>
-          {/* <Table>
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
@@ -110,45 +157,7 @@ const LatestOrders = ({ className, DriveId, ...rest }) => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table> */}
-         <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Full Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {students.map(student => (
-                <TableRow key={student.id}>
-                  <TableCell>{student.id}</TableCell>
-                  <TableCell>
-                    {`${student.user.first_name} ${student.user.last_name}`}
-                  </TableCell>
-                  <TableCell>{student.user.email}</TableCell>
-                  <TableCell>
-                  <Chip
-                      color="primary"
-                      label="pending"
-                      size="small"
-                    />
-                    {/* <IconButton onClick={() => { putStudentToNextRound(round.number, student.id) }}>
-                      <NavigateNextIcon />
-                    </IconButton>
-
-                    <IconButton onClick={() => { deleteStudentFromRound(round.number, student.id) }}>
-                    <DeleteIcon />
-                    </IconButton> */}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
           </Table>
-
-
-         
         </Box>
       </PerfectScrollbar>
       <Box
@@ -174,6 +183,3 @@ LatestOrders.propTypes = {
 };
 
 export default LatestOrders;
-
-
-//--------------------------------------------------------------------------------------------------------------------
