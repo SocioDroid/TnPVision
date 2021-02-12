@@ -16,6 +16,8 @@ import { NavLink } from 'react-router-dom';
 import Popup from '../../../components/Popup';
 import ProfileDetails from './ProfileDetails';
 import Popover from '@material-ui/core/Popover';
+import { useNavigate } from 'react-router-dom';
+import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 
 const useStyles = makeStyles(theme => ({
   typography: {
@@ -24,11 +26,18 @@ const useStyles = makeStyles(theme => ({
   uploadPop: {
     padding: theme.spacing(3)
   },
-  blackColor:{
+  blackColor: {
     color: '#263238'
   }
 }));
 export function DriveMenuButton({ row, goToEdit }) {
+  const navigate = useNavigate();
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const changeError = () => {
+    setIsError(!isError);
+  };
+
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -57,8 +66,45 @@ export function DriveMenuButton({ row, goToEdit }) {
       .then(res => {
         setPosts(res.data);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        if (error.response) {
+          // Request made and server responded
+          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+          const statuscode = error.response.status;
+          switch (statuscode) {
+            case 400:
+              console.log(data)
+              setErrorMessage(data);
+              console.log("400 ERRORRR")
+              break;
+            case 401:
+              setErrorMessage("Unauthenticated ! Please login to continue "+data);
+              console.log("401 ERRORRR")
+              navigate('/login', { replace: true });
+              break;  
+            case 403:
+              console.log('403 error! '+data);
+              setErrorMessage("403 Error. Please try again "+data);
+              break;
+            case 500:
+              console.log("500 ERROR "+data);
+              setErrorMessage("Server Error. Please try again "+data);
+              break
+            default:
+              console.log("Navin Error "+data);
+              setErrorMessage("New Error, add it to catch block "+data);              
+          }
+          
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+          setErrorMessage("Server Error, Please try again");              
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+          setErrorMessage("Unknown error, please contact admin!");                      
+        }
+        setIsError(true);
       });
   };
   function downloadEligible(id) {
@@ -78,11 +124,50 @@ export function DriveMenuButton({ row, goToEdit }) {
     DriveService.deleteDrive({ id: id })
       .then(res => {
         console.log('in Result  : ' + res.data);
-        setTimeout(window.location.reload(false), 2000);
+        // setTimeout(window.location.reload(false), 2000);
       })
-      .catch(err => {
-        console.log(err);
-        setTimeout(window.location.reload(false), 2000);
+      .catch(error => {
+        if (error.response) {
+          // Request made and server responded
+          const data = error.response.data
+            ? JSON.stringify(error.response.data)
+            : 'Error!';
+          const statuscode = error.response.status;
+          switch (statuscode) {
+            case 400:
+              console.log(data);
+              setErrorMessage(data);
+              console.log('400 ERRORRR');
+              break;
+            case 401:
+              setErrorMessage(
+                'Unauthenticated ! Please login to continue ' + data
+              );
+              console.log('401 ERRORRR');
+              navigate('/login', { replace: true });
+              break;
+            case 403:
+              console.log('403 error! ' + data);
+              setErrorMessage('403 Error. Please try again ' + data);
+              break;
+            case 500:
+              console.log('500 ERROR ' + data);
+              setErrorMessage('Server Error. Please try again ' + data);
+              break;
+            default:
+              console.log('Navin Error ' + data);
+              setErrorMessage('New Error, add it to catch block ' + data);
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+          setErrorMessage('Server Error, Please try again');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+          setErrorMessage('Unknown error, please contact admin!');
+        }
+        setIsError(true);
       });
   };
   function openPopupWithExtraData(id) {
@@ -92,8 +177,45 @@ export function DriveMenuButton({ row, goToEdit }) {
         console.log('in Result  : ' + res.data);
         openInPopup(res.data);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        if (error.response) {
+          // Request made and server responded
+          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+          const statuscode = error.response.status;
+          switch (statuscode) {
+            case 400:
+              console.log(data)
+              setErrorMessage(data);
+              console.log("400 ERRORRR")
+              break;
+            case 401:
+              setErrorMessage("Unauthenticated ! Please login to continue "+data);
+              console.log("401 ERRORRR")
+              navigate('/login', { replace: true });
+              break;  
+            case 403:
+              console.log('403 error! '+data);
+              setErrorMessage("403 Error. Please try again "+data);
+              break;
+            case 500:
+              console.log("500 ERROR "+data);
+              setErrorMessage("Server Error. Please try again "+data);
+              break
+            default:
+              console.log("Navin Error "+data);
+              setErrorMessage("New Error, add it to catch block "+data);              
+          }
+          
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+          setErrorMessage("Server Error, Please try again");              
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+          setErrorMessage("Unknown error, please contact admin!");                      
+        }
+        setIsError(true);
       });
   }
   const addOrEdit = (drive, resetForm) => {
@@ -125,7 +247,7 @@ export function DriveMenuButton({ row, goToEdit }) {
     console.log(selectedFile);
     axios
       .post(
-        'http://20.37.50.140:8000/api/drive/'+id +'/shortlisted/',
+        'http://20.37.50.140:8000/api/drive/' + id + '/shortlisted/',
         data,
         {
           headers: {
@@ -136,10 +258,47 @@ export function DriveMenuButton({ row, goToEdit }) {
         }
       )
       .then(res => {
-        console.log(res);        
+        console.log(res);
       })
       .catch(error => {
-        console.log(error);
+        if (error.response) {
+          // Request made and server responded
+          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+          const statuscode = error.response.status;
+          switch (statuscode) {
+            case 400:
+              console.log(data)
+              setErrorMessage(data);
+              console.log("400 ERRORRR")
+              break;
+            case 401:
+              setErrorMessage("Unauthenticated ! Please login to continue "+data);
+              console.log("401 ERRORRR")
+              navigate('/login', { replace: true });
+              break;  
+            case 403:
+              console.log('403 error! '+data);
+              setErrorMessage("403 Error. Please try again "+data);
+              break;
+            case 500:
+              console.log("500 ERROR "+data);
+              setErrorMessage("Server Error. Please try again "+data);
+              break
+            default:
+              console.log("Navin Error "+data);
+              setErrorMessage("New Error, add it to catch block "+data);              
+          }
+          
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+          setErrorMessage("Server Error, Please try again");              
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+          setErrorMessage("Unknown error, please contact admin!");                      
+        }
+        setIsError(true);
       });
   };
   return (
@@ -219,7 +378,7 @@ export function DriveMenuButton({ row, goToEdit }) {
               {' '}
               Upload
             </Button>
-          </div>          
+          </div>
         </Popover>
         <MenuItem
           onClick={() => {
@@ -238,6 +397,15 @@ export function DriveMenuButton({ row, goToEdit }) {
       >
         <ProfileDetails recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </Popup>
+      <div>
+        {isError && (
+          <CustomSnackbar
+            changeError={changeError}
+            severity="error"
+            message={errorMessage}
+          />
+        )}
+      </div>
     </>
   );
 }
