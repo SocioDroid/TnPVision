@@ -147,7 +147,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           console.log("Deauthenticate user")
           console.log(error)
           navigate('/logout', { replace: true });
-        }
+        } 
       })
   }, [location.pathname]);
 
