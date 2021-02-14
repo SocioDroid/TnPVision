@@ -49,24 +49,6 @@ const EligibleDrives = ({ className, ...rest }) => {
       value
     );
 
-  function filterDrive(d){
-    for(var i = 0; i<d.length; i++)
-    {
-      const date1 = new Date(d[i].date);
-      const date2 = new Date();
-      const diffDays = date1.getDate() - date2.getDate(); 
-      console.log(diffDays + " days");
-      if (diffDays <= 10)
-        console.log("Valid", d[i]);
-      else{
-        console.log("Invalid", d[i]);
-        delete d[i];
-      }
-    }
-    console.table(d);
-    console.log("print=====")
-    setDrives(d);
-  }
   useEffect(() => {
     // axios
     //   .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
@@ -76,8 +58,7 @@ const EligibleDrives = ({ className, ...rest }) => {
     //   })
     DriveService.getAllDrives()
       .then(res => {
-        filterDrive(res.data);
-        //setDrives(res.data);
+        setDrives(res.data);
         console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
