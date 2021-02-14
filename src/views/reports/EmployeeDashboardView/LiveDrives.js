@@ -67,6 +67,7 @@ const EligibleDrives = ({ className, ...rest }) => {
     console.log("print=====")
     setDrives(d);
   }
+  
   useEffect(() => {
     // axios
     //   .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
@@ -76,8 +77,9 @@ const EligibleDrives = ({ className, ...rest }) => {
     //   })
     DriveService.getAllDrives()
       .then(res => {
-        filterDrive(res.data);
+         filterDrive(res.data);
         //setDrives(res.data);
+        setDrives(res.data);
         console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
