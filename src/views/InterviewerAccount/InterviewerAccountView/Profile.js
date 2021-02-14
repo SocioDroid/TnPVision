@@ -13,8 +13,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import axios from "axios";
-import Auth from '../../../auth'
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',

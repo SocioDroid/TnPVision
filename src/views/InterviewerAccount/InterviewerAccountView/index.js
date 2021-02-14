@@ -10,6 +10,7 @@ import ProfileDetails from './ProfileDetails';
 import axios from "axios";
 import Auth from '../../../auth'
 import EmployeeService from '../../../services/EmployeeServices';
+import InterviewerService from '../../../services/InterviewerService';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,18 +29,14 @@ const Account = () => {
     last_name: "",
     group: 0,
     id: 0,
-    college: "",
-    mobile: "",
-    doj: "",
-    department: "",
-    designation: ""
+    mobile: ""    
   })
 
   useEffect((props) => {
-    EmployeeService.getEmployeeDetail()
+    InterviewerService.getInterviewerDetails()
       .then(function(res){
         const { data} = res;
-        console.log("data idex", data);
+        console.log("Interviewer Data : ", data);
         
         setUserData({
           email: data.user.email,
@@ -47,11 +44,7 @@ const Account = () => {
           last_name: data.user.last_name,
           group: data.group,
           id: data.id,
-          college: data.college,
           mobile: data.mobile,
-          doj: data.doj,
-          department: data.department,
-          designation: data.designation
         });
       }).catch(error =>{
         console.log(error);
