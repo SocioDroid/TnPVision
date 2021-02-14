@@ -52,6 +52,18 @@ function generatePostedDays(){
     else 
         setPostedDays("Today")
 }
+
+// for(i = 0; i<d.length; i++)
+// {
+//   const date1 = new Date(d[i].date);
+//   const date2 = new Date();
+//   const diffDays = date2.getDate() - date1.getDate(); 
+//   console.log(diffDays + " days");
+//   if (diffDays <= 3)
+//     continue;    
+//   else
+//     delete d[i];
+// }
   useEffect(() => {
     // Getting Drive Details
 
