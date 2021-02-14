@@ -27,11 +27,7 @@ const initialFValues = {
     first_name: '',
     last_name: ''
   },
-  college: '',
   mobile: '',
-  doj: '',
-  department: '',
-  designation: '',
   isDeleted: false,
   isProfileComplete: false
 };
@@ -44,12 +40,8 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
     first_name: '',
     last_name: '',
     group: 0,
-    id: 0,
-    college: '',
-    mobile: '',
-    doj: '',
-    department: '',
-    designation: ''
+    id: 0,  
+   mobile: '',   
   });
 
   const validate = (fieldValues = values) => {
@@ -86,12 +78,8 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         first_name: values.first_name,
         last_name: values.last_name,
 
-        employeeProfile: {
-          college: values.college,
-          mobile: values.mobile,
-          doj: values.doj,
-          department: values.department,
-          designation: values.designation
+        interviewerProfile: {
+          mobile: values.mobile,         
         }
       };
       axios
@@ -118,8 +106,11 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
   };
 
   useEffect(() => {
-    if (userData != null) {
-      console.log("testing interviewer",userData);
+// <<<<<<< honey
+//     if (userData != null) {
+//       console.log("testing interviewer",userData);
+// =======
+    if (userData != null) {      
       setValues({
         ...values,
         email: userData.email,
@@ -127,11 +118,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         last_name: userData.last_name,
         group: userData.group,
         id: userData.id,
-        college: userData.college,
-        mobile: userData.mobile,
-        doj: userData.doj,
-        department: userData.department,
-        designation: userData.designation
+        mobile: userData.mobile
       });
     }
   }, [userData]);
@@ -141,7 +128,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
       <Card>
         <CardHeader
           subheader="The information can be edited"
-          title="Student Profile"
+          title="Interviewer Profile"
         />
         <Divider />
         <CardContent>

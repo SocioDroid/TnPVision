@@ -34,6 +34,16 @@ class DriveService {
     addDriveCoordinators(id,data){
         return http.patch(`/api/drive/${id}/co-ordinator/`, data)
     }
+
+    getDriveInterviewers(data){
+        return http.get(`/api/drive/${data.id}/interviewer/`)
+    }
+    deleteDriveInterviewer(data,id){
+        return http.delete(`/api/drive/${data.id}/interviewer/${id}/`)
+    }
+    addDriveInterviewers(id,data){
+        return http.patch(`/api/drive/${id}/interviewer/`, data)
+    }
 }
 
 export default new DriveService();
