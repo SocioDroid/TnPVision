@@ -60,7 +60,8 @@ const routes = [
   },
   {
     path: 'student',
-    element: isAuthenticated ? <SDashboardLayout /> : <Navigate to="/" />,
+    //element: isAuthenticated ? <SDashboardLayout /> : <Navigate to="/" />,
+    element: <SDashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
@@ -71,7 +72,8 @@ const routes = [
   },
   {
     path: 'employee',
-    element: isAuthenticated ? <EDashboardLayout /> : <Navigate to="/" />,
+    //element: isAuthenticated ? <EDashboardLayout /> : <Navigate to="/" />,
+    element: <EDashboardLayout />,
     children: [
       { path: 'empaccount', element: <EmployeeAccountView /> },
       { path: 'employees', element: <EmployeeListView /> },

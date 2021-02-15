@@ -143,10 +143,10 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         });
       }).catch(error => {
         if (error.response.status == 401) {
-          Auth.deauthenticateUser();
+          //Auth.deauthenticateUser();
           console.log("Deauthenticate user")
           console.log(error)
-          navigate('/logout', { replace: true });
+          //navigate('/logout', { replace: true });
         } 
       })
   }, [location.pathname]);

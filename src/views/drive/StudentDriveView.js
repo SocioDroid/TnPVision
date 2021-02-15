@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Button } from '@material-ui/core';
+import { Card, Button, Box } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -13,11 +13,19 @@ import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import LanguageOutlinedIcon from '@material-ui/icons/Language';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import Divider from '@material-ui/core/Divider';
+import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
     minWidth: 275,
     margin: theme.spacing(2)
+  },
+  progressRoot:{
+    minWidth: 275,
+    margin: theme.spacing(40),
+    textAlign: 'center',
+    justifyContent: 'center',
   },
   bullet: {
     display: 'inline-block',
@@ -35,11 +43,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function CircularProgressWithLabel(props) {
+  return (
+    <Box position="relative" display="inline-flex">
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        top={0}
+        left={0}
+        bottom={0}
+        right={0}
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
+
 export default function StudentDriveView() {
   const classes = useStyles();
   const { id } = useParams();
   const [driveDetails, setDriveDetails] = useState(null);
   const [postedDays, setPostedDays] = useState(null);
+  const [progress, setProgress] = useState(10);
 
 function generatePostedDays(){
     // Modify this field
@@ -65,6 +97,16 @@ function generatePostedDays(){
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 800);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   if (driveDetails) {
     return (
       <div>
@@ -75,21 +117,22 @@ function generatePostedDays(){
                 <Grid item xs={12} sm container>
                   <Typography
                     className={classes.pos}
-                    variant="h4"
-                    component="h2"
+                    variant="h3"
                   >
-                    Jobtitle {driveDetails.jobtitle}
+                    {driveDetails.jobtitle}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm container>
-                  <Typography className={classes.pos}>
-                    Company name {driveDetails.company.name}
+                  <Typography className={classes.pos} variant="h4">
+                    {driveDetails.company.name}
                   </Typography>
                 </Grid>
+                
                 <Typography component="p" color="textSecondary">
-                  <AccountBalanceWalletOutlinedIcon fontSize="small" /> Salary{' '}
-                  {driveDetails.min_salary} - {driveDetails.max_salary} P.A.
+                  <AccountBalanceWalletOutlinedIcon fontSize="small" />
+                  {' '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
                 </Typography>
+                
                 <Typography component="p" color="textSecondary">
                   <LocationOnOutlinedIcon fontSize="small" /> Job Location{' '}
                   {driveDetails.drive_location}
@@ -191,6 +234,20 @@ function generatePostedDays(){
       </div>
     );
   } else {
-    return <p>Loading</p>;
+    return( 
+      <div className={classes.progressRoot}>
+      <CircularProgressWithLabel size={70} value={progress} />
+      <Typography  variant="h3" color="primary">Loading...</Typography>
+      </div>
+    );
   }
 }
+
+
+CircularProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate variant.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+};
