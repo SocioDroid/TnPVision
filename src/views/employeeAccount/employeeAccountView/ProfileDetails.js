@@ -149,7 +149,6 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
                 label="First name"
                 name="first_name"
                 onChange={handleChange}

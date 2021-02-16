@@ -8,12 +8,6 @@ import StudentService from '../../../services/studentService';
 import EmployeeServices from '../../../services/EmployeeServices';
 import Auth from '../../../auth';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
-
 var items;
 let group = 2;
 if (group === 2) {
@@ -107,7 +101,11 @@ const useStyles = makeStyles(() => ({
   avatar: {
     cursor: 'pointer',
     width: 64,
-    height: 64
+    height: 64,
+    backgroundColor: '#2196f3',
+  },
+  text:{
+    color: "#ffffff",
   }
 }));
 
@@ -166,9 +164,16 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
           to="/employee/account"
-        />
+        >
+          <Typography
+            className={classes.text}
+            variant="h3"
+          >
+            {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
+          </Typography>
+        </Avatar>
+
         <Typography
           className={classes.name}
           color="textPrimary"

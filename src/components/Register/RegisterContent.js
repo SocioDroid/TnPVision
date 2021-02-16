@@ -82,7 +82,7 @@ class RegisterContent extends React.Component {
                 password: '',
                 repeatPassword: '',
                 gender: '',
-                college: '',
+                college: 'none',
                 type: '',
                 mobile: '',
                 doj: '',
@@ -363,7 +363,25 @@ class RegisterContent extends React.Component {
 
                     {this.state.showHideCollege &&
                         <div>
-                            <TextValidator
+                            <SelectValidator
+                                fullWidth
+                                required
+                                size="small"
+                                variant="outlined"
+                                name="college"
+                                Label="College"
+                                value={user.college}
+                                validators={["required"]}
+                                errorMessages={["this field is required"]}
+                                onChange={this.handleChange}
+                            >
+                                {college.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </SelectValidator>
+                            {/* <TextValidator
                                 fullWidth
                                 variant="outlined"
                                 size="small"
@@ -372,7 +390,7 @@ class RegisterContent extends React.Component {
                                 name="college"
                                 type="text"
                                 value={user.college}
-                            />
+                            /> */}
                             <br />
                             <TextValidator
                                 fullWidth
@@ -416,7 +434,7 @@ class RegisterContent extends React.Component {
                                 value={user.designation}
                                 validators={["required"]}
                                 errorMessages={["this field is required"]}
-                                className=""
+                                onChange={this.handleChange}
                             >
                                 {roles.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -424,16 +442,6 @@ class RegisterContent extends React.Component {
                                     </MenuItem>
                                 ))}
                             </SelectValidator>
-                            {/* <TextValidator                    
-                    fullWidth
-                    variant="outlined"
-                    size="small"
-                    label="Designation"
-                    onChange={this.handleChange}
-                    name="designation"
-                    type="text"
-                    value={user.designation}
-                /> */}
                             <br />
                         </div>
                     }

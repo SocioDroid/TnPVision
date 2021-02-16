@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
   },
   differenceValue: {
     marginRight: theme.spacing(1)
+  },
+  text:{
+    color: "#ffffff",
   }
 }));
 
@@ -101,12 +104,12 @@ const EligibleDrives = ({ className, ...rest }) => {
       <Grid container spacing={3}>
         {drives.map(drive => {
           return (
-            <Grid item lg={3} sm={6} xl={3} xs={12} key={drive.id}>
+            <Grid item md={4} sm={6} xl={3} xs={12} key={drive.id}>
               <a href={'/employee/drive/' + drive.id}>
                 <Card className={clsx(classes.root, className)} {...rest}>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
-                      <Grid item lg={8} sm={8} xl={8} xs={8}>
+                      <Grid item md={9} sm={10} xs={8}>
                         <Typography
                           color="textSecondary"
                           gutterBottom
@@ -126,9 +129,14 @@ const EligibleDrives = ({ className, ...rest }) => {
                         </Typography>
                       </Grid>
                      
-                      <Grid item>
+                      <Grid item xs={12} sm md >
                         <Avatar className={classes.avatar}>
-                          <MoneyIcon />
+                        <Typography
+                          className={classes.text}
+                          variant="h3"
+                        >
+                          {drive.company.name[0].toUpperCase()}
+                        </Typography>
                         </Avatar>
                       </Grid>
                     </Grid>

@@ -43,11 +43,12 @@ const LatestOrders = ({ className, DriveId, ...rest }) => {
       .then(res => {
         setStudents([...res.data.students]);
         console.log("res ",res.data.students)
+        setFlag(false)
       })
       .catch(err => {
         console.log(err);
       });   
-  }, [students]);
+  }, [flag]);
 
   return (
     <Card

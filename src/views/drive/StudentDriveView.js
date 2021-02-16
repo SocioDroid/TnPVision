@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Box } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 275,
     margin: theme.spacing(2)
   },
-  progressRoot:{
+  progressRoot: {
     minWidth: 275,
     margin: theme.spacing(40),
     textAlign: 'center',
@@ -40,6 +40,17 @@ const useStyles = makeStyles(theme => ({
   },
   alignToBottom: {
     alignSelf: 'flex-end'
+  },
+  skills:{
+    //fontSize: '14px',
+    backgroundColor: '#d2e4fc',
+    padding: '2px 10px',
+    marginRight: '5px',
+    borderRadius: '100px',
+    //border: '1px solid #000000',
+    whiteSpace: 'nowrap',
+    color: '#636363',
+    cursor: 'pointer'
   }
 }));
 
@@ -73,29 +84,29 @@ export default function StudentDriveView() {
   const [postedDays, setPostedDays] = useState(null);
   const [progress, setProgress] = useState(10);
 
-function generatePostedDays(){
+  function generatePostedDays() {
     // Modify this field
     const date1 = new Date(driveDetails.createdAt);
     const date2 = new Date();
-    const diffDays = date2.getDate() - date1.getDate(); 
+    const diffDays = date2.getDate() - date1.getDate();
     console.log(diffDays + " days");
     if (diffDays > 0)
-        setPostedDays(diffDays);
-    else 
-        setPostedDays("Today")
-}
+      setPostedDays(diffDays);
+    else
+      setPostedDays("Today")
+  }
 
-// for(i = 0; i<d.length; i++)
-// {
-//   const date1 = new Date(d[i].date);
-//   const date2 = new Date();
-//   const diffDays = date2.getDate() - date1.getDate(); 
-//   console.log(diffDays + " days");
-//   if (diffDays <= 3)
-//     continue;    
-//   else
-//     delete d[i];
-// }
+  // for(i = 0; i<d.length; i++)
+  // {
+  //   const date1 = new Date(d[i].date);
+  //   const date2 = new Date();
+  //   const diffDays = date2.getDate() - date1.getDate(); 
+  //   console.log(diffDays + " days");
+  //   if (diffDays <= 3)
+  //     continue;    
+  //   else
+  //     delete d[i];
+  // }
   useEffect(() => {
     // Getting Drive Details
 
@@ -139,16 +150,18 @@ function generatePostedDays(){
                     {driveDetails.company.name}
                   </Typography>
                 </Grid>
-                
-                <Typography component="p" color="textSecondary">
-                  <AccountBalanceWalletOutlinedIcon fontSize="small" />
-                  {' '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
+                <div>
+                  <Typography color="textSecondary" >
+                    <AccountBalanceWalletOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+                    {'  '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
                 </Typography>
-                
-                <Typography component="p" color="textSecondary">
-                  <LocationOnOutlinedIcon fontSize="small" /> Job Location{' '}
-                  {driveDetails.drive_location}
-                </Typography>
+                </div>
+                <div style={{ marginTop: "5px" }}>
+                  <Typography color="textSecondary">
+                    <LocationOnOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+                    {' '} {driveDetails.drive_location}
+                  </Typography>
+                </div>
               </Grid>
 
               <Grid
@@ -166,10 +179,10 @@ function generatePostedDays(){
                 item
                 xs={12}
               >
-              <Divider />
-                 <Typography component="p" color="textSecondary">
-                    Posted: {postedDays} 
-                </Typography> 
+                <Divider />
+                <Typography color="textSecondary">
+                  Posted: {postedDays}
+                </Typography>
               </Grid>
             </Grid>
           </CardContent>
@@ -177,79 +190,140 @@ function generatePostedDays(){
 
         <Card className={classes.root}>
           <CardContent>
-            <Typography component="h2" variant="h4">
+            <Typography component="h2" variant="h4" style={{ marginBottom: "10px" }} >
               Job Description
             </Typography>
-            <Typography component="p">
-              <p>
-                Sint id nulla ea aliqua non magna esse veniam anim commodo.
-                Aliqua
-                <br />
-                irure dolor qui sint anim commodo exercitation velit dolore
-                <br />
-                reprehenderit laboris do laboris. Quis aute magna culpa tempor
-                <br />
-                aliquip. Est magna est nulla culpa dolor sunt ipsum ea fugiat
-                aute
-                <br />
-                esse Lorem. Non cillum do minim dolore ex amet mollit nisi amet
-                et
-                <br />
-                sunt mollit. Aliquip aliqua veniam fugiat elit et. Qui velit
-                <br />
-                veniam irure nostrud. Anim esse commodo pariatur sint. Dolore
-                duis
-                <br />
-                adipisicing reprehenderit mollit deserunt nostrud magna enim
-                <br />
-                fugiat consectetur duis do dolore ipsum. Labore consequat sit
-                aute
-                <br />
-                quis esse proident minim cillum aliquip ex in. Velit adipisicing
-                <br />
-                nisi sunt et. Duis duis dolore non adipisicing aute eiusmod ad
-                <br />
-                irure eiusmod culpa sint sint cupidatat. Cillum fugiat nisi sit
-                <br />
-                elit occaecat magna velit id. Nostrud aute adipisicing consequat
-                <br />
-                sint anim ex tempor magna. Fugiat dolore culpa nulla duis
-                nostrud.
-              </p>
+            <Typography variant="h5" style={{ marginBottom: "5px" }} >
+              Roles and Responsibilities
             </Typography>
-          </CardContent>
-        </Card>
+            <Typography style={{ paddingLeft: "10px" }} >
 
-        <Card className={classes.root}>
-          <CardContent>
-            <Typography component="h2" variant="h4">
-              About Company
+              {/* <FiberManualRecordIcon style={{verticalAlign: "sub", size: "2px"}} /> */}
+              <li>Sint id nulla ea aliqua non magna esse veniam anim commodo.</li>
+              <li>irure dolor qui sint anim commodo exercitation velit dolore</li>
+
+              <li>reprehenderit laboris do laboris. Quis aute magna culpa tempor</li>
+
+              <li>aliquip. Est magna est nulla culpa dolor sunt ipsum ea fugiat</li>
+
+              <li>esse Lorem. Non cillum do minim dolore ex amet mollit nisi amet</li>
+
+              <li>sunt mollit. Aliquip aliqua veniam fugiat elit et. Qui velit</li>
+
+              <li>veniam irure nostrud. Anim esse commodo pariatur sint. Dolore</li>
             </Typography>
-            <Typography component="p" className={classes.pos}>
-              Company domain
+            <Typography variant="h5" style={{ marginBottom: "5px", marginTop: "15px" }} >
+              Perks and Benefits
             </Typography>
-            <Typography component="p">
-              <WorkOutlineOutlinedIcon fontSize="small" />
-              Company industry type : {driveDetails.company.industry}
+            <Typography component="p" style={{ paddingLeft: "10px" }} >
+              <table style={{ width: "50%" }}>
+                <tr>
+                  <td style={{ color: "#9e9e9e" }}>
+                    Role
+                  </td>
+                  <td>
+                    Software Developer
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ color: "#9e9e9e" }}>
+                    Industry Type
+                  </td>
+                  <td>
+                    IT-Software
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ color: "#9e9e9e" }}>
+                    Functional Area
+                  </td>
+                  <td>
+                  IT Software - Application Programming, Maintenance
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ color: "#9e9e9e" }}>
+                  Employment Type
+                  </td>
+                  <td>
+                    Full Time
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ color: "#9e9e9e" }}>
+                  Role Category
+                  </td>
+                  <td>
+                    Programming {'&'} Design
+                  </td>
+                </tr>
+              </table>
             </Typography>
-            <Typography component="p">
-              <LanguageOutlinedIcon fontSize="small" /> Company website :{' '}
-              <a href={driveDetails.company.website}>
-                {driveDetails.company.website}
-              </a>
+            <Typography variant="h5" style={{ marginBottom: "5px", marginTop: "15px" }} >
+              Education
             </Typography>
-            <Typography component="p">
-              <HomeWorkOutlinedIcon fontSize="small" /> Company Address
+            <Typography component="p" style={{ paddingLeft: "10px" }} >
+              <table style={{ width: "100%" }}>
+                <tr>
+                  <td style={{ color: "#9e9e9e" }}>
+                    UG
+                  </td>
+                  <td>
+                  B.Sc in Any Specialization, B.Tech/B.E. in Any Specialization, BCA in Any Specialization
+                  </td>
+                </tr>
+              </table>
             </Typography>
+            <Typography variant="h5" style={{ marginBottom: "5px", marginTop: "15px" }} >
+              Skills
+            </Typography>
+            <div style={{display: 'flex', alignItems: 'center', overflowX: 'auto', paddingLeft: "10px"}}>
+            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
+              Python
+            </Typography>
+            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
+              Java
+            </Typography>
+            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
+              C++
+            </Typography>
+            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
+              MySQL
+            </Typography>
+            </div>
           </CardContent>
-        </Card>
-      </div>
+        </Card >
+
+      <Card className={classes.root}>
+        <CardContent>
+          <Typography component="h2" variant="h4">
+            About Company
+            </Typography>
+          <Typography component="p" className={classes.pos}>
+            Company domain
+            </Typography>
+          <Typography>
+            <WorkOutlineOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+            {'  '}{driveDetails.company.industry}
+          </Typography>
+          <Typography>
+            <LanguageOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+            <a href={driveDetails.company.website}>
+              {'  '}{driveDetails.company.website}
+            </a>
+          </Typography>
+          <Typography>
+            <HomeWorkOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} /> Company Address
+            </Typography>
+        </CardContent>
+      </Card>
+      </div >
     );
   } else {
-    return( 
+    return (
       <div className={classes.progressRoot}>
-      <CircularProgressWithLabel size={70} value={progress} />
-      <Typography  variant="h3" color="primary">Loading...</Typography>
+        <CircularProgressWithLabel size={70} value={progress} />
+        <Typography variant="h3" color="primary">Loading...</Typography>
       </div>
     );
   }

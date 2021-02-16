@@ -14,6 +14,7 @@ import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
 import TrafficByDevice from './TrafficByDevice';
 import LiveDrive from './LiveDrives';
+import Auth from '../../../auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,7 @@ const Dashboard = (props) => {
   const classes = useStyles();
   const { history} = props;
   return (
+    Auth.isUserAuthenticated() ? (
     <Page
       className={classes.root}
       title="Dashboard"
@@ -113,6 +115,7 @@ const Dashboard = (props) => {
         </Grid> */}
       </Container>
     </Page>
+    ) : <p>Loading</p>
   );
 };
 

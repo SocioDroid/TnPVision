@@ -29,7 +29,11 @@ const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
     height: 100,
-    width: 100
+    width: 100,
+    backgroundColor: '#2196f3',
+  },
+  text:{
+    color: "#ffffff",
   }
 }));
 
@@ -49,8 +53,14 @@ const Profile = ({ className, userData, ...rest }) => {
         >
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
-          />
+          >
+            <Typography
+            className={classes.text}
+            variant="h1"
+          >
+            {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
+          </Typography>
+          </Avatar>
           <Typography
             color="textPrimary"
             gutterBottom

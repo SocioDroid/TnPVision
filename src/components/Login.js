@@ -100,17 +100,18 @@ function Login(props) {
 					setSubmitionCompleted(true);
 					if (result.status === 200 && result.data.data.token !== "") {
 						Auth.authenticateUser(result.data.data.token, result.data.data.expiry, result.data.data.group)
-						if (result.data.data.group === "student")
-							navigate('/student/dashboard', { replace: true });
-							// <Navigate to="/student/dashboard" />
-							// return <SDashboardLayout /> 
-						else if (result.data.data.group === "employee" || result.data.data.group === "employee" || result.data.data.group === "employee")
-							// return <EDashboardLayout /> 
-							navigate('/employee/dashboard');
-							// <Navigate to="/employee/dashboard" />
-						else if (result.data.data.group === "interviewer")							
-							navigate('/interviewer/dashboard');
-							
+						setTimeout(() => {
+							if (result.data.data.group === "student")
+								navigate('/student/dashboard', { replace: true });
+								// <Navigate to="/student/dashboard" />
+								// return <SDashboardLayout /> 
+							else if (result.data.data.group === "employee" || result.data.data.group === "employee" || result.data.data.group === "employee")
+								// return <EDashboardLayout /> 
+								navigate('/employee/dashboard');
+								// <Navigate to="/employee/dashboard" />
+							else if (result.data.data.group === "interviewer")							
+								navigate('/interviewer/dashboard');
+						}, 5000);	
 					}
 				})
 				.catch(error => {

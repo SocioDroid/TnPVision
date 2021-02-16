@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import { Container, Grid, Typography, makeStyles, Divider } from '@material-ui/core';
 import Page from '../../../components/Page';
 import EligibleDrives from './EligibleDrives';
@@ -10,6 +10,7 @@ import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
 import TrafficByDevice from './TrafficByDevice';
+import Auth from '../../../auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,10 +24,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
 const Dashboard = props => {
   const classes = useStyles();
   const { history } = props;
   return (
+    Auth.isUserAuthenticated() ? (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>        
           <EligibleDrives />
@@ -59,6 +62,7 @@ const Dashboard = props => {
         
       </Container >
     </Page >
+    ) : <p>Loading</p>
   );
 };
 
