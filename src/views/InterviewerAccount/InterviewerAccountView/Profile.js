@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -27,13 +27,18 @@ const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
     height: 100,
-    width: 100
-  }
+    width: 100,
+    backgroundColor: '#2196f3',
+    marginBottom: '5px',
+  },
+  text: {
+    color: "#ffffff",
+  },
 }));
 
 const Profile = ({ className, userData, ...rest }) => {
   const classes = useStyles();
-  
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -47,14 +52,20 @@ const Profile = ({ className, userData, ...rest }) => {
         >
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
-          />
+          >
+            <Typography
+              className={classes.text}
+              variant="h1"
+            >
+              {userData.email ? userData.email[0].toUpperCase() : ""}
+            </Typography>
+          </Avatar>
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h3"
           >
-            {userData.first_name+" "+userData.last_name}
+            {userData.first_name + " " + userData.last_name}
           </Typography>
           <Typography
             color="textSecondary"

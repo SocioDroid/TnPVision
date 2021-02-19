@@ -45,6 +45,11 @@ const items = [
     href: '/interviewer/account',
     icon: UserIcon,
     title: 'Account'
+  },
+  {
+    href: '/interviewer/drive',
+    icon: UserIcon,
+    title: 'Drive'
   }
 ];
 
@@ -60,7 +65,12 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     cursor: 'pointer',
     width: 64,
-    height: 64
+    height: 64,
+    backgroundColor: '#2196f3',
+    marginBottom: '5px',
+  },
+  text: {
+    color: "#ffffff",
   },
   icon: {
     marginRight: theme.spacing(2)
@@ -86,6 +96,16 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = ({ onMobileClose, openMobile }) => {
   const navigate = useNavigate();
+  const [data, setData] = useState(false);
+  const [userData, setUserData] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    gender: "",
+    group: 0,
+    id: 0,
+  })
+
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const changeError = () => {
@@ -150,26 +170,57 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       onMobileClose();
     }
     getCompany();
-    // eslint-disable-next-line
+    InterviewerService.getInterviewerDetails()
+    .then(function (res) {
+      const { data } = res;
+      console.log("data: ", data);
+      setUserData({
+        email: data.user.email,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
+        gender: data.gender,
+        group: data.group,
+        id: data.id,
+      });
+      setData(true)
+    }).catch(error => {
+      if (error.response.status == 401) {
+        //Auth.deauthenticateUser();
+        setData(false)
+        console.log("Deauthenticate user")
+        console.log(error)
+        //navigate('/logout', { replace: true });
+      } 
+    })
   }, []);
 
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
+      {data ? (
+      <>
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
           to="/app/account"
-        />
+        >
+          <Typography
+            className={classes.text}
+            variant="h3"
+          >
+            {userData.email ? userData.email[0].toUpperCase() : ""}
+          </Typography>
+        </Avatar>
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {user.name}
+            {userData.first_name + " " + userData.last_name}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {user.jobTitle}
+          {userData.email}
         </Typography>
       </Box>
       <Divider />
+      </>
+      ) : ""}
       <Box p={2}>
         <List>
           {items.map(item => (
@@ -243,7 +294,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => {},
+  onMobileClose: () => { },
   openMobile: false
 };
 

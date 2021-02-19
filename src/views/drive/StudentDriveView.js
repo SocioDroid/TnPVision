@@ -168,7 +168,6 @@ export default function StudentDriveView() {
                 item
                 md={4}
                 xs={12}
-                justify="center"
                 className={classes.alignToBottom}
               >
                 <Button variant="contained" color="primary">
