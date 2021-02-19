@@ -31,7 +31,8 @@ import InterviewerAccountView from './views/InterviewerAccount/InterviewerAccoun
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
 import VolunteerSearch from './views/testautocomplete';
 import StudentDriveView from './views/drive/StudentDriveView'
-import EmployeeDriveView from './views/drive/EmployeeDriveView'
+import EmployeeDriveView from './views/drive/EmployeeDriveView';
+import InterviewerDrive from './views/reports/InterviewerDashboardView/InterviewerDrive'
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const group = Auth.getGroup();
@@ -96,6 +97,7 @@ const routes = [
     children: [
       { path: 'account', element: <InterviewerAccountView /> },
       { path: 'dashboard', element: <InterviewerDashboardView /> },
+      { path: 'drive', element: <InterviewerDrive /> },
       { path: '*', element: <Navigate to="/404" /> },
     ]
   },

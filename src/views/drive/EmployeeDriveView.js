@@ -73,17 +73,17 @@ export default function StudentDriveView() {
   const [progress, setProgress] = useState(10);
   //const [postedDays, setPostedDays] = useState(null);
 
-// function generatePostedDays(){
-//     // Modify this field
-//     const date1 = new Date(driveDetails.createdAt);
-//     const date2 = new Date();
-//     const diffDays = date2.getDate() - date1.getDate(); 
-//     console.log(diffDays + " days");
-//     if (diffDays > 0)
-//         setPostedDays(diffDays);
-//     else 
-//         setPostedDays("Today")
-// }
+  // function generatePostedDays(){
+  //     // Modify this field
+  //     const date1 = new Date(driveDetails.createdAt);
+  //     const date2 = new Date();
+  //     const diffDays = date2.getDate() - date1.getDate(); 
+  //     console.log(diffDays + " days");
+  //     if (diffDays > 0)
+  //         setPostedDays(diffDays);
+  //     else 
+  //         setPostedDays("Today")
+  // }
   useEffect(() => {
     // Getting Drive Details
     DriveService.getSingleDrive({ id: id })
@@ -111,142 +111,125 @@ export default function StudentDriveView() {
         <Card className={classes.root}>
           <CardContent>
             <Grid container spacing={3}>
-              
               <Grid item md={8} xs={12}>
-                    <Grid item xs={12}>
-                        <Typography
-                            className={classes.pos}
-                            variant="h4"
-                            component="h2"
-                        >
-                            Jobtitle: {driveDetails.jobtitle}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography className={classes.pos}>
-                            Company name: {driveDetails.company.name}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography component="p" color="textSecondary">
-                        <AccountBalanceWalletOutlinedIcon fontSize="small" /> Salary{' '}
-                        {driveDetails.min_salary} - {driveDetails.max_salary} P.A.
-                        </Typography>
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                        <Typography component="p" color="textSecondary">
-                        <LocationOnOutlinedIcon fontSize="small" /> Job Location:{' '}
-                        {driveDetails.drive_location}
-                        </Typography>
-                    </Grid>
-                    
+                <Grid item xs={12} sm container>
+                  <Typography
+                    className={classes.pos}
+                    variant="h3"
+                  >
+                    {driveDetails.jobtitle}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm container>
+                  <Typography className={classes.pos} variant="h4">
+                    {driveDetails.company.name}
+                  </Typography>
+                </Grid>
+                <div>
+                  <Typography color="textSecondary" >
+                    <AccountBalanceWalletOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+                    {'  '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
+                </Typography>
+                </div>
+                <div style={{ marginTop: "5px" }}>
+                  <Typography color="textSecondary">
+                    <LocationOnOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+                    {' '} {driveDetails.drive_location}
+                  </Typography>
+                </div>
               </Grid>
-              <Grid item md={2} xs={12}>
-                  <Grid item/>
-                    <Grid
-                        item
-                        md={12}
-                        xs={12}
-                        className={classes.alignToBottom}
-                    >
-                        <Button variant="contained" color="primary">
-                        Mark as Finished
-                        </Button>
-                    </Grid>
-              </Grid>
-
-             
-              {/* <Grid
+              <Grid
                 item
+                md={4}
                 xs={12}
+                className={classes.alignToBottom}
               >
-              <Divider /> 
-                <Typography component="p" color="textSecondary">
-                    Posted: {postedDays} 
-                </Typography>  
-              </Grid> */}
+                <Button variant="contained" color="primary">
+                  Mark As Finished
+                </Button>
+              </Grid>
             </Grid>
           </CardContent>
         </Card>
 
         <Card className={classes.root}>
           <CardContent><Grid
-          container
-          spacing={3}
-        >
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
+            container
+            spacing={3}
           >
-          <Budget />
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <Budget />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <TotalCustomers />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <TasksProgress />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <TotalProfit />
+            </Grid>
+            <Grid
+              item
+              lg={8}
+              md={12}
+              xl={9}
+              xs={12}
+            >
+              <Sales />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <TrafficByDevice />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <LatestProducts />
+            </Grid>
+            <Grid
+              item
+              lg={8}
+              md={12}
+              xl={9}
+              xs={12}
+            >
+              <LatestOrders DriveId={driveDetails.id} />
+            </Grid>
           </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TotalCustomers />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TasksProgress />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TotalProfit />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <Sales />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <TrafficByDevice />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <LatestProducts />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <LatestOrders  DriveId={driveDetails.id}/>
-          </Grid>
-        </Grid>
             {/* <Typography component="h2" variant="h4">
               Job Description
             </Typography>
