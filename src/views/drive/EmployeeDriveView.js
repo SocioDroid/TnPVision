@@ -22,16 +22,16 @@ const useStyles = makeStyles(theme => ({
     minWidth: 275,
     margin: theme.spacing(2)
   },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)'
+  },
   progressRoot: {
     minWidth: 275,
     margin: theme.spacing(40),
     textAlign: 'center',
     justifyContent: 'center',
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
   },
   title: {
     fontSize: 14
@@ -230,72 +230,11 @@ export default function StudentDriveView() {
               <LatestOrders DriveId={driveDetails.id} />
             </Grid>
           </Grid>
-            {/* <Typography component="h2" variant="h4">
-              Job Description
-            </Typography>
-            <Typography component="p">
-              <p>
-                Sint id nulla ea aliqua non magna esse veniam anim commodo.
-                Aliqua
-                <br />
-                irure dolor qui sint anim commodo exercitation velit dolore
-                <br />
-                reprehenderit laboris do laboris. Quis aute magna culpa tempor
-                <br />
-                aliquip. Est magna est nulla culpa dolor sunt ipsum ea fugiat
-                aute
-                <br />
-                esse Lorem. Non cillum do minim dolore ex amet mollit nisi amet
-                et
-                <br />
-                sunt mollit. Aliquip aliqua veniam fugiat elit et. Qui velit
-                <br />
-                veniam irure nostrud. Anim esse commodo pariatur sint. Dolore
-                duis
-                <br />
-                adipisicing reprehenderit mollit deserunt nostrud magna enim
-                <br />
-                fugiat consectetur duis do dolore ipsum. Labore consequat sit
-                aute
-                <br />
-                quis esse proident minim cillum aliquip ex in. Velit adipisicing
-                <br />
-                nisi sunt et. Duis duis dolore non adipisicing aute eiusmod ad
-                <br />
-                irure eiusmod culpa sint sint cupidatat. Cillum fugiat nisi sit
-                <br />
-                elit occaecat magna velit id. Nostrud aute adipisicing consequat
-                <br />
-                sint anim ex tempor magna. Fugiat dolore culpa nulla duis
-                nostrud.
-              </p>
-            </Typography> */}
+            
           </CardContent>
         </Card>
 
-        {/* <Card className={classes.root}>
-          <CardContent>
-            <Typography component="h2" variant="h4">
-              About Company
-            </Typography>
-            <Typography component="p" className={classes.pos}>
-              Company domain
-            </Typography>
-            <Typography component="p">
-              <WorkOutlineOutlinedIcon fontSize="small" />
-              Company industry type : {driveDetails.company.industry}
-            </Typography>
-            <Typography component="p">
-              <LanguageOutlinedIcon fontSize="small" /> Company website :{' '}
-              <a href={driveDetails.company.website}>
-                {driveDetails.company.website}
-              </a>
-            </Typography>
-            <Typography component="p">
-              <HomeWorkOutlinedIcon fontSize="small" /> Company Address
-            </Typography>
-          </CardContent>
-        </Card> */}
+       
       </div>
     );
   } else {

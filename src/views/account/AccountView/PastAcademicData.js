@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField,
-} from '@material-ui/core';
+import { Box, Button, Card, CardContent, CardHeader, Divider, Grid, TextField, Typography} from '@material-ui/core';
 import { useForm } from '../../../components/useForm';
 import axios from 'axios';
 import Auth from '../../../auth';
@@ -27,10 +18,6 @@ const initialFValues = {
   diplomaYearOfPassing: 0,
   EnggQualifyingExamYear: 0,
   EnggQualifyingExamScore: 0.0,
-  fatherOccupation: "",
-  motherOccupation: "",
-  parentsEmail: "",
-  parentsMobileNumber: 0,
   createdAt: "",
   updatedAt: "",
   isDeleted: false,
@@ -53,10 +40,6 @@ const PastAcademicData = ({ userData }) => {
     diplomaYearOfPassing: 0,
     EnggQualifyingExamYear: 0,
     EnggQualifyingExamScore: 0.0,
-    fatherOccupation: "",
-    motherOccupation: "",
-    parentsEmail: "",
-    parentsMobileNumber: 0,
     createdAt: "",
     updatedAt: "",
     isDeleted: false,
@@ -107,10 +90,7 @@ const PastAcademicData = ({ userData }) => {
         "diplomaYearOfPassing": values.diplomaYearOfPassing,
         "EnggQualifyingExamYear": values.EnggQualifyingExamYear,
         "EnggQualifyingExamScore": values.EnggQualifyingExamScore,
-        "fatherOccupation": values.fatherOccupation,
-        "motherOccupation": values.motherOccupation,
-        "parentsEmail": values.parentsEmail,
-        "parentsMobileNumber": values.parentsMobileNumber,
+        
         "isDeleted": values.isDeleted,
         "isVolunteer": values.isVolunteer,
         "isProfileComplete": values.isProfileComplete,
@@ -150,10 +130,6 @@ const PastAcademicData = ({ userData }) => {
         "diplomaYearOfPassing": userData.diplomaYearOfPassing,
         "EnggQualifyingExamYear": userData.EnggQualifyingExamYear,
         "EnggQualifyingExamScore": userData.EnggQualifyingExamScore,
-        "fatherOccupation": userData.fatherOccupation,
-        "motherOccupation": userData.motherOccupation,
-        "parentsEmail": userData.parentsEmail,
-        "parentsMobileNumber": userData.parentsMobileNumber,
         "isDeleted": userData.isDeleted,
         "isVolunteer": userData.isVolunteer,
         "isProfileComplete": userData.isProfileComplete,
@@ -175,13 +151,17 @@ const PastAcademicData = ({ userData }) => {
           />
           <Divider />
           <CardContent>
-            <br />
-            <Grid container spacing={3}>
+            
+            <Grid container spacing={3}>  
+              <Grid item md={12} xs={12}>
+                <Typography> Tenth </Typography> 
+                <Divider style={{marginTop: "5px"}}/>               
+              </Grid>         
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   type="number"
-                  label="Tenth Percentage"
+                  label="Percentage"
                   name="tenthPercentage"
                   onChange={handleChange}
                   required
@@ -192,7 +172,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
-                  label="Tenth Board of Examination"
+                  label="Examination Board"
                   name="tenthBoardOfExamination"
                   onChange={handleChange}
                   required
@@ -203,7 +183,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
-                  label="Tenth year of Passing"
+                  label="Year of Passing"
                   name="tenthYearOfPassing"
                   onChange={handleChange}
                   required
@@ -211,11 +191,15 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
+              <Grid item md={12} xs={12}>
+                <Typography> Twelth </Typography> 
+                <Divider style={{marginTop: "5px"}}/>               
+              </Grid> 
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
                   type="number"
-                  label="Twelfth Percentage"
+                  label="Percentage"
                   name="twelthPercentage"
                   onChange={handleChange}
                   required
@@ -226,7 +210,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
-                  label="Twelfth Board of Examination"
+                  label="Examination Board"
                   name="twelfthBoardOfExamination"
                   onChange={handleChange}
                   required
@@ -237,7 +221,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
-                  label="Twelfth year of Passing"
+                  label="Year of Passing"
                   name="twelfthYearOfPassing"
                   onChange={handleChange}
                   required
@@ -245,6 +229,10 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
+              <Grid item md={12} xs={12}>
+                <Typography> Diploma </Typography> 
+                <Divider style={{marginTop: "5px"}}/>               
+              </Grid> 
               <Grid
                 item
                 md={4}
@@ -253,7 +241,7 @@ const PastAcademicData = ({ userData }) => {
                 <TextField
                   fullWidth
                   type="number"
-                  label="Diploma Percentage"
+                  label="Percentage"
                   name="diplomaPercentage"
                   onChange={handleChange}
                   required
@@ -264,7 +252,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
-                  label="Diploma Board of Examination"
+                  label="Examination Board"
                   name="diplomaBoardOfExamination"
                   onChange={handleChange}
                   required
@@ -275,7 +263,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={4} xs={12}>
                 <TextField
                   fullWidth
-                  label="Diploma year of Passing"
+                  label="Year of Passing"
                   name="diplomaYearOfPassing"
                   onChange={handleChange}
                   required
@@ -283,10 +271,14 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
+              <Grid item md={12} xs={12}>
+                <Typography> Engineering </Typography> 
+                <Divider style={{marginTop: "5px"}}/>               
+              </Grid> 
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
-                  label="Engineering Qualifying Exam Year"
+                  label="Qualifying Exam Year"
                   name="EnggQualifyingExamYear"
                   onChange={handleChange}
                   required
@@ -297,7 +289,7 @@ const PastAcademicData = ({ userData }) => {
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
-                  label="Engineering Qualifying Exam Score"
+                  label="Qualifying Exam Score"
                   name="EnggQualifyingExamScore"
                   onChange={handleChange}
                   required
@@ -305,50 +297,7 @@ const PastAcademicData = ({ userData }) => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Father Occupation"
-                  name="fatherOccupation"
-                  onChange={handleChange}
-                  required
-                  value={values.fatherOccupation}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Mother Occupation"
-                  name="motherOccupation"
-                  onChange={handleChange}
-                  required
-                  value={values.motherOccupation}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Parents Email"
-                  name="parentsEmail"
-                  onChange={handleChange}
-                  required
-                  value={values.parentsEmail}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12} >
-                <TextField
-                  fullWidth
-                  label="Parents Mobile Number"
-                  name="parentsMobileNumber"
-                  onChange={handleChange}
-                  required
-                  value={values.parentsMobileNumber}
-                  variant="outlined"
-                />
-              </Grid>
+              
             </Grid>
             <Divider style={{marginTop:10}} />
             <Box
