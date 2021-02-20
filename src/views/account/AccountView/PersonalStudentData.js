@@ -44,6 +44,10 @@ const initialFValues = {
   aadhar: "",
   dob: "",
   homeTown: "",
+  fatherOccupation: "",
+  motherOccupation: "",
+  parentsEmail: "",
+  parentsMobileNumber: 0,
 }
 
 const PersonalData = ({ userData }) => {
@@ -64,6 +68,10 @@ const PersonalData = ({ userData }) => {
     aadhar: "",
     dob: "",
     homeTown: "",
+    fatherOccupation: "",
+    motherOccupation: "",
+    parentsEmail: "",
+    parentsMobileNumber: 0,
 
   });
 
@@ -126,7 +134,11 @@ const PersonalData = ({ userData }) => {
         "PAN_number": values.PAN_number,
         "aadhar": values.aadhar,
         "dob": JSON.stringify(datevalues.date).slice(1,11),
-        "homeTown": values.homeTown
+        "homeTown": values.homeTown,
+        "fatherOccupation": values.fatherOccupation,
+        "motherOccupation": values.motherOccupation,
+        "parentsEmail": values.parentsEmail,
+        "parentsMobileNumber": values.parentsMobileNumber,
       }
     }
     console.log("data.dob",JSON.stringify(datevalues.date).slice(1,11))
@@ -170,6 +182,11 @@ const PersonalData = ({ userData }) => {
         "aadhar": userData.aadhar,
         "dob": userData.dob,
         "homeTown": userData.homeTown,
+
+        "fatherOccupation": userData.fatherOccupation,
+        "motherOccupation": userData.motherOccupation,
+        "parentsEmail": userData.parentsEmail,
+        "parentsMobileNumber": userData.parentsMobileNumber,
       })
     }
   }, [userData])
@@ -351,6 +368,50 @@ const PersonalData = ({ userData }) => {
                   value={values.gender}
                   onChange={handleChange}
                   items={genderItems}
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Father Occupation"
+                  name="fatherOccupation"
+                  onChange={handleChange}
+                  required
+                  value={values.fatherOccupation}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Mother Occupation"
+                  name="motherOccupation"
+                  onChange={handleChange}
+                  required
+                  value={values.motherOccupation}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Parents Email"
+                  name="parentsEmail"
+                  onChange={handleChange}
+                  required
+                  value={values.parentsEmail}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12} >
+                <TextField
+                  fullWidth
+                  label="Parents Mobile Number"
+                  name="parentsMobileNumber"
+                  onChange={handleChange}
+                  required
+                  value={values.parentsMobileNumber}
+                  variant="outlined"
                 />
               </Grid>
             </Grid>

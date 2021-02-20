@@ -14,11 +14,35 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  TextField,
+  MenuItem
 } from '@material-ui/core';
 import axios from 'axios';
 import { useForm } from '../../../components/useForm';
 import Auth from '../../../auth';
+
+const departmentItems = [
+  {
+      id: 'Computer',
+      title: 'Computer',
+  },
+  {
+      id: 'IT',
+      title: 'IT',
+  },
+];
+
+const collegeItems = [
+
+  {
+      id: 'DYPCOE',
+      title: 'DYPCOE',
+  },
+  {
+      id: 'DYPIEMR',
+      title: 'DYPIEMR',
+  },
+];
 
 const initialFValues = {
   id: 0,
@@ -141,7 +165,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
       <Card>
         <CardHeader
           subheader="The information can be edited"
-          title="Student Profile"
+          title="Employee Profile"
         />
         <Divider />
         <CardContent>
@@ -171,6 +195,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
+                disabled
                 label="Email Address"
                 name="email"
                 onChange={handleChange}
@@ -199,7 +224,14 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                 required
                 value={values.college}
                 variant="outlined"
-              />
+                select
+              >
+                {collegeItems.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.title}
+                    </MenuItem>
+                  ))} 
+              </TextField>
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
@@ -221,7 +253,14 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                 required
                 value={values.department}
                 variant="outlined"
-              />
+                select
+              >
+                {departmentItems.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.title}
+                    </MenuItem>
+                  ))} 
+              </TextField>
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField

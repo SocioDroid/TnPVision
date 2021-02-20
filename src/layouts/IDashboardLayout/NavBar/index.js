@@ -45,6 +45,11 @@ const items = [
     href: '/interviewer/account',
     icon: UserIcon,
     title: 'Account'
+  },
+  {
+    href: '/interviewer/drive',
+    icon: UserIcon,
+    title: 'Drive'
   }
 ];
 

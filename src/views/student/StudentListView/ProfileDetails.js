@@ -5,7 +5,6 @@ import { useForm, Form } from '../../../components/useForm';
 import Controls from "../../../components/controls/Controls";
 import PropTypes from 'prop-types';
 import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
-
 import {
   Box,
   Button,

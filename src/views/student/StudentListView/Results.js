@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import useTable from "../../../components/useTable";
 import Popup from "../../../components/Popup";
 import ProfileDetails from "./ProfileDetails"
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
   makeStyles
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StudentService from '../../../services/studentService';
-import getInitials from '../../../utils/getInitials';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,8 +34,6 @@ const useStyles = makeStyles((theme) => ({
 const Results = ({ className, customers, ...rest }) => {
 
   const classes = useStyles();
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
-
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [openPopup, setOpenPopup] = useState(false)
 
@@ -55,9 +47,8 @@ const Results = ({ className, customers, ...rest }) => {
       .catch( err => {
           console.log(err);
       })
-  }
+    }
 
-    
     useEffect((props) => {
       getAllStudents();
     }, [recordForEdit])
@@ -84,11 +75,9 @@ const Results = ({ className, customers, ...rest }) => {
 
     const addOrEdit = (student, resetForm) => {
       if (student.id === 0)
-          // StudentService.insertstudent(student)
           console.log("Inserted");
       else
           console.log("Edited");
-          // StudentService.updatestudent(student)
       resetForm()
       setRecordForEdit(null)
       setOpenPopup(false)
@@ -140,10 +129,8 @@ const Results = ({ className, customers, ...rest }) => {
               
               {
                 posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((student) => (
-                <TableRow
-                  //hover
+                <TableRow                  
                   key={student.id}
-                  //selected={selectedstudentIds.indexOf(student.id) !== -1}
                 >
                   <TableCell>
                        {`${student.user.first_name} ${student.user.last_name}`}
@@ -151,8 +138,7 @@ const Results = ({ className, customers, ...rest }) => {
                   <TableCell>
                     {student.user.email}
                   </TableCell>
-                  <TableCell>
-                    {/*`${student.address.city}, ${student.address.state}, ${student.address.country}`*/}
+                  <TableCell>                   
                     {student.gender}
                   </TableCell>
                   <TableCell>
