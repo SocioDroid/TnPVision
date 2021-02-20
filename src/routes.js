@@ -36,16 +36,12 @@ import InterviewerDrive from './views/reports/InterviewerDashboardView/Interview
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const group = Auth.getGroup();
+const dashboardRoute = "/" + Auth.getGroup() + "/dashboard";
 const routes = [
   {
     path: '/',
     // element:
-    element: Auth.isUserAuthenticated() ?
-    Auth.getGroup() == 1 ? <Navigate to="/student/dashboard" />
-        : Auth.getGroup() == 2 || Auth.getGroup() == 3 || Auth.getGroup() == 4 ?
-          <Navigate to="/employee/dashboard" />
-          : <HomePage />
-      : <HomePage />,
+    element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <HomePage />,
   },
   {
     path: 'app',
@@ -62,7 +58,7 @@ const routes = [
   {
     path: 'student',
     //element: isAuthenticated ? <SDashboardLayout /> : <Navigate to="/" />,
-    element: <SDashboardLayout />,
+    element: isAuthenticated  ? group === 'student' ? <SDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
@@ -73,8 +69,8 @@ const routes = [
   },
   {
     path: 'employee',
-    //element: isAuthenticated ? <EDashboardLayout /> : <Navigate to="/" />,
-    element: <EDashboardLayout />,
+    element: isAuthenticated  ? group === 'employee' ? <EDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
+    //element: <EDashboardLayout />,
     children: [
       { path: 'empaccount', element: <EmployeeAccountView /> },
       { path: 'employees', element: <EmployeeListView /> },
@@ -93,7 +89,7 @@ const routes = [
   },
   {
     path: 'interviewer',
-    element: <IDashboardLayout />,
+    element: isAuthenticated  ? group === 'interviewer' ? <EDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <InterviewerAccountView /> },
       { path: 'dashboard', element: <InterviewerDashboardView /> },
@@ -105,24 +101,24 @@ const routes = [
     path: '/',
     children: [
       {
-        path: 'login', element:
-        Auth.isUserAuthenticated() ? group == 1 ? <Navigate to="/student/dashboard" />
-            : group == 2 || group == 3 || group == 4
-              ? <Navigate to="/employee/dashboard" /> : <LoginView />
-            : <LoginView />,
+        path: 'login', 
+        element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <LoginView />,
       },
       {
-        path: 'register', element:
-          isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
-            : group == 2 || group == 3 || group == 4
-              ? <Navigate to="/employee/dashboard" /> : <RegisterView />
-            : <RegisterView />
+        path: 'register', 
+        element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <RegisterView />,
+        // element: isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
+          //   : group == 2 || group == 3 || group == 4
+          //     ? <Navigate to="/employee/dashboard" /> : <RegisterView />
+          //   : <RegisterView />
       },
       {
-        path: 'resetpassword/:token', element: isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
-          : group == 2 || group == 3 || group == 4
-            ? <Navigate to="/employee/dashboard" /> : <PasswordReset />
-          : <PasswordReset />
+        path: 'resetpassword/:token', 
+        element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <PasswordReset />,
+        // element: isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
+        //   : group == 2 || group == 3 || group == 4
+        //     ? <Navigate to="/employee/dashboard" /> : <PasswordReset />
+        //   : <PasswordReset />
       },
       { path: 'logout', element: <Navigate to="/" />},
       { path: '404', element: <NotFoundView /> },

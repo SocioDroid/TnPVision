@@ -98,6 +98,13 @@ const useStyles = makeStyles(() => ({
     top: 64,
     height: 'calc(100% - 64px)'
   },
+  avatarW: {
+    cursor: 'pointer',
+    width: 64,
+    height: 64,
+    backgroundColor: 'white',
+    marginBottom: '5px',
+  },
   avatar: {
     cursor: 'pointer',
     width: 64,
@@ -160,17 +167,16 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     display="flex"
     flexDirection="column"
   >
-   {data ? ( 
-     <>
+   
+     
     <Box
       alignItems="center"
       display="flex"
       flexDirection="column"
       p={2}
     >
-      
       <Avatar
-        className={classes.avatar}
+        className= {userData.first_name ? classes.avatar : classes.avatarW}
         component={RouterLink}
         to="/employee/account"
       >
@@ -178,7 +184,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           className={classes.text}
           variant="h3"
         >
-          {userData.email ? userData.email[0].toUpperCase() : ""}
+          {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
         </Typography>
       </Avatar>
       <Typography
@@ -196,8 +202,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       </Typography>
     </Box>
     <Divider />
-    </>
-    ): ""}
+    
+    
       
       <Box p={2}>
         <List>

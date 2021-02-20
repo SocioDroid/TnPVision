@@ -49,11 +49,13 @@ const TopBar = ({
       .then(result => {
         Auth.deauthenticateUser();
         navigate('/logout', { replace: true });
+        window.location.reload()
       }).catch(error => {
         console.log("Errorrrrrr", error);
         if (error.response.status == 401) {
           Auth.deauthenticateUser();
           navigate('/logout', { replace: true });
+          window.location.reload()
         }
       });
   }

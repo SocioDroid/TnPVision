@@ -100,7 +100,6 @@ function Login(props) {
 					setSubmitionCompleted(true);
 					if (result.status === 200 && result.data.data.token !== "") {
 						Auth.authenticateUser(result.data.data.token, result.data.data.expiry, result.data.data.group)
-						setTimeout(() => {
 							if (result.data.data.group === "student")
 								navigate('/student/dashboard', { replace: true });
 								// <Navigate to="/student/dashboard" />
@@ -110,8 +109,8 @@ function Login(props) {
 								navigate('/employee/dashboard');
 								// <Navigate to="/employee/dashboard" />
 							else if (result.data.data.group === "interviewer")							
-								navigate('/interviewer/dashboard');
-						}, 5000);	
+								navigate('/interviewer/dashboard');	
+						window.location.reload();
 					}
 				})
 				.catch(error => {

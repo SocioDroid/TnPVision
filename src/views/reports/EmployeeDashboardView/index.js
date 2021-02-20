@@ -29,7 +29,6 @@ const Dashboard = (props) => {
   const classes = useStyles();
   const { history} = props;
   return (
-    Auth.isUserAuthenticated() ? (
     <Page
       className={classes.root}
       title="Dashboard"
@@ -115,7 +114,6 @@ const Dashboard = (props) => {
         </Grid> */}
       </Container>
     </Page>
-    ) : <p>Loading</p>
   );
 };
 
