@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
   const classes = useStyles();
   return (
-    Auth.isUserAuthenticated() ? (
     <Page
       className={classes.root}
       title="Dashboard"
@@ -28,7 +27,6 @@ const Dashboard = (props) => {
         <LiveDrive/>        
       </Container>
     </Page>
-    ) : <p>Loading</p>
   );
 };
 

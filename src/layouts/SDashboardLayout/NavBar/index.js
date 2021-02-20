@@ -61,13 +61,19 @@ const useStyles = makeStyles(() => ({
   avatar: {
     cursor: 'pointer',
     width: 64,
-    height: 64
+    height: 64,
+    backgroundColor: '#2196f3',
+    marginBottom: '5px',
+  },
+  text:{
+    color: "#ffffff",
   }
-}));
+  }));
 
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const [data, setData] = useState(false);
   const [userData, setUserData] = useState({
     email: "",
     first_name: "",
@@ -96,9 +102,10 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           group: data.group,
           id: data.id,
         });
+        setData(true)
       }).catch(error =>{
         console.log(error);
-        
+        setData(false)
       })
   }, []);
 
@@ -108,6 +115,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
+    {data ? (
+      <>
       <Box
         alignItems="center"
         display="flex"
@@ -117,9 +126,15 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
           to="/app/account"
-        />
+        >
+                  <Typography
+          className={classes.text}
+          variant="h3"
+        >
+          {userData.email ? userData.email[0].toUpperCase() : ""}
+        </Typography>
+        </Avatar>
         <Typography
           className={classes.name}
           color="textPrimary"
@@ -137,6 +152,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </Typography>
       </Box>
       <Divider />
+      </>
+      ) : ""}
       <Box p={2}>
         <List>
           {items.map((item) => (

@@ -22,16 +22,16 @@ const useStyles = makeStyles(theme => ({
     minWidth: 275,
     margin: theme.spacing(2)
   },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)'
+  },
   progressRoot: {
     minWidth: 275,
     margin: theme.spacing(40),
     textAlign: 'center',
     justifyContent: 'center',
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
   },
   title: {
     fontSize: 14
@@ -73,17 +73,17 @@ export default function StudentDriveView() {
   const [progress, setProgress] = useState(10);
   //const [postedDays, setPostedDays] = useState(null);
 
-// function generatePostedDays(){
-//     // Modify this field
-//     const date1 = new Date(driveDetails.createdAt);
-//     const date2 = new Date();
-//     const diffDays = date2.getDate() - date1.getDate(); 
-//     console.log(diffDays + " days");
-//     if (diffDays > 0)
-//         setPostedDays(diffDays);
-//     else 
-//         setPostedDays("Today")
-// }
+  // function generatePostedDays(){
+  //     // Modify this field
+  //     const date1 = new Date(driveDetails.createdAt);
+  //     const date2 = new Date();
+  //     const diffDays = date2.getDate() - date1.getDate(); 
+  //     console.log(diffDays + " days");
+  //     if (diffDays > 0)
+  //         setPostedDays(diffDays);
+  //     else 
+  //         setPostedDays("Today")
+  // }
   useEffect(() => {
     // Getting Drive Details
     DriveService.getSingleDrive({ id: id })
@@ -111,208 +111,130 @@ export default function StudentDriveView() {
         <Card className={classes.root}>
           <CardContent>
             <Grid container spacing={3}>
-              
               <Grid item md={8} xs={12}>
-                    <Grid item xs={12}>
-                        <Typography
-                            className={classes.pos}
-                            variant="h4"
-                            component="h2"
-                        >
-                            Jobtitle: {driveDetails.jobtitle}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography className={classes.pos}>
-                            Company name: {driveDetails.company.name}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography component="p" color="textSecondary">
-                        <AccountBalanceWalletOutlinedIcon fontSize="small" /> Salary{' '}
-                        {driveDetails.min_salary} - {driveDetails.max_salary} P.A.
-                        </Typography>
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                        <Typography component="p" color="textSecondary">
-                        <LocationOnOutlinedIcon fontSize="small" /> Job Location:{' '}
-                        {driveDetails.drive_location}
-                        </Typography>
-                    </Grid>
-                    
+                <Grid item xs={12} sm container>
+                  <Typography
+                    className={classes.pos}
+                    variant="h3"
+                  >
+                    {driveDetails.jobtitle}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm container>
+                  <Typography className={classes.pos} variant="h4">
+                    {driveDetails.company.name}
+                  </Typography>
+                </Grid>
+                <div>
+                  <Typography color="textSecondary" >
+                    <AccountBalanceWalletOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+                    {'  '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
+                </Typography>
+                </div>
+                <div style={{ marginTop: "5px" }}>
+                  <Typography color="textSecondary">
+                    <LocationOnOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
+                    {' '} {driveDetails.drive_location}
+                  </Typography>
+                </div>
               </Grid>
-              <Grid item md={2} xs={12}>
-                  <Grid item/>
-                    <Grid
-                        item
-                        md={12}
-                        xs={12}
-                        className={classes.alignToBottom}
-                    >
-                        <Button variant="contained" color="primary">
-                        Mark as Finished
-                        </Button>
-                    </Grid>
-              </Grid>
-
-             
-              {/* <Grid
+              <Grid
                 item
+                md={4}
                 xs={12}
+                className={classes.alignToBottom}
               >
-              <Divider /> 
-                <Typography component="p" color="textSecondary">
-                    Posted: {postedDays} 
-                </Typography>  
-              </Grid> */}
+                <Button variant="contained" color="primary">
+                  Mark As Finished
+                </Button>
+              </Grid>
             </Grid>
           </CardContent>
         </Card>
 
         <Card className={classes.root}>
           <CardContent><Grid
-          container
-          spacing={3}
-        >
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
+            container
+            spacing={3}
           >
-          <Budget />
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <Budget />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <TotalCustomers />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <TasksProgress />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <TotalProfit />
+            </Grid>
+            <Grid
+              item
+              lg={8}
+              md={12}
+              xl={9}
+              xs={12}
+            >
+              <Sales />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <TrafficByDevice />
+            </Grid>
+            <Grid
+              item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <LatestProducts />
+            </Grid>
+            <Grid
+              item
+              lg={8}
+              md={12}
+              xl={9}
+              xs={12}
+            >
+              <LatestOrders DriveId={driveDetails.id} />
+            </Grid>
           </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TotalCustomers />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TasksProgress />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TotalProfit />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <Sales />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <TrafficByDevice />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <LatestProducts />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <LatestOrders  DriveId={driveDetails.id}/>
-          </Grid>
-        </Grid>
-            {/* <Typography component="h2" variant="h4">
-              Job Description
-            </Typography>
-            <Typography component="p">
-              <p>
-                Sint id nulla ea aliqua non magna esse veniam anim commodo.
-                Aliqua
-                <br />
-                irure dolor qui sint anim commodo exercitation velit dolore
-                <br />
-                reprehenderit laboris do laboris. Quis aute magna culpa tempor
-                <br />
-                aliquip. Est magna est nulla culpa dolor sunt ipsum ea fugiat
-                aute
-                <br />
-                esse Lorem. Non cillum do minim dolore ex amet mollit nisi amet
-                et
-                <br />
-                sunt mollit. Aliquip aliqua veniam fugiat elit et. Qui velit
-                <br />
-                veniam irure nostrud. Anim esse commodo pariatur sint. Dolore
-                duis
-                <br />
-                adipisicing reprehenderit mollit deserunt nostrud magna enim
-                <br />
-                fugiat consectetur duis do dolore ipsum. Labore consequat sit
-                aute
-                <br />
-                quis esse proident minim cillum aliquip ex in. Velit adipisicing
-                <br />
-                nisi sunt et. Duis duis dolore non adipisicing aute eiusmod ad
-                <br />
-                irure eiusmod culpa sint sint cupidatat. Cillum fugiat nisi sit
-                <br />
-                elit occaecat magna velit id. Nostrud aute adipisicing consequat
-                <br />
-                sint anim ex tempor magna. Fugiat dolore culpa nulla duis
-                nostrud.
-              </p>
-            </Typography> */}
+            
           </CardContent>
         </Card>
 
-        {/* <Card className={classes.root}>
-          <CardContent>
-            <Typography component="h2" variant="h4">
-              About Company
-            </Typography>
-            <Typography component="p" className={classes.pos}>
-              Company domain
-            </Typography>
-            <Typography component="p">
-              <WorkOutlineOutlinedIcon fontSize="small" />
-              Company industry type : {driveDetails.company.industry}
-            </Typography>
-            <Typography component="p">
-              <LanguageOutlinedIcon fontSize="small" /> Company website :{' '}
-              <a href={driveDetails.company.website}>
-                {driveDetails.company.website}
-              </a>
-            </Typography>
-            <Typography component="p">
-              <HomeWorkOutlinedIcon fontSize="small" /> Company Address
-            </Typography>
-          </CardContent>
-        </Card> */}
+       
       </div>
     );
   } else {

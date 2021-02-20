@@ -89,12 +89,12 @@ const EligibleDrives = ({ className, ...rest }) => {
       <Grid container spacing={3}>
         {drives.map(drive => {
           return (
-            <Grid item md={4} sm={6} xl={3} xs={12} key={drive.id}>
+            <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
               <a href={'/employee/drive/' + drive.id}>
                 <Card className={clsx(classes.root, className)} {...rest}>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
-                      <Grid item md={9} sm={10} xs={8}>
+                      <Grid item sm={8} xs={10}>
                         <Typography
                           color="textSecondary"
                           gutterBottom
@@ -114,7 +114,7 @@ const EligibleDrives = ({ className, ...rest }) => {
                         </Typography>
                       </Grid>
                      
-                      <Grid item xs={12} sm md >
+                      <Grid item xs={12} sm >
                         <Avatar className={classes.avatar}>
                         <Typography
                           className={classes.text}
@@ -178,3 +178,5 @@ EligibleDrives.propTypes = {
 };
 
 export default EligibleDrives;
+
+

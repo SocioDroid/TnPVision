@@ -98,11 +98,19 @@ const useStyles = makeStyles(() => ({
     top: 64,
     height: 'calc(100% - 64px)'
   },
+  avatarW: {
+    cursor: 'pointer',
+    width: 64,
+    height: 64,
+    backgroundColor: 'white',
+    marginBottom: '5px',
+  },
   avatar: {
     cursor: 'pointer',
     width: 64,
     height: 64,
     backgroundColor: '#2196f3',
+    marginBottom: '5px',
   },
   text:{
     color: "#ffffff",
@@ -112,6 +120,7 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const [data, setData] = useState(false);
   const [userData, setUserData] = useState({
     email: "",
     first_name: "",
@@ -139,9 +148,11 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           group: data.group,
           id: data.id,
         });
+        setData(true)
       }).catch(error => {
         if (error.response.status == 401) {
           //Auth.deauthenticateUser();
+          setData(false)
           console.log("Deauthenticate user")
           console.log(error)
           //navigate('/logout', { replace: true });
@@ -150,45 +161,50 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   }, [location.pathname]);
 
   const content = (
+    
     <Box
-      height="100%"
+    height="100%"
+    display="flex"
+    flexDirection="column"
+  >
+   
+     
+    <Box
+      alignItems="center"
       display="flex"
       flexDirection="column"
+      p={2}
     >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
+      <Avatar
+        className= {userData.first_name ? classes.avatar : classes.avatarW}
+        component={RouterLink}
+        to="/employee/account"
       >
-        <Avatar
-          className={classes.avatar}
-          component={RouterLink}
-          to="/employee/account"
-        >
-          <Typography
-            className={classes.text}
-            variant="h3"
-          >
-            {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
-          </Typography>
-        </Avatar>
-
         <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
+          className={classes.text}
+          variant="h3"
         >
-          {userData.first_name + " " + userData.last_name}
+          {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
         </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {userData.email}
-        </Typography>
-      </Box>
-      <Divider />
+      </Avatar>
+      <Typography
+        className={classes.name}
+        color="textPrimary"
+        variant="h5"
+      >
+        {userData.first_name + " " + userData.last_name}
+      </Typography>
+      <Typography
+        color="textSecondary"
+        variant="body2"
+      >
+        {userData.email}
+      </Typography>
+    </Box>
+    <Divider />
+    
+    
+      
       <Box p={2}>
         <List>
           {items.map((item) => (

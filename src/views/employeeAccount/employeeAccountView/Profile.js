@@ -56,7 +56,7 @@ const Profile = ({ className, userData, ...rest }) => {
             className={classes.text}
             variant="h1"
           >
-            {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
+            {userData.email ? userData.email[0].toUpperCase() : ""}
           </Typography>
           </Avatar>
           <Typography

@@ -2,21 +2,11 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
-import {
-  Avatar,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-  colors,
-  Divider,
-  makeStyles
-} from '@material-ui/core';
 import MoneyIcon from '@material-ui/icons/Money';
 import Auth from '../../../auth';
 import axios from 'axios';
-
+import { Avatar, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
+import StudentService from '../../../services/studentService';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,21 +33,23 @@ const useStyles = makeStyles(theme => ({
 const VolunteeringDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
-
+//   useEffect(() => {
+//     axios
+//       .get('http://20.37.50.140:8000/api/student/volunteeringDrives', {
+//         headers: {
+//           Authorization: 'Token ' + Auth.getToken()
+//         }
+//       })
+  
   useEffect(() => {
-    axios
-      .get('http://20.37.50.140:8000/api/student/volunteeringDrives', {
-        headers: {
-          Authorization: 'Token ' + Auth.getToken()
-        }
-      })
+    StudentService.getVolunteeringDrives()
       .then(res => {
         setDrives(res.data);
         console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
         console.log('Error Fetching data');
-        setDrives(false);
+        setDrives(false);;
       });
   }, []);
 
@@ -71,12 +63,12 @@ const VolunteeringDrives = ({ className, ...rest }) => {
       <Grid container spacing={3}>
         {drives.map(drive => {
           return (
-            <Grid item lg={3} sm={6} xl={3} xs={12} key={drive.id}>
+            <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
               <a href={'/student/drive/' + drive.id}>
                 <Card className={clsx(classes.root, className)} {...rest}>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
-                      <Grid item lg={8} sm={8} xl={8} xs={8}>
+                      <Grid item sm={8} xs={10}>
                         <Typography
                           color="textSecondary"
                           gutterBottom
@@ -95,9 +87,14 @@ const VolunteeringDrives = ({ className, ...rest }) => {
                           {drive.employment_type}
                         </Typography>
                       </Grid>
-                      <Grid item>
+                      <Grid item xs={12} sm>
                         <Avatar className={classes.avatar}>
-                          <MoneyIcon />
+                        <Typography
+                          className={classes.text}
+                          variant="h3"
+                        >
+                          {drive.company.name[0].toUpperCase()}
+                        </Typography>
                         </Avatar>
                       </Grid>
                       <Grid item>
