@@ -36,7 +36,6 @@ const Results = ({ className, customers, ...rest }) => {
   const classes = useStyles();
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [openPopup, setOpenPopup] = useState(false)
-
   const[ posts, setPosts] = useState([]);
 
   const getAllStudents = () => {
@@ -87,7 +86,6 @@ const Results = ({ className, customers, ...rest }) => {
       setOpenPopup(true)
   }
 
-    //Pagination
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(0);
     const handleChangePage = (event, newPage) => {

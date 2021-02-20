@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import MoneyIcon from '@material-ui/icons/Money';
+import Auth from '../../../auth';
+import axios from 'axios';
 import { Avatar, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
 import StudentService from '../../../services/studentService';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +33,13 @@ const useStyles = makeStyles(theme => ({
 const VolunteeringDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
+//   useEffect(() => {
+//     axios
+//       .get('http://20.37.50.140:8000/api/student/volunteeringDrives', {
+//         headers: {
+//           Authorization: 'Token ' + Auth.getToken()
+//         }
+//       })
   
   useEffect(() => {
     StudentService.getVolunteeringDrives()
@@ -97,34 +106,7 @@ const VolunteeringDrives = ({ className, ...rest }) => {
                             {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm A")}
                           </Typography>
                       </Grid>
-                    </Grid>
-                    {/* <Box mt={2} display="flex" alignItems="center">
-                      <Icon
-                        path={mdiCurrencyInr}
-                        title="Salary Min"
-                        size={0.8}
-                        color="green"
-                      />
-                      <Typography
-                        className={classes.differenceValue}
-                        variant="body2"
-                      >
-                        {numberFormat(drive.min_salary)}
-                      </Typography>
-                      <Typography>-</Typography>
-                      <Icon
-                        path={mdiCurrencyInr}
-                        title="Salary Min"
-                        size={0.8}
-                        color="green"
-                      />
-                      <Typography
-                        className={classes.differenceValue}
-                        variant="body2"
-                      >
-                        {numberFormat(drive.max_salary)}
-                      </Typography>
-                    </Box> */}
+                    </Grid>                    
                   </CardContent>
                 </Card>
               </a>

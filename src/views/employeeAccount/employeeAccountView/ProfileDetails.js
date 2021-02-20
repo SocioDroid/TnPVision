@@ -5,7 +5,6 @@ import {
   FormControlLabel,
   Checkbox as MuiCheckbox
 } from '@material-ui/core';
-// import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {
   Box,
   Button,
@@ -61,8 +60,6 @@ const initialFValues = {
 };
 
 const ProfileDetails = ({ className, userData, ...rest }) => {
-  // const [emails,setEmails] = useState([])
-  // const myStyle = {};
   const [values, setValues] = useState({
     email: '',
     first_name: '',
@@ -123,20 +120,14 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
           headers: {
             'Content-type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-            //'Cache-Control': 'no-cache',
             Authorization: 'Token ' + Auth.getToken()
-            // != null ? Auth.getToken : {<Redirect to="/" />}
           }
         })
         .then(res => {
           console.log('res', res);
-          //alert("Employee Updated Sucessfully");
-          //setTimeout(window.location.reload(false), 10000);
         })
         .catch(error => {
           console.log(error);
-          //alert("Operation Failed");
-          //setTimeout(window.location.reload(false), 10000);
         });
     }
   };
@@ -158,7 +149,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         designation: userData.designation
       });
     }
-  }, [userData]);
+  }, [userData, values]);
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off" noValidate>
@@ -301,32 +292,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                   }
                   label="Is Deleted ?"
                 />
-              </FormControl>
-              {/* <FormControl>
-              <ReactMultiEmailCustom
-                style={myStyle}
-                emails={emails}
-                onChange={_emails => {
-                  setEmails(_emails);
-                }}
-                getLabel={(
-                  email,
-                  index,
-                  removeEmail,
-                ) => {
-                  return (
-                    <label key={index}>
-                      {email}
-                      <HighlightOffIcon color="secondary" name="delete" onClick={() => removeEmail(index)} />
-                    </label>
-                  );
-                }}
-              />
-            </FormControl>
-            <FormControl>
-              <label>react-multi-email-custom value</label>
-              {emails.join(', ') || 'empty'}
-            </FormControl> */}
+              </FormControl>              
             </Grid>
           </Grid>
         </CardContent>

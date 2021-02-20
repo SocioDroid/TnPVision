@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -13,8 +13,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import axios from "axios";
-import Auth from '../../../auth'
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',

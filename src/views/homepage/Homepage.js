@@ -1,13 +1,10 @@
 import React, {useEffect} from 'react';
-import axios from 'axios';
 import { Typography, Grid, Box, ButtonBase, Paper} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './BodyContent.css'
 import homepage from '../../static/images/homepage.svg';
 import TopBar from '../../layouts/TopBars/TopBarBeforeSignIn';
-import { Navigate, useNavigate } from 'react-router-dom';
 import Auth from '../../auth';
-// /home/leet/college/Project/material-kit-react/src/layouts/MainLayout/TopBar.js
 
 const useStyles = makeStyles((theme) => ({
 
@@ -36,14 +33,9 @@ const useStyles = makeStyles((theme) => ({
  function HomePage(props) {
 
 	const classes = useStyles();
-	
-	const navigate = useNavigate();
-	// const[users, setUsers] = useState([]);
 	useEffect((props) => {
 		if(Auth.isUserAuthenticated){
 			console.log("gfhdgifdgohdfoighodfhgodfho             ", Auth.getGroup())
-			// if(Auth.getGroup() == 2)
-			// 	 navigate("/employee/dashboard")
 		}	
 	}, [])
 	
