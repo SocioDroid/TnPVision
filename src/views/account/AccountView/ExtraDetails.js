@@ -6,6 +6,8 @@ import axios from 'axios';
 import Auth from '../../../auth';
 import Certificates from './Certificates';
 import ExtraCurricular from './ExtraCurricular';
+import Projects from './Projects';
+import WorkExperience from './WorkExperience';
 
  const initialFValues = {
     certificate :{
@@ -162,7 +164,8 @@ const ExtraDetails = ({ userData }) => {
     <div>
       <Certificates userData={userData}/>
       <ExtraCurricular userData={userData}/>
-
+      <Projects userData={userData}/>
+      <WorkExperience userData={userData}/>
     </div>
   )
 }
