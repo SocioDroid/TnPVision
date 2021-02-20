@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-  colors,
-  Button,
-  makeStyles
-} from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, colors, Button, makeStyles, Box} from '@material-ui/core';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import InterviewerRoundView from './InterviewerRoundView';
+import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import InterviewerService from '../../../services/InterviewerService';
 
 const useStyles = makeStyles(theme => ({
@@ -18,8 +12,18 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     margin: theme.spacing(3),
   },
+  progressRoot: {
+    minWidth: 275,
+    margin: theme.spacing(40),
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
   pos: {
-    marginBottom: 12
+    marginBottom: 12,
+    marginLeft: "5px"
+  },
+  alignToBottom: {
+    alignSelf: 'flex-end'
   },
   avatar: {
     backgroundColor: colors.red[600],
@@ -34,68 +38,91 @@ const useStyles = makeStyles(theme => ({
   },
   text:{
     color: "#ffffff",
-  },
-  alignToBottom: {
-    alignSelf: 'flex-end',
-  },
-  bottomSpace:{
-    marginBottom: '10px',
-    marginLeft: '5px'
   }
 }));
 
+function CircularProgressWithLabel(props) {
+  return (
+    <Box position="relative" display="inline-flex">
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        top={0}
+        left={0}
+        bottom={0}
+        right={0}
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const Interviewerdrive = ({ className, Drive ,...rest }) => {
   const classes = useStyles();
-  const [driveDetails, setDriveDetails] = useState([]);
+  const [drive, setDrive] = useState([]);
   const [data, setData] = useState(false);
+  const [progress, setProgress] = useState(10);
   
   useEffect(() => {
     InterviewerService.getDrive()
     .then(res =>{
       console.log("Interviewer Drive ",res.data);
-      setDriveDetails(res.data);
+      setDrive(res.data);
       setData(true)
     })
     .catch(error =>{
       console.log(error);
       setData(false)
     })
-  }, [])
+  }, [data])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 800);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
 
-  console.log("Data got", driveDetails);
-
-  if (driveDetails)
+  if (data)
   {
     return(
       <div>
         <Card className={classes.root}>
           <CardContent>
-          <Grid container spacing={3} className={classes.bottomSpace}>
+          <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
                 <Grid item xs={12} sm container>
                   <Typography
                     className={classes.pos}
                     variant="h3"
                   >
-                    {driveDetails.jobtitle}
+                    {drive.jobtitle}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm container>
                   <Typography className={classes.pos} variant="h4">
-                    {driveDetails.company.name}
+                    {drive.company.name}
                   </Typography>
                 </Grid>
-                <div>
+                <div style={{ marginLeft: 5}}>
                   <Typography color="textSecondary" >
                     <AccountBalanceWalletOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
-                    {'  '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
+                    {'  '}{drive.min_salary} - {drive.max_salary} P.A.
                 </Typography>
                 </div>
-                <div style={{ marginTop: "5px" }}>
+                <div style={{ marginLeft: 5, marginTop: "5px" }}>
                   <Typography color="textSecondary">
                     <LocationOnOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
-                    {' '} {driveDetails.drive_location}
+                    {' '} {drive.drive_location}
                   </Typography>
                 </div>
               </Grid>
@@ -110,16 +137,30 @@ const Interviewerdrive = ({ className, Drive ,...rest }) => {
                 </Button>
               </Grid>
             </Grid>
-              <InterviewerRoundView />
+
+            <br/>
+              <InterviewerRoundView rounds = {drive.rounds}/>
           </CardContent>
         </Card>
 
       </div>
       )
   }
-  else{
-    return("Loading")
-  }
+  return (
+    <div className={classes.progressRoot}>
+      <CircularProgressWithLabel size={70} value={progress} />
+      <Typography variant="h3" color="primary">Loading...</Typography>
+    </div>
+  );
 };
 
 export default Interviewerdrive;
+
+
+CircularProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate variant.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+};

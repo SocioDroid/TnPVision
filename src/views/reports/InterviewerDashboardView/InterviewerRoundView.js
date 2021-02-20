@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import RoundStudent from './RoundStudent';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -14,8 +15,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`scrollable-prevent-tabpanel-${index}`}
+      aria-labelledby={`scrollable-prevent-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -35,8 +36,8 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `scrollable-prevent-tab-${index}`,
+    'aria-controls': `scrollable-prevent-tabpanel-${index}`,
   };
 }
 
@@ -47,32 +48,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleTabs() {
+export default function SimpleTabs(props) {
+
+  const { rounds } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [roundss, setRoundss] = useState([1,2,3]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </div>
-  );
+  useEffect(() => {
+      setRoundss(rounds)
+      console.log("rounds",rounds) 
+  }, [rounds])
+
+  if(roundss) {
+    return (
+        <div className={classes.root}>
+          <AppBar position="static">
+            <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="simple tabs example">
+              {roundss.map(round => (
+                  <Tab label= {round.name} {...a11yProps(round.number - 1)} key={round.name} wrapped />
+              ))}
+            </Tabs>
+          </AppBar>        
+          {roundss.map(round => (
+            <TabPanel value={value} index={round.number - 1}>
+                {/* <RoundStudent RoundId={round.number}/> */}
+            </TabPanel>
+          ))}
+        </div>
+      );
+  }
+  else{
+      return ''
+  }
 }
