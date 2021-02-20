@@ -8,12 +8,12 @@ import Tab from '@material-ui/core/Tab';
 import {
   Box
 } from '@material-ui/core';
-import axios from 'axios';
 // import { ReactMultiEmailCustom } from 'react-multi-email-custom';
 // import 'react-multi-email-custom/style.css';
-import PersonalData from './PersonalStudentData'
-import AcademicData from './AcademicData'
-import PastAcademicData from './PastAcademicData'
+import PersonalData from './PersonalStudentData';
+import AcademicData from './AcademicData';
+import PastAcademicData from './PastAcademicData';
+import ExtraDetails from './ExtraDetails';
 
 
 function TabPanel(props) {
@@ -23,8 +23,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`scrollable-prevent-tabpanel-${index}`}
+      aria-labelledby={`scrollable-prevent-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -44,8 +44,8 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `scrollable-prevent-tab-${index}`,
+    'aria-controls': `scrollable-prevent-tabpanel-${index}`,
   };
 }
 
@@ -61,10 +61,13 @@ export default function ProfileDetails({ className, userData, ...rest }) {
 
     <div >
       <AppBar position="static">
-        <Tabs value={value} onChange={handleChangeTabs} aria-label="simple tabs example">
-          <Tab label="Personal Details" {...a11yProps(0)} />
-          <Tab label="Academic Details" {...a11yProps(1)} />
-          <Tab label="Past Academic Details" {...a11yProps(2)} />
+        <Tabs value={value} onChange={handleChangeTabs} variant="scrollable"
+          scrollButtons="off"
+          >
+          <Tab label="Personal Details" {...a11yProps(0)} wrapped />
+          <Tab label="Academic Details" {...a11yProps(1)} wrapped />
+          <Tab label="Past Academic Details" {...a11yProps(2)} wrapped />
+          <Tab label="Extra Details" {...a11yProps(3)} wrapped />
         </Tabs>
       </AppBar>
 
@@ -76,6 +79,9 @@ export default function ProfileDetails({ className, userData, ...rest }) {
        </TabPanel>
        <TabPanel value={value} index={2}>
           <PastAcademicData userData={userData}/>
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+          <ExtraDetails userData={userData}/>
       </TabPanel>
     </div>
   );
