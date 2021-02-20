@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import moment from 'moment';
 import {
-  Box,
-  Button,
   Card,
   CardHeader,
   Divider,
@@ -17,7 +15,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const data = [
   {
@@ -103,20 +100,6 @@ const LatestProducts = ({ className, ...rest }) => {
         ))}
       </List>
       <Divider />
-      {/* <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-      >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
-        >
-          View all
-        </Button>
-      </Box> */}
     </Card>
   );
 };

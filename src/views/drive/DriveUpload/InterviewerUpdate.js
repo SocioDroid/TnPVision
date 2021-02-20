@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import axios from 'axios';
 import {
   Box,
   Card,
@@ -12,13 +10,12 @@ import {
   TableRow,
   Button,
   IconButton,
-  TextField,
   TablePagination,
   Grid
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
-import { ReactMultiEmail, isEmail } from 'react-multi-email';
+import { ReactMultiEmail } from 'react-multi-email';
 import 'react-multi-email/style.css';
 
 function InterviewerUpdate(props) {
@@ -48,10 +45,9 @@ function InterviewerUpdate(props) {
       });
   };
 
-  const fixedOptions1 = [];
   const [options1, setOptions1] = useState([]);
   const [open1, setOpen1] = React.useState(false);
-  const loading1 = open1 && options1.length === 0;
+  //const loading1 = open1 && options1.length === 0;
   const [interviewerEmails, setInterviewerEmails] = useState([]);
 
   const handleSubmit = () => {
@@ -103,7 +99,7 @@ function InterviewerUpdate(props) {
                       <br />
                     </div>
                   );
-                }}
+                }} 
               />
             </Grid>
             <Grid item md={1} xs={12}>

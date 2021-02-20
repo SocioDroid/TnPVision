@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import {
   Avatar,
-  Box,
   Card,
   CardContent,
   Grid,
@@ -17,8 +16,6 @@ import {
 import MoneyIcon from '@material-ui/icons/Money';
 import Auth from '../../../auth';
 import axios from 'axios';
-import Icon from '@mdi/react'
-import { mdiCurrencyInr } from '@mdi/js';
 
 
 const useStyles = makeStyles(theme => ({
@@ -46,16 +43,12 @@ const useStyles = makeStyles(theme => ({
 const VolunteeringDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
-  // const history= useHistory();
-  
-  const numberFormat = (value) =>
-  new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(value);
-  
+
   useEffect(() => {
     axios
       .get('http://20.37.50.140:8000/api/student/volunteeringDrives', {
         headers: {
-          Authorization: 'Token ' + Auth.getToken() //the token is a variable which holds the token
+          Authorization: 'Token ' + Auth.getToken()
         }
       })
       .then(res => {
@@ -65,9 +58,6 @@ const VolunteeringDrives = ({ className, ...rest }) => {
       .catch(function(error) {
         console.log('Error Fetching data');
         setDrives(false);
-        // props.showError("Session Invalid");
-        // history.push("/");
-        // localStorage.removeItem("userToken");
       });
   }, []);
 
@@ -119,34 +109,7 @@ const VolunteeringDrives = ({ className, ...rest }) => {
                             {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm A")}
                           </Typography>
                       </Grid>
-                    </Grid>
-                    {/* <Box mt={2} display="flex" alignItems="center">
-                      <Icon
-                        path={mdiCurrencyInr}
-                        title="Salary Min"
-                        size={0.8}
-                        color="green"
-                      />
-                      <Typography
-                        className={classes.differenceValue}
-                        variant="body2"
-                      >
-                        {numberFormat(drive.min_salary)}
-                      </Typography>
-                      <Typography>-</Typography>
-                      <Icon
-                        path={mdiCurrencyInr}
-                        title="Salary Min"
-                        size={0.8}
-                        color="green"
-                      />
-                      <Typography
-                        className={classes.differenceValue}
-                        variant="body2"
-                      >
-                        {numberFormat(drive.max_salary)}
-                      </Typography>
-                    </Box> */}
+                    </Grid>                    
                   </CardContent>
                 </Card>
               </a>

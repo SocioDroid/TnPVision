@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import moment from 'moment';
-import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import {
@@ -16,8 +14,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
-  Tooltip,
   makeStyles
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
@@ -30,8 +26,6 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'flex-end'
   }
 }));
-
-
 
 const LatestOrders = ({ className, DriveId, ...rest }) => {
   const classes = useStyles();
@@ -48,7 +42,7 @@ const LatestOrders = ({ className, DriveId, ...rest }) => {
       .catch(err => {
         console.log(err);
       });   
-  }, [flag]);
+  }, [DriveId, flag]);
 
   return (
     <Card
@@ -59,59 +53,7 @@ const LatestOrders = ({ className, DriveId, ...rest }) => {
       <Divider />
       <PerfectScrollbar>
         <Box minWidth={800}>
-          {/* <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  Order Ref
-                </TableCell>
-                <TableCell>
-                  Customer
-                </TableCell>
-                <TableCell sortDirection="desc">
-                  <Tooltip
-                    enterDelay={300}
-                    title="Sort"
-                  >
-                    <TableSortLabel
-                      active
-                      direction="desc"
-                    >
-                      Date
-                    </TableSortLabel>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>
-                  Status
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.map((order) => (
-                <TableRow
-                  hover
-                  key={order.id}
-                >
-                  <TableCell>
-                    {order.ref}
-                  </TableCell>
-                  <TableCell>
-                    {order.customer.name}
-                  </TableCell>
-                  <TableCell>
-                    {moment(order.createdAt).format('DD/MM/YYYY')}
-                  </TableCell>
-                  <TableCell>
-                    <Chip
-                      color="primary"
-                      label={order.status}
-                      size="small"
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table> */}
+         
          <Table>
             <TableHead>
               <TableRow>
@@ -134,14 +76,7 @@ const LatestOrders = ({ className, DriveId, ...rest }) => {
                       color="primary"
                       label="pending"
                       size="small"
-                    />
-                    {/* <IconButton onClick={() => { putStudentToNextRound(round.number, student.id) }}>
-                      <NavigateNextIcon />
-                    </IconButton>
-
-                    <IconButton onClick={() => { deleteStudentFromRound(round.number, student.id) }}>
-                    <DeleteIcon />
-                    </IconButton> */}
+                    />           
                   </TableCell>
                 </TableRow>
               ))}
@@ -175,6 +110,3 @@ LatestOrders.propTypes = {
 };
 
 export default LatestOrders;
-
-
-//--------------------------------------------------------------------------------------------------------------------

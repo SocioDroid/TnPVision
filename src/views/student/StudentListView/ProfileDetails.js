@@ -12,13 +12,8 @@ import {
   Grid,
   CardHeader,
   Divider,
-  TextField,
-  makeStyles
+  TextField
 } from '@material-ui/core';
-
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
 
 const genderItems = [
   { id: 'M', title: 'Male' },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -12,7 +12,6 @@ import {
   Divider,
   makeStyles
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MoneyIcon from '@material-ui/icons/Money';
 import Auth from '../../../auth';
 import axios from 'axios';
@@ -41,7 +40,6 @@ const useStyles = makeStyles(theme => ({
 const EligibleDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
-  // const history= useHistory();
 
   const numberFormat = value =>
     new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(
@@ -52,7 +50,7 @@ const EligibleDrives = ({ className, ...rest }) => {
     axios
       .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
         headers: {
-          Authorization: 'Token ' + Auth.getToken() //the token is a variable which holds the token
+          Authorization: 'Token ' + Auth.getToken()
         }
       })
       .then(res => {
@@ -62,9 +60,6 @@ const EligibleDrives = ({ className, ...rest }) => {
       .catch(function(error) {
         console.log('Error Fetching data');
         setDrives(false);
-        // props.showError("Session Invalid");
-        // history.push("/");
-        // localStorage.removeItem("userToken");
       });
   }, []);
 

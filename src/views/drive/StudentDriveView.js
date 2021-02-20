@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Box } from '@material-ui/core';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from 'react-router-dom';
@@ -42,12 +41,10 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'flex-end'
   },
   skills:{
-    //fontSize: '14px',
     backgroundColor: '#d2e4fc',
     padding: '2px 10px',
     marginRight: '5px',
     borderRadius: '100px',
-    //border: '1px solid #000000',
     whiteSpace: 'nowrap',
     color: '#636363',
     cursor: 'pointer'
@@ -96,17 +93,6 @@ export default function StudentDriveView() {
       setPostedDays("Today")
   }
 
-  // for(i = 0; i<d.length; i++)
-  // {
-  //   const date1 = new Date(d[i].date);
-  //   const date2 = new Date();
-  //   const diffDays = date2.getDate() - date1.getDate(); 
-  //   console.log(diffDays + " days");
-  //   if (diffDays <= 3)
-  //     continue;    
-  //   else
-  //     delete d[i];
-  // }
   useEffect(() => {
     // Getting Drive Details
 
@@ -198,7 +184,6 @@ export default function StudentDriveView() {
             </Typography>
             <Typography style={{ paddingLeft: "10px" }} >
 
-              {/* <FiberManualRecordIcon style={{verticalAlign: "sub", size: "2px"}} /> */}
               <li>Sint id nulla ea aliqua non magna esse veniam anim commodo.</li>
               <li>irure dolor qui sint anim commodo exercitation velit dolore</li>
 
@@ -331,9 +316,5 @@ export default function StudentDriveView() {
 
 
 CircularProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate variant.
-   * Value between 0 and 100.
-   */
   value: PropTypes.number.isRequired,
 };
