@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogActions, DialogContent, TextField, DialogContentText, Button, Grid, ButtonBase } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import ForgotPassword from './ForgotPassword/ForgotPassword'
-import Snackbar from '@material-ui/core/Snackbar';
-//import MuiAlert from '@material-ui/lab/Alert';
 import CancelIcon from '@material-ui/icons/Cancel';
 import loginpage from '../static/images/loginpage.svg';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
-// import DataServices from '../../services/Services'
-import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LoginService from '../services/LoginService';
 import CustomSnackbar from './Snackbar/CustomSnackbar';
 import Auth from '../auth';
-import MuiAlert from '@material-ui/lab/Alert';
-import GenerateErrorMessage from './Snackbar/ErrorMessage';
-import SDashboardLayout from '../layouts/SDashboardLayout';
-import EDashboardLayout from '../layouts/EDashboardLayout';
-// import { Navigate } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
