@@ -18,7 +18,6 @@ class StudentService {
     deleteStudent(data){
         return httpauth.delete(`/api/student/${data.id}`)
     }
-
     getVolunteeringDrives(){
         return httpauth.get('/api/student/volunteeringDrives')
     }
