@@ -45,7 +45,7 @@ export default function RoundSudent(props) {
 
     InterviewerService.getStudentsFromRound(RoundId)
     .then(res =>{
-        //console.log("Interviewer Round Student ",res.data.students);
+        console.log("Interviewer Round Student ",res.data.students);
         setRoundstudent(res.data.students)
       })
   }, [RoundId]);
