@@ -6,6 +6,8 @@ import axios from 'axios';
 import Auth from '../../../auth';
 import Certificates from './certificate';
 import ExtraCurricular from './ExtraCurricular';
+import Projects from './Projects';
+import WorkExperience from './WorkExperience';
 
 const initialFValues = {
     certificate: {
@@ -36,6 +38,7 @@ const initialFValues = {
 }
 
 const ExtraDetails = ({ userData }) => {
+
 
     //   const [values, setValues] = useState({
     //     certificate :{

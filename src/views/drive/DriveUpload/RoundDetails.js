@@ -1,49 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import useTable from '../../../components/useTable';
-import Popup from '../../../components/Popup';
-// import ProfileDetails from "./ProfileDetails"
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Button,
-  IconButton,
-  Typography,
-  makeStyles,
+  IconButton
 } from '@material-ui/core';
-import Fab from '@material-ui/core/Fab';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import StudentService from '../../../services/studentService';
-import getInitials from '../../../utils/getInitials';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-// import DeleteIcon from '@material-ui/icons/Delete';
 import RoundService from '../../../services/RoundService';
-const useStyles = makeStyles(theme => ({
-  root: {},
-  avatar: {
-    marginRight: theme.spacing(2)
-  },
-  delete: {
-    backgroundColor: 'red',
-    marginLeft: '5px'
-  }
-}));
 
 const Results = props => {
-  const classes = useStyles();
-
   const [round, setRound] = useState({})
   const [students, setStudents] = useState([])
   const [flag, setFlag] = useState(Boolean(true));

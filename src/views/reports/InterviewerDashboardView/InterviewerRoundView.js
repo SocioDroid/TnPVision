@@ -76,7 +76,7 @@ export default function SimpleTabs(props) {
           </AppBar>        
           {roundss.map(round => (
             <TabPanel value={value} index={round.number - 1}>
-                {/* <RoundStudent RoundId={round.number}/> */}
+                <RoundStudent RoundId={round.number}/>
             </TabPanel>
           ))}
         </div>

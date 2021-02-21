@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StickyHeadTable(props) {
+export default function RoundSudent(props) {
   
   const { RoundId } = props;
   const classes = useStyles();
@@ -64,7 +64,6 @@ export default function StickyHeadTable(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [roundstudent, setRoundstudent] = useState([])
   
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -107,18 +106,24 @@ export default function StickyHeadTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+
+            {roundstudent.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={()=>{console.log("ID clicked", row.id)}}>
+                  {/* {roundstudent.map((student)=>{ */}
+
+            {/* // {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => { */}
+            {/* //   return (
+            //     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}> */}
+                  {/* {columns.map((column) => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === 'number' ? column.format(value) : value}
                       </TableCell>
                     );
-                  })}
-                  {/* {roundstudent.map((student)=>{
+                  })} */}
+                   {roundstudent.map((student)=>{
                       return(
                         <TableCell key={student.id}>
                             {student.id}
@@ -145,7 +150,7 @@ export default function StickyHeadTable(props) {
                             {student.user.email}
                         </TableCell>
                       )                      
-                  })} */}
+                  })}
                 </TableRow>
               );
             })}
@@ -155,7 +160,7 @@ export default function StickyHeadTable(props) {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={roundstudent.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

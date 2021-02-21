@@ -158,9 +158,5 @@ export default Interviewerdrive;
 
 
 CircularProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate variant.
-   * Value between 0 and 100.
-   */
   value: PropTypes.number.isRequired,
 };

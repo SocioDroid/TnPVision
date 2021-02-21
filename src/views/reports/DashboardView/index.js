@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
   const classes = useStyles();
-  const { history} = props;
   return (
     <Page
       className={classes.root}

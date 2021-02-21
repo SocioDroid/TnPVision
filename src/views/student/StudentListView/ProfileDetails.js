@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import axios from 'axios';
-import { useForm, Form } from '../../../components/useForm';
+import { useForm } from '../../../components/useForm';
 import Controls from "../../../components/controls/Controls";
 import PropTypes from 'prop-types';
 import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
-
 import {
   Box,
   Button,
@@ -14,14 +12,8 @@ import {
   Grid,
   CardHeader,
   Divider,
-  Checkbox,
-  TextField,
-  makeStyles
+  TextField
 } from '@material-ui/core';
-
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -52,7 +44,6 @@ export default function ProfileDetails(props) {
     isDeleted: false,
     isProfileComplete: false
   });
-  const classes = useStyles();
 
   const { addOrEdit, recordForEdit } = props
 
@@ -72,11 +63,8 @@ export default function ProfileDetails(props) {
       return Object.values(temp).every(x => x === "")
   }
   const {
-    valuess,
-    setValuess,
     errors,
     setErrors,
-    handleInputChange,
     resetForm
   } = useForm(initialFValues, true, validate);
 
@@ -128,7 +116,7 @@ export default function ProfileDetails(props) {
       console.log("IN Detaisl : ", values);
       console.log("IN Detaisl : ", recordForEdit);
     }
-  }, [recordForEdit])
+  }, [recordForEdit, values])
 
   return (
     <form
