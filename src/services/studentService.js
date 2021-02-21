@@ -9,11 +9,12 @@ class StudentService {
     getSingleStudent(data){
         return httpauth.get(`/api/student/${data.id}`)
     }
-
+    getSingleStudentwithid(id){
+        return httpauth.get(`/api/student/${id}`)
+    }
     getUserDetail(){
         return httpauth.get('/api/user/')
     }
-
     deleteStudent(data){
         return httpauth.delete(`/api/student/${data.id}`)
     }

@@ -33,6 +33,7 @@ import VolunteerSearch from './views/testautocomplete';
 import StudentDriveView from './views/drive/StudentDriveView'
 import EmployeeDriveView from './views/drive/EmployeeDriveView'
 import InterviewerDrive from './views/reports/InterviewerDashboardView/InterviewerDrive'
+import StudentInformation from './views/reports/InterviewerDashboardView/StudentInformation'
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const group = Auth.getGroup();
@@ -89,11 +90,12 @@ const routes = [
   },
   {
     path: 'interviewer',
-    element: isAuthenticated  ? group === 'interviewer' ? <EDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
+    element: isAuthenticated  ? group === 'interviewer' ? <IDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <InterviewerAccountView /> },
       { path: 'dashboard', element: <InterviewerDashboardView /> },
       { path: 'drive', element: <InterviewerDrive /> },
+      { path: 'studentinformation/:id', element: <StudentInformation />},
       { path: '*', element: <Navigate to="/404" /> },
     ]
   },

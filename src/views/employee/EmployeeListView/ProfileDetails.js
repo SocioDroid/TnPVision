@@ -42,7 +42,7 @@ export default function ProfileDetails(props) {
   const { addOrEdit, recordForEdit } = props
 
   const validate = (fieldValues = values) => {
-    let temp = { ...errors }
+    let temp = { ...errors } 
     if ('first_name' in fieldValues)
       temp.first_name = fieldValues.first_name ? "" : "This field is required."
     if ('last_name' in fieldValues)
@@ -53,7 +53,7 @@ export default function ProfileDetails(props) {
       ...temp
     })
 
-    if (fieldValues == values)
+    if (fieldValues === values)
       return Object.values(temp).every(x => x === "")
   }
   const {

@@ -79,7 +79,7 @@ const Results = ({ className, customers, ...rest }) => {
   }
 
   const addOrEdit = (employee, resetForm) => {
-    if (employee.id == 0)
+    if (employee.id === 0)
       console.log("Inserted");
     else
       console.log("Edited");
