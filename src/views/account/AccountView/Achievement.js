@@ -44,22 +44,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Workexperience = () => {
+const Achievement = () => {
     const classes = useStyles();
-    const [experienceData, setExperienceData] = useState([])
+    const [achievementData, setAchievementData] = useState([])
     const [open, setOpen] = useState(false);
     const [popupData, setPopupData] = useState({})
-    const [selectedStartDate, handleStartDateChange] = useState([]);
-    const [selectedEndDate, handleEndDateChange] = useState([]);
-    const [selectedPopUpStartDate, handlePopUpStartDateChange] = useState(new Date("2018-03-02"));
-    const [selectedPopUpEndDate, handlePopUpEndDateChange] = useState(new Date("2018-03-02"));
+    const [selectedDate, handleDateChange] = useState([]);
+    const [selectedPopUpDate, handlePopUpDateChange] = useState(new Date("2018-03-02"));
 
     const handleClose = () => {
         setOpen(false);
     };
 
     useEffect(() => {
-        axios.get(`http://20.37.50.140:8000/api/student/experience/`, {
+        axios.get(`http://20.37.50.140:8000/api/student/achievement/`, {
             headers: {
                 "Content-type": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
@@ -67,8 +65,8 @@ const Workexperience = () => {
             }
         })
             .then(res => {
-                console.log("setExperienceData data", res);
-                setExperienceData(res.data)
+                console.log("setAchievementData data", res);
+                setAchievementData(res.data)
             })
             .catch(error => {
                 console.log(error);
@@ -87,18 +85,18 @@ const Workexperience = () => {
         <div>
             <Grid container spacing={3}>
                 <Grid item md={12} xs={12}>
-                    <Typography variant="h4" className={classes.typography}> Work experience </Typography>
+                    <Typography variant="h4" className={classes.typography}> Achievement </Typography>
                     <Divider className={classes.divider} />
                 </Grid>
             </Grid>
             <List className={classes.root} subheader={<li />}>
-                {experienceData.map((data, index) => {
+                {achievementData.map((data, index) => {
                     return (
                         <li key={`section-${index}`} className={classes.listSection}>
                             <ul className={classes.ul}>
                                 <Grid container direction="row">
                                     <Grid item md={10} xs={10}>
-                                        <ListSubheader style={{ fontSize: "18px" }}>{`Company Name: ${data.companyName}`}</ListSubheader>
+                                        <ListSubheader style={{ fontSize: "18px" }}>{`Name: ${data.name}`}</ListSubheader>
                                     </Grid>
                                     <Grid item md={1} xs={1} style={{ textAlign: 'end', alignSelf: 'flex-end' }}>
                                         <Fab size="small" color="secondary"
@@ -112,10 +110,7 @@ const Workexperience = () => {
                                     </Grid>
                                 </Grid>
                                 <ListItem key={`${index}`} className={classes.listItem}>
-                                    <ListItemText primary={`Position: ${data.position}`} />
-                                </ListItem>
-                                <ListItem className={classes.listItem}>
-                                    <ListItemText primary={`Start Date: ${data.startDate} End Date: ${data.endDate}`} />
+                                    <ListItemText primary={`Date: ${data.date}`} />
                                 </ListItem>
                                 <ListItem className={classes.listItem}>
                                     <ListItemText primary={`Description: ${data.description}`} />
@@ -128,25 +123,19 @@ const Workexperience = () => {
             </List>
             <Formik
                 initialValues={{
-                    experience: [{
+                    achievement: [{
                         index: 1,
-                        companyName: "",
-                        position: "",
-                        startDate: "",
-                        endDate: "",
+                        name: "",
+                        date: "",
                         description: "",
                     }]
 
                 }}
                 onSubmit={async values => {
-                    values.experience.map((_, index) => ( 
-                        values.experience[index].startDate = new Date(selectedStartDate[index]).toISOString().split('T')[0]
-                    ))
-                    values.experience.map((_, index) => ( 
-                        values.experience[index].endDate = new Date(selectedEndDate[index]).toISOString().split('T')[0]
-                    ))
-
-                    axios.put(`http://20.37.50.140:8000/api/student/experience/`, [...experienceData, ...values.experience], {
+                    values.achievement.map((_, index) => ( 
+                        values.achievement[index].date = new Date(selectedDate[index]).toISOString().split('T')[0]
+                        ))
+                    axios.put(`http://20.37.50.140:8000/api/student/achievement/`, [...achievementData, ...values.achievement], {
                         headers: {
                             "Content-type": "application/json",
                             "X-Requested-With": "XMLHttpRequest",
@@ -155,7 +144,7 @@ const Workexperience = () => {
                     })
                         .then(res => {
                             console.log("res", res);
-                            setExperienceData(res.data)
+                            setAchievementData(res.data)
                         }).catch(error => {
                             console.log(error);
                         });
@@ -164,67 +153,37 @@ const Workexperience = () => {
                 {({ values, errors }) => (
                     <Form autoComplete="off">
                         <Box margin={1} paddingBottom={2}>
-                            <FieldArray name="experience">
+                            <FieldArray name="achievement">
                                 {({ push, remove }) => (
                                     <React.Fragment>
-                                        {values.experience.map((_, index) => (
+                                        {values.achievement.map((_, index) => (
                                             <div key={index}>
                                                 <Grid container item spacing={3}>
                                                     <Grid item md={5} xs={10}>
                                                         <Field
                                                             fullWidth
-                                                            name={`experience[${index}].companyName`}
+                                                            name={`achievement[${index}].name`}
                                                             component={TextField}
-                                                            label="Company Name"
+                                                            label="Name"
                                                             variant="outlined"
                                                         />
                                                     </Grid>
                                                     <Grid item md={5} xs={10}>
-                                                        <Field
-                                                            fullWidth
-                                                            name={`experience[${index}].position`}
-                                                            component={TextField}
-                                                            label="Position"
-                                                            variant="outlined"
-                                                        />
-                                                    </Grid>
-                                                    <Grid item md={5} xs={10}>
-                                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                             <Field
                                                             variant="outlined"
                                                             component={KeyboardDatePicker}
-                                                            name={`experience[${index}].startDate`}
-                                                            value={selectedStartDate[index]}
+                                                            name={`achievement[${index}].date`}
+                                                            value={selectedDate[index]}
                                                             onChange=
                                                                 {(event, newValue) => {
-                                                                    let tech = [...selectedStartDate];
+                                                                    let tech = [...selectedDate];
                                                                     tech[index] = newValue;
-                                                                    handleStartDateChange([...tech]);
-                                                                    console.log("date",selectedStartDate);
+                                                                    handleDateChange([...tech]);
+                                                                    console.log("date",selectedDate);
                                                                     
                                                                   }}
-                                                            label="Start Date"
-                                                            format="yyyy-MM-dd"
-                                                            fullWidth
-                                                            />
-                                                        </MuiPickersUtilsProvider>
-                                                    </Grid>
-                                                    <Grid item md={5} xs={10}>
-                                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                            <Field
-                                                            variant="outlined"
-                                                            component={KeyboardDatePicker}
-                                                            name={`experience[${index}].endDate`}
-                                                            value={selectedEndDate[index]}
-                                                            onChange=
-                                                                {(event, newValue) => {
-                                                                    let tech = [...selectedEndDate];
-                                                                    tech[index] = newValue;
-                                                                    handleEndDateChange([...tech]);
-                                                                    console.log("date",selectedEndDate);
-                                                                    
-                                                                  }}
-                                                            label="End Date"
+                                                            label="Date"
                                                             format="yyyy-MM-dd"
                                                             fullWidth
                                                             />
@@ -234,7 +193,7 @@ const Workexperience = () => {
                                                         <Field
                                                             component={TextField}
                                                             fullWidth
-                                                            name={`experience[${index}].description`}
+                                                            name={`achievement[${index}].description`}
                                                             label="Description"
                                                             variant="outlined"
                                                         />
@@ -267,11 +226,9 @@ const Workexperience = () => {
                                                     aria-label="add"
                                                     onClick={() =>
                                                         push({
-                                                            index: values.experience.length + 1,
-                                                            compnayName: '',
-                                                            position: "",
-                                                            startDate: "",
-                                                            endDate: "",
+                                                            index: values.achievement.length + 1,
+                                                            name: '',
+                                                            date: "",
                                                             description: "",
                                                         })
                                                     }
@@ -307,18 +264,14 @@ const Workexperience = () => {
             <Formik
                 initialValues={{
                     index: 0,
-                    companyName: popupData.companyName,
-                    position: popupData.position,
-                    startDate: popupData.startDate,
-                    endDate: popupData.endDate,
+                    name: popupData.name,
+                    date: popupData.date,
                     description: popupData.description,
                 }}
                 
                 onSubmit={async values => {
-                    {popupData.startDate = new Date(selectedPopUpStartDate).toISOString().split('T')[0]}
-                    {popupData.endDate = new Date(selectedPopUpEndDate).toISOString().split('T')[0]}
-
-                    axios.patch(`http://20.37.50.140:8000/api/student/experience/`, popupData, {
+                    {popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0]}
+                    axios.patch(`http://20.37.50.140:8000/api/student/achievement/`, popupData, {
                         headers: {
                             "Content-type": "application/json",
                             "X-Requested-With": "XMLHttpRequest",
@@ -327,7 +280,7 @@ const Workexperience = () => {
                     })
                         .then(res => {
                             console.log("res", res);
-                            setExperienceData(res.data)
+                            setAchievementData(res.data)
                             setOpen(false);
                         }).catch(error => {
                             console.log(error);
@@ -339,7 +292,7 @@ const Workexperience = () => {
                     
                     <Form autoComplete="off">
                         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title">experience</DialogTitle>
+                            <DialogTitle id="form-dialog-title">Achievement</DialogTitle>
                             <Divider className={classes.divider}/>
                             <DialogContent>
                                 <form
@@ -352,48 +305,23 @@ const Workexperience = () => {
                                                     fullWidth
                                                     variant="outlined"
                                                     component={TextField}
-                                                    name="companyName"
-                                                    label="Company Name"
-                                                    value={popupData.companyName}
+                                                    name="name"
+                                                    label="Name"
+                                                    value={popupData.name}
                                                     onChange={handleChange}
                                                 />
                                         </Grid>
                                         <Grid item md={6} xs={12}>
+                                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <Field
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    component={TextField}
-                                                    name="position"
-                                                    label="Position"
-                                                    value={popupData.position}
-                                                    onChange={handleChange}
-                                                />
-                                        </Grid>
-                                        <Grid item md={6} xs={12}>
-                                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                <Field
-                                                    variant="outlined"
-                                                    component={KeyboardDatePicker}
-                                                    name="startDate"
-                                                    value={popupData.startDate && selectedPopUpStartDate}
-                                                    onChange={handlePopUpStartDateChange}
-                                                    label="Start Date"
-                                                    format="yyyy-MM-dd"
-                                                    fullWidth
-                                                />
-                                            </MuiPickersUtilsProvider>
-                                        </Grid>
-                                        <Grid item md={6} xs={12}>
-                                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                <Field
-                                                    variant="outlined"
-                                                    component={KeyboardDatePicker}
-                                                    name="startDate"
-                                                    value={popupData.endDate && selectedPopUpEndDate}
-                                                    onChange={handlePopUpEndDateChange}
-                                                    label="End Date"
-                                                    format="yyyy-MM-dd"
-                                                    fullWidth
+                                                variant="outlined"
+                                                component={KeyboardDatePicker}
+                                                name="date"
+                                                value={popupData.date && selectedPopUpDate}
+                                                onChange={handlePopUpDateChange}
+                                                label="Date"
+                                                format="yyyy-MM-dd"
+                                                fullWidth
                                                 />
                                             </MuiPickersUtilsProvider>
                                         </Grid>
@@ -438,4 +366,4 @@ const Workexperience = () => {
     )
 }
 
-export default Workexperience;
+export default Achievement;

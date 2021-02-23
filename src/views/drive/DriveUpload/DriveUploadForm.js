@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 
 function debounce(func, wait) {
   let timeout;
-  return function(...args) {
+  return function (...args) {
     const context = this;
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -304,10 +304,6 @@ export default function Basic(props) {
                   assigned_coordinators: [3],
                   assigned_volunteers: [4],
                   interviewers: []
-
-                  //description: '',
-                  //hremails: [],
-                  //joblocation: [],
                 }}
                 onSubmit={async values => {
                   handleResult1();
@@ -777,9 +773,9 @@ export default function Basic(props) {
                                 </div>
                               );
                             }}
-                            />
-                            <h4>react-multi-email value</h4>
-                            <p>{interviewerEmails.join(', ') || 'empty'}</p>
+                          />
+                          <h4>react-multi-email value</h4>
+                          <p>{interviewerEmails.join(', ') || 'empty'}</p>
                         </Box>
                       </Grid>
                     </Grid>
