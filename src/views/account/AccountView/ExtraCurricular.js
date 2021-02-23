@@ -5,17 +5,17 @@ import axios from 'axios';
 import Auth from '../../../auth';
 
 const initialFValues = {
-    "name" : "",
-    "date" : "",
-    "description" : "",
+    "name": "",
+    "date": "",
+    "description": "",
 }
 
 const ExtraCurricular = ({ userData }) => {
 
     const [values, setValues] = useState({
-        "name" : "",
-        "date" : "",
-        "description" : "",
+        "name": "",
+        "date": "",
+        "description": "",
     });
 
     const validate = (fieldValues = values) => {
@@ -43,9 +43,9 @@ const ExtraCurricular = ({ userData }) => {
 
         if (validate()) {
             const curricular = [{
-                "name" : values.name,
-                "date" : values.date,
-                "description" : values.description
+                "name": values.name,
+                "date": values.date,
+                "description": values.description
             }]
 
             axios.put(`http://20.37.50.140:8000/api/student/${userData.id}/curricular/`, curricular, {
@@ -55,84 +55,79 @@ const ExtraCurricular = ({ userData }) => {
                     "Authorization": "Token " + Auth.getToken()
                 }
             })
-            .then(res => {
-                console.log("res", res);
-            }).catch(error => {
-                console.log(error);
-            });
+                .then(res => {
+                    console.log("res", res);
+                }).catch(error => {
+                    console.log(error);
+                });
         }
     }
 
     return (
-            <div>
-              <form
+        <div>
+            <form
                 onSubmit={handleSubmit}
                 autoComplete="off"
                 noValidate
-              >
-                <Card>
-                  <Divider />
-                  <CardContent>
-                    <Grid container spacing={3}>  
-                      <Grid item md={12} xs={12}>
-                        <Typography> ExtraCurricular </Typography> 
-                        <Divider style={{marginTop: "5px"}}/>               
-                      </Grid>         
-                      <Grid item md={4} xs={12}>
-                        <TextField
-                          fullWidth
-                          type="text"
-                          label="ExtraCurricular Name"
-                          name="name"
-                          onChange={handleChange}
-                          required
-                          value={values.name}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid item md={4} xs={12}>
-                        <TextField
-                          fullWidth
-                          label="ExtraCurricular date"
-                          name="date"
-                          onChange={handleChange}
-                          required
-                          value={values.date}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid item md={4} xs={12}>
-                        <TextField
-                          fullWidth
-                          label="ExtraCurricular Description"
-                          name="description"
-                          onChange={handleChange}
-                          required
-                          value={values.Description}
-                          variant="outlined"
-                        />
-                      </Grid>
+            >
+                <Grid container spacing={3}>
+                    <Grid item md={12} xs={12}>
+                        <Typography> ExtraCurricular </Typography>
+                        <Divider style={{ marginTop: "5px" }} />
                     </Grid>
-                    <Divider style={{marginTop:10}} />
-                    <Box
-                      display="flex"
-                      justifyContent="flex-end"
-                      p={2}
-                    >
-                      <Button
+                    <Grid item md={4} xs={12}>
+                        <TextField
+                            fullWidth
+                            type="text"
+                            label="ExtraCurricular Name"
+                            name="name"
+                            onChange={handleChange}
+                            required
+                            value={values.name}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                        <TextField
+                            fullWidth
+                            label="ExtraCurricular date"
+                            name="date"
+                            onChange={handleChange}
+                            required
+                            value={values.date}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                        <TextField
+                            fullWidth
+                            label="ExtraCurricular Description"
+                            name="description"
+                            onChange={handleChange}
+                            required
+                            value={values.Description}
+                            variant="outlined"
+                        />
+                    </Grid>
+                </Grid>
+                <Divider style={{ marginTop: 10 }} />
+                <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    p={2}
+                >
+                    <Button
                         color="primary"
                         variant="contained"
                         type="submit"
-                      >
+                    >
                         Save details
                       </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </form>
-        
-            </div>
-          )
+                </Box>
+            </form>
+
+        </div>
+    )
 }
 
 

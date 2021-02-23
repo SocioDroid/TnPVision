@@ -11,7 +11,8 @@ import {
   CardContent,
   Divider,
   Typography,
-  makeStyles
+  makeStyles,
+  Grid
 } from '@material-ui/core';
 import axios from "axios";
 import Auth from '../../../auth'
@@ -29,7 +30,7 @@ const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
     height: 100,
-    width: 100
+    width: 100,
   }
 }));
 
@@ -42,15 +43,36 @@ const Profile = ({ className, userData, ...rest }) => {
       {...rest}
     >
       <CardContent>
-        <Box
+      <Grid
+          direction="row"
+          container
+          spacing={3}
+          
+        >
+          <Grid
+            item
+            lg={6}
+            md={6}
+            xs={12}
+            style={{textAlign: '-webkit-right'}}
+          >
+        {/* <Box
           alignItems="center"
           display="flex"
           flexDirection="column"
-        >
+        > */}
           <Avatar
             className={classes.avatar}
             src={user.avatar}
           />
+        </Grid>
+        <Grid
+            item
+            lg={6}
+            md={6}
+            xs={12}
+            style={{textAlign: 'left', alignSelf: "center"}}
+          >
           <Typography
             color="textPrimary"
             gutterBottom
@@ -71,7 +93,9 @@ const Profile = ({ className, userData, ...rest }) => {
           >
             {`${moment().format('hh:mm A')} ${user.timezone}`}
           </Typography>
-        </Box>
+        {/* </Box> */}
+        </Grid>
+        </Grid>
       </CardContent>
       <Divider />
       <CardActions>

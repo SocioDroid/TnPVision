@@ -13,6 +13,10 @@ class InterviewerService {
     getStudentsFromRound(id){
         return  httpauth.get(`/api/interviewer/?round=${id}`)
     }
+    getStudentReviews(id){
+        // console.log("InterService data : ", data);
+        return httpauth.get(`/api/review/${id}/`)
+    }
 }
 
 export default new InterviewerService();
