@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import swal from 'sweetalert';
 import InterviewerService from '../../../services/InterviewerService';
+import Grid from '@material-ui/core/Grid';
 
 import {
   Card,
@@ -62,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ReviewTabs(props) {
-  const { rounds, drive_id, student_id } = props;
+  const { roundId, rounds, drive_id, student_id } = props;
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -73,7 +74,8 @@ export default function ReviewTabs(props) {
   const [comment, setComment] = React.useState([]);
   const [reviewPresent, setReviewPresent] = React.useState([]);
   const [reviewReceived, setReviewReceived] = React.useState(false);
-
+  const [filtered_rounds, setFilteredRounds] = React.useState([]);
+  const [interviewedBy, setInterviewedBy] = React.useState([]);
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -118,6 +120,13 @@ export default function ReviewTabs(props) {
   };
 
   useEffect(() => {
+    setValue(roundId - 1);
+    setFilteredRounds(
+      rounds.filter(function(round) {
+        return round.number <= roundId;
+      })
+    );
+
     InterviewerService.getStudentReviews(student_id)
       .then(res => {
         let tech = [...technical];
@@ -125,19 +134,24 @@ export default function ReviewTabs(props) {
         let pers = [...personality];
         let comm = [...comment];
         let rev = [...reviewPresent];
+        let inter = [...interviewedBy];
+
         console.log('Student Review--- ', res.data);
         res.data.reviewData.forEach(review => {
           tech[review.round_number] = review.technical;
           commu[review.round_number] = review.communication;
           pers[review.round_number] = review.personality;
           comm[review.round_number] = review.comment;
+          inter[review.round_number] = review.interviewer.first_name+" "+review.interviewer.last_name;
+
           rev[review.round_number] = true;
         });
         setTechnical([...tech]);
         setCommunication([...commu]);
         setPersonality([...pers]);
         setComment([...comm]);
-        setReviewReceived([...rev]);      
+        setReviewReceived([...rev]);
+        setInterviewedBy([...inter]);
         // setDrive(res.data);
       })
       .catch(error => {
@@ -160,88 +174,117 @@ export default function ReviewTabs(props) {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            {rounds.map((round, index) => (
+            {filtered_rounds.map((round, index) => (
               <Tab label={round.name} {...a11yProps(index)} />
             ))}
           </Tabs>
         </AppBar>
-        {rounds.map((round, index) => (
+        {filtered_rounds.map((round, index) => (
           <TabPanel value={value} index={index}>
             <form
               onSubmit={e => handleSubmit(e, round.number)}
               autoComplete="off"
               noValidate
             >
-              <Typography className={classes.bold} variant="h6">
-                Technical
-              </Typography>
-              <Rating
-                name="technical"
-                value={technical[round.number]}
-                readOnly={reviewReceived[round.number]}
-                onChange={(event, newValue) => {
-                  let tech = [...technical];
-                  tech[round.number] = newValue;
-                  setTechnical([...tech]);
-                }}
-              />
-              <Typography className={classes.bold} variant="h6">
-                Communication
-              </Typography>
-              <Rating
-                name="communication"
-                value={communication[round.number]}
-                readOnly={reviewReceived[round.number]}
-                onChange={(event, newValue) => {
-                  let commu = [...communication];
-                  commu[round.number] = newValue;
-                  setCommunication([...commu]);
-                }}
-              />
-              <Typography className={classes.bold} variant="h6">
-                Personality
-              </Typography>
-              <Rating
-                name="personality"
-                value={personality[round.number]}
-                readOnly={reviewReceived[round.number]}
-                onChange={(event, newValue) => {
-                  let perso = [...personality];
-                  perso[round.number] = newValue;
-                  setPersonality([...perso]);
-                  console.log(personality);
-                }}
-              />
-              <br />
-              <TextField
-                id="comment"
-                label="Review"
-                disabled={reviewReceived[round.number]}
-                multiline
-                onChange={(event, newValue) => {
-                  let comm = [...comment];
-                  comm[round.number] = event.target.value;
-                  setComment([...comm]);
-                  console.log(comment);
-                }}
-                rows={4}
-                value={comment[round.number]}
-                variant="outlined"
-              />
-            { !reviewReceived[round.number] &&
-              <Box display="flex" p={2}>
-                <Button color="primary" variant="contained" type="submit">
-                  Submit
-                </Button>
-              </Box>
-            }
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <Typography className={classes.bold} variant="h6">
+                    Technical
+                  </Typography>
+                  <Rating
+                    name="technical"
+                    value={technical[round.number]}
+                    readOnly={reviewReceived[round.number]}
+                    onChange={(event, newValue) => {
+                      let tech = [...technical];
+                      tech[round.number] = newValue;
+                      setTechnical([...tech]);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography className={classes.bold} variant="h6">
+                    Communication
+                  </Typography>
+                  <Rating
+                    name="communication"
+                    value={communication[round.number]}
+                    readOnly={reviewReceived[round.number]}
+                    onChange={(event, newValue) => {
+                      let commu = [...communication];
+                      commu[round.number] = newValue;
+                      setCommunication([...commu]);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography className={classes.bold} variant="h6">
+                    Personality
+                  </Typography>
+                  <Rating
+                    name="personality"
+                    value={personality[round.number]}
+                    readOnly={reviewReceived[round.number]}
+                    onChange={(event, newValue) => {
+                      let perso = [...personality];
+                      perso[round.number] = newValue;
+                      setPersonality([...perso]);
+                      console.log(personality);
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={8}>
+                  <TextField
+                    id="comment"
+                    label="Review"
+                    fullWidth={true}
+                    disabled={reviewReceived[round.number]}
+                    multiline
+                    onChange={(event, newValue) => {
+                      let comm = [...comment];
+                      comm[round.number] = event.target.value;
+                      setComment([...comm]);
+                      console.log(comment);
+                    }}
+                    rows={4}
+                    value={comment[round.number]}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Grid container direction="column">
+                    <Grid item xs={12}>
+                      <Typography className={classes.bold} variant="h6">
+                        Interviewed by                
+                      </Typography>
+                      <Typography variant="p">
+                        {interviewedBy[round.number]}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {!reviewReceived[round.number] && (
+                        <Box display="flex" p={2}>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            type="submit"
+                          >
+                            Submit
+                          </Button>
+                        </Box>
+                      )}
+                    </Grid>
+
+                  </Grid>
+                </Grid>
+              </Grid>
             </form>
           </TabPanel>
         ))}
       </div>
     );
-  }
-  else{
+  } else {
     return null;
   }
 }

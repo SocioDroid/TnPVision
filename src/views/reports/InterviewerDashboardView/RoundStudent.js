@@ -75,7 +75,7 @@ export default function RoundSudent(props) {
 
             {roundstudent.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((student) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={student.id} onClick={()=>{navigate('/interviewer/studentinformation/'+ student.id, { replace: true });}}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={student.id} onClick={()=>{navigate(`/interviewer/studentinformation/${student.id}/${RoundId}/`, { replace: true });}}>
                   
                         <TableCell >
                             {student.id}

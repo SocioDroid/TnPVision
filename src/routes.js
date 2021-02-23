@@ -95,7 +95,7 @@ const routes = [
       { path: 'account', element: <InterviewerAccountView /> },
       { path: 'dashboard', element: <InterviewerDashboardView /> },
       { path: 'drive', element: <InterviewerDrive /> },
-      { path: 'studentinformation/:id', element: <StudentInformation />},
+      { path: 'studentinformation/:id/:roundId/', element: <StudentInformation />},
       { path: '*', element: <Navigate to="/404" /> },
     ]
   },
