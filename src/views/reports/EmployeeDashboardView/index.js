@@ -5,7 +5,6 @@ import {
 } from '@material-ui/core';
 import Page from '../../../components/Page';
 import LiveDrive from './LiveDrives';
-import Auth from '../../../auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -5,8 +5,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Page from '../../../components/Page';
-import { Container, Divider, Button } from '@material-ui/core';
+import { Divider, Button } from '@material-ui/core';
 import ProfileDetails from '../DriveListView/ProfileDetails';
 import VolunteerUpdate from '../DriveUpload/VolunteerUpdate';
 import CoordinatorUpdate from '../DriveUpload/CoordinatorUpdate';
@@ -16,7 +15,6 @@ import DriveService from '../../../services/DriveService';
 import RoundDetails from './RoundDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import SaveIcon from '@material-ui/icons/Save';
-import PublishIcon from '@material-ui/icons/Publish';
 import axios from 'axios';
 import Auth from '../../../auth';
 
@@ -58,11 +56,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DriveDetails(drive) {
-  const id = drive.drive;
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [rounds, setRounds] = useState([]);
-  const [students, setStudents] = useState([]);
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [staffForEdit, setStaffForEdit] = useState(null);
   const [interviewerForEdit, setInterviewerForEdit] = useState(null);

@@ -7,9 +7,6 @@ import {
 import Page from '../../../components/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
-import axios from "axios";
-import Auth from '../../../auth'
-import EmployeeService from '../../../services/EmployeeServices';
 import InterviewerService from '../../../services/InterviewerService';
 
 const useStyles = makeStyles((theme) => ({

@@ -10,7 +10,6 @@ import {
   TextField,
   MenuItem,
 } from '@material-ui/core';
-import { useForm } from '../../../components/useForm';
 import axios from 'axios';
 import Auth from '../../../auth';
 
@@ -26,29 +25,6 @@ const DepartmentItems = [
   {id: 'Instrumentation', title: 'Instrumentation Engineering'},
   {id: 'ENTC', title: 'E&TC Engineering'},
 ]
-
-const initialFValues = {
-  collegeName: "",
-  branch: "",
-  prn: "",
-  sem1SGPA: 0,
-  sem1Percentage: 0.0,
-  sem2SGPA: 0,
-  sem2Percentage: 0.0,
-  sem3SGPA: 0,
-  sem3Percentage: 0.0,
-  sem4SGPA: 0,
-  sem4Percentage: 0.0,
-  sem5SGPA: 0,
-  sem5Percentage: 0.0,
-  enggAggCGPA: 0,
-  enggAggPercentage: 0.0,
-  liveBacklogs: 0,
-  deadBacklogs: 0,
-  educationalGap: 0,
-  yearDown: 0,
-
-}
 
 const AcademicData = ({ userData }) => {
 

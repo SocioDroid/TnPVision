@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import axios from 'axios';
-import { Field } from 'formik';
 import { useForm } from '../../../components/useForm';
 import PropTypes from 'prop-types';
 import { Typography, MenuItem, Avatar } from '@material-ui/core';
@@ -13,9 +11,6 @@ import {
   KeyboardDateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import moment from 'moment';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Fab from '@material-ui/core/Fab';
 import {
   Box,
   Button,
@@ -126,10 +121,6 @@ export default function ProfileDetails(props) {
     setInputValue(comp);
     debounceOnChange(comp);
   }
-  var AllComapnies = '';
-  function handleResult() {
-    AllComapnies = company3.id;
-  }
   useEffect(() => {
     let active = true;
 
@@ -145,13 +136,6 @@ export default function ProfileDetails(props) {
     })();
   }, [inputSearch]);
 
-  // const opt = {
-  //   id:1,
-  //   website:"www.test.com",
-  //   industry:"test",
-  //   name:"TestCompany"
-  // }
-  // const [companyarray, setCompanyarray] = React.useState(opt);
   const [companyvalue, setCompanyvalue] = useState({
     id: '0',
     website: 'www.test2.com',
@@ -171,8 +155,6 @@ export default function ProfileDetails(props) {
   ]);
 
   const handleRoundChange = (event, roundNumber) => {
-    const { name, value } = event.target;
-
     let newArr = [...roundDetails]; // copying the old datas array
     let item = newArr[roundNumber];
     item = { ...item, [event.target.name]: event.target.value };
@@ -216,9 +198,6 @@ export default function ProfileDetails(props) {
     rounds: [{ name: '', number: 1, description: '', students: [] }]
   });
 
-  const [rname, setRname] = useState({
-    name: ''
-  });
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ('login_time' in fieldValues)

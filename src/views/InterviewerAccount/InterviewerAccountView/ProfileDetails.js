@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormControl,
-  FormControlLabel,
-  Checkbox as MuiCheckbox
-} from '@material-ui/core';
-// import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import {
   Box,
   Button,
   Card,

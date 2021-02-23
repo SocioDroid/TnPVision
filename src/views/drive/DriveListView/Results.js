@@ -18,17 +18,6 @@ import {
 import DriveService from '../../../services/DriveService';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 
-const useStyles = makeStyles(theme => ({
-  root: {},
-  avatar: {
-    marginRight: theme.spacing(2)
-  },
-  delete: {
-    backgroundColor: 'red',
-    marginLeft: '5px'
-  }
-}));
-
 const Results = ({ className, ...rest }) => {
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
@@ -36,8 +25,6 @@ const Results = ({ className, ...rest }) => {
   const changeError = () => {
     setIsError(!isError);
   };
-
-  const classes = useStyles();
 
   const [posts, setPosts] = useState([]);
   const [isSalaryNull, setIsSalaryNull] = useState(false);

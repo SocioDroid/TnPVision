@@ -1,4 +1,3 @@
-import http from './HttpUrl';
 import httpauth from './AuthorizedHttpUrl';
 
 class EmployeeServices{

@@ -1,5 +1,5 @@
 import http from './HttpUrl';
-import httpauth from './AuthorizedHttpUrl';
+
 class RegisterService {
     registerStudent(data) {
         return http.post('/api/register/student/', data);

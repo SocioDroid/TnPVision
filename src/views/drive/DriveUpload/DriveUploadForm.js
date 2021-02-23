@@ -26,14 +26,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import { Autocomplete as MaterialUiAutocomplete } from '@material-ui/lab';
 import { TextField as MaterialUiTextField } from '@material-ui/core';
-//import MultipleValueTextInput from 'react-multivalue-text-input';
-//import { CKEditor } from '@ckeditor/ckeditor5-react';
-//import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import { ReactMultiEmail, isEmail } from 'react-multi-email';
+import { ReactMultiEmail } from 'react-multi-email';
 import 'react-multi-email/style.css';
 
 const useStyles = makeStyles(theme => ({
@@ -93,7 +90,6 @@ const driveType = [
 export default function Basic(props) {
   const classes = useStyles();
   const [interviewerEmails, setInterviewerEmails] = useState([]);
-  //const [drivelocation, setDrivelocation] = useState("")
   const [volunteers, setVolunteers] = useState([]);
   const [coordinators, setCoordinators] = useState([]);
   const [selectedDate, handleDateChange] = useState(
@@ -109,10 +105,6 @@ export default function Basic(props) {
     setSalaryHideChange(!salaryHideChange);
   };
 
-  const handleChange = (e, editor) => {
-    const data = editor.getData();
-    setValue(data);
-  };
   const updateRange = (e, data) => {
     setVal(data);
   };

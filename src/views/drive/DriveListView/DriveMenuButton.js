@@ -3,7 +3,6 @@ import {
   Button,
   Menu,
   MenuItem,
-  Typography,
   makeStyles
 } from '@material-ui/core';
 import axios from 'axios';
@@ -54,10 +53,7 @@ export function DriveMenuButton({ row, goToEdit }) {
   const handlePopClose = () => {
     setAnchorElPop(null);
   };
-  const handleMenuClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
+  
   const handleClose = () => {
     setAnchorEl(null);
   };

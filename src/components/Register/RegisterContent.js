@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { Button, MenuItem, Typography } from '@material-ui/core';
+import React from 'react';
+import { Button, MenuItem } from '@material-ui/core';
 import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import axios from 'axios';
 import RegisterService from '../../services/RegisterService';
 
 import CustomSnackbar from '../Snackbar/CustomSnackbar';
@@ -41,28 +40,6 @@ const college = [
     },
 ];
 
-const department = [
-    {
-        value: 'none',
-        label: 'None',
-    },
-    {
-        value: 'Computer',
-        label: 'Computer',
-    },
-    {
-        value: 'IT',
-        label: 'IT',
-    },
-    {
-        value: 'IT',
-        label: 'IT',
-    },
-    {
-        value: 'IT',
-        label: 'IT',
-    },
-];
 
 class RegisterContent extends React.Component {
 

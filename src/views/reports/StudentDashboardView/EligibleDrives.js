@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import MoneyIcon from '@material-ui/icons/Money';
-import Auth from '../../../auth';
-import axios from 'axios';
 import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
 import StudentService from '../../../services/studentService';
 import Icon from '@mdi/react';

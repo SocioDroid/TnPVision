@@ -45,9 +45,6 @@ function InterviewerUpdate(props) {
       });
   };
 
-  const [options1, setOptions1] = useState([]);
-  const [open1, setOpen1] = React.useState(false);
-  //const loading1 = open1 && options1.length === 0;
   const [interviewerEmails, setInterviewerEmails] = useState([]);
 
   const handleSubmit = () => {

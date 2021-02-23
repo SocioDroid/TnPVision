@@ -9,7 +9,6 @@
 
 import axios from "axios";
 import Auth from './../auth';
-import {Redirect } from 'react-router';
 
 
 export default axios.create({

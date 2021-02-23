@@ -7,8 +7,6 @@ import {
 import Page from '../../../components/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
-import axios from "axios";
-import Auth from '../../../auth'
 import StudentService from '../../../services/studentService';
 
 const useStyles = makeStyles((theme) => ({

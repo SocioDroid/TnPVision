@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Popup from "../../../components/Popup";
 import ProfileDetails from "./ProfileDetails"

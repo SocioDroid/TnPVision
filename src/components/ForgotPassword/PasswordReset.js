@@ -13,7 +13,7 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import LoginService from '../../services/LoginService';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import CustomSnackbar from '../Snackbar/CustomSnackbar';
 

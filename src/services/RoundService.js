@@ -1,6 +1,4 @@
 import http from './HttpUrl';
-import httpauth from './AuthorizedHttpUrl';
-import HttpUrl from './HttpUrl';
 
 class RoundsService {
     getAllRounds(driveId) {

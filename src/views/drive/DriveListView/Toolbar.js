@@ -28,12 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
-  function openPopupWithExtraData(){
-    openInPopup();
-  }
-  const openInPopup = item => {
-    setOpenPopup(true)
-  }
   const [openPopup, setOpenPopup] = useState(false)
 
   const navigate = useNavigate();

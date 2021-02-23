@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Drawer,
   Hidden,
   List,
   Typography,
   makeStyles,
-  ListItem
 } from '@material-ui/core';
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Lock as LockIcon,
-  Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon,
-  Layers as LayersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 import InterviewerService from '../../../services/InterviewerService';
 import { useNavigate } from 'react-router-dom';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
 
 const items = [
   {
@@ -112,7 +98,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     setIsError(!isError);
   };
   const classes = useStyles();
-  const location = useLocation();
   const [company, setCompany] = useState({});
   const getCompany = () => {
     InterviewerService.getCompany()

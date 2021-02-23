@@ -1,6 +1,6 @@
 import React from 'react';
 import { useChangeTheme } from '../../DarkModeTheme/ThemeProvider';
-import {AppBar, useTheme, Toolbar, Typography, IconButton, Link} from '@material-ui/core';
+import { AppBar, useTheme, Toolbar, Typography, IconButton, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -9,58 +9,55 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Login from '../../components/Login';
 import Register from '../../components/Register/RegisterDialog';
-import Button from '@material-ui/core/Button';
-import { Navigate } from 'react-router-dom';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
+	root: {
+		flexGrow: 1,
+	},
 	//Header Style
-    title: {
-        flexGrow: 1,
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-            width: 'auto',
-        },
-    },
-    button:{
+	title: {
+		flexGrow: 1,
+		[theme.breakpoints.up('sm')]: {
+			display: 'block',
+			width: 'auto',
+		},
+	},
+	button: {
 		marginLeft: '15px',
 		height: 'auto',
-		marginTop : 'auto',
+		marginTop: 'auto',
 		marginBottom: 'auto',
-    },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'flex',
-        },
-    },
-    sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('sm')]: {
-            display: 'none',
-        },
 	},
-	
+	sectionDesktop: {
+		display: 'none',
+		[theme.breakpoints.up('sm')]: {
+			display: 'flex',
+		},
+	},
+	sectionMobile: {
+		display: 'flex',
+		[theme.breakpoints.up('sm')]: {
+			display: 'none',
+		},
+	},
+
 }));
 
 function Header(props) {
 	const classes = useStyles();
 
 	const theme = useTheme();
-    const changeTheme = useChangeTheme();
+	const changeTheme = useChangeTheme();
 
-	const handleHomepage = () =>{
+	const handleHomepage = () => {
 		props.history.push('/');
 	}
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-	
+
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-	
+
 	const handleMobileMenuClose = () => {
 		setMobileMoreAnchorEl(null);
 	};
@@ -68,7 +65,7 @@ function Header(props) {
 	const handleMobileMenuOpen = (event) => {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
-  
+
 	const mobileMenuId = 'primary-search-account-menu-mobile';
 	const renderMobileMenu = (
 		<Menu
@@ -84,17 +81,16 @@ function Header(props) {
 				<Login />
 			</MenuItem>
 			<MenuItem>
-				Register  
+				Register
 			</MenuItem>
 			<MenuItem>
-				<div onClick={()=>changeTheme()}>Change Mode</div>
+				<div onClick={() => changeTheme()}>Change Mode</div>
 			</MenuItem>
 		</Menu>
 	);
-	const navigate = useNavigate();
 
 	return (
-// ========================================================== HEADER CONTENT =============================================================== 
+		// ========================================================== HEADER CONTENT =============================================================== 
 		<div className={classes.root}>
 			<AppBar className='header' color='primary' position='static'>
 				<Toolbar>
@@ -102,13 +98,13 @@ function Header(props) {
 						<Link onClick={handleHomepage} color='inherit' underline='none'>TnPVision</Link>
 					</Typography>
 					<div className={classes.sectionDesktop}>
-						<IconButton title="Toggle light/dark mode" style={{color: 'white'}} onClick={()=>changeTheme()}>
+						<IconButton title="Toggle light/dark mode" style={{ color: 'white' }} onClick={() => changeTheme()}>
 							{theme.palette.type === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
 						</IconButton>
 						{/* <Button onClick={()=>{navigate('/login', { replace: true });}}>Login</Button> */}
 						<div><Login /></div>
-						<div><Register/></div>	
-						{/*<Button className={classes.button} variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>*/}	
+						<div><Register /></div>
+						{/*<Button className={classes.button} variant='outlined' color='secondary' onClick={handleRegister}>Register</Button>*/}
 					</div>
 					<div className={classes.sectionMobile}>
 						<IconButton
@@ -123,8 +119,8 @@ function Header(props) {
 					</div>
 				</Toolbar>
 			</AppBar>
-					{renderMobileMenu}
-        </div>
-    );
-}        
+			{renderMobileMenu}
+		</div>
+	);
+}
 export default Header;

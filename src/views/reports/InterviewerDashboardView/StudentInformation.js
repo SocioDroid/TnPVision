@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, Divider, TextField, List, ListItem, ListItemText, ListSubheader } from '@material-ui/core';
-import TablePagination from '@material-ui/core/TablePagination';
+import { Typography, Divider, List, ListItem, ListItemText, ListSubheader } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { useParams } from 'react-router-dom';
@@ -64,22 +63,9 @@ export default function CenteredGrid() {
   const classes = useStyles();
   const { id, roundId } = useParams();
   const [student, setStudent] = useState(null);
-  const [technical, setTechnical] = React.useState(0);
-  const [communication, setCommunication] = React.useState(0);
-  const [personality, setPersonality] = React.useState(0);
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const [rounds, setRounds] = React.useState(null);
   const [drive, setDrive] = React.useState(null);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   useEffect(() => {
     StudentService.getSingleStudentwithid(id).then(res => {

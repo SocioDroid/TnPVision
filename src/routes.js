@@ -4,7 +4,6 @@ import DashboardLayout from './layouts/DashboardLayout';
 import SDashboardLayout from './layouts/SDashboardLayout';
 import EDashboardLayout from './layouts/EDashboardLayout';
 import IDashboardLayout from './layouts/IDashboardLayout';
-import MainLayout from './layouts/MainLayout';
 import AccountView from './views/account/AccountView';
 import CustomerListView from './views/customer/CustomerListView';
 import EmployeeListView from './views/employee/EmployeeListView';
@@ -24,7 +23,6 @@ import CompanyView from './views/drive/CompanyListView';
 import HomePage from './views/homepage/Homepage';
 import Auth from './auth';
 import PasswordReset from './components/ForgotPassword/PasswordReset';
-import Route from 'react-router-dom';
 import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
 import InterviewerAccountView from './views/InterviewerAccount/InterviewerAccountView'

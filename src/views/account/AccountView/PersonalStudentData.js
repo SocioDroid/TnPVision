@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Controls from "../../../components/controls/Controls";
-import { FormControl, FormControlLabel, Checkbox as MuiCheckbox, Typography, AppBar, MenuItem } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import {
   Box,
   Button,
@@ -12,7 +11,7 @@ import {
   Grid,
   TextField,
 } from '@material-ui/core';
-import { useForm, Form } from '../../../components/useForm';
+import { useForm } from '../../../components/useForm';
 import axios from 'axios';
 import Auth from '../../../auth';
 import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
