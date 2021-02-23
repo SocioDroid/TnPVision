@@ -53,6 +53,13 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#2196f3',
     marginBottom: '5px',
   },
+  avatarW: {
+    cursor: 'pointer',
+    width: 64,
+    height: 64,
+    backgroundColor: 'white',
+    marginBottom: '5px',
+  },
   text:{
     color: "#ffffff",
   }
@@ -112,7 +119,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         p={2}
       >
         <Avatar
-          className={classes.avatar}
+          className= {userData.first_name ? classes.avatar : classes.avatarW}
           component={RouterLink}
           to="/app/account"
         >
