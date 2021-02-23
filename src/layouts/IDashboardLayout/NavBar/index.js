@@ -19,7 +19,7 @@ import NavItem from './NavItem';
 import InterviewerService from '../../../services/InterviewerService';
 import { useNavigate } from 'react-router-dom';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
-
+import Auth from '../../../auth';
 
 const items = [
   {
@@ -169,12 +169,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       });
       setData(true)
     }).catch(error => {
-      if (error.response.status == 401) {
-        //Auth.deauthenticateUser();
+      if (error.response.status === 401) {
+        Auth.deauthenticateUser();
         setData(false)
         console.log("Deauthenticate user")
         console.log(error)
-        //navigate('/logout', { replace: true });
+        navigate('/logout', { replace: true });
       } 
     })
   }, []);

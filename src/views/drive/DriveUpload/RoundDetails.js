@@ -36,7 +36,7 @@ const Results = props => {
       });
   };
 
-  if(roundNumber == round.number){
+  if(roundNumber === round.number){
     getAllStudentOfRound(driveId, props.round.number)
   }
 

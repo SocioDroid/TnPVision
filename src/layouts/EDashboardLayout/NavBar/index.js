@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Divider, Drawer, Hidden, List, Typography, makeStyles } from '@material-ui/core';
 import { BarChart as BarChartIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon } from 'react-feather';
 import NavItem from './NavItem';
 import EmployeeServices from '../../../services/EmployeeServices';
+import Auth from '../../../auth';
 
 var items;
 let group = 2;
@@ -127,6 +128,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     id: 0,
   })
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
@@ -144,11 +146,11 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           id: data.id,
         });
       }).catch(error => {
-        if (error.response.status == 401) {
-          //Auth.deauthenticateUser();
+        if (error.response.status === 401) {
+          Auth.deauthenticateUser();
           console.log("Deauthenticate user")
           console.log(error)
-          //navigate('/logout', { replace: true });
+          navigate('/logout', { replace: true });
         } 
       })
   }, [location.pathname]);

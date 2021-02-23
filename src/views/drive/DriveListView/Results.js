@@ -12,7 +12,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  makeStyles,
   TablePagination
 } from '@material-ui/core';
 import DriveService from '../../../services/DriveService';
@@ -34,7 +33,7 @@ const Results = ({ className, ...rest }) => {
       .then(res => {
         setPosts(res.data);
         console.log("Settign drive data")
-        if (res.data.min_salary == 0) {
+        if (res.data.min_salary === 0) {
           setIsSalaryNull(true);
         }
       })

@@ -53,8 +53,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginView = () => {
-  const [isSubmitionCompleted, setSubmitionCompleted] = React.useState(false);
-
   const classes = useStyles();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
@@ -111,7 +109,6 @@ const LoginView = () => {
                     console.log(result);
                     alert('Invalid User');
                   }
-                    setSubmitionCompleted(true); 
                      
                 })
                 .catch((error) => {
