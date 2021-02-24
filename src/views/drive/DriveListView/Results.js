@@ -26,6 +26,7 @@ const Results = ({ className, ...rest }) => {
   };
 
   const [posts, setPosts] = useState([]);
+  const [isEdited, setIsEdited] = useState(true);
   const [isSalaryNull, setIsSalaryNull] = useState(false);
 
   const getAllDrives = () => {
@@ -83,8 +84,11 @@ const Results = ({ className, ...rest }) => {
   };
 
   useEffect(props => {
-    getAllDrives();
-  }, []);
+    if (isEdited){
+      getAllDrives();
+      setIsEdited(false);  
+    }
+  }, [isEdited, posts]);
 
   const goToEdit = (id, e) => {
     e.preventDefault();
@@ -153,7 +157,7 @@ const Results = ({ className, ...rest }) => {
                         <TableCell>{drive.twelth}</TableCell>
                         <TableCell>{drive.diploma}</TableCell>
                         <TableCell>
-                          <DriveMenuButton goToEdit={goToEdit} row={drive} />
+                          <DriveMenuButton setIsEdited={setIsEdited} goToEdit={goToEdit} row={drive} />
                         </TableCell>
                       </TableRow>
                     )

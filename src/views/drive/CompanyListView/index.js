@@ -8,6 +8,7 @@ import Page from '../../../components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -27,7 +28,6 @@ const CompanyListView = () => {
       title="Companies"
     >
       <Container maxWidth={false}>
-        <Toolbar />
         <Box mt={3}>
           <Results />
         </Box>

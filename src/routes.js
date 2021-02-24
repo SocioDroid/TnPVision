@@ -78,9 +78,9 @@ const routes = [
       { path: 'settings', element: <SettingsView /> },
       { path: 'drive', element: <DriveView /> },
       { path: 'companies', element: <CompanyView /> },
-      { path: 'alldrives', element: <DriveListView /> },
+      { path: 'drives', element: <DriveListView /> },
       { path: 'afterdrive/:id', element: <AfterDriveView /> },
-      { path: 'import', element: <ImportStudent /> },
+      { path: 'importstudent', element: <ImportStudent /> },
       { path: 'auto', element: <VolunteerSearch /> },
       { path: 'drive/:id', element: <EmployeeDriveView /> },
       { path: '*', element: <Navigate to="/404" /> }

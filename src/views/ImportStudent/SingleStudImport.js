@@ -464,9 +464,6 @@ export default function PersonalData(){
                                             error={formik.errors.dob }
                                             helperText= {(formik.errors.dob && formik.touched.dob) && formik.errors.dob}
                                             value={formik.values.dob && selectedDate}
-                                            keyboardButtonProps={{
-                                                'aria-label': 'change date',
-                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6} style={{paddingRight: '25px'}}>

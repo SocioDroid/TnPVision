@@ -11,10 +11,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  BarChart as BarChartIcon,
-  User as UserIcon,
-} from 'react-feather';
+import { faUserCircle, faChartLine, faUserTag}  from '@fortawesome/free-solid-svg-icons'
+
 import NavItem from './NavItem';
 import InterviewerService from '../../../services/InterviewerService';
 import { useNavigate } from 'react-router-dom';
@@ -24,17 +22,17 @@ import Auth from '../../../auth';
 const items = [
   {
     href: '/interviewer/dashboard',
-    icon: BarChartIcon,
+    icon: faChartLine,
     title: 'Dashboard'
   },
   {
     href: '/interviewer/account',
-    icon: UserIcon,
+    icon: faUserCircle,
     title: 'Account'
   },
   {
     href: '/interviewer/drive',
-    icon: UserIcon,
+    icon: faUserTag,
     title: 'Drive'
   }
 ];

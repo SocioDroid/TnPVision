@@ -1,8 +1,8 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Popup from "../../../components/Popup";
-import ProfileDetails from "../CompanyUpload/ProfileDetails"
+import Popup from '../../../components/Popup';
+import ProfileDetails from './ProfileDetails';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   importButton: {
     marginRight: theme.spacing(1)
@@ -25,41 +25,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className, setIsEdited, ...rest }) => {
   const classes = useStyles();
-  function openPopupWithExtraData(){
-    setOpenPopup(true)
+  function openPopupWithExtraData() {
+    setOpenPopup(true);
   }
   const addOrEdit = (company, resetForm) => {
-    if (company.id === 0)
-        console.log("Inserted");
-    else
-        console.log("Edited");
-        resetForm()
-        setOpenPopup(false)
-}
+    if (company.id === 0) 
+      console.log('Inserted');
+    else 
+      console.log('Edited');
+    setIsEdited(true)
+    resetForm();
+    setOpenPopup(false);
+  };
 
-  const [openPopup, setOpenPopup] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false);
 
   return (
-    <div
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
-        <Button className={classes.importButton}>
-          Import
-        </Button>
-        <Button className={classes.exportButton}>
-          Export
-        </Button>
+    <div className={clsx(classes.root, className)} {...rest}>
+      <Box display="flex" justifyContent="flex-end">
         <Button
           color="primary"
           variant="contained"
-          onClick={()=>{openPopupWithExtraData()}}
+          onClick={() => {
+            openPopupWithExtraData();
+          }}
         >
           Add Company
         </Button>
@@ -73,10 +64,7 @@ const Toolbar = ({ className, ...rest }) => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
+                      <SvgIcon fontSize="small" color="action">
                         <SearchIcon />
                       </SvgIcon>
                     </InputAdornment>
@@ -90,11 +78,11 @@ const Toolbar = ({ className, ...rest }) => {
         </Card>
       </Box>
       <Popup
-          title="Company Form"
-          openPopup={openPopup}
-          setOpenPopup={setOpenPopup}
+        title="Company Form"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
       >
-          <ProfileDetails addOrEdit={addOrEdit}/>
+        <ProfileDetails addOrEdit={addOrEdit} />
       </Popup>
     </div>
   );

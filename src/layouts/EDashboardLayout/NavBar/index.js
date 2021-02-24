@@ -1,11 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Divider, Drawer, Hidden, List, Typography, makeStyles } from '@material-ui/core';
-import { BarChart as BarChartIcon, Settings as SettingsIcon, ShoppingBag as ShoppingBagIcon, User as UserIcon, UserPlus as UserPlusIcon, Users as UsersIcon, Upload as UploadIcon, Download as DownloadIcon } from 'react-feather';
+import {
+  Avatar,
+  Box,
+  Divider,
+  Drawer,
+  Hidden,
+  List,
+  Typography,
+  makeStyles
+} from '@material-ui/core';
+import {
+  BarChart as BarChartIcon,
+  Settings as SettingsIcon,
+  ShoppingBag as ShoppingBagIcon,
+  User as UserIcon,
+  UserPlus as UserPlusIcon,
+  Users as UsersIcon,
+  Briefcase
+} from 'react-feather';
 import NavItem from './NavItem';
 import EmployeeServices from '../../../services/EmployeeServices';
 import Auth from '../../../auth';
+import { faUserGraduate, faCog, faBuilding, faUserCircle, faBriefcase, faChartLine, faUserTag}  from '@fortawesome/free-solid-svg-icons'
 
 var items;
 let group = 2;
@@ -13,60 +31,50 @@ if (group === 2) {
   items = [
     {
       href: '/employee/dashboard',
-      icon: BarChartIcon,
+      icon: faChartLine,
       title: 'Dashboard'
     },
     {
       href: '/employee/empaccount',
-      icon: UserIcon,
+      icon: faUserCircle,
       title: 'Account'
     },
     {
       href: '/employee/students',
-      icon: UsersIcon,
+      icon: faUserGraduate,
       title: 'Students'
     },
     {
       href: '/employee/employees',
-      icon: ShoppingBagIcon,
+      icon: faBriefcase,
       title: 'Employees'
     },
     {
-      href: '/employee/settings',
-      icon: SettingsIcon,
-      title: 'Settings'
-    },
-    {
-      href: '/employee/drive',
-      icon: UploadIcon,
-      title: 'Drive Upload'
-    },
-    {
-      href: '/employee/import',
-      icon: DownloadIcon,
-      title: 'Import Student'
-    },
-    {
       href: '/employee/companies',
-      icon: UserPlusIcon,
+      icon: faBuilding,
       title: 'Companies'
     },
     {
-      href: '/employee/alldrives',
-      icon: ShoppingBagIcon,
-      title: 'All Drives'
+      href: '/employee/drives',
+      icon: faUserTag,
+      title: 'Drives'
     },
-  ]
+    {
+      href: '/employee/settings',
+      icon: faCog,
+      title: 'Settings'
+    }
+  ];
 } else if (group === 3) {
   items = [
     {
       href: '/employee/dashboard',
-      icon: BarChartIcon,
+      icon: faChartLine,
       title: 'Dashboard'
     },
     {
       href: '/employee/students',
-      icon: UsersIcon,
+      icon: faUserGraduate,
       title: 'Students'
     },
     {
@@ -83,10 +91,9 @@ if (group === 2) {
       href: '/employee/settings',
       icon: SettingsIcon,
       title: 'Settings'
-    },
-  ]
+    }
+  ];
 }
-
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -102,17 +109,17 @@ const useStyles = makeStyles(() => ({
     width: 64,
     height: 64,
     backgroundColor: 'white',
-    marginBottom: '5px',
+    marginBottom: '5px'
   },
   avatar: {
     cursor: 'pointer',
     width: 64,
     height: 64,
     backgroundColor: '#2196f3',
-    marginBottom: '5px',
+    marginBottom: '5px'
   },
-  text:{
-    color: "#ffffff",
+  text: {
+    color: '#ffffff'
   }
 }));
 
@@ -120,13 +127,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
   const [userData, setUserData] = useState({
-    email: "",
-    first_name: "",
-    last_name: "",
-    gender: "",
+    email: '',
+    first_name: '',
+    last_name: '',
+    gender: '',
     group: 0,
-    id: 0,
-  })
+    id: 0
+  });
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -134,75 +141,52 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       onMobileClose();
     }
     EmployeeServices.getEmployeeDetail()
-      .then(function (res) {
+      .then(function(res) {
         const { data } = res;
-        console.log("data: ", data);
+        console.log('data: ', data);
         setUserData({
           email: data.user.email,
           first_name: data.user.first_name,
           last_name: data.user.last_name,
           gender: data.gender,
           group: data.group,
-          id: data.id,
+          id: data.id
         });
-      }).catch(error => {
+      })
+      .catch(error => {
         if (error.response.status === 401) {
           Auth.deauthenticateUser();
-          console.log("Deauthenticate user")
-          console.log(error)
+          console.log('Deauthenticate user');
+          console.log(error);
           navigate('/logout', { replace: true });
-        } 
-      })
+        }
+      });
   }, [location.pathname]);
 
   const content = (
-    
-    <Box
-    height="100%"
-    display="flex"
-    flexDirection="column"
-  >
-   
-     
-    <Box
-      alignItems="center"
-      display="flex"
-      flexDirection="column"
-      p={2}
-    >
-      <Avatar
-        className= {userData.first_name ? classes.avatar : classes.avatarW}
-        component={RouterLink}
-        to="/employee/account"
-      >
-        <Typography
-          className={classes.text}
-          variant="h3"
+    <Box height="100%" display="flex" flexDirection="column">
+      <Box alignItems="center" display="flex" flexDirection="column" p={2}>
+        <Avatar
+          className={userData.first_name ? classes.avatar : classes.avatarW}
+          component={RouterLink}
+          to="/employee/account"
         >
-          {userData.first_name ? userData.first_name[0].toUpperCase() : ""}
+          <Typography className={classes.text} variant="h3">
+            {userData.first_name ? userData.first_name[0].toUpperCase() : ''}
+          </Typography>
+        </Avatar>
+        <Typography className={classes.name} color="textPrimary" variant="h5">
+          {userData.first_name + ' ' + userData.last_name}
         </Typography>
-      </Avatar>
-      <Typography
-        className={classes.name}
-        color="textPrimary"
-        variant="h5"
-      >
-        {userData.first_name + " " + userData.last_name}
-      </Typography>
-      <Typography
-        color="textSecondary"
-        variant="body2"
-      >
-        {userData.email}
-      </Typography>
-    </Box>
-    <Divider />
-    
-    
-      
+        <Typography color="textSecondary" variant="body2">
+          {userData.email}
+        </Typography>
+      </Box>
+      <Divider />
+
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {items.map(item => (
             <NavItem
               href={item.href}
               key={item.title}
@@ -248,7 +232,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => { },
+  onMobileClose: () => {},
   openMobile: false
 };
 

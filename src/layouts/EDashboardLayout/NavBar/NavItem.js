@@ -7,6 +7,7 @@ import {
   ListItem,
   makeStyles
 } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const NavItem = ({
   className,
   href,
-  icon: Icon,
+  icon ,
   title,
   ...rest
 }) => {
@@ -61,12 +62,12 @@ const NavItem = ({
         component={RouterLink}
         to={href}
       >
-        {Icon && (
-          <Icon
+          <FontAwesomeIcon
+            icon={icon}
             className={classes.icon}
-            size="20"
+            size="lg"
           />
-        )}
+
         <span className={classes.title}>
           {title}
         </span>

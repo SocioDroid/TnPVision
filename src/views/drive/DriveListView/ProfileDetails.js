@@ -297,12 +297,12 @@ export default function ProfileDetails(props) {
         rounds: roundDetails
       };
 
-      addOrEdit(values, resetForm);
-
+      
       axios
-        .patch('http://20.37.50.140:8000/api/drive/' + values.id + '/', data)
-        .then(res => {
+      .patch('http://20.37.50.140:8000/api/drive/' + values.id + '/', data)
+      .then(res => {
           console.log('res', res);
+          addOrEdit(values, resetForm);
           alert('Drive Updated Sucessfully');
           // setTimeout(window.location.reload(false), 5000);
         })

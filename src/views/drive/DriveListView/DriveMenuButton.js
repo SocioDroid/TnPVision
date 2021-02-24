@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     color: '#263238'
   }
 }));
-export function DriveMenuButton({ row, goToEdit }) {
+export function DriveMenuButton({ row, setIsEdited, goToEdit }) {
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -221,7 +221,7 @@ export function DriveMenuButton({ row, goToEdit }) {
     setRecordForEdit(null);
     setOpenPopup(false);
     console.log('From add or edit');
-    getAllDrives();
+    setIsEdited(true);
   };
   const openInPopup = item => {
     setRecordForEdit(item);

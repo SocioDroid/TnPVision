@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import EmployeeService from '../../../services/EmployeeServices';
 import Popup from "../../../components/Popup";
-import ProfileDetails from "./ProfileDetails"
+import ProfileDetails from "./ProfileDetails";
+import Toolbar from "./"
 import {
   Box,
   Card,
@@ -117,7 +118,7 @@ const Results = ({ className, ...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-
+      <Toolbar/>
       <PerfectScrollbar>
         <Box minWidth={1050}>
 

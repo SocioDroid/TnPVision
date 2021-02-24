@@ -18,21 +18,22 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 import StudentService from '../../../services/studentService';
+import {  faCog,  faUserCircle,  faChartLine}  from '@fortawesome/free-solid-svg-icons'
 
 const items = [
   {
     href: '/student/dashboard',
-    icon: BarChartIcon,
+    icon: faChartLine,
     title: 'Dashboard'
   },
   {
     href: '/student/account',
-    icon: UserIcon,
+    icon: faUserCircle,
     title: 'Account'
   },
   {
     href: '/student/settings',
-    icon: SettingsIcon,
+    icon: faCog,
     title: 'Settings'
   }
 ];
