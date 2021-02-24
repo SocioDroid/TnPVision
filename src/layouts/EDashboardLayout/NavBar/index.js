@@ -11,15 +11,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import {
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon,
-  Briefcase
-} from 'react-feather';
 import NavItem from './NavItem';
 import EmployeeServices from '../../../services/EmployeeServices';
 import Auth from '../../../auth';
@@ -79,17 +70,17 @@ if (group === 2) {
     },
     {
       href: '/employee/employees',
-      icon: ShoppingBagIcon,
+      icon: faBriefcase,
       title: 'Employees'
     },
     {
       href: '/employee/empaccount',
-      icon: UserIcon,
+      icon: faBriefcase,
       title: 'Account'
     },
     {
       href: '/employee/settings',
-      icon: SettingsIcon,
+      icon: faCog,
       title: 'Settings'
     }
   ];

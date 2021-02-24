@@ -1,9 +1,7 @@
 import React, { useState} from 'react';
 import { Container, Box, Grid, Card, Button, CardHeader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
 import ImportSingleStud from './SingleStudImport'
-import Auth from '../../auth';
 import StudentService from '../../services/StudentService'
 const useStyles = makeStyles((theme) => ({
     box:{

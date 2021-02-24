@@ -3,8 +3,6 @@ import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { Box, Button, List, ListSubheader, ListItem, ListItemText, Divider, Grid, Typography, makeStyles } from '@material-ui/core';
 import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
-import axios from 'axios';
-import Auth from '../../../auth';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -259,8 +257,10 @@ const Achievement = () => {
                 }}
 
                 onSubmit={async values => {
-                    { popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0] }
+                    // { popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0] }
+                    popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0]
                     StudentService.updateIndividualAchievement(popupData)
+
                         .then(res => {
                             console.log("res", res);
                             setAchievementData(res.data)

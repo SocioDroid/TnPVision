@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useForm } from '../../../components/useForm';
 import Controls from "../../../components/controls/Controls";
 import PropTypes from 'prop-types';

@@ -30,10 +30,7 @@ const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
   const [openPopup, setOpenPopup] = useState(false);
   const navigate = useNavigate();
-  const handleClick = () => {
-    setOpenPopup(true);
-  };
-
+  
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box mt={3}>

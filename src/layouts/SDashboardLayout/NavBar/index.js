@@ -11,11 +11,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import {
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-  User as UserIcon,
-} from 'react-feather';
 import NavItem from './NavItem';
 import StudentService from '../../../services/StudentService';
 import {  faCog,  faUserCircle,  faChartLine}  from '@fortawesome/free-solid-svg-icons'

@@ -27,7 +27,6 @@ import ImportStudent from './views/ImportStudent';
 import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
 import InterviewerAccountView from './views/InterviewerAccount/InterviewerAccountView'
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
-import VolunteerSearch from './views/testautocomplete';
 import StudentDriveView from './views/drive/StudentDriveView'
 import EmployeeDriveView from './views/drive/EmployeeDriveView'
 import InterviewerDrive from './views/reports/InterviewerDashboardView/InterviewerDrive'
@@ -81,7 +80,6 @@ const routes = [
       { path: 'drives', element: <DriveListView /> },
       { path: 'afterdrive/:id', element: <AfterDriveView /> },
       { path: 'importstudent', element: <ImportStudent /> },
-      { path: 'auto', element: <VolunteerSearch /> },
       { path: 'drive/:id', element: <EmployeeDriveView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
