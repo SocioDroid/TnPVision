@@ -32,7 +32,9 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import { ReactMultiEmail } from 'react-multi-email';
+import StudentService from '../../../services/StudentService';
 import 'react-multi-email/style.css';
+import EmployeeServices from '../../../services/EmployeeServices';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -178,10 +180,7 @@ export default function Basic(props) {
   useEffect(() => {
     let active1 = true;
     (async () => {
-      const response = await axios.get(
-        'http://20.37.50.140:8000/api/volunteer/search/?q=' + inputValue1
-      );
-
+      const response = await StudentService.volunteerSearch(inputValue1);
       if (active1) {
         setOptions1(response.data);
       }
@@ -211,9 +210,8 @@ export default function Basic(props) {
   useEffect(() => {
     let active2 = true;
     (async () => {
-      const response = await axios.get(
-        'http://20.37.50.140:8000/api/employee/search/?q=' + inputValue2
-      );
+      const response = await EmployeeServices.searchEmployee(inputValue2);
+      
       if (active2) {
         //console.log(response.data);
         setOptions2(response.data);
