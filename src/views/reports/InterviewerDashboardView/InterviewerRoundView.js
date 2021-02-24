@@ -21,7 +21,8 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          {/* <Typography>{children}</Typography> */}
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -69,13 +70,13 @@ export default function SimpleTabs(props) {
         <div className={classes.root}>
           <AppBar position="static">
             <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="simple tabs example">
-              {roundss.map(round => (
-                  <Tab label= {round.name} {...a11yProps(round.number - 1)} key={round.name} wrapped />
+              {roundss.map((round,index) => (
+                  <Tab label= {round.name} {...a11yProps(round.number - 1)} key={index} wrapped />
               ))}
             </Tabs>
           </AppBar>        
-          {roundss.map(round => (
-            <TabPanel value={value} index={round.number - 1}>
+          {roundss.map((round,index) => (
+            <TabPanel value={value} key={index } index={round.number - 1}>
                 <RoundStudent RoundId={round.number}/>
             </TabPanel>
           ))}

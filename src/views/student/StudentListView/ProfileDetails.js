@@ -14,6 +14,7 @@ import {
   Divider,
   TextField
 } from '@material-ui/core';
+import swal from 'sweetalert';
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -87,11 +88,17 @@ export default function ProfileDetails(props) {
         "gender": values.gender
       }
 
-      addOrEdit(values, resetForm);
-
+      
       axios.patch("http://20.37.50.140:8000/api/student/" + values.id, data)
-        .then(res =>{
-          console.log("res", res);
+      .then(res =>{
+        console.log("res", res);
+        swal("Student Updated!", {
+          buttons: false,
+          icon: "success",
+          timer: 3000,
+        });
+        addOrEdit(values, resetForm);
+
         }).catch(error => {
           console.log(error);  
         });
@@ -101,8 +108,6 @@ export default function ProfileDetails(props) {
 
   
   useEffect(() => {
-
-    if (recordForEdit != null) {
       setValues({
         ...values,
         'id': recordForEdit.id,
@@ -115,8 +120,7 @@ export default function ProfileDetails(props) {
       });
       console.log("IN Detaisl : ", values);
       console.log("IN Detaisl : ", recordForEdit);
-    }
-  }, [recordForEdit, values])
+  }, [])
 
   return (
     <form

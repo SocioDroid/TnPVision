@@ -31,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, customers, ...rest }) => {
+const Results = ({ className, ...rest }) => {
 
   const classes = useStyles();
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [openPopup, setOpenPopup] = useState(false)
-
   const [posts, setPosts] = useState([]);
+  const [isEdited, setIsEdited] = useState(true);
 
   const getAllEmployees = () => {
     EmployeeService.getAllEmployee()
@@ -51,8 +51,11 @@ const Results = ({ className, customers, ...rest }) => {
 
 
   useEffect((props) => {
-    getAllEmployees();
-  }, [])
+    if(isEdited){
+      getAllEmployees();
+      setIsEdited(false)
+    }
+  }, [isEdited, posts])
 
   const deleteEmployee = (id) => {
     console.log("employee in func : " + id);
@@ -83,6 +86,7 @@ const Results = ({ className, customers, ...rest }) => {
       console.log("Inserted");
     else
       console.log("Edited");
+    setIsEdited(true);
     resetForm()
     setRecordForEdit(null)
     setOpenPopup(false)
@@ -191,8 +195,7 @@ const Results = ({ className, customers, ...rest }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string,
-  customers: PropTypes.array.isRequired
+  className: PropTypes.string,  
 };
 
 export default Results;

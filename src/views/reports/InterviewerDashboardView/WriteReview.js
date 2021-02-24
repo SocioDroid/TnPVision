@@ -31,7 +31,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -172,12 +172,12 @@ export default function ReviewTabs(props) {
             aria-label="scrollable auto tabs example"
           >
             {filtered_rounds.map((round, index) => (
-              <Tab label={round.name} {...a11yProps(index)} />
+              <Tab key={round.number} label={round.name} {...a11yProps(index)} />
             ))}
           </Tabs>
         </AppBar>
         {filtered_rounds.map((round, index) => (
-          <TabPanel value={value} index={index}>
+          <TabPanel key={round.number} value={value} index={index}>
             <form
               onSubmit={e => handleSubmit(e, round.number)}
               autoComplete="off"
@@ -185,7 +185,7 @@ export default function ReviewTabs(props) {
             >
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography className={classes.bold} variant="h6">
+                  <Typography className={classes.bold} variant="h6" component="span">
                     Technical
                   </Typography>
                   <Rating
@@ -255,7 +255,7 @@ export default function ReviewTabs(props) {
                       <Typography className={classes.bold} variant="h6">
                         Interviewed by                
                       </Typography>
-                      <Typography variant="p">
+                      <Typography  component="span">
                         {interviewedBy[round.number]}
                       </Typography>
                     </Grid>

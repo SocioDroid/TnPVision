@@ -87,7 +87,9 @@ class RegisterContent extends React.Component {
         });
     }
     handleSelect = (event) => {
-        this.state.user.type = event.target.value;
+        let user = this.state.user;
+        user.type = event.target.value;
+        this.setState({user: user});
         this.hideComponent(event.target.value);
     }
     hideComponent(name) {

@@ -11,12 +11,10 @@ const App = () => {
   const routing = useRoutes(routes);
 
   return (
-    // <BrowserRouter>
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       {routing}
     </ThemeProvider>
-    // </BrowserRouter>
   );
 }
 

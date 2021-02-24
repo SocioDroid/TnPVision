@@ -133,8 +133,8 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
   };
 
   useEffect(() => {
-    if (userData != null) {
-      console.log(userData);
+
+      console.log("ProfileDetails : ",userData);
       setValues({
         ...values,
         email: userData.email,
@@ -148,8 +148,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         department: userData.department,
         designation: userData.designation
       });
-    }
-  }, [userData, values]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off" noValidate>

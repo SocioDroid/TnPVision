@@ -1,11 +1,12 @@
 {
-  "name": "react-material-dashboard",
+  "name": "tnpvision",
   "author": "DeviasIO",
   "licence": "MIT",
   "version": "1.0.0",
   "private": false,
   "scripts": {
     "start": "react-scripts start",
+
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

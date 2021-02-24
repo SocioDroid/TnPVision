@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 
 const EmployeeListView = () => {
   const classes = useStyles();
-  const [customers] = useState(data);
 
   return (
     <Page
@@ -30,7 +29,7 @@ const EmployeeListView = () => {
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
-          <Results customers={customers} />
+          <Results/>
         </Box>
       </Container>
     </Page>

@@ -9,6 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StudentService from '../../../services/studentService';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -21,12 +22,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, customers, ...rest }) => {
+const Results = ({ className, ...rest }) => {
 
   const classes = useStyles();
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [openPopup, setOpenPopup] = useState(false)
   const[ posts, setPosts] = useState([]);
+  const [isEdited, setIsEdited] = useState(true);
+
 
   const getAllStudents = () => {
     StudentService.getAllStudents()
@@ -37,61 +40,67 @@ const Results = ({ className, customers, ...rest }) => {
           console.log(err);
       })
     }
-
+    
     useEffect((props) => {
-      getAllStudents();
-    }, [recordForEdit])
-
+      if(isEdited){
+       getAllStudents();
+       setIsEdited(false);
+      }
+    }, [isEdited, posts])
+    
     const deleteStudent = (id) => {
       StudentService.deleteStudent({id: id})
       .then(res => {
-          getAllStudents();                
+        getAllStudents();                
       })
       .catch( err => {
-          console.log(err);
+        console.log(err);
       })
-
+      
     }
     function openPopupWithExtraData(id){
       StudentService.getSingleStudent({id: id})
       .then(res => {
-          openInPopup(res.data);
+        openInPopup(res.data);
       })
       .catch( err => {
-          console.log(err);
+        console.log(err);
       })
     }
-
+    
     const addOrEdit = (student, resetForm) => {
       if (student.id === 0)
-          console.log("Inserted");
+      console.log("Inserted");
       else
-          console.log("Edited");
+      console.log("Edited");
+      
+      setIsEdited(true)
       resetForm()
       setRecordForEdit(null)
       setOpenPopup(false)
-  }
+    }
     const openInPopup = item => {
       setRecordForEdit(item)
       setOpenPopup(true)
-  }
-
+    }
+    
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(0);
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
-  
+    
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
+  
 
-  return (
-    <Card
+        return (
+      <Card
       className={clsx(classes.root, className)}
       {...rest}
-    >
+      >
       
         <PerfectScrollbar>
           <Box minWidth={1050}>
@@ -169,8 +178,7 @@ const Results = ({ className, customers, ...rest }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string,
-  customers: PropTypes.array.isRequired
+  className: PropTypes.string
 };
 
 export default Results;

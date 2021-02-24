@@ -464,7 +464,7 @@ export default function PersonalData(){
                                             error={formik.errors.dob }
                                             helperText= {(formik.errors.dob && formik.touched.dob) && formik.errors.dob}
                                             value={formik.values.dob && selectedDate}
-                                            KeyboardButtonProps={{
+                                            keyboardButtonProps={{
                                                 'aria-label': 'change date',
                                             }}
                                         />

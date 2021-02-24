@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { useNavigate} from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -88,6 +89,7 @@ const driveType = [
 ];
 
 export default function Basic(props) {
+  const navigate=useNavigate();
   const classes = useStyles();
   const [interviewerEmails, setInterviewerEmails] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
@@ -317,12 +319,11 @@ export default function Basic(props) {
                     .then(result => {
                       console.log('Data Added:', result);
                       alert('Drive Added Sucessfully');
-                      setTimeout(window.location.reload(false), 10000);
+                      navigate('/employee/alldrives', {inplace:true});
                     })
                     .catch(error => {
                       console.log(error);
                       alert('Operation Failed');
-                      setTimeout(window.location.reload(false), 10000);
                     });
                   console.log(values);
                 }}

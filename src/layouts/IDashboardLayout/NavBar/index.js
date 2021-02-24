@@ -106,62 +106,62 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   };
   const classes = useStyles();
   const [company, setCompany] = useState({});
-  const getCompany = () => {
-    InterviewerService.getCompany()
-      .then(res => {
-        setCompany(res.data);
-        console.log("Interviewer's Company : ", res.data);
-      })
-      .catch(error => {
-        if (error.response) {
-          // Request made and server responded
-          const data = error.response.data
-            ? JSON.stringify(error.response.data)
-            : 'Error!';
-          const statuscode = error.response.status;
-          switch (statuscode) {
-            case 400:
-              console.log(data);
-              setErrorMessage(data);
-              console.log('400 ERRORRR');
-              break;
-            case 401:
-              setErrorMessage(
-                'Unauthenticated ! Please login to continue ' + data
-              );
-              console.log('401 ERRORRR');
-              navigate('/login', { replace: true });
-              break;
-            case 403:
-              console.log('403 error! ' + data);
-              setErrorMessage('403 Error. Please try again ' + data);
-              break;
-            case 500:
-              console.log('500 ERROR ' + data);
-              setErrorMessage('Server Error. Please try again ' + data);
-              break;
-            default:
-              console.log('Navin Error ' + data);
-              setErrorMessage('New Error, add it to catch block ' + data);
-          }
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-          setErrorMessage('Server Error, Please try again');
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-          setErrorMessage('Unknown error, please contact admin!');
-        }
-        setIsError(true);
-      });
-  };
-
+  
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-    getCompany();
+    const getCompanyData = () => {
+      InterviewerService.getCompany()
+        .then(res => {
+          setCompany(res.data);
+          console.log("Interviewer's Company : ", res.data);
+        })
+        .catch(error => {
+          if (error.response) {
+            // Request made and server responded
+            const data = error.response.data
+              ? JSON.stringify(error.response.data)
+              : 'Error!';
+            const statuscode = error.response.status;
+            switch (statuscode) {
+              case 400:
+                console.log(data);
+                setErrorMessage(data);
+                console.log('400 ERRORRR');
+                break;
+              case 401:
+                setErrorMessage(
+                  'Unauthenticated ! Please login to continue ' + data
+                );
+                console.log('401 ERRORRR');
+                navigate('/login', { replace: true });
+                break;
+              case 403:
+                console.log('403 error! ' + data);
+                setErrorMessage('403 Error. Please try again ' + data);
+                break;
+              case 500:
+                console.log('500 ERROR ' + data);
+                setErrorMessage('Server Error. Please try again ' + data);
+                break;
+              default:
+                console.log('Navin Error ' + data);
+                setErrorMessage('New Error, add it to catch block ' + data);
+            }
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+            setErrorMessage('Server Error, Please try again');
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            setErrorMessage('Unknown error, please contact admin!');
+          }
+          setIsError(true);
+        });
+    };
+    getCompanyData();
     InterviewerService.getInterviewerDetails()
     .then(function (res) {
       const { data } = res;
@@ -180,8 +180,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         Auth.deauthenticateUser();
         setData(false)
         console.log("Deauthenticate user")
-        console.log(error)
-        navigate('/logout', { replace: true });
+        window.location.reload();
       } 
     })
   }, []);
