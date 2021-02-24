@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
+import StudentService from '../../../services/StudentService';
 
 function debounce(func, wait) {
   let timeout;
@@ -80,9 +81,7 @@ const addVolunteerForDrive = (driveId, datavalue) => {
   useEffect(() => {
     let active1 = true;
     (async () => {
-      const response = await axios.get(
-        'http://20.37.50.140:8000/api/volunteer/search/?q=' + inputValue1
-      );
+      const response = await StudentService.volunteerSearch(inputValue1);
 
       if (active1) {
         console.log('Response of search value', response.data);

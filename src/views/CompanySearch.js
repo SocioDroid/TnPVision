@@ -3,6 +3,7 @@ import axios from "axios";
 //import Chip from '@material-ui/core/Chip';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
+import CompanyService from "../services/CompanyService";
 
 function debounce(func, wait) {
   let timeout;
@@ -50,10 +51,7 @@ export default function CompanySearch() {
     let active = true;
 
     (async () => {
-      const response = await axios.get(
-        "http://20.37.50.140:8000/api/company/search/?q="+inputValue
-      );
-
+      const response = await CompanyService.CompanySearch(inputValue);
       if (active) {
         console.log(response.data);
         setOptions(response.data);

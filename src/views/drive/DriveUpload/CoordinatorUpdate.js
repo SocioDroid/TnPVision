@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
+import EmployeeServices from '../../../services/EmployeeServices';
 
 function debounce(func, wait) {
   let timeout;
@@ -80,9 +81,7 @@ const addCoordinatorForDrive = (driveId, datavalue) => {
   useEffect(() => {
     let active1 = true;
     (async () => {
-      const response = await axios.get(
-        'http://20.37.50.140:8000/api/employee/search/?q=' + inputValue1
-      );
+      const response = await EmployeeServices.searchEmployee(inputValue1);
 
       if (active1) {
         console.log('Response of search value', response.data);

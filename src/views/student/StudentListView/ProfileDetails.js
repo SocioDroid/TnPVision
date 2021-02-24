@@ -15,6 +15,7 @@ import {
   TextField
 } from '@material-ui/core';
 import swal from 'sweetalert';
+import StudentService from '../../../services/StudentService';
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -88,8 +89,7 @@ export default function ProfileDetails(props) {
         "gender": values.gender
       }
 
-      
-      axios.patch("http://20.37.50.140:8000/api/student/" + values.id, data)
+      StudentService.updateSingleStudent(values.id, data)
       .then(res =>{
         console.log("res", res);
         swal("Student Updated!", {

@@ -16,6 +16,7 @@ import axios from 'axios';
 import Auth from '../../../auth';
 import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import StudentService from '../../../services/StudentService';
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -141,14 +142,7 @@ const PersonalData = ({ userData }) => {
       }
     }
     console.log("data.dob",JSON.stringify(datevalues.date).slice(1,11))
-      axios.put("http://20.37.50.140:8000/api/user/", data, {
-        headers: {
-          "Content-type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          //'Cache-Control': 'no-cache',
-          "Authorization": "Token " + Auth.getToken()
-        }
-      })
+      StudentService.updateStudent(data)
         .then(res => {
           console.log("res", res);
         }).catch(error => {

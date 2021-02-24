@@ -7,7 +7,7 @@ import {
 import Page from '../../../components/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
-import StudentService from '../../../services/studentService';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles((theme) => ({
   root: {

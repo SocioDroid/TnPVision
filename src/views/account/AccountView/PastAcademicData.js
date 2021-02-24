@@ -3,6 +3,7 @@ import { Box, Button, Card, CardContent, CardHeader, Divider, Grid, TextField, T
 import { useForm } from '../../../components/useForm';
 import axios from 'axios';
 import Auth from '../../../auth';
+import StudentService from '../../../services/StudentService';
 
 const initialFValues = {
   tenthPercentage: 0.0,
@@ -95,14 +96,7 @@ const PastAcademicData = ({ userData }) => {
         "isProfileComplete": values.isProfileComplete,
       }
     }
-      axios.put("http://20.37.50.140:8000/api/user/", pastAcadData, {
-        headers: {
-          "Content-type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          //'Cache-Control': 'no-cache',
-          "Authorization": "Token " + Auth.getToken()
-        }
-      })
+    StudentService.updateStudent(pastAcadData)
         .then(res => {
           console.log("res", res);
         }).catch(error => {

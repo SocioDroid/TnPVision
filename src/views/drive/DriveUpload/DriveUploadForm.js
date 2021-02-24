@@ -243,9 +243,7 @@ export default function Basic(props) {
     let active3 = true;
 
     (async () => {
-      const response = await axios.get(
-        'http://20.37.50.140:8000/api/company/search/?q=' + inputValue3
-      );
+      const response = await await CompanyService.searchCompany(inputValue3)
 
       if (active3) {
         //console.log("Active: ",response.data);

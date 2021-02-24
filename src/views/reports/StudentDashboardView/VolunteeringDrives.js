@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Avatar, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
-import StudentService from '../../../services/studentService';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -58,13 +59,7 @@ const Certificates = ({ userData }) => {
     };
 
     useEffect(() => {
-        axios.get(`http://20.37.50.140:8000/api/student/certificate/`, {
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": "Token " + Auth.getToken()
-            }
-        })
+       StudentService.getCertificate()
             .then(res => {
                 // console.log("cert data", res);
                 setCertificateData(res.data)
@@ -141,14 +136,8 @@ const Certificates = ({ userData }) => {
                     values.certificate[index].issuedDate = new Date(selectedDate[index]).toISOString().split('T')[0]
                     ))                    
 
-                    axios.put(`http://20.37.50.140:8000/api/student/certificate/`, [...certificateData, ...values.certificate], {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
-                        .then(res => {
+                    StudentService.updateCertificate([...certificateData, ...values.certificate])
+                    .then(res => {
                             console.log("res", res);
                             setCertificateData(res.data)
                         }).catch(error => {
@@ -289,13 +278,7 @@ const Certificates = ({ userData }) => {
                 
                 onSubmit={async values => {
                     {popupData.issuedDate = new Date(selectedPopUpDate).toISOString().split('T')[0]}
-                    axios.patch(`http://20.37.50.140:8000/api/student/certificate/`, popupData, {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    StudentService.updateIndividualCertificate(popupData)
                         .then(res => {
                             console.log("res", res);
                             setCertificateData(res.data)

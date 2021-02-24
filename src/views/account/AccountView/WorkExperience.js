@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -59,13 +60,7 @@ const Workexperience = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://20.37.50.140:8000/api/student/experience/`, {
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": "Token " + Auth.getToken()
-            }
-        })
+        StudentService.getExperience()
             .then(res => {
                 console.log("setExperienceData data", res);
                 setExperienceData(res.data)
@@ -76,11 +71,12 @@ const Workexperience = () => {
             })
     }, [])
 
-    const handleChange=(e) =>{
+    const handleChange = (e) => {
         setPopupData({
             ...popupData,
             [e.target.name]: e.target.value
-          });
+        });
+
     }
 
     return (
@@ -104,7 +100,7 @@ const Workexperience = () => {
                                         <Fab size="small" color="secondary"
                                             onClick={() => {
                                                 setOpen(true);
-                                                setPopupData({...data, index: index })
+                                                setPopupData({ ...data, index: index })
                                             }}
                                         >
                                             <EditIcon />
@@ -139,20 +135,14 @@ const Workexperience = () => {
 
                 }}
                 onSubmit={async values => {
-                    values.experience.map((_, index) => ( 
+                    values.experience.map((_, index) => (
                         values.experience[index].startDate = new Date(selectedStartDate[index]).toISOString().split('T')[0]
                     ))
-                    values.experience.map((_, index) => ( 
+                    values.experience.map((_, index) => (
                         values.experience[index].endDate = new Date(selectedEndDate[index]).toISOString().split('T')[0]
                     ))
 
-                    axios.put(`http://20.37.50.140:8000/api/student/experience/`, [...experienceData, ...values.experience], {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    StudentService.updateExperience([...experienceData, ...values.experience])
                         .then(res => {
                             console.log("res", res);
                             setExperienceData(res.data)
@@ -191,42 +181,42 @@ const Workexperience = () => {
                                                     <Grid item md={5} xs={10}>
                                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                             <Field
-                                                            variant="outlined"
-                                                            component={KeyboardDatePicker}
-                                                            name={`experience[${index}].startDate`}
-                                                            value={selectedStartDate[index]}
-                                                            onChange=
+                                                                variant="outlined"
+                                                                component={KeyboardDatePicker}
+                                                                name={`experience[${index}].startDate`}
+                                                                value={selectedStartDate[index]}
+                                                                onChange=
                                                                 {(event, newValue) => {
                                                                     let tech = [...selectedStartDate];
                                                                     tech[index] = newValue;
                                                                     handleStartDateChange([...tech]);
-                                                                    console.log("date",selectedStartDate);
-                                                                    
-                                                                  }}
-                                                            label="Start Date"
-                                                            format="yyyy-MM-dd"
-                                                            fullWidth
+                                                                    console.log("date", selectedStartDate);
+
+                                                                }}
+                                                                label="Start Date"
+                                                                format="yyyy-MM-dd"
+                                                                fullWidth
                                                             />
                                                         </MuiPickersUtilsProvider>
                                                     </Grid>
                                                     <Grid item md={5} xs={10}>
                                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                             <Field
-                                                            variant="outlined"
-                                                            component={KeyboardDatePicker}
-                                                            name={`experience[${index}].endDate`}
-                                                            value={selectedEndDate[index]}
-                                                            onChange=
+                                                                variant="outlined"
+                                                                component={KeyboardDatePicker}
+                                                                name={`experience[${index}].endDate`}
+                                                                value={selectedEndDate[index]}
+                                                                onChange=
                                                                 {(event, newValue) => {
                                                                     let tech = [...selectedEndDate];
                                                                     tech[index] = newValue;
                                                                     handleEndDateChange([...tech]);
-                                                                    console.log("date",selectedEndDate);
-                                                                    
-                                                                  }}
-                                                            label="End Date"
-                                                            format="yyyy-MM-dd"
-                                                            fullWidth
+                                                                    console.log("date", selectedEndDate);
+
+                                                                }}
+                                                                label="End Date"
+                                                                format="yyyy-MM-dd"
+                                                                fullWidth
                                                             />
                                                         </MuiPickersUtilsProvider>
                                                     </Grid>
@@ -302,8 +292,8 @@ const Workexperience = () => {
                     </Form>
                 )}
             </Formik>
-            
-            
+
+
             <Formik
                 initialValues={{
                     index: 0,
@@ -313,18 +303,12 @@ const Workexperience = () => {
                     endDate: popupData.endDate,
                     description: popupData.description,
                 }}
-                
-                onSubmit={async values => {
-                    {popupData.startDate = new Date(selectedPopUpStartDate).toISOString().split('T')[0]}
-                    {popupData.endDate = new Date(selectedPopUpEndDate).toISOString().split('T')[0]}
 
-                    axios.patch(`http://20.37.50.140:8000/api/student/experience/`, popupData, {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                onSubmit={async values => {
+                    { popupData.startDate = new Date(selectedPopUpStartDate).toISOString().split('T')[0] }
+                    { popupData.endDate = new Date(selectedPopUpEndDate).toISOString().split('T')[0] }
+
+                    StudentService.updateIndividualExperience(popupData)
                         .then(res => {
                             console.log("res", res);
                             setExperienceData(res.data)
@@ -334,13 +318,13 @@ const Workexperience = () => {
                         });
                 }}
             >
-                
+
                 {({ values, errors }) => (
-                    
+
                     <Form autoComplete="off">
                         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                             <DialogTitle id="form-dialog-title">experience</DialogTitle>
-                            <Divider className={classes.divider}/>
+                            <Divider className={classes.divider} />
                             <DialogContent>
                                 <form
                                     autoComplete="off"
@@ -348,26 +332,26 @@ const Workexperience = () => {
                                 >
                                     <Grid container spacing={3}>
                                         <Grid item md={6} xs={12}>
-                                                <Field
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    component={TextField}
-                                                    name="companyName"
-                                                    label="Company Name"
-                                                    value={popupData.companyName}
-                                                    onChange={handleChange}
-                                                />
+                                            <Field
+                                                fullWidth
+                                                variant="outlined"
+                                                component={TextField}
+                                                name="companyName"
+                                                label="Company Name"
+                                                value={popupData.companyName}
+                                                onChange={handleChange}
+                                            />
                                         </Grid>
                                         <Grid item md={6} xs={12}>
-                                                <Field
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    component={TextField}
-                                                    name="position"
-                                                    label="Position"
-                                                    value={popupData.position}
-                                                    onChange={handleChange}
-                                                />
+                                            <Field
+                                                fullWidth
+                                                variant="outlined"
+                                                component={TextField}
+                                                name="position"
+                                                label="Position"
+                                                value={popupData.position}
+                                                onChange={handleChange}
+                                            />
                                         </Grid>
                                         <Grid item md={6} xs={12}>
                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -398,15 +382,15 @@ const Workexperience = () => {
                                             </MuiPickersUtilsProvider>
                                         </Grid>
                                         <Grid item md={6} xs={12}>
-                                                <Field
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    component={TextField}
-                                                    name="description"
-                                                    label="Description"
-                                                    value={popupData.description}
-                                                    onChange={handleChange}
-                                                />
+                                            <Field
+                                                fullWidth
+                                                variant="outlined"
+                                                component={TextField}
+                                                name="description"
+                                                label="Description"
+                                                value={popupData.description}
+                                                onChange={handleChange}
+                                            />
                                         </Grid>
                                     </Grid>
                                     <Divider style={{ marginTop: 10 }} />
@@ -414,12 +398,12 @@ const Workexperience = () => {
                                         display="flex"
                                         justifyContent="flex-end"
                                         p={2}
-                                        
+
                                     >
                                         <Button
                                             color="primary"
                                             type="submit"
-                                            style={{marginRight: 5}}
+                                            style={{ marginRight: 5 }}
                                         >
                                             Save details
                                         </Button>

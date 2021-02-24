@@ -17,7 +17,7 @@ import {
   User as UserIcon,
 } from 'react-feather';
 import NavItem from './NavItem';
-import StudentService from '../../../services/studentService';
+import StudentService from '../../../services/StudentService';
 import {  faCog,  faUserCircle,  faChartLine}  from '@fortawesome/free-solid-svg-icons'
 
 const items = [

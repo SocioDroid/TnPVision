@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
+const NavItem = ({ className, href, icon, title, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -53,7 +53,7 @@ const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
         to={href}
       >
         <FontAwesomeIcon icon={icon} className={classes.icon} size="lg" />
-        
+
         <span className={classes.title}>{title}</span>
       </Button>
     </ListItem>

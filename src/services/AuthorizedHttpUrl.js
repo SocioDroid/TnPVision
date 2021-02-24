@@ -1,12 +1,3 @@
-// import axios from "axios";
-
-// export default axios.create({
-//   baseURL: "http://localhost:3000/api",
-//   headers: {
-//     "Content-type": "application/json"
-//   }
-// });
-
 import axios from "axios";
 import Auth from './../auth';
 
@@ -17,7 +8,6 @@ export default axios.create({
     "Content-type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
     //'Cache-Control': 'no-cache',
-    "Authorization": "Token " + Auth.getToken() 
-    // != null ? Auth.getToken : {<Redirect to="/" />}
+    "Authorization": "Token " + Auth.getToken()
   }
 });

@@ -25,6 +25,7 @@ import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
+import CompanyService from '../../../services/CompanyService';
 
 function debounce(func, wait) {
   let timeout;
@@ -125,10 +126,7 @@ export default function ProfileDetails(props) {
     let active = true;
 
     (async () => {
-      const response = await axios.get(
-        'http://20.37.50.140:8000/api/company/search/?q=' + inputValue
-      );
-
+      const response = await CompanyService.searchCompany(inputValue)
       if (active) {
         console.log(response.data);
         setOptions(response.data);

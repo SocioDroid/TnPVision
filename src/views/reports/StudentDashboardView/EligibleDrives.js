@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
-import StudentService from '../../../services/studentService';
+import StudentService from '../../../services/StudentService';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';

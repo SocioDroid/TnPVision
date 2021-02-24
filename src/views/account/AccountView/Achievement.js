@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -57,13 +58,7 @@ const Achievement = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://20.37.50.140:8000/api/student/achievement/`, {
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": "Token " + Auth.getToken()
-            }
-        })
+        StudentService.getAchievement()
             .then(res => {
                 console.log("setAchievementData data", res);
                 setAchievementData(res.data)
@@ -74,11 +69,11 @@ const Achievement = () => {
             })
     }, [])
 
-    const handleChange=(e) =>{
+    const handleChange = (e) => {
         setPopupData({
             ...popupData,
             [e.target.name]: e.target.value
-          });
+        });
     }
 
     return (
@@ -102,7 +97,7 @@ const Achievement = () => {
                                         <Fab size="small" color="secondary"
                                             onClick={() => {
                                                 setOpen(true);
-                                                setPopupData({...data, index: index })
+                                                setPopupData({ ...data, index: index })
                                             }}
                                         >
                                             <EditIcon />
@@ -132,18 +127,12 @@ const Achievement = () => {
 
                 }}
                 onSubmit={async values => {
-                    values.achievement.map((_, index) => ( 
+                    values.achievement.map((_, index) => (
                         values.achievement[index].date = new Date(selectedDate[index]).toISOString().split('T')[0]
-                        ))
-                    axios.put(`http://20.37.50.140:8000/api/student/achievement/`, [...achievementData, ...values.achievement], {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    ))
+                    StudentService.updateAchievement([...achievementData, ...values.achievement])
                         .then(res => {
-                            console.log("res", res);
+                            console.log("", res);
                             setAchievementData(res.data)
                         }).catch(error => {
                             console.log(error);
@@ -169,23 +158,23 @@ const Achievement = () => {
                                                         />
                                                     </Grid>
                                                     <Grid item md={5} xs={10}>
-                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                             <Field
-                                                            variant="outlined"
-                                                            component={KeyboardDatePicker}
-                                                            name={`achievement[${index}].date`}
-                                                            value={selectedDate[index]}
-                                                            onChange=
+                                                                variant="outlined"
+                                                                component={KeyboardDatePicker}
+                                                                name={`achievement[${index}].date`}
+                                                                value={selectedDate[index]}
+                                                                onChange=
                                                                 {(event, newValue) => {
                                                                     let tech = [...selectedDate];
                                                                     tech[index] = newValue;
                                                                     handleDateChange([...tech]);
-                                                                    console.log("date",selectedDate);
-                                                                    
-                                                                  }}
-                                                            label="Date"
-                                                            format="yyyy-MM-dd"
-                                                            fullWidth
+                                                                    console.log("date", selectedDate);
+
+                                                                }}
+                                                                label="Date"
+                                                                format="yyyy-MM-dd"
+                                                                fullWidth
                                                             />
                                                         </MuiPickersUtilsProvider>
                                                     </Grid>
@@ -259,8 +248,8 @@ const Achievement = () => {
                     </Form>
                 )}
             </Formik>
-            
-            
+
+
             <Formik
                 initialValues={{
                     index: 0,
@@ -268,16 +257,10 @@ const Achievement = () => {
                     date: popupData.date,
                     description: popupData.description,
                 }}
-                
+
                 onSubmit={async values => {
-                    {popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0]}
-                    axios.patch(`http://20.37.50.140:8000/api/student/achievement/`, popupData, {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    { popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0] }
+                    StudentService.updateIndividualAchievement(popupData)
                         .then(res => {
                             console.log("res", res);
                             setAchievementData(res.data)
@@ -287,13 +270,13 @@ const Achievement = () => {
                         });
                 }}
             >
-                
+
                 {({ values, errors }) => (
-                    
+
                     <Form autoComplete="off">
                         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                             <DialogTitle id="form-dialog-title">Achievement</DialogTitle>
-                            <Divider className={classes.divider}/>
+                            <Divider className={classes.divider} />
                             <DialogContent>
                                 <form
                                     autoComplete="off"
@@ -301,40 +284,40 @@ const Achievement = () => {
                                 >
                                     <Grid container spacing={3}>
                                         <Grid item md={6} xs={12}>
-                                                <Field
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    component={TextField}
-                                                    name="name"
-                                                    label="Name"
-                                                    value={popupData.name}
-                                                    onChange={handleChange}
-                                                />
+                                            <Field
+                                                fullWidth
+                                                variant="outlined"
+                                                component={TextField}
+                                                name="name"
+                                                label="Name"
+                                                value={popupData.name}
+                                                onChange={handleChange}
+                                            />
                                         </Grid>
                                         <Grid item md={6} xs={12}>
-                                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <Field
-                                                variant="outlined"
-                                                component={KeyboardDatePicker}
-                                                name="date"
-                                                value={popupData.date && selectedPopUpDate}
-                                                onChange={handlePopUpDateChange}
-                                                label="Date"
-                                                format="yyyy-MM-dd"
-                                                fullWidth
+                                                    variant="outlined"
+                                                    component={KeyboardDatePicker}
+                                                    name="date"
+                                                    value={popupData.date && selectedPopUpDate}
+                                                    onChange={handlePopUpDateChange}
+                                                    label="Date"
+                                                    format="yyyy-MM-dd"
+                                                    fullWidth
                                                 />
                                             </MuiPickersUtilsProvider>
                                         </Grid>
                                         <Grid item md={6} xs={12}>
-                                                <Field
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    component={TextField}
-                                                    name="description"
-                                                    label="Description"
-                                                    value={popupData.description}
-                                                    onChange={handleChange}
-                                                />
+                                            <Field
+                                                fullWidth
+                                                variant="outlined"
+                                                component={TextField}
+                                                name="description"
+                                                label="Description"
+                                                value={popupData.description}
+                                                onChange={handleChange}
+                                            />
                                         </Grid>
                                     </Grid>
                                     <Divider style={{ marginTop: 10 }} />
@@ -342,12 +325,12 @@ const Achievement = () => {
                                         display="flex"
                                         justifyContent="flex-end"
                                         p={2}
-                                        
+
                                     >
                                         <Button
                                             color="primary"
                                             type="submit"
-                                            style={{marginRight: 5}}
+                                            style={{ marginRight: 5 }}
                                         >
                                             Save details
                                         </Button>

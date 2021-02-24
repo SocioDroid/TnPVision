@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import ImportSingleStud from './SingleStudImport'
 import Auth from '../../auth';
-
+import StudentService from '../../services/StudentService'
 const useStyles = makeStyles((theme) => ({
     box:{
         margin: '10px',
@@ -49,13 +49,7 @@ const App = () => {
     const handleClick = () => {
         const data = new FormData() 
         data.append('file', selectedFile);
-        axios.post("https://tnpvision-cors.herokuapp.com/https://tnpvisionapi.herokuapp.com/api/upload/", data, {
-            headers:{
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": "Token " + Auth.getToken()
-            }
-        })
+        StudentService.uploadStudents(data)
         .then(res=>{
             console.log(res);
         })

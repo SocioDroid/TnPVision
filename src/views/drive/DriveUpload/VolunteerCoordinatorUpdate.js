@@ -15,6 +15,7 @@ import {
   TextField
 } from '@material-ui/core';
 import DriveService from '../../../services/DriveService';
+import StudentService from '../../../services/StudentService';
 
 function debounce(func, wait) {
   let timeout;
@@ -78,9 +79,7 @@ export default function ProfileDetails(props) {
    useEffect(() => {
        let active1 = true;
        (async () => {
-           const response = await axios.get(
-               "http://20.37.50.140:8000/api/volunteer/search/?q=" + inputValue1
-           );
+           const response = await StudentService.volunteerSearch(inputValue1);
 
            if (active1) {
               console.log("Response of search value", response.data)
@@ -131,9 +130,7 @@ export default function ProfileDetails(props) {
   useEffect(() => {
       let active2 = true;
       (async () => {
-          const response = await axios.get(
-              "http://20.37.50.140:8000/api/employee/search/?q=" + inputValue2
-          );
+          const response = await EmployeeServices.searchEmployee(inputValue2);
           if (active2) {
               //console.log(response.data);
               setOptions2(response.data);

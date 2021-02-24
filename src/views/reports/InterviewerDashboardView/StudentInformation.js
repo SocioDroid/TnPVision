@@ -4,7 +4,7 @@ import { Typography, Divider, List, ListItem, ListItemText, ListSubheader } from
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { useParams } from 'react-router-dom';
-import StudentService from '../../../services/studentService';
+import StudentService from '../../../services/StudentService';
 import ReviewTabs from './WriteReview';
 import RoundsService from '../../../services/RoundService';
 import InterviewerService from '../../../services/InterviewerService';

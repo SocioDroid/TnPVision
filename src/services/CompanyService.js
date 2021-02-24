@@ -18,6 +18,10 @@ class CompanyService {
     deleteCompanies(data){
         return http.delete(`/api/company/${data.id}`)
     }
+
+    searchCompany(inputValue){
+        return http.get("api/company/search/?q="+inputValue)
+    }
 }
 
 export default new CompanyService();

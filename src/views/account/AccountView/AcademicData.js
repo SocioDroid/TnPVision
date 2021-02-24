@@ -12,18 +12,19 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import Auth from '../../../auth';
+import StudentService from '../../../services/StudentService';
 
 const collegeItems = [
-  {id: 'DYPIEMR', title: 'DYPIEMR'},
-  {id: 'DYPCOE', title: 'DYPCOE'},
+  { id: 'DYPIEMR', title: 'DYPIEMR' },
+  { id: 'DYPCOE', title: 'DYPCOE' },
 ]
 const DepartmentItems = [
-  {id: 'Computer', title: 'Computer Engineering'},
-  {id: 'IT', title: 'Information Technology'},
-  {id: 'Mechanical', title: 'Mechanical Engineering'},
-  {id: 'Civil', title: 'Civil Engineering'},
-  {id: 'Instrumentation', title: 'Instrumentation Engineering'},
-  {id: 'ENTC', title: 'E&TC Engineering'},
+  { id: 'Computer', title: 'Computer Engineering' },
+  { id: 'IT', title: 'Information Technology' },
+  { id: 'Mechanical', title: 'Mechanical Engineering' },
+  { id: 'Civil', title: 'Civil Engineering' },
+  { id: 'Instrumentation', title: 'Instrumentation Engineering' },
+  { id: 'ENTC', title: 'E&TC Engineering' },
 ]
 
 const AcademicData = ({ userData }) => {
@@ -50,26 +51,6 @@ const AcademicData = ({ userData }) => {
     yearDown: 0,
   });
 
-  // const validate = (fieldValues = values) => {
-  //   let temp = { ...errors }
-  //   if ('first_name' in fieldValues)
-  //     temp.first_name = fieldValues.first_name ? "" : "This field is required."
-  //   if ('last_name' in fieldValues)
-  //     temp.last_name = fieldValues.last_name ? "" : "This field is required."
-  //   if ('email' in fieldValues)
-  //     temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
-  //   setErrors({
-  //     ...temp
-  //   })
-  //   if (fieldValues === values)
-  //     return Object.values(temp).every(x => x === "")
-  // }
-
-  // const {
-  //   errors,
-  //   setErrors,
-  // } = useForm(initialFValues, true, validate);
-
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -82,45 +63,36 @@ const AcademicData = ({ userData }) => {
     e.preventDefault()
     console.log("e", e);
 
-      const acadData = {
-        "studentProfile": {
-            "collegeName": values.collegeName,
-            "branch": values.branch,
-            "prn": values.prn,
-            "sem1SGPA": values.sem1SGPA,
-            "sem1Percentage": values.sem1Percentage,
-            "sem2SGPA": values.sem2SGPA,
-            "sem2Percentage": values.sem2Percentage,
-            "sem3SGPA": values.sem3SGPA,
-            "sem3Percentage": values.sem3Percentage,
-            "sem4SGPA": values.sem4SGPA,
-            "sem4Percentage": values.sem4Percentage,
-            "sem5SGPA": values.sem5SGPA,
-            "sem5Percentage": values.sem5Percentage,
-            "enggAggCGPA": values.enggAggCGPA,
-            "enggAggPercentage": values.enggAggPercentage,
-            "liveBacklogs": values.liveBacklogs,
-            "deadBacklogs": values.deadBacklogs,
-            "educationalGap": values.educationalGap,
-            "yearDown": values.yearDown
+    const acadData = {
+      "studentProfile": {
+        "collegeName": values.collegeName,
+        "branch": values.branch,
+        "prn": values.prn,
+        "sem1SGPA": values.sem1SGPA,
+        "sem1Percentage": values.sem1Percentage,
+        "sem2SGPA": values.sem2SGPA,
+        "sem2Percentage": values.sem2Percentage,
+        "sem3SGPA": values.sem3SGPA,
+        "sem3Percentage": values.sem3Percentage,
+        "sem4SGPA": values.sem4SGPA,
+        "sem4Percentage": values.sem4Percentage,
+        "sem5SGPA": values.sem5SGPA,
+        "sem5Percentage": values.sem5Percentage,
+        "enggAggCGPA": values.enggAggCGPA,
+        "enggAggPercentage": values.enggAggPercentage,
+        "liveBacklogs": values.liveBacklogs,
+        "deadBacklogs": values.deadBacklogs,
+        "educationalGap": values.educationalGap,
+        "yearDown": values.yearDown
       }
     }
-      
-      axios.put("http://20.37.50.140:8000/api/user/", acadData, {
-        headers: {
-          "Content-type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          //'Cache-Control': 'no-cache',
-          "Authorization": "Token " + Auth.getToken()
-        }
-      })
-        .then(res => {
-          console.log("res", res);
-        }).catch(error => {
-          console.log(error);
-        });
 
-      // setTimeout(window.location.reload(false), 40000);
+    StudentService.updateStudent(acadData)
+      .then(res => {
+        console.log("res", res);
+      }).catch(error => {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
@@ -175,28 +147,28 @@ const AcademicData = ({ userData }) => {
                 >
                   {collegeItems.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                        {option.title}
+                      {option.title}
                     </MenuItem>
-                  ))} 
-              </TextField>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item md={4} xs={12}>
                 <TextField
-                 fullWidth
-                 label="Branch"
-                 name="branch"
-                 onChange={handleChange}
-                 required
-                 value={values.branch}
-                 variant="outlined"
+                  fullWidth
+                  label="Branch"
+                  name="branch"
+                  onChange={handleChange}
+                  required
+                  value={values.branch}
+                  variant="outlined"
                   select
                 >
                   {DepartmentItems.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                        {option.title}
+                      {option.title}
                     </MenuItem>
-                  ))} 
-              </TextField>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item md={4} xs={12}>
                 <TextField

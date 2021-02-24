@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -57,13 +58,7 @@ const ExtraCurricular = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://20.37.50.140:8000/api/student/curricular/`, {
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": "Token " + Auth.getToken()
-            }
-        })
+        StudentService.getCurricular()
             .then(res => {
                 console.log("setCurricularData data", res);
                 setCurricularData(res.data)
@@ -136,13 +131,7 @@ const ExtraCurricular = () => {
                         values.curricular[index].date = new Date(selectedDate[index]).toISOString().split('T')[0]
                         ))
 
-                    axios.put(`http://20.37.50.140:8000/api/student/curricular/`, [...curricularData, ...values.curricular], {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    StudentService.updateCurricular([...curricularData, ...values.curricular])
                         .then(res => {
                             console.log("res", res);
                             setCurricularData(res.data)
@@ -279,13 +268,7 @@ const ExtraCurricular = () => {
                 
                 onSubmit={async values => {
                     {popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0]}
-                    axios.patch(`http://20.37.50.140:8000/api/student/curricular/`, popupData, {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    StudentService.updateIndividualCurricular(popupData)
                         .then(res => {
                             console.log("res", res);
                             setCurricularData(res.data)

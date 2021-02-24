@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import StudentService from '../../../services/StudentService';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -59,13 +60,7 @@ const Extraproject = () => {
     };
 
     useEffect(() => {
-        axios.get(`http://20.37.50.140:8000/api/student/project/`, {
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "Authorization": "Token " + Auth.getToken()
-            }
-        })
+        StudentService.getProject()
             .then(res => {
                 console.log("setProjectData data", res);
                 setProjectData(res.data)
@@ -152,13 +147,7 @@ const Extraproject = () => {
                     values.project.map((_, index) => ( 
                         values.project[index].endDate = new Date(selectedEndDate[index]).toISOString().split('T')[0]
                     ))
-                    axios.put(`http://20.37.50.140:8000/api/student/project/`, [...projectData, ...values.project], {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    StudentService.updateProject([...projectData, ...values.project])
                         .then(res => {
                             console.log("res", res);
                             setProjectData(res.data)
@@ -334,13 +323,7 @@ const Extraproject = () => {
                 onSubmit={async values => {
                     {popupData.startDate = new Date(selectedPopUpStartDate).toISOString().split('T')[0]}
                     {popupData.endDate = new Date(selectedPopUpEndDate).toISOString().split('T')[0]}
-                    axios.patch(`http://20.37.50.140:8000/api/student/project/`, popupData, {
-                        headers: {
-                            "Content-type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "Authorization": "Token " + Auth.getToken()
-                        }
-                    })
+                    StudentService.updateIndividualProject(popupData)
                         .then(res => {
                             console.log("res", res);
                             setProjectData(res.data)
