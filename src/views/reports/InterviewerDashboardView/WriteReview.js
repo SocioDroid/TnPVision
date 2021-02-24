@@ -154,7 +154,7 @@ export default function ReviewTabs(props) {
       .catch(error => {
         console.log(error);
       });
-  }, []);
+  }, [comment, communication, interviewedBy, personality, reviewPresent, roundId, rounds, student_id, technical]);
 
   useEffect(() => {}, [reviewReceived]);
 

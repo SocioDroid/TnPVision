@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container,
@@ -7,7 +7,6 @@ import {
 import Page from '../../../components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
-import data from './data';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -81,20 +81,21 @@ export default function StudentDriveView() {
   const [postedDays, setPostedDays] = useState(null);
   const [progress, setProgress] = useState(10);
 
-  function generatePostedDays() {
-    // Modify this field
-    const date1 = new Date(driveDetails.createdAt);
-    const date2 = new Date();
-    const diffDays = date2.getDate() - date1.getDate();
-    console.log(diffDays + " days");
-    if (diffDays > 0)
-      setPostedDays(diffDays);
-    else
-      setPostedDays("Today")
-  }
+  
 
   useEffect(() => {
     // Getting Drive Details
+    function generatePostedDays() {
+      // Modify this field
+      const date1 = new Date(driveDetails.createdAt);
+      const date2 = new Date();
+      const diffDays = date2.getDate() - date1.getDate();
+      console.log(diffDays + " days");
+      if (diffDays > 0)
+        setPostedDays(diffDays);
+      else
+        setPostedDays("Today")
+    }
 
     DriveService.getSingleDrive({ id: id })
       .then(res => {
@@ -105,7 +106,7 @@ export default function StudentDriveView() {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [driveDetails.createdAt, id]);
 
   useEffect(() => {
     const timer = setInterval(() => {

@@ -3,16 +3,7 @@ import { useForm } from '../../../components/useForm';
 import Controls from "../../../components/controls/Controls";
 import PropTypes from 'prop-types';
 import { FormControl, FormControlLabel, Checkbox as MuiCheckbox } from '@material-ui/core';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  CardHeader,
-  Divider,
-  TextField
-} from '@material-ui/core';
+import { Box, Button, Card, CardContent, Grid, CardHeader, Divider, TextField } from '@material-ui/core';
 import swal from 'sweetalert';
 import StudentService from '../../../services/StudentService';
 
@@ -119,6 +110,7 @@ export default function ProfileDetails(props) {
       });
       console.log("IN Detaisl : ", values);
       console.log("IN Detaisl : ", recordForEdit);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -175,6 +167,7 @@ export default function ProfileDetails(props) {
               xs={12}
             >
               <TextField
+                disabled
                 fullWidth
                 label="Email Address"
                 name="email"
@@ -188,16 +181,7 @@ export default function ProfileDetails(props) {
               item
               md={6}
               xs={12}
-            >
-              {/* <TextField
-                fullWidth
-                label="Phone Number"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              /> */}
+            >    
               <Controls.RadioGroup
                 name="gender"
                 label="Gender"

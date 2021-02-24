@@ -81,7 +81,7 @@ export default function CenteredGrid() {
       .catch(error => {
         console.log(error);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (drive) {

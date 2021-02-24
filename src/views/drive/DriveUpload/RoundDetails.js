@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -24,7 +24,7 @@ const Results = props => {
   const roundNumber = props.roundNumber
   const driveId = props.driveId;
 
-  const getAllStudentOfRound = (driveId, roundId) => {
+  const getAllStudentOfRound = useCallback((driveId, roundId) => {
     RoundService.getAllStudentOfRound(driveId, roundId)
       .then(res => {
         setRound(res.data)
@@ -34,7 +34,7 @@ const Results = props => {
       .catch(err => {
         console.log(err);
       });
-  };
+  });
 
   if(roundNumber === round.number){
     getAllStudentOfRound(driveId, props.round.number)
@@ -45,7 +45,7 @@ const Results = props => {
       setFlag(!flag);
       getAllStudentOfRound(driveId, props.round.number)      
     }
-  }, [students]);
+  }, [driveId, flag, getAllStudentOfRound, props.round.number, students]);
 
 
 

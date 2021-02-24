@@ -22,7 +22,6 @@ import { AllBranches } from '../data';
 import CompanyService from '../../../services/CompanyService';
 import MuiTextField from '@material-ui/core/TextField';
 import DriveService from '../../../services/DriveService';
-import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import { Autocomplete as MaterialUiAutocomplete } from '@material-ui/lab';
@@ -185,7 +184,7 @@ export default function Basic(props) {
         setOptions1(response.data);
       }
     })();
-  }, [inputSearch1]);
+  }, [inputSearch1, inputValue1]);
 
   //---------------------------------------------------------Coordinator Search--------------------------------------------------------------------
 
@@ -217,7 +216,7 @@ export default function Basic(props) {
         setOptions2(response.data);
       }
     })();
-  }, [inputSearch2]);
+  }, [inputSearch2, inputValue2]);
 
   //---------------------------------------------------------Company Search--------------------------------------------------------------------
   const [inputValue3, setInputValue3] = useState('');
@@ -248,7 +247,7 @@ export default function Basic(props) {
         setOptions3(response.data);
       }
     })();
-  }, [inputSearch3]);
+  }, [inputSearch3, inputValue3]);
 
   //-----------------------------------------------------------------------------------------------------------------------------------------------
   return (

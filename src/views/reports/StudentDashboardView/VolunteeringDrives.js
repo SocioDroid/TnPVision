@@ -30,22 +30,12 @@ const useStyles = makeStyles(theme => ({
 const VolunteeringDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
-//   useEffect(() => {
-//     axios
-//       .get('http://20.37.50.140:8000/api/student/volunteeringDrives', {
-//         headers: {
-//           Authorization: 'Token ' + Auth.getToken()
-//         }
-//       })
-  
   useEffect(() => {
     StudentService.getVolunteeringDrives()
       .then(res => {
         setDrives(res.data);
-        console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
-        console.log('Error Fetching data');
         setDrives(false);;
       });
   }, []);

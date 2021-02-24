@@ -35,19 +35,11 @@ const EligibleDrives = ({ className, ...rest }) => {
     );
 
   useEffect(() => {
-//     axios
-//       .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
-//         headers: {
-//           Authorization: 'Token ' + Auth.getToken()
-//         }
-//       })
     StudentService.getEligibleDrives()
       .then(res => {
         setDrives(res.data);
-        console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
-        console.log('Error Fetching data');
         setDrives(false);
       });
   }, []);

@@ -161,7 +161,7 @@ export default function ProfileDetails(props) {
   };
   //------------------------------------------------------Date----------------------------------------------------------------------------------------------------------
   const [datevalues, setDatevalues] = useState({
-    date: ''
+    date: new Date()
   });
 
   const handDateChange = event => {
@@ -343,11 +343,11 @@ export default function ProfileDetails(props) {
   };
   useEffect(() => {
     if (recordForEdit != null) {
-      console.log('record to be edited', recordForEdit.rounds);
+      console.log('record to be edited------------------------------>', recordForEdit);
 
       setDatevalues({
         ...datevalues,
-        date: recordForEdit.date
+        date: recordForEdit && recordForEdit.date ? recordForEdit.date : new Date()
       });
 
       setEligiblebranches({
@@ -364,29 +364,29 @@ export default function ProfileDetails(props) {
       setSalaryHideChange(recordForEdit.hideSalary);
       setValues({
         ...values,
-        id: recordForEdit.id,
-        jobtitle: recordForEdit.jobtitle,
-        login_time: recordForEdit.login_time,
-        drive_location: recordForEdit.drive_location,
-        min_salary: recordForEdit.min_salary,
-        max_salary: recordForEdit.max_salary,
-        tenth: recordForEdit.tenth,
-        twelth: recordForEdit.twelth,
-        diploma: recordForEdit.diploma,
-        engineering: recordForEdit.engineering,
-        educational_gap: recordForEdit.educational_gap,
-        year_down: recordForEdit.year_down,
-        live_backlog: recordForEdit.live_backlog,
-        dead_backlog: recordForEdit.dead_backlog,
-        hideSalary: recordForEdit.hideSalary,
-        company: recordForEdit.company,
-        eligible_branches: recordForEdit.eligible_branches,
-        date: recordForEdit.date,
-        drive_type: recordForEdit.drive_type,
-        employment_type: recordForEdit.employment_type,
-        rounds: recordForEdit.rounds,
-        assigned_coordinators: recordForEdit.assigned_coordinators,
-        assigned_volunteers: recordForEdit.assigned_volunteers
+        id: recordForEdit && recordForEdit.id ? recordForEdit.id: "",
+        jobtitle: recordForEdit && recordForEdit.jobtitle ? recordForEdit.jobtitle: "",
+        login_time: recordForEdit && recordForEdit.login_time ? recordForEdit.login_time: "",
+        drive_location: recordForEdit && recordForEdit.drive_location ? recordForEdit.drive_location: "",
+        min_salary: recordForEdit && recordForEdit.min_salary ? recordForEdit.min_salary: "",
+        max_salary: recordForEdit && recordForEdit.max_salary ? recordForEdit.max_salary: "",
+        tenth: recordForEdit && recordForEdit.tenth ? recordForEdit.tenth: "",
+        twelth: recordForEdit && recordForEdit.twelth ? recordForEdit.twelth: "",
+        diploma: recordForEdit && recordForEdit.diploma ? recordForEdit.diploma: "",
+        engineering: recordForEdit && recordForEdit.engineering ? recordForEdit.engineering: "",
+        educational_gap: recordForEdit && recordForEdit.educational_gap ? recordForEdit.educational_gap: 0,
+        year_down: recordForEdit  && recordForEdit.year_down ? recordForEdit.year_down: 0,
+        live_backlog: recordForEdit && recordForEdit.live_backlog ? recordForEdit.live_backlog: "",
+        dead_backlog: recordForEdit && recordForEdit.dead_backlog ? recordForEdit.dead_backlog: "",
+        hideSalary: recordForEdit && recordForEdit.hideSalary ? recordForEdit.hideSalary: "",
+        company: recordForEdit && recordForEdit.company ? recordForEdit.company: "",
+        eligible_branches: recordForEdit && recordForEdit.eligible_branches ? recordForEdit.eligible_branches: "",
+        date: recordForEdit && recordForEdit.date ? recordForEdit.date: new Date(),
+        drive_type: recordForEdit && recordForEdit.drive_type ? recordForEdit.drive_type: "",
+        employment_type:  recordForEdit && recordForEdit.employment_type ? recordForEdit.employment_type: "",
+        rounds:recordForEdit && recordForEdit.rounds ? recordForEdit.rounds: "",
+        assigned_coordinators:  recordForEdit && recordForEdit.assigned_coordinators ? recordForEdit.assigned_coordinators : "",
+        assigned_volunteers:  recordForEdit && recordForEdit.assigned_volunteers? recordForEdit.assigned_volunteers : ""
       });
     }
   }, [recordForEdit]);
@@ -470,14 +470,14 @@ export default function ProfileDetails(props) {
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
-                  error={errors.login_time}
+                  //error={errors.login_time}
                   label="Login Time"
                   name="login_time"
                   onChange={handleChange}
                   required
                   value={values.login_time}
                   variant="outlined"
-                  type="number"
+                  type="text"
                 />
               </Grid>
               <Grid item md={6} xs={12}>
@@ -771,7 +771,3 @@ export default function ProfileDetails(props) {
     </div>
   );
 }
-
-ProfileDetails.propTypes = {
-  className: PropTypes.string
-};

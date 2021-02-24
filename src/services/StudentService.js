@@ -35,7 +35,7 @@ class StudentService {
     }
 
     updateSingleStudent(id, data) {
-        return httpauth.put('/api/student/' + id, data)
+        return httpauth.patch('/api/student/' + id, data)
     }
 
     updateStudent(acadData) {

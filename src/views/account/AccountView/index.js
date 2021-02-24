@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Account = () => {
   const classes = useStyles();
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState(null)
   // {
   //   email: "",
   //   first_name: "",
@@ -69,7 +69,7 @@ const Account = () => {
             md={12}
             xs={12}
           >
-            <Profile userData={userData} />
+            {userData && <Profile userData={userData} />}            
           </Grid>
           <Grid
             item
@@ -77,7 +77,8 @@ const Account = () => {
             md={12}
             xs={12}
           >
-            <ProfileDetails  userData={userData} />
+            {userData && <ProfileDetails  userData={userData} /> }
+            
           </Grid>
         </Grid>
       </Container>

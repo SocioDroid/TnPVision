@@ -93,7 +93,7 @@ export default function StudentDriveView() {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const timer = setInterval(() => {

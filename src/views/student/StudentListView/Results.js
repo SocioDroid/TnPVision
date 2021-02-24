@@ -9,7 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StudentService from '../../../services/StudentService';
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

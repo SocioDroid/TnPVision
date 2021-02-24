@@ -5,18 +5,8 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import EmployeeService from '../../../services/EmployeeServices';
 import Popup from "../../../components/Popup";
 import ProfileDetails from "./ProfileDetails";
-import Toolbar from "./"
-import {
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  makeStyles
-} from '@material-ui/core';
+import Toolbar from "./Toolbar"
+import { Box, Card, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, makeStyles } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -53,8 +43,8 @@ const Results = ({ className, ...rest }) => {
 
   useEffect((props) => {
     if(isEdited){
-      getAllEmployees();
-      setIsEdited(false)
+      setIsEdited(false);
+      getAllEmployees();      
     }
   }, [isEdited, posts])
 

@@ -137,16 +137,16 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
       console.log("ProfileDetails : ",userData);
       setValues({
         ...values,
-        email: userData.email,
-        first_name: userData.first_name,
-        last_name: userData.last_name,
-        group: userData.group,
-        id: userData.id,
-        college: userData.college,
-        mobile: userData.mobile,
-        doj: userData.doj,
-        department: userData.department,
-        designation: userData.designation
+        email: userData && userData.email ? userData.email: "",
+        first_name: userData && userData.first_name ? userData.first_name: "",
+        last_name: userData && userData.last_name ? userData.last_name: "",
+        group: userData && userData.group ? userData.group : "",
+        id: userData && userData.id ? userData.id: "",
+        college: userData && userData.college ? userData.college: "",
+        mobile: userData && userData.mobile ? userData.mobile: "",
+        doj: userData && userData.dob ? userData.doj: "",
+        department: userData && userData.department ? userData.department: "",
+        designation: userData && userData.designation ? userData.designation: ""
       });
   }, []);
 

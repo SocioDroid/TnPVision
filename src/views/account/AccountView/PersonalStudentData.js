@@ -103,7 +103,7 @@ const PersonalData = ({ userData }) => {
   };
 
   const [datevalues, setDatevalues] = useState({
-    date: ""
+    date: new Date()
   })
 
   const handDateChange = (event) => {
@@ -141,7 +141,7 @@ const PersonalData = ({ userData }) => {
         "parentsMobileNumber": values.parentsMobileNumber,
       }
     }
-    console.log("data.dob",JSON.stringify(datevalues.date).slice(1,11))
+    console.log("data.dob  -===========> ",JSON.stringify(datevalues.date).slice(1,11))
       StudentService.updateStudent(data)
         .then(res => {
           console.log("res", res);
@@ -157,7 +157,7 @@ const PersonalData = ({ userData }) => {
       console.log(userData.dob)
       setDatevalues({
         ...datevalues,
-        "date": userData.dob,
+        "date": userData.user && userData.dob ? userData.dob : "",
       })
 
       setValues({
@@ -165,21 +165,21 @@ const PersonalData = ({ userData }) => {
         "email": userData.user && userData.user.email ? userData.user.email : "",
         "first_name": userData.user && userData.user.first_name ? userData.user.first_name : "",
         "last_name": userData.user && userData.user.last_name ? userData.user.last_name : "",
-        "gender": userData.gender,
+        "gender": userData.user && userData.gender ? userData.gender : "",
         "group": userData.group,
         "id": userData.id,
 
-        "mobileNumber": userData.mobileNumber,
-        "category": userData.category,
-        "PAN_number": userData.PAN_number,
-        "aadhar": userData.aadhar,
-        "dob": userData.dob,
-        "homeTown": userData.homeTown,
+        "mobileNumber": userData && userData.mobileNumber ? userData.mobileNumber : "",
+        "category": userData && userData.category ? userData.category: "",
+        "PAN_number": userData && userData.PAN_number ? userData.PAN_number: "",
+        "aadhar": userData && userData.aadhar ? userData.aadhar: "",
+        "dob": userData && userData.dob ? userData.dob : "",
+        "homeTown": userData && userData.hometown ? userData.homeTown : "",
 
-        "fatherOccupation": userData.fatherOccupation,
-        "motherOccupation": userData.motherOccupation,
-        "parentsEmail": userData.parentsEmail,
-        "parentsMobileNumber": userData.parentsMobileNumber,
+        "fatherOccupation": userData && userData.fatherOccupation ? userData.fatherOccupation : "",
+        "motherOccupation": userData && userData.motherOccupation ? userData.motherOccupation : "",
+        "parentsEmail": userData && userData.parentsEmail ? userData.parentsEmail : "",
+        "parentsMobileNumber": userData && userData.pparentsMobileNumber ?  userData.pparentsMobileNumber : "",
       })
     }
   }, [userData])
@@ -258,7 +258,7 @@ const PersonalData = ({ userData }) => {
                   label="Phone Number"
                   name="mobileNumber"
                   onChange={handleChange}
-                  type="number"
+                  type="text"
                   value={values.mobileNumber}
                   variant="outlined"
                 />

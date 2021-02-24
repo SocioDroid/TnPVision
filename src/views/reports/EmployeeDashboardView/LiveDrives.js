@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-  colors,
-  Divider,
-  makeStyles
-} from '@material-ui/core';
+import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
@@ -53,28 +43,29 @@ const EligibleDrives = ({ className, ...rest }) => {
       const date1 = new Date(d[i].date);
       const date2 = new Date();
       const diffDays = date1.getDate() - date2.getDate(); 
-      console.log(diffDays + " days");
+      //console.log(diffDays + " days");
       if (diffDays <= 10)
-        console.log("Valid", d[i]);
+        //console.log("Valid", d[i]);
+        continue;
       else{
-        console.log("Invalid", d[i]);
+        //console.log("Invalid", d[i]);
         delete d[i];
       }
     }
-    console.table(d);
-    console.log("print=====")
+    //console.table(d);
+    //console.log("print=====")
     setDrives(d);
   }
   
   useEffect(() => {
     DriveService.getAllDrives()
       .then(res => {
-         filterDrive(res.data);
+        filterDrive(res.data);
         setDrives(res.data);
-        console.log('Response Received : ', res.data);
+        //console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
-        console.log('Error Fetching data');
+        //console.log('Error Fetching data');
         setDrives(false);
       });
   }, []);

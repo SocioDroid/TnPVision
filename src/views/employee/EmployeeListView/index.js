@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container,
@@ -6,8 +6,6 @@ import {
 } from '@material-ui/core';
 import Page from '../../../components/Page';
 import Results from './Results';
-import Toolbar from './Toolbar';
-import data from './data';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +25,6 @@ const EmployeeListView = () => {
       title="Employee"
     >
       <Container maxWidth={false}>
-        <Toolbar />
         <Box mt={3}>
           <Results/>
         </Box>
