@@ -25,16 +25,34 @@ import axios from 'axios';
 import { useForm } from '../../../components/useForm';
 import Auth from '../../../auth';
 
+
 const departmentItems = [
   {
-      id: 'Computer',
-      title: 'Computer',
+    value: 'Computer',
+    label: 'Computer Engineering'
   },
   {
-      id: 'IT',
-      title: 'IT',
+    value: 'Civil',
+    label: 'Civil Engineering'
   },
+  {
+    value: 'ENTC',
+    label: 'E&TC Engineering'
+  },
+  {
+    value: 'Instrumentation',
+    label: 'Instrumentation Engineering'
+  },
+  {
+    value: 'IT',
+    label: 'Information Technology'
+  },
+  {
+    value: 'Mechanical',
+    label: 'Mechanical Engineering'
+  }
 ];
+
 
 const collegeItems = [
 
@@ -229,7 +247,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                 <Grid item md={6} xs={12}>
                   <KeyboardDatePicker
                     fullWidth
-                    label="Date of Drive"
+                    label="Date of Joining"
                     inputVariant="outlined"
                     format="yyyy/MM/dd"
                     value={datevalues.doj}
@@ -279,8 +297,8 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                 select
               >
                 {departmentItems.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                        {option.title}
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
                     </MenuItem>
                   ))} 
               </TextField>
