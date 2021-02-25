@@ -3,8 +3,6 @@ import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { Box, Button, List, ListSubheader, ListItem, ListItemText, Divider, Grid, Typography, makeStyles } from '@material-ui/core';
 import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
-import axios from 'axios';
-import Auth from '../../../auth';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -305,8 +303,8 @@ const Workexperience = () => {
                 }}
 
                 onSubmit={async values => {
-                    { popupData.startDate = new Date(selectedPopUpStartDate).toISOString().split('T')[0] }
-                    { popupData.endDate = new Date(selectedPopUpEndDate).toISOString().split('T')[0] }
+                    popupData.startDate = new Date(selectedPopUpStartDate).toISOString().split('T')[0]
+                    popupData.endDate = new Date(selectedPopUpEndDate).toISOString().split('T')[0]
 
                     StudentService.updateIndividualExperience(popupData)
                         .then(res => {

@@ -265,7 +265,7 @@ const ExtraCurricular = () => {
                 }}
                 
                 onSubmit={async values => {
-                    {popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0]}
+                    popupData.date = new Date(selectedPopUpDate).toISOString().split('T')[0]
                     StudentService.updateIndividualCurricular(popupData)
                         .then(res => {
                             console.log("res", res);

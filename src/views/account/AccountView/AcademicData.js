@@ -10,8 +10,6 @@ import {
   TextField,
   MenuItem,
 } from '@material-ui/core';
-import axios from 'axios';
-import Auth from '../../../auth';
 import StudentService from '../../../services/StudentService';
 
 const collegeItems = [

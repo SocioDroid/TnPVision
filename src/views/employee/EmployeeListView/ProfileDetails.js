@@ -18,6 +18,7 @@ import {
   TextField
 } from '@material-ui/core';
 import Auth from '../../../auth'
+import EmployeeService from '../../../services/EmployeeServices'
 
 const initialFValues = {
   id: 0,
@@ -84,16 +85,16 @@ export default function ProfileDetails(props) {
         },
         college: values.college
       };
-
-      axios.patch( `http://20.37.50.140:8000/api/employee/${values.id}`, data, 
-      {
-        headers: {
-          "Content-type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          //'Cache-Control': 'no-cache',
-          "Authorization": "Token " + Auth.getToken()
-        }
-      })
+      EmployeeService.updateEmployee(values.id, data)
+      // axios.patch( `http://20.37.50.140:8000/api/employee/${values.id}`, data, 
+      // {
+      //   headers: {
+      //     "Content-type": "application/json",
+      //     "X-Requested-With": "XMLHttpRequest",
+      //     //'Cache-Control': 'no-cache',
+      //     "Authorization": "Token " + Auth.getToken()
+      //   }
+      // })
         .then(res => {
           addOrEdit(values, resetForm);
           console.log('res', res);

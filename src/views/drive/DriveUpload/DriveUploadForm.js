@@ -98,7 +98,7 @@ export default function Basic(props) {
   const [selectedDate, handleDateChange] = useState(
     new Date('2018-01-01T00:00:00.000Z')
   );
-  const [value, setValue] = useState('');
+  //const [value, setValue] = useState('');
   const [val, setVal] = useState([0, 50]);
   const [posts, setPosts] = useState([]);
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from '../../../components/useForm';
-import PropTypes from 'prop-types';
 import { Typography, MenuItem, Avatar } from '@material-ui/core';
 import { AllBranches } from '../data';
 import Autocomplete from '@material-ui/lab/Autocomplete';

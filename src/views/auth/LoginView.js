@@ -173,7 +173,7 @@ const LoginView = () => {
                       variant="contained"
                       color="primary"
                       className={buttonClassname}
-                      disabled={loading, isSubmitting}
+                      disabled={loading || isSubmitting}
                       onClick={handleButtonClick}
                       type="submit"
                     >

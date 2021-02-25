@@ -12,8 +12,6 @@ import {
   TextField,
 } from '@material-ui/core';
 import { useForm } from '../../../components/useForm';
-import axios from 'axios';
-import Auth from '../../../auth';
 import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import StudentService from '../../../services/StudentService';
@@ -121,11 +119,6 @@ const PersonalData = ({ userData }) => {
         "first_name": values.first_name,
         "last_name": values.last_name,
         "studentProfile": {
-        //"user": {
-          //"email": values.email,
-        //"first_name": values.first_name,
-        //"last_name": values.last_name,
-        //},
         "gender": values.gender,
         "group": values.group,
         "id": values.id,

@@ -11,8 +11,6 @@ import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import StudentService from '../../../services/StudentService';
-import axios from 'axios';
-import Auth from '../../../auth';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -277,7 +275,7 @@ const Certificates = ({ userData }) => {
                 }}
                 
                 onSubmit={async values => {
-                    {popupData.issuedDate = new Date(selectedPopUpDate).toISOString().split('T')[0]}
+                    popupData.issuedDate = new Date(selectedPopUpDate).toISOString().split('T')[0]
                      StudentService.updateIndividualCertificate(popupData)                    
                         .then(res => {
                             console.log("res", res);

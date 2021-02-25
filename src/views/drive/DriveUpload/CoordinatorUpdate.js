@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import axios from 'axios';
 import {
   Box,
   Card,

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import Page from '../../../components/Page';
 import Results from './Results';
-import Toolbar from './Toolbar';
+//import Toolbar from './Toolbar';
 
 
 const useStyles = makeStyles((theme) => ({

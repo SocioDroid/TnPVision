@@ -177,7 +177,7 @@ export default function DriveDetails(drive) {
         console.log(error);
       });
   };
-  const uploadInputRef = useRef(null);
+  //const uploadInputRef = useRef(null);
 
   return (
     <div>

@@ -22,6 +22,9 @@ class EmployeeServices{
         return httpauth.get('api/employee/search/?q=', inputValue)
     }
 
+    updateEmployee(id, data){
+        return httpauth.patch(`api/employee/${id}`, data)
+    }
     
 }
 
