@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     color: '#263238'
   }
 }));
-export function DriveMenuButton({ row, setIsEdited, goToEdit }) {
+export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,10 +38,9 @@ export function DriveMenuButton({ row, setIsEdited, goToEdit }) {
   };
 
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPopup, setOpenPopup] = useState(false);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [anchorElPop, setAnchorElPop] = useState(null);
   const handlePopClick = event => {
@@ -57,52 +56,7 @@ export function DriveMenuButton({ row, setIsEdited, goToEdit }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const getAllDrives = () => {
-    DriveService.getAllDrives()
-      .then(res => {
-        setPosts(res.data);
-      })
-      .catch(error => {
-        if (error.response) {
-          // Request made and server responded
-          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
-          const statuscode = error.response.status;
-          switch (statuscode) {
-            case 400:
-              console.log(data)
-              setErrorMessage(data);
-              console.log("400 ERRORRR")
-              break;
-            case 401:
-              setErrorMessage("Unauthenticated ! Please login to continue "+data);
-              console.log("401 ERRORRR")
-              navigate('/login', { replace: true });
-              break;  
-            case 403:
-              console.log('403 error! '+data);
-              setErrorMessage("403 Error. Please try again "+data);
-              break;
-            case 500:
-              console.log("500 ERROR "+data);
-              setErrorMessage("Server Error. Please try again "+data);
-              break
-            default:
-              console.log("Navin Error "+data);
-              setErrorMessage("New Error, add it to catch block "+data);              
-          }
-          
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-          setErrorMessage("Server Error, Please try again");              
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-          setErrorMessage("Unknown error, please contact admin!");                      
-        }
-        setIsError(true);
-      });
-  };
+ 
   function downloadEligible(id) {
     DriveService.downloadEligible({ id: id.id }).then(({ data }) => {
       const downloadUrl = window.URL.createObjectURL(new Blob([data]));
@@ -119,8 +73,8 @@ export function DriveMenuButton({ row, setIsEdited, goToEdit }) {
     console.log('Student in func : ' + id);
     DriveService.deleteDrive({ id: id })
       .then(res => {
-        console.log('in Result  : ' + res.data);
-        // setTimeout(window.location.reload(false), 2000);
+        console.log('in Result  : ' , res);
+        setPosts([...res.data]);
       })
       .catch(error => {
         if (error.response) {
