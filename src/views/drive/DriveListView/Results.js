@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
-
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { DriveMenuButton } from './DriveMenuButton';
-import {
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TablePagination
-} from '@material-ui/core';
+import { Box, Card, Button, makeStyles } from '@material-ui/core';
 import DriveService from '../../../services/DriveService';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
+import MaterialTable from 'material-table'
+
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: theme.spacing(1)
+  },
+  table: {
+    fontSize : "100px",
+  }
+}));
 
 const Results = ({ className, ...rest }) => {
   const navigate = useNavigate();
@@ -27,16 +30,13 @@ const Results = ({ className, ...rest }) => {
 
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
-  const [isSalaryNull, setIsSalaryNull] = useState(false);
 
+  const classes = useStyles();
   const getAllDrives = () => {
     DriveService.getAllDrives()
       .then(res => {
         setPosts(res.data);
         console.log("Settign drive data")
-        if (res.data.min_salary === 0) {
-          setIsSalaryNull(true);
-        }
       })
       .catch(error => {
         if (error.response) {
@@ -84,9 +84,9 @@ const Results = ({ className, ...rest }) => {
   };
 
   useEffect(props => {
-    if (isEdited){
+    if (isEdited) {
       getAllDrives();
-      setIsEdited(false);  
+      setIsEdited(false);
     }
   }, [isEdited, posts]);
 
@@ -96,24 +96,36 @@ const Results = ({ className, ...rest }) => {
   };
 
   //Pagination
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [page, setPage] = React.useState(0);
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = event => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return (
     <div>
-      <Card
-      //className={clsx(classes.root, className)}
-      //{...rest}
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        marginBottom="2%"
       >
-        <PerfectScrollbar>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={()=>{navigate('/employee/drive', { replace: true });}}
+        >
+          Add Drive
+        </Button>
+     </Box>   
+      <Card
+      
+      >
+        {/* <PerfectScrollbar>
           <Box>
             <Table>
               <TableHead>
@@ -139,20 +151,16 @@ const Results = ({ className, ...rest }) => {
                         <TableCell>{drive.jobtitle}</TableCell>
                         <TableCell>{drive.company.name}</TableCell>
                         <TableCell>{drive.drive_location}</TableCell>
-                        <TableCell>
-                          {/* {drive.date} */}
+                        <TableCell>            
                           {moment(new Date(drive.date)).format(
                             'DD/MM/YYYY hh:mm a'
                           )}
                         </TableCell>
-                        {!isSalaryNull ? (
+                        
                           <TableCell>
-                            {isSalaryNull}
-                            {drive.min_salary} - {drive.max_salary} P. A.
+                            {drive.min_salary} - {drive.max_salary}
                           </TableCell>
-                        ) : (
-                          <TableCell>Not Disclosed</TableCell>
-                        )}
+                       
                         <TableCell>{drive.tenth}</TableCell>
                         <TableCell>{drive.twelth}</TableCell>
                         <TableCell>{drive.diploma}</TableCell>
@@ -175,8 +183,44 @@ const Results = ({ className, ...rest }) => {
             />
           </Box>
         </PerfectScrollbar>
+      
+      <br/>
+      <br/>
+       */}
+       
+        <PerfectScrollbar>
+          <Card>
+            <MaterialTable
+              className = {classes.table}
+              title="Drive Details"
+              columns={[
+                { title: 'ID', tableLayout: "auto", field: 'id', filtering: false },
+                { title: 'Job Title', field: 'jobtitle' },
+                { title: 'Location', field: 'drive_location' },
+                {
+                  title: 'Drive Date', field: 'date', dateSetting: { locale: 'en-US' }, type: 'datetime', cellStyle: {
+                    width: 250,
+                    maxWidth: 250,
+                  }
+                },
+                { title: 'Company', field: 'company.name' },
+                { title: 'Salary', field: 'min_salary', render: rowData => rowData.hideSalary ? 'Not Disclosed' : rowData.min_salary + "-" + rowData.max_salary, },
+                { title: 'Tenth', field: 'tenth' },
+                { title: 'Twelth', field: 'twelth' },
+                { title: 'Diploma', field: 'diploma' },
+                { title: 'Actions', field: 'action', filtering: false, render: rowData => <DriveMenuButton setIsEdited={setIsEdited} goToEdit={goToEdit} row={rowData} setPosts={setPosts} />, }
+              ]}
+              data={posts}
+              options={{
+                filtering: true,
+                rowStyle: {                 
+                  fontFamily : "Roboto, Helvetica , Arial, sans-serif",              
+                }
+              }}
+            />
+          </Card>
+        </PerfectScrollbar>
       </Card>
-
       <div>
         {isError && (
           <CustomSnackbar

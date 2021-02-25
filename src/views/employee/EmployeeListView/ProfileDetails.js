@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useForm } from '../../../components/useForm';
 import PropTypes from 'prop-types';
 import {
@@ -43,7 +42,7 @@ export default function ProfileDetails(props) {
     isProfileComplete: false
   });
 
-  const { addOrEdit, recordForEdit } = props;
+  const { addOrEdit, recordForEdit, isUpdating } = props;
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
@@ -85,35 +84,33 @@ export default function ProfileDetails(props) {
         },
         college: values.college
       };
-      EmployeeService.updateEmployee(values.id, data)
-      // axios.patch( `http://20.37.50.140:8000/api/employee/${values.id}`, data, 
-      // {
-      //   headers: {
-      //     "Content-type": "application/json",
-      //     "X-Requested-With": "XMLHttpRequest",
-      //     //'Cache-Control': 'no-cache',
-      //     "Authorization": "Token " + Auth.getToken()
-      //   }
-      // })
+      if(isUpdating){
+        EmployeeService.updateEmployee(values.id, data)
         .then(res => {
           addOrEdit(values, resetForm);
           console.log('res', res);
         })
         .catch(error => {});
+      }else{
+        console.log("Not implemented");
+      } 
     }
   };
 
   useEffect(() => {
-    setValues({
-      ...values,
-      id: recordForEdit.id,
-      first_name: recordForEdit.user.first_name,
-      last_name: recordForEdit.user.last_name,
-      email: recordForEdit.user.email,
-      college: recordForEdit.college,
-      isDeleted: recordForEdit.isDeleted,
-      isProfileComplete: recordForEdit.isProfileComplete
-    });
+    console.log(props, isUpdating)
+    if(isUpdating){
+      setValues({
+        ...values,
+        id: recordForEdit.id,
+        first_name: recordForEdit.user.first_name,
+        last_name: recordForEdit.user.last_name,
+        email: recordForEdit.user.email,
+        college: recordForEdit.college,
+        isDeleted: recordForEdit.isDeleted,
+        isProfileComplete: recordForEdit.isProfileComplete
+      });
+    }
   }, []);
 
   return (
@@ -206,7 +203,7 @@ export default function ProfileDetails(props) {
         <Divider />
         <Box display="flex" justifyContent="flex-end" p={2}>
           <Button color="primary" variant="contained" type="submit">
-            Save details
+            {isUpdating ? 'Update details' : 'Save Details'}
           </Button>
         </Box>
       </Card>

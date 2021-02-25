@@ -51,6 +51,7 @@
     "formik-material-ui-pickers": "0.0.12",
     "history": "^5.0.0",
     "lodash": "^4.17.19",
+    "material-table": "^1.69.2",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "nprogress": "^0.2.0",

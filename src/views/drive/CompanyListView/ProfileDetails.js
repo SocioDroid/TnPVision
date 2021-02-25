@@ -29,7 +29,7 @@ export default function ProfileDetails(props) {
     industry: ''
   });
 
-  const { addOrEdit, recordForEdit } = props;
+  const { addOrEdit, recordForEdit, isUpdating } = props;
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
@@ -62,27 +62,38 @@ export default function ProfileDetails(props) {
         website: values.website,
         industry: values.industry
       };
-
-      CompanyService.editSingleCompany(values, data)
-        .then(res => {
-          addOrEdit(values, resetForm);
-          console.log('res', res);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    
+      if (isUpdating) {
+        CompanyService.editSingleCompany(values, data)
+          .then(res => {
+            addOrEdit(values, resetForm);
+            console.log('res', res);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        CompanyService.addSingleCompany(data)
+          .then(res => {
+            addOrEdit(values, resetForm);
+            console.log('res', res);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   };
 
   useEffect(() => {
-    setValues({
-      ...values,
-      id: recordForEdit.id,
-      name: recordForEdit.name,
-      website: recordForEdit.website,
-      industry: recordForEdit.industry
-    });
+    if (isUpdating) {
+      setValues({
+        ...values,
+        id: recordForEdit.id,
+        name: recordForEdit.name,
+        website: recordForEdit.website,
+        industry: recordForEdit.industry
+      });
+    }
   }, []);
 
   return (
@@ -96,7 +107,7 @@ export default function ProfileDetails(props) {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
-              <Typography variant="h6">Company ID: {values.id}</Typography>
+              {isUpdating && <Typography variant="h6">Company ID: {values.id}</Typography>}
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
@@ -137,7 +148,7 @@ export default function ProfileDetails(props) {
         <Divider />
         <Box display="flex" justifyContent="flex-end" p={2}>
           <Button color="primary" variant="contained" type="submit">
-            Save details
+            {isUpdating ? 'Update Details' : 'Save details'}
           </Button>
         </Box>
       </Card>

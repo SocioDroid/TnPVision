@@ -5,11 +5,11 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import EmployeeService from '../../../services/EmployeeServices';
 import Popup from "../../../components/Popup";
 import ProfileDetails from "./ProfileDetails";
-import Toolbar from "./Toolbar"
-import { Box, Card, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, makeStyles } from '@material-ui/core';
+import { Card, makeStyles, Box, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MaterialTable from 'material-table'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,6 +29,7 @@ const Results = ({ className, ...rest }) => {
   const [openPopup, setOpenPopup] = useState(false)
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const getAllEmployees = () => {
     EmployeeService.getAllEmployee()
@@ -90,26 +91,36 @@ const Results = ({ className, ...rest }) => {
   }
 
   //Pagination
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [page, setPage] = React.useState(0);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
 
   return (
+    <div>
+    {/* <Box display="flex" justifyContent="flex-end" marginBottom="2%">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {setOpenPopup(true); setIsUpdating(false);}}
+        >
+          Add Employee
+        </Button>
+      </Box> */}
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <Toolbar/>
-      <PerfectScrollbar>
+      {/* <Toolbar/> */}
+      {/* <PerfectScrollbar>
         <Box minWidth={1050}>
 
           <Table>
@@ -171,7 +182,39 @@ const Results = ({ className, ...rest }) => {
           />
 
         </Box>
-      </PerfectScrollbar>
+      </PerfectScrollbar> */}
+      <PerfectScrollbar>
+          <Card>
+          <MaterialTable
+              className = {classes.table}
+              title="Employee Details"
+              columns={[
+                { title: 'Full Name',  
+                render: rowData => rowData.user.first_name + " " + rowData.user.last_name , 
+                customFilterAndSearch: (term, rowData) => rowData.user.first_name.toLowerCase().includes(term.toLowerCase()) || rowData.user.last_name.toLowerCase().includes(term.toLowerCase()),},
+                { title: 'Email', field: 'user.email' },
+                { title: 'College', field: 'college', lookup: { 'DYPCOE': 'DYPCOE', 'DYPIEMR': 'DYPIEMR' }},                
+                { title: 'Department', field: 'department', lookup: { 'Computer': 'Computer', 'IT': 'IT' }},
+                { title: 'Actions', field: 'action', filtering: false, render: rowData => 
+                <React.Fragment>
+                  <Fab size="small" color="primary" aria-label="edit" onClick={()=>{openPopupWithExtraData(rowData.id); setIsUpdating(true); }}>
+                    <EditIcon />
+                  </Fab>
+                  <Fab size="small" color="secondary"  className={classes.delete} aria-label="delete" onClick={()=>{deleteEmployee(rowData.id)}}>
+                    <DeleteIcon />
+                  </Fab>
+                </React.Fragment>}
+              ]}
+              data={posts}
+              options={{
+                filtering: true,
+                rowStyle: {                 
+                  fontFamily : "Roboto, Helvetica , Arial, sans-serif",              
+                }
+              }}
+            />
+          </Card>
+        </PerfectScrollbar>
       <Popup
         title="Employee Form"
         openPopup={openPopup}
@@ -179,9 +222,11 @@ const Results = ({ className, ...rest }) => {
       >
         <ProfileDetails
           recordForEdit={recordForEdit}
-          addOrEdit={addOrEdit} />
+          addOrEdit={addOrEdit}
+          isUpdating={isUpdating} />
       </Popup>
     </Card>
+    </div>
   )
 };
 

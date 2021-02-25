@@ -2,22 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Popup from '../../../components/Popup';
 import ProfileDetails from './ProfileDetails';
-import {
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  makeStyles,
-  TablePagination
-} from '@material-ui/core';
+import { Card, makeStyles, Box, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CompanyService from '../../../services/CompanyService';
-import Toolbar from './Toolbar';
+import MaterialTable from 'material-table';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -36,6 +26,7 @@ const Results = ({ className, ...rest }) => {
   const [openPopup, setOpenPopup] = useState(false);
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const getAllCompanies = () => {
     CompanyService.getAllCompanies()
@@ -96,25 +87,35 @@ const Results = ({ className, ...rest }) => {
   };
 
   //Pagination
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [page, setPage] = React.useState(0);
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = event => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return (
     <div>
-      <Toolbar setIsEdited={setIsEdited}/>
-      <Card
-      // className={clsx(classes.root, className)}
-      // {...rest}
-      >
-        <PerfectScrollbar>
+      <Box display="flex" justifyContent="flex-end" marginBottom="2%">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            setOpenPopup(true);
+            setIsUpdating(false);
+          }}
+        >
+          Add Company
+        </Button>
+      </Box>
+
+      {/* <Toolbar setIsEdited={setIsEdited}/> */}
+      <Card>
+        {/* <PerfectScrollbar>
           <Box minWidth={1050}>
             <Table>
               <TableHead>
@@ -172,6 +173,64 @@ const Results = ({ className, ...rest }) => {
               onChangeRowsPerPage={handleChangeRowsPerPage}
             />
           </Box>
+        </PerfectScrollbar> */}
+
+        <PerfectScrollbar>
+          <Card>
+            <MaterialTable
+              className={classes.table}
+              title="Company Details"
+              columns={[
+                {
+                  title: 'ID',
+                  tableLayout: 'auto',
+                  field: 'id',
+                  filtering: false
+                },
+                { title: 'Name', field: 'name' },
+                { title: 'Industry', field: 'industry' },
+                { title: 'Website', field: 'website' },
+                {
+                  title: 'Actions',
+                  field: 'action',
+                  filtering: false,
+                  render: rowData => (
+                    <React.Fragment>
+                      <Fab
+                        size="small"
+                        color="primary"
+                        aria-label="edit"
+                        onClick={() => {
+                          openPopupWithExtraData(rowData.id);
+                          setIsUpdating(true);
+                        }}
+                      >
+                        <EditIcon />
+                      </Fab>
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        className={classes.delete}
+                        aria-label="delete"
+                        onClick={() => {
+                          deleteCompany(rowData.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </React.Fragment>
+                  )
+                }
+              ]}
+              data={posts}
+              options={{
+                filtering: true,
+                rowStyle: {
+                  fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
+                }
+              }}
+            />
+          </Card>
         </PerfectScrollbar>
 
         <Popup
@@ -179,7 +238,7 @@ const Results = ({ className, ...rest }) => {
           openPopup={openPopup}
           setOpenPopup={setOpenPopup}
         >
-          <ProfileDetails recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
+          <ProfileDetails recordForEdit={recordForEdit} addOrEdit={addOrEdit} isUpdating={isUpdating} />
         </Popup>
       </Card>
     </div>
