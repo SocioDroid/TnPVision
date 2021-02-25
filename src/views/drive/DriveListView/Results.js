@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,10 +12,15 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TablePagination
+  TablePagination, 
+  Button
 } from '@material-ui/core';
 import DriveService from '../../../services/DriveService';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
+import ReactDOM from 'react-dom'
+import MaterialTable from 'material-table'
+
+
 
 const Results = ({ className, ...rest }) => {
   const navigate = useNavigate();
@@ -27,16 +32,15 @@ const Results = ({ className, ...rest }) => {
 
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
-  const [isSalaryNull, setIsSalaryNull] = useState(false);
 
   const getAllDrives = () => {
     DriveService.getAllDrives()
       .then(res => {
+        // res.data.forEach(drive => {
+        //   drive.date = moment(new Date(drive.date)).format('DD/MM/YYYY hh:mm a')
+        // });
         setPosts(res.data);
         console.log("Settign drive data")
-        if (res.data.min_salary === 0) {
-          setIsSalaryNull(true);
-        }
       })
       .catch(error => {
         if (error.response) {
@@ -84,9 +88,9 @@ const Results = ({ className, ...rest }) => {
   };
 
   useEffect(props => {
-    if (isEdited){
+    if (isEdited) {
       getAllDrives();
-      setIsEdited(false);  
+      setIsEdited(false);
     }
   }, [isEdited, posts]);
 
@@ -109,11 +113,25 @@ const Results = ({ className, ...rest }) => {
 
   return (
     <div>
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        marginBottom="2%"
+      >
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={()=>{navigate('/employee/drive', { replace: true });}}
+        >
+          Add Drive
+        </Button>
+     </Box>   
       <Card
+      
       //className={clsx(classes.root, className)}
       //{...rest}
       >
-        <PerfectScrollbar>
+        {/* <PerfectScrollbar>
           <Box>
             <Table>
               <TableHead>
@@ -139,20 +157,16 @@ const Results = ({ className, ...rest }) => {
                         <TableCell>{drive.jobtitle}</TableCell>
                         <TableCell>{drive.company.name}</TableCell>
                         <TableCell>{drive.drive_location}</TableCell>
-                        <TableCell>
-                          {/* {drive.date} */}
+                        <TableCell>            
                           {moment(new Date(drive.date)).format(
                             'DD/MM/YYYY hh:mm a'
                           )}
                         </TableCell>
-                        {!isSalaryNull ? (
+                        
                           <TableCell>
-                            {isSalaryNull}
-                            {drive.min_salary} - {drive.max_salary} P. A.
+                            {drive.min_salary} - {drive.max_salary}
                           </TableCell>
-                        ) : (
-                          <TableCell>Not Disclosed</TableCell>
-                        )}
+                       
                         <TableCell>{drive.tenth}</TableCell>
                         <TableCell>{drive.twelth}</TableCell>
                         <TableCell>{drive.diploma}</TableCell>
@@ -175,8 +189,40 @@ const Results = ({ className, ...rest }) => {
             />
           </Box>
         </PerfectScrollbar>
+      
+      <br/>
+      <br/>
+       */}
+       
+        <PerfectScrollbar>
+          <Card>
+            <MaterialTable
+              title="Drive Details"
+              columns={[
+                { title: 'ID', tableLayout: "auto", field: 'id', filtering: false },
+                { title: 'Job Title', field: 'jobtitle' },
+                { title: 'Location', field: 'drive_location' },
+                {
+                  title: 'Drive Date', field: 'date', dateSetting: { locale: 'en-US' }, type: 'datetime', cellStyle: {
+                    width: 250,
+                    maxWidth: 250,
+                  }
+                },
+                { title: 'Company', field: 'company.name' },
+                { title: 'Salary', field: 'min_salary', render: rowData => rowData.hideSalary ? 'Not Disclosed' : rowData.min_salary + "-" + rowData.max_salary, },
+                { title: 'Tenth', field: 'tenth' },
+                { title: 'Twelth', field: 'twelth' },
+                { title: 'Diploma', field: 'diploma' },
+                { title: 'Actions', field: 'action', filtering: false, render: rowData => <DriveMenuButton setIsEdited={setIsEdited} goToEdit={goToEdit} row={rowData} setPosts={setPosts} />, }
+              ]}
+              data={posts}
+              options={{
+                filtering: true
+              }}
+            />
+          </Card>
+        </PerfectScrollbar>
       </Card>
-
       <div>
         {isError && (
           <CustomSnackbar
