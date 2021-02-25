@@ -5,7 +5,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import EmployeeService from '../../../services/EmployeeServices';
 import Popup from "../../../components/Popup";
 import ProfileDetails from "./ProfileDetails";
-import { Card, makeStyles, Box, Button } from '@material-ui/core';
+import { Card, makeStyles } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';

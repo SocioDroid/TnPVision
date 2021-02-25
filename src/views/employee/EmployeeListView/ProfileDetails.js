@@ -14,10 +14,49 @@ import {
   Grid,
   CardHeader,
   Divider,
-  TextField
+  TextField,
+  MenuItem
 } from '@material-ui/core';
-import Auth from '../../../auth'
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import EmployeeService from '../../../services/EmployeeServices'
+
+const collegeItems = [
+  {
+    value: 'DYPCOE',
+    label: 'DYPCOE'
+  },
+  {
+    value: 'DYPIEMR',
+    label: 'DYPIEMR'
+  }
+];
+
+const departmentItems = [
+  {
+    value: 'Computer',
+    label: 'Computer',
+  },
+  {
+    value: 'IT',
+    label: 'IT',
+  },
+  {
+    value: 'Civil',
+    label: 'Civil',
+  },
+  {
+    value: 'Mechanical',
+    label: 'Mechanical',
+  },
+  {
+    value: 'Instrumentation',
+    label: 'Instrumentation',
+  },
+];
 
 const initialFValues = {
   id: 0,
@@ -28,7 +67,13 @@ const initialFValues = {
   },
   gender: 'M',
   isDeleted: false,
-  isProfileComplete: false
+  isProfileComplete: false,
+
+  mobile: "",
+  doj: "",
+  department: "",
+  designation: ""
+
 };
 
 export default function ProfileDetails(props) {
@@ -39,10 +84,24 @@ export default function ProfileDetails(props) {
     last_name: '',
     college: '',
     isDeleted: false,
-    isProfileComplete: false
+    isProfileComplete: false,
+    mobile: "",
+    doj: "",
+    department: "",
+    designation: ""
   });
 
   const { addOrEdit, recordForEdit, isUpdating } = props;
+
+  const [datevalues, setDatevalues] = useState({
+    doj: new Date()
+  });
+
+  const handDateChange = event => {
+    console.log('date event=========>', new Date(event).toISOString().slice(0,10));
+    //console.log('date event new =========>', event);
+    setDatevalues({ doj: event });
+  };
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
@@ -67,6 +126,7 @@ export default function ProfileDetails(props) {
   );
 
   const handleChange = event => {
+    //console.log("Date in text: ", event.target.value)
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -82,7 +142,12 @@ export default function ProfileDetails(props) {
           first_name: values.first_name,
           last_name: values.last_name
         },
-        college: values.college
+        college: values.college,
+        
+        mobile: values.mobile,
+        doj: new Date(datevalues.doj).toISOString().slice(0,10),
+        department: values.department,
+        designation: values.designation
       };
       if(isUpdating){
         EmployeeService.updateEmployee(values.id, data)
@@ -98,8 +163,12 @@ export default function ProfileDetails(props) {
   };
 
   useEffect(() => {
-    console.log(props, isUpdating)
+    //console.log(props, isUpdating)
     if(isUpdating){
+      setDatevalues({
+        ...datevalues,
+        doj : recordForEdit.doj
+      })
       setValues({
         ...values,
         id: recordForEdit.id,
@@ -108,7 +177,12 @@ export default function ProfileDetails(props) {
         email: recordForEdit.user.email,
         college: recordForEdit.college,
         isDeleted: recordForEdit.isDeleted,
-        isProfileComplete: recordForEdit.isProfileComplete
+        isProfileComplete: recordForEdit.isProfileComplete,          
+        
+        mobile: recordForEdit.mobile,
+        doj: recordForEdit.doj,
+        department: recordForEdit.department,
+        designation: recordForEdit.designation
       });
     }
   }, []);
@@ -148,6 +222,7 @@ export default function ProfileDetails(props) {
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
+                disabled
                 fullWidth
                 label="Email Address"
                 name="email"
@@ -160,11 +235,82 @@ export default function ProfileDetails(props) {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
+                label="Mobile"
+                name="mobile"
+                onChange={handleChange}
+                type="text"
+                value={values.mobile}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
                 label="College"
                 name="college"
                 onChange={handleChange}
                 type="text"
                 value={values.college}
+                variant="outlined"
+                select
+              >
+                {collegeItems.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+              </TextField>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Department"
+                name="department"
+                onChange={handleChange}
+                type="text"
+                value={values.department}
+                variant="outlined"
+                select
+              >
+                {departmentItems.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                ))}
+              </TextField>
+            </Grid>            
+            {/* <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Date of Joining"
+                name="doj"
+                onChange={handleChange}
+                type="text"
+                value={values.doj}
+                variant="outlined"
+              />
+            </Grid> */}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid item md={6} xs={12}>
+                  <KeyboardDatePicker
+                    fullWidth
+                    label="Date of Drive"
+                    inputVariant="outlined"
+                    format="yyyy/MM/dd"
+                    value={datevalues.doj}
+                    onChange={handDateChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Designation"
+                name="designation"
+                onChange={handleChange}
+                type="text"
+                value={values.designation}
                 variant="outlined"
               />
             </Grid>

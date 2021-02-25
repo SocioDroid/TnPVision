@@ -1,20 +1,19 @@
 import React from 'react';
 import { Button, MenuItem } from '@material-ui/core';
-import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import RegisterService from '../../services/RegisterService';
+//import Select from '@material-ui/core/Select';
+//import InputLabel from '@material-ui/core/InputLabel';
+//import FormControl from '@material-ui/core/FormControl';
 
 import CustomSnackbar from '../Snackbar/CustomSnackbar';
 import Auth from '../../auth.js'
 
-const roles = [
-    {
-        value: 'none',
-        label: 'None',
-    },
+const designation = [
     {
         value: 'asst. professor',
         label: 'Asst. Professor',
@@ -26,10 +25,6 @@ const roles = [
 ];
 
 const college = [
-    {
-        value: 'none',
-        label: 'None',
-    },
     {
         value: 'DYPCOE',
         label: 'DYPCOE',
@@ -59,12 +54,12 @@ class RegisterContent extends React.Component {
                 password: '',
                 repeatPassword: '',
                 gender: '',
-                college: 'none',
+                college: '',
                 type: '',
                 mobile: '',
                 doj: '',
                 department: '',
-                designation: 'none'
+                designation: ''
             },
 
         };
@@ -118,8 +113,6 @@ class RegisterContent extends React.Component {
     handleSubmit = () => {
         Auth.deauthenticateUser();
         const { user } = this.state;
-
-
 
         console.log("Registering" + user.type);
         if (user.type === "student") {
@@ -243,10 +236,6 @@ class RegisterContent extends React.Component {
             const { history } = this.props;
             history.push('/FacultyRegistration')
         }
-        // else if(selectedRole==='tnpofficer'){
-        //     const {history} = this.props;
-        //     history.push('/TPORegistration')
-        // }
     }
 
 
@@ -342,34 +331,25 @@ class RegisterContent extends React.Component {
 
                     {this.state.showHideCollege &&
                         <div>
-                            <SelectValidator
+                            <TextValidator
                                 fullWidth
                                 required
                                 size="small"
                                 variant="outlined"
                                 name="college"
-                                Label="College"
+                                label= "college"
                                 value={user.college}
-                                validators={["required"]}
-                                errorMessages={["this field is required"]}
+                                //validators={["required"]}
+                                //errorMessages={["this field is required"]}
                                 onChange={this.handleChange}
+                                select
                             >
                                 {college.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
-                            </SelectValidator>
-                            {/* <TextValidator
-                                fullWidth
-                                variant="outlined"
-                                size="small"
-                                label="College"
-                                onChange={this.handleChange}
-                                name="college"
-                                type="text"
-                                value={user.college}
-                            /> */}
+                            </TextValidator>                            
                             <br />
                             <TextValidator
                                 fullWidth
@@ -386,10 +366,11 @@ class RegisterContent extends React.Component {
                                 fullWidth
                                 variant="outlined"
                                 size="small"
-                                onChange={this.handleChange}
+                                label="Date of Joining"
+                                onChange={this.handleChange}                                
                                 name="doj"
                                 type="date"
-                                value={user.doj}
+                                value={user.doj}                               
                             />
                             <br />
                             <TextValidator
@@ -402,25 +383,43 @@ class RegisterContent extends React.Component {
                                 type="text"
                                 value={user.department}
                             />
+                            {/* <FormControl fullWidth variant="outlined">
+                                <InputLabel fullWidth id="demo-simple-select-outlined-label">Department</InputLabel>
+                                <Select
+                                value={user.department}
+                                onChange={this.handleChange}
+                                label="Department"
+                                name="department"
+                                fullWidth
+                                >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={"Computer"}>Computer</MenuItem>
+                                <MenuItem value={"IT"}>IT</MenuItem>
+                                <MenuItem value={"EnTC"}>EnTC</MenuItem>
+                                </Select>
+                            </FormControl> */}
                             <br />
-                            <SelectValidator
+                            <TextValidator
                                 fullWidth
                                 required
                                 size="small"
                                 variant="outlined"
                                 name="designation"
-                                Label="Designation"
+                                label="Designation"
                                 value={user.designation}
-                                validators={["required"]}
-                                errorMessages={["this field is required"]}
+                                //validators={["required"]}
+                                //errorMessages={["this field is required"]}
                                 onChange={this.handleChange}
+                                select
                             >
-                                {roles.map((option) => (
+                                {designation.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
-                            </SelectValidator>
+                            </TextValidator>
                             <br />
                         </div>
                     }

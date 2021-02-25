@@ -2,18 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useNavigate} from 'react-router-dom';
-import {
-  Card,
-  CardContent,
-  Button,
-  Box,
-  Grid,
-  Typography,
-  MenuItem,
-  Slider,
-  makeStyles,
-  Avatar
-} from '@material-ui/core';
+import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles, Avatar } from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';

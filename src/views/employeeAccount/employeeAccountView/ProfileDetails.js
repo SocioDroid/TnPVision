@@ -16,6 +16,11 @@ import {
   TextField,
   MenuItem
 } from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios';
 import { useForm } from '../../../components/useForm';
 import Auth from '../../../auth';
@@ -73,6 +78,16 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
     designation: ''
   });
 
+  const [datevalues, setDatevalues] = useState({
+    doj: new Date()
+  });
+
+  const handDateChange = event => {
+    console.log('date event=========>', new Date(event).toISOString().slice(0,10));
+    //console.log('date event new =========>', event);
+    setDatevalues({ doj: event });
+  };
+
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ('first_name' in fieldValues)
@@ -110,7 +125,8 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         employeeProfile: {
           college: values.college,
           mobile: values.mobile,
-          doj: values.doj,
+          //doj: values.doj,
+          doj: new Date(datevalues.doj).toISOString().slice(0,10),
           department: values.department,
           designation: values.designation
         }
@@ -135,6 +151,10 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
   useEffect(() => {
 
       console.log("ProfileDetails : ",userData);
+      setDatevalues({
+        ...datevalues,
+        doj : userData.doj
+      })
       setValues({
         ...values,
         email: userData && userData.email ? userData.email: "",
@@ -194,7 +214,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                 variant="outlined"
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            {/* <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Date of Joining"
@@ -204,7 +224,20 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
                 value={values.doj}
                 variant="outlined"
               />
-            </Grid>
+            </Grid> */}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid item md={6} xs={12}>
+                  <KeyboardDatePicker
+                    fullWidth
+                    label="Date of Drive"
+                    inputVariant="outlined"
+                    format="yyyy/MM/dd"
+                    value={datevalues.doj}
+                    onChange={handDateChange}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
