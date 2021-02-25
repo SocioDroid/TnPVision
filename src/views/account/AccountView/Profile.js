@@ -24,16 +24,31 @@ const user = {
   timezone: 'GTM-7'
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
     height: 100,
     width: 100,
-  }
+  },
+  desktopGrid1:{
+    textAlign: '-webkit-right',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: '-webkit-center'
+    }
+  },
+  desktopGrid2:{
+    textAlign: 'left', 
+    alignSelf: "center",
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center', 
+      alignSelf: "center",
+    }
+  },
 }));
 
 const Profile = ({ className, userData, ...rest }) => {
   const classes = useStyles();  
+
   
   return (
     <Card
@@ -52,13 +67,8 @@ const Profile = ({ className, userData, ...rest }) => {
             lg={6}
             md={6}
             xs={12}
-            style={{textAlign: '-webkit-right'}}
+            className={classes.desktopGrid1}
           >
-        {/* <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        > */}
           <Avatar
             className={classes.avatar}
             src={user.avatar}
@@ -69,7 +79,7 @@ const Profile = ({ className, userData, ...rest }) => {
             lg={6}
             md={6}
             xs={12}
-            style={{textAlign: 'left', alignSelf: "center"}}
+            className={classes.desktopGrid2}
           >
           <Typography
             color="textPrimary"

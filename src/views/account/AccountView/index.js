@@ -21,14 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const Account = () => {
   const classes = useStyles();
   const [userData, setUserData] = useState(null)
-  // {
-  //   email: "",
-  //   first_name: "",
-  //   last_name: "",
-  //   gender: "",
-  //   group: 0,
-  //   id: 0,
-  // }
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect((props) => {
     StudentService.getUserDetail()
@@ -36,14 +29,6 @@ const Account = () => {
         const { data} = res;
         console.log("data: ",data);
         setUserData(data);
-        // {
-        //   email: data.user.email,
-        //   first_name: data.user.first_name,
-        //   last_name: data.user.last_name,
-        //   gender: data.gender,
-        //   group: data.group,
-        //   id: data.id,
-        // }
       }).catch(error =>{
         console.log(error);
         

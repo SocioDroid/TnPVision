@@ -20,7 +20,7 @@ const Dashboard = (props) => {
   return (
     <Page
       className={classes.root}
-      title="Dashboard"
+      title="Employee Dashboard"
     >
       <Container maxWidth={false}>
         <LiveDrive/>        

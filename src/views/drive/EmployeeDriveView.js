@@ -7,14 +7,8 @@ import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceW
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Budget from '../reports/EmployeeDashboardView/Budget';
 import LatestOrders from '../reports/EmployeeDashboardView/LatestOrders';
-import LatestProducts from '../reports/EmployeeDashboardView/LatestProducts';
-import Sales from '../reports/EmployeeDashboardView/Sales';
-import TasksProgress from '../reports/EmployeeDashboardView/TasksProgress';
-import TotalCustomers from '../reports/EmployeeDashboardView/TotalCustomers';
-import TotalProfit from '../reports/EmployeeDashboardView/TotalProfit';
-import TrafficByDevice from '../reports/EmployeeDashboardView/TrafficByDevice';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -156,7 +150,7 @@ export default function StudentDriveView() {
             container
             spacing={3}
           >
-            <Grid
+            {/* <Grid
               item
               lg={3}
               sm={6}
@@ -218,10 +212,10 @@ export default function StudentDriveView() {
               xs={12}
             >
               <LatestProducts />
-            </Grid>
+            </Grid> */}
             <Grid
               item
-              lg={8}
+              lg={12}
               md={12}
               xl={9}
               xs={12}

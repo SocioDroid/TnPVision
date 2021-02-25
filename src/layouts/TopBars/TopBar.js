@@ -26,11 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-      width: 'auto',
-      color: 'white'
-    },
+    display: 'block',
+    width: 'auto',
+    color: 'white'
   },
 }));
 
