@@ -14,6 +14,7 @@ import {
 import NavItem from './NavItem';
 import StudentService from '../../../../services/StudentService';
 import {  faCog,  faUserCircle,  faChartLine}  from '@fortawesome/free-solid-svg-icons'
+import Auth from '../../../../auth';
 
 const items = [
   {
@@ -65,40 +66,14 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
   const [data, setData] = useState(false);
-  const [userData, setUserData] = useState({
-    email: "",
-    first_name: "",
-    last_name: "",
-    gender: "",
-    group: 0,
-    id: 0,
-  })
+  const userData = Auth.getUser();
+    
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
    // eslint-disable-next-line
   }, [location.pathname]);
-
-  useEffect((props) => {
-    StudentService.getUserDetail()
-      .then(function(res){
-        const { data} = res;
-        console.log("data: ",data);
-        setUserData({
-          email: data.user.email,
-          first_name: data.user.first_name,
-          last_name: data.user.last_name,
-          gender: data.gender,
-          group: data.group,
-          id: data.id,
-        });
-        setData(true)
-      }).catch(error =>{
-        console.log(error);
-        setData(false)
-      })
-  }, []);
 
   const content = (
     <Box
