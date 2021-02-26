@@ -1,9 +1,8 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
-import DashboardLayout from './layouts/DashboardLayout';
-import SDashboardLayout from './views/student/StudentDashboardLayout';
-import EDashboardLayout from './views/employee/EmployeeDashboardLayout';
-import IDashboardLayout from './views/Interviewer/InterviewerDashboardLayout';
+import { Navigate } from 'react-router-dom'; 
+import StudentDashboardLayout from './views/student/StudentDashboardLayout';
+import EmployeeDashboardLayout from './views/employee/EmployeeDashboardLayout';
+import InterviewerDashboardLayout from './views/Interviewer/InterviewerDashboardLayout';
 import StudentAccountView from './views/student/StudentAccountView';
 import EmployeeListView from './views/employee/EmployeeListView';
 import StudentListView from './views/student/StudentListView';
@@ -38,17 +37,8 @@ const routes = [
     element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <HomePage />,
   },
   {
-    path: 'app',
-    element: <DashboardLayout />,
-    children: [
-      { path: 'account', element: <StudentAccountView /> },
-      { path: 'settings', element: <SettingsView /> },
-      { path: '*', element: <Navigate to="/404" /> },
-    ]
-  },
-  {
     path: 'student',
-    element: isAuthenticated  ? group === 'student' ? <SDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
+    element: isAuthenticated  ? group === 'student' ? <StudentDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <StudentAccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
@@ -59,7 +49,7 @@ const routes = [
   },
   {
     path: 'employee',
-    element: isAuthenticated  ? group === 'employee' ? <EDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
+    element: isAuthenticated  ? group === 'employee' ? <EmployeeDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'empaccount', element: <EmployeeAccountView /> },
       { path: 'employees', element: <EmployeeListView /> },
@@ -77,7 +67,7 @@ const routes = [
   },
   {
     path: 'interviewer',
-    element: isAuthenticated  ? group === 'interviewer' ? <IDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
+    element: isAuthenticated  ? group === 'interviewer' ? <InterviewerDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <InterviewerAccountView /> },
       { path: 'dashboard', element: <InterviewerDashboardView /> },
