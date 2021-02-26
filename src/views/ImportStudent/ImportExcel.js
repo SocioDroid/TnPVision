@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import { Container, Box, Grid, Card, Button, CardHeader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ImportSingleStud from './SingleStudImport'
-import StudentService from '../../services/StudentService'
+import StudentService from '../../../services/StudentService'
 const useStyles = makeStyles((theme) => ({
     box:{
         margin: '10px',

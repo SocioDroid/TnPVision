@@ -19,11 +19,11 @@ import CompanyView from './views/drive/CompanyListView';
 import HomePage from './views/homepage/Homepage';
 import Auth from './auth';
 import PasswordReset from './views/auth/ForgotPassword/PasswordReset';
-import ImportStudent from './views/ImportStudent';
+import ImportStudent from './views/employee/ImportStudent';
 import EmployeeAccountView from './views/employee/EmployeeAccountView';
 import InterviewerAccountView from './views/Interviewer/InterviewerAccountView'
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
-import StudentDriveView from './views/drive/StudentDriveView'
+import StudentDriveView from './views/drive/StudentDriveView';
 import EmployeeDriveView from './views/drive/EmployeeDriveView'
 import InterviewerDrive from './views/Interviewer/InterviewerDashboardView/InterviewerDrive'
 import StudentInformation from './views/Interviewer/InterviewerDashboardView/StudentInformation'

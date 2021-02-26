@@ -4,7 +4,7 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../components/controls/Page';
+import Page from '../../../components/controls/Page';
 import ImportExcel from './ImportExcel';
 // import Toolbar from './Toolbar';
 
