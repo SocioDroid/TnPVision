@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,13 +10,9 @@ import swal from 'sweetalert';
 import InterviewerService from '../../../services/InterviewerService';
 import Grid from '@material-ui/core/Grid';
 
-import {
-  TextField,
-  Button
-} from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import axios from 'axios';
-import Auth from '../../../auth';
+import UserContext from '../../../UserContext';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,7 +57,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function ReviewTabs(props) {
   const { roundId, rounds, drive_id, student_id } = props;
-
+  const UseContext = useContext(UserContext);
+  console.log("Context Data", UseContext.userData); 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -99,16 +96,18 @@ export default function ReviewTabs(props) {
     };
 
     console.log(data);
-    axios
-      .post('http://20.37.50.140:8000/api/review/', data, {
-        headers: {
-          'Content-type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          Authorization: 'Token ' + Auth.getToken()
-        }
-      })
+
+    InterviewerService.submitReview(data)
       .then(res => {
         console.log('res', res);
+        let rev = [...reviewPresent];
+        rev[round_number] = true;
+        setReviewReceived([...rev]);
+
+        let inter = [...interviewedBy];
+        inter[round_number] = UseContext.userData.first_name+" "+UseContext.userData.last_name
+        setInterviewedBy([...inter]);
+
         swal('Review Submitted Successsfully', 'Thank You!', 'success');
       })
       .catch(error => {
@@ -139,7 +138,8 @@ export default function ReviewTabs(props) {
           commu[review.round_number] = review.communication;
           pers[review.round_number] = review.personality;
           comm[review.round_number] = review.comment;
-          inter[review.round_number] = review.interviewer.first_name+" "+review.interviewer.last_name;
+          inter[review.round_number] =
+            review.interviewer.first_name + ' ' + review.interviewer.last_name;
 
           rev[review.round_number] = true;
         });
@@ -154,7 +154,7 @@ export default function ReviewTabs(props) {
       .catch(error => {
         console.log(error);
       });
-  }, [comment, communication, interviewedBy, personality, reviewPresent, roundId, rounds, student_id, technical]);
+  }, []);
 
   useEffect(() => {}, [reviewReceived]);
 
@@ -172,7 +172,11 @@ export default function ReviewTabs(props) {
             aria-label="scrollable auto tabs example"
           >
             {filtered_rounds.map((round, index) => (
-              <Tab key={round.number} label={round.name} {...a11yProps(index)} />
+              <Tab
+                key={round.number}
+                label={round.name}
+                {...a11yProps(index)}
+              />
             ))}
           </Tabs>
         </AppBar>
@@ -185,7 +189,11 @@ export default function ReviewTabs(props) {
             >
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography className={classes.bold} variant="h6" component="span">
+                  <Typography
+                    className={classes.bold}
+                    variant="h6"
+                    component="span"
+                  >
                     Technical
                   </Typography>
                   <Rating
@@ -253,9 +261,9 @@ export default function ReviewTabs(props) {
                   <Grid container direction="column">
                     <Grid item xs={12}>
                       <Typography className={classes.bold} variant="h6">
-                        Interviewed by                
+                        Interviewed by
                       </Typography>
-                      <Typography  component="span">
+                      <Typography component="span">
                         {interviewedBy[round.number]}
                       </Typography>
                     </Grid>
@@ -272,7 +280,6 @@ export default function ReviewTabs(props) {
                         </Box>
                       )}
                     </Grid>
-
                   </Grid>
                 </Grid>
               </Grid>
