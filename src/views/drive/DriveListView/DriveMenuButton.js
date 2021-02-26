@@ -12,7 +12,7 @@ import DriveService from '../../../services/DriveService';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { NavLink } from 'react-router-dom';
-import Popup from '../../../components/Popup';
+import Popup from '../../../components/controls/Popup';
 import ProfileDetails from './ProfileDetails';
 import Popover from '@material-ui/core/Popover';
 import { useNavigate } from 'react-router-dom';

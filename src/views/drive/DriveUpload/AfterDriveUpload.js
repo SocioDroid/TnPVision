@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
-import Page from '../../../components/Page';
+import Page from '../../../components/controls/Page';
 import { Container, } from '@material-ui/core';
 import DriveDetails from './DriveDetails'
 

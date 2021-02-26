@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grid, makeStyles } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../components/controls/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
 import EmployeeService from '../../../services/EmployeeServices';

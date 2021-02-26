@@ -11,7 +11,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../components/Page';
+import Page from '../../components/controls/Page';
 import axios from 'axios';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress';

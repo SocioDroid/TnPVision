@@ -3,7 +3,7 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../components/controls/Page';
 import LiveDrive from './LiveDrives';
 
 const useStyles = makeStyles((theme) => ({

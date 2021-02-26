@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import EmployeeService from '../../../services/EmployeeServices';
-import Popup from "../../../components/Popup";
+import Popup from "../../../components/controls/Popup";
 import ProfileDetails from "./ProfileDetails";
 import { Card, makeStyles } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';

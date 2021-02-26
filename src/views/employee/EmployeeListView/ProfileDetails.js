@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from '../../../components/useForm';
+import { useForm } from '../../../components/controls/useForm';
 import PropTypes from 'prop-types';
 import {
   FormControl,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import Popup from '../../../components/Popup';
+import Popup from '../../../components/controls/Popup';
 import ProfileDetails from './ProfileDetails';
 import { Card, makeStyles, Box, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';

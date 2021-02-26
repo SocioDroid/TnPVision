@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, makeStyles } from '@material-ui/core';
-import Page from '../../../components/Page';
+import Page from '../../../components/controls/Page';
 import EligibleDrives from './EligibleDrives';
 import VolunteeringDrives from './VolunteeringDrives';
 import Auth from '../../../auth';

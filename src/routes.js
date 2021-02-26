@@ -5,7 +5,6 @@ import SDashboardLayout from './layouts/SDashboardLayout';
 import EDashboardLayout from './layouts/EDashboardLayout';
 import IDashboardLayout from './layouts/IDashboardLayout';
 import AccountView from './views/account/AccountView';
-import CustomerListView from './views/customer/CustomerListView';
 import EmployeeListView from './views/employee/EmployeeListView';
 import StudentListView from './views/student/StudentListView';
 import DashboardView from './views/reports/DashboardView';
@@ -38,7 +37,6 @@ const dashboardRoute = "/" + Auth.getGroup() + "/dashboard";
 const routes = [
   {
     path: '/',
-    // element:
     element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <HomePage />,
   },
   {
@@ -46,7 +44,6 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
-      { path: 'customers', element: <CustomerListView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
@@ -55,7 +52,6 @@ const routes = [
   },
   {
     path: 'student',
-    //element: isAuthenticated ? <SDashboardLayout /> : <Navigate to="/" />,
     element: isAuthenticated  ? group === 'student' ? <SDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
       { path: 'account', element: <AccountView /> },
@@ -68,7 +64,6 @@ const routes = [
   {
     path: 'employee',
     element: isAuthenticated  ? group === 'employee' ? <EDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
-    //element: <EDashboardLayout />,
     children: [
       { path: 'empaccount', element: <EmployeeAccountView /> },
       { path: 'employees', element: <EmployeeListView /> },
@@ -105,25 +100,16 @@ const routes = [
       {
         path: 'register', 
         element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <RegisterView />,
-        // element: isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
-          //   : group == 2 || group == 3 || group == 4
-          //     ? <Navigate to="/employee/dashboard" /> : <RegisterView />
-          //   : <RegisterView />
       },
       {
         path: 'resetpassword/:token', 
         element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <PasswordReset />,
-        // element: isAuthenticated ? group == 1 ? <Navigate to="/student/dashboard" />
-        //   : group == 2 || group == 3 || group == 4
-        //     ? <Navigate to="/employee/dashboard" /> : <PasswordReset />
-        //   : <PasswordReset />
       },
       { path: 'logout', element: <Navigate to="/" />},
       { path: '404', element: <NotFoundView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
-
 ];
 
 

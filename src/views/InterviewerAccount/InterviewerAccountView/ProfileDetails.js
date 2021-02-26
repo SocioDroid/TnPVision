@@ -11,7 +11,7 @@ import {
   TextField
 } from '@material-ui/core';
 import axios from 'axios';
-import { useForm } from '../../../components/useForm';
+import { useForm } from '../../../components/controls/useForm';
 import Auth from '../../../auth';
 
 const initialFValues = {
