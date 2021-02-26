@@ -3,7 +3,7 @@ import { Typography, Grid, Box, ButtonBase, Paper} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './BodyContent.css'
 import homepage from '../../static/images/homepage.svg';
-import TopBar from '../../layouts/TopBars/TopBarBeforeSignIn';
+import TopBar from '../TopBars/TopBarBeforeSignIn';
 import Auth from '../../auth';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,35 +1,33 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
-import SDashboardLayout from './layouts/SDashboardLayout';
-import EDashboardLayout from './layouts/EDashboardLayout';
-import IDashboardLayout from './layouts/IDashboardLayout';
-import AccountView from './views/account/AccountView';
+import SDashboardLayout from './views/student/StudentDashboardLayout';
+import EDashboardLayout from './views/employee/EmployeeDashboardLayout';
+import IDashboardLayout from './views/Interviewer/InterviewerDashboardLayout';
+import StudentAccountView from './views/student/StudentAccountView';
 import EmployeeListView from './views/employee/EmployeeListView';
 import StudentListView from './views/student/StudentListView';
-import DashboardView from './views/reports/DashboardView';
-import EmployeeDashboardView from './views/reports/EmployeeDashboardView';
-import StudentDashboardView from './views/reports/StudentDashboardView';
-import InterviewerDashboardView from './views/reports/InterviewerDashboardView';
+import EmployeeDashboardView from './views/employee/EmployeeDashboardView';
+import StudentDashboardView from './views/student/StudentDashboardView';
+import InterviewerDashboardView from './views/Interviewer/InterviewerDashboardView';
 import LoginView from './views/auth/LoginView';
 import RegisterView from './views/auth/RegisterView';
 import NotFoundView from './views/errors/NotFoundView';
-import ProductListView from './views/product/ProductListView';
 import SettingsView from './views/settings/SettingsView';
 import DriveView from './views/drive/DriveUpload/DriveUploadForm';
 import DriveListView from './views/drive/DriveListView';
 import CompanyView from './views/drive/CompanyListView';
 import HomePage from './views/homepage/Homepage';
 import Auth from './auth';
-import PasswordReset from './components/ForgotPassword/PasswordReset';
+import PasswordReset from './views/auth/ForgotPassword/PasswordReset';
 import ImportStudent from './views/ImportStudent';
-import EmployeeAccountView from './views/employeeAccount/employeeAccountView';
-import InterviewerAccountView from './views/InterviewerAccount/InterviewerAccountView'
+import EmployeeAccountView from './views/employee/EmployeeAccountView';
+import InterviewerAccountView from './views/Interviewer/InterviewerAccountView'
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
 import StudentDriveView from './views/drive/StudentDriveView'
 import EmployeeDriveView from './views/drive/EmployeeDriveView'
-import InterviewerDrive from './views/reports/InterviewerDashboardView/InterviewerDrive'
-import StudentInformation from './views/reports/InterviewerDashboardView/StudentInformation'
+import InterviewerDrive from './views/Interviewer/InterviewerDashboardView/InterviewerDrive'
+import StudentInformation from './views/Interviewer/InterviewerDashboardView/StudentInformation'
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const group = Auth.getGroup();
@@ -43,9 +41,7 @@ const routes = [
     path: 'app',
     element: <DashboardLayout />,
     children: [
-      { path: 'account', element: <AccountView /> },
-      { path: 'dashboard', element: <DashboardView /> },
-      { path: 'products', element: <ProductListView /> },
+      { path: 'account', element: <StudentAccountView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> },
     ]
@@ -54,7 +50,7 @@ const routes = [
     path: 'student',
     element: isAuthenticated  ? group === 'student' ? <SDashboardLayout /> : <Navigate to={dashboardRoute}/> : <Navigate to="/" />,
     children: [
-      { path: 'account', element: <AccountView /> },
+      { path: 'account', element: <StudentAccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
       { path: 'drive/:id', element: <StudentDriveView /> },
       { path: 'settings', element: <SettingsView /> },

@@ -7,7 +7,7 @@ import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceW
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LatestOrders from '../reports/EmployeeDashboardView/LatestOrders';
+import LatestOrders from '../employee/EmployeeDashboardView/LatestOrders';
 
 
 const useStyles = makeStyles(theme => ({
