@@ -22,32 +22,20 @@ const useStyles = makeStyles({
 
 export default function RoundSudent(props) {
   
-  const { RoundId } = props;
+  const { students, roundId } = props;
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [roundstudent, setRoundstudent] = useState([]);
-
   const navigate = useNavigate();
   
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  useEffect(() => {
-    console.log(RoundId);
-
-    InterviewerService.getStudentsFromRound(RoundId)
-    .then(res =>{
-        console.log("Interviewer Round Student ",res.data.students);
-        setRoundstudent(res.data.students)
-      })
-  }, [RoundId]);
 
   return (
 
@@ -72,9 +60,9 @@ export default function RoundSudent(props) {
           </TableHead>
           <TableBody>
 
-            {roundstudent.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((student) => {
+            {students.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((student) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={student.id} onClick={()=>{navigate(`/interviewer/studentinformation/${student.id}/${RoundId}/`, { replace: true });}}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={student.id} onClick={()=>{navigate(`/interviewer/studentinformation/${student.id}/${roundId}/`, { replace: true });}}>
                   
                         <TableCell >
                             {student.id}
@@ -101,7 +89,7 @@ export default function RoundSudent(props) {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={roundstudent.length}
+        count={students.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

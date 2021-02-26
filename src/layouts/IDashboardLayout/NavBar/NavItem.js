@@ -78,7 +78,7 @@ const NavItem = ({
 NavItem.propTypes = {
   className: PropTypes.string,
   href: PropTypes.string,
-  icon: PropTypes.elementType,
+  icon: PropTypes.object,
   title: PropTypes.string
 };
 

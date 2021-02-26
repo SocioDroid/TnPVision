@@ -10,12 +10,15 @@ class InterviewerService {
     getInterviewerDetails(){
         return httpauth.get('/api/user/')
     }
-    getStudentsFromRound(id){
-        return  httpauth.get(`/api/interviewer/?round=${id}`)
+    getStudentsFromRound(){
+        return  httpauth.get(`/api/interviewer/?round=true`)
     }
     getStudentReviews(id){
         // console.log("InterService data : ", data);
         return httpauth.get(`/api/review/${id}/`)
+    }
+    submitReview(data){
+        return httpauth.post('http://20.37.50.140:8000/api/review/', data)
     }
 }
 
