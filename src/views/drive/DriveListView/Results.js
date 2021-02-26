@@ -30,12 +30,14 @@ const Results = ({ className, ...rest }) => {
 
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   const classes = useStyles();
   const getAllDrives = () => {
     DriveService.getAllDrives()
       .then(res => {
         setPosts(res.data);
+        setIsDataLoading(false);
         console.log("Settign drive data")
       })
       .catch(error => {
@@ -217,6 +219,7 @@ const Results = ({ className, ...rest }) => {
                   fontFamily : "Roboto, Helvetica , Arial, sans-serif",              
                 }
               }}
+              isLoading={isDataLoading}
             />
           </Card>
         </PerfectScrollbar>

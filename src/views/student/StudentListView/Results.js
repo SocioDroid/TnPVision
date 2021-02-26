@@ -30,12 +30,14 @@ const Results = ({ className, ...rest }) => {
   const [openPopup, setOpenPopup] = useState(false);
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const navigate = useNavigate();
 
   const getAllStudents = () => {
     StudentService.getAllStudents()
       .then(res => {
         setPosts(res.data);
+        setIsDataLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -224,6 +226,7 @@ const Results = ({ className, ...rest }) => {
                 fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
               }
             }}
+            isLoading={isDataLoading}
           />
         </Card>
       </PerfectScrollbar>

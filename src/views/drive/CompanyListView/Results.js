@@ -27,11 +27,13 @@ const Results = ({ className, ...rest }) => {
   const [posts, setPosts] = useState([]);
   const [isEdited, setIsEdited] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   const getAllCompanies = () => {
     CompanyService.getAllCompanies()
       .then(res => {
         setPosts(res.data);
+        setIsDataLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -229,6 +231,7 @@ const Results = ({ className, ...rest }) => {
                   fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
                 }
               }}
+              isLoading={isDataLoading}
             />
           </Card>
         </PerfectScrollbar>
