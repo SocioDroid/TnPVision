@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Button, Box, CardContent, Typography, Grid } from '@material-ui/core';
+import { Card, Button, CardContent, Typography, Grid } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import DriveService from '../../services/DriveService';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import LatestOrders from '../employee/EmployeeDashboardView/LatestOrders';
+import ProgressBar from '../../components/controls/ProgressBar';
 
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +20,6 @@ const useStyles = makeStyles(theme => ({
     transform: 'scale(0.8)'
   },
   progressRoot: {
-    minWidth: 275,
     margin: theme.spacing(40),
     textAlign: 'center',
     justifyContent: 'center',
@@ -37,66 +35,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function CircularProgressWithLabel(props) {
-  return (
-    <Box position="relative" display="inline-flex">
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
-          props.value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
 
 export default function StudentDriveView() {
   const classes = useStyles();
   const { id } = useParams();
   const [driveDetails, setDriveDetails] = useState(null);
-  const [progress, setProgress] = useState(10);
-  //const [postedDays, setPostedDays] = useState(null);
-
-  // function generatePostedDays(){
-  //     // Modify this field
-  //     const date1 = new Date(driveDetails.createdAt);
-  //     const date2 = new Date();
-  //     const diffDays = date2.getDate() - date1.getDate(); 
-  //     console.log(diffDays + " days");
-  //     if (diffDays > 0)
-  //         setPostedDays(diffDays);
-  //     else 
-  //         setPostedDays("Today")
-  // }
   useEffect(() => {
     // Getting Drive Details
     DriveService.getSingleDrive({ id: id })
       .then(res => {
         setDriveDetails(res.data);
-        //generatePostedDays();
       })
       .catch(err => {
         console.log(err);
       });
   }, [id]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   if (driveDetails) {
     return (
@@ -150,69 +104,6 @@ export default function StudentDriveView() {
             container
             spacing={3}
           >
-            {/* <Grid
-              item
-              lg={3}
-              sm={6}
-              xl={3}
-              xs={12}
-            >
-              <Budget />
-            </Grid>
-            <Grid
-              item
-              lg={3}
-              sm={6}
-              xl={3}
-              xs={12}
-            >
-              <TotalCustomers />
-            </Grid>
-            <Grid
-              item
-              lg={3}
-              sm={6}
-              xl={3}
-              xs={12}
-            >
-              <TasksProgress />
-            </Grid>
-            <Grid
-              item
-              lg={3}
-              sm={6}
-              xl={3}
-              xs={12}
-            >
-              <TotalProfit />
-            </Grid>
-            <Grid
-              item
-              lg={8}
-              md={12}
-              xl={9}
-              xs={12}
-            >
-              <Sales />
-            </Grid>
-            <Grid
-              item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <TrafficByDevice />
-            </Grid>
-            <Grid
-              item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <LatestProducts />
-            </Grid> */}
             <Grid
               item
               lg={12}
@@ -225,25 +116,12 @@ export default function StudentDriveView() {
           </Grid>
             
           </CardContent>
-        </Card>
-
-       
+        </Card>       
       </div>
     );
   } else {
     return (
-      <div className={classes.progressRoot}>
-        <CircularProgressWithLabel size={70} value={progress} />
-        <Typography variant="h3" color="primary">Loading...</Typography>
-      </div>
+      <ProgressBar />
     );
   }
 }
-
-CircularProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate variant.
-   * Value between 0 and 100.
-   */
-  value: PropTypes.number.isRequired,
-};

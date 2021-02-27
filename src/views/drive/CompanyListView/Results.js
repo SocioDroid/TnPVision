@@ -88,18 +88,6 @@ const Results = ({ className, ...rest }) => {
     setOpenPopup(true);
   };
 
-  //Pagination
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  // const [page, setPage] = React.useState(0);
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = event => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
   return (
     <div>
       <Box display="flex" justifyContent="flex-end" marginBottom="2%">
@@ -113,70 +101,8 @@ const Results = ({ className, ...rest }) => {
         >
           Add Company
         </Button>
-      </Box>
-
-      {/* <Toolbar setIsEdited={setIsEdited}/> */}
+      </Box>      
       <Card>
-        {/* <PerfectScrollbar>
-          <Box minWidth={1050}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Website</TableCell>
-                  <TableCell>Industry</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {posts
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(company => (
-                    <TableRow key={company.id}>
-                      <TableCell>{company.id}</TableCell>
-                      <TableCell>{company.name}</TableCell>
-                      <TableCell>{company.website}</TableCell>
-                      <TableCell>{company.industry}</TableCell>
-                      <TableCell>
-                        <Fab
-                          size="small"
-                          color="primary"
-                          aria-label="edit"
-                          onClick={() => {
-                            openPopupWithExtraData(company.id);
-                          }}
-                        >
-                          <EditIcon />
-                        </Fab>
-                        <Fab
-                          size="small"
-                          color="secondary"
-                          className={classes.delete}
-                          aria-label="delete"
-                          onClick={() => {
-                            deleteCompany(company.id);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </Fab>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, 50]}
-              component="div"
-              count={posts.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </Box>
-        </PerfectScrollbar> */}
-
         <PerfectScrollbar>
           <Card>
             <MaterialTable
@@ -246,11 +172,6 @@ const Results = ({ className, ...rest }) => {
       </Card>
     </div>
   );
-};
-
-Results.propTypes = {
-  // className: PropTypes.string,
-  // customers: PropTypes.array.isRequired
 };
 
 export default Results;

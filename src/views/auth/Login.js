@@ -22,6 +22,7 @@ import LoginService from '../../services/LoginService';
 import CustomSnackbar from '../../components/Snackbar/CustomSnackbar';
 import Auth from '../../auth';
 import UserContext from '../../UserContext';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -105,8 +106,7 @@ function Login(props) {
               result.data.data.expiry,
               result.data.data.group
             );
-			alert("Setting user data");
-			
+			// alert("Setting user data");
 			
 			UseContext.setUserData({"1": "Data", "12":"data2"});
 			console.log("Context cha data : ", UseContext);
@@ -118,11 +118,11 @@ function Login(props) {
 				"email": result.data.data.email
             });
 			console.log("Context cha data : ", UseContext);
-			alert(UseContext.userData);
-			alert(UseContext.userData);
-			alert(UseContext.userData);
+			// alert(UseContext.userData);
+			// alert(UseContext.userData);
+			// alert(UseContext.userData);
 			console.log("User", UseContext);
-			alert(UseContext.userData);
+			// alert(UseContext.userData);
 
             if (result.data.data.group === 'student')
               navigate('/student/dashboard', { replace: true });
@@ -151,14 +151,17 @@ function Login(props) {
             case 400:
               console.log(data);
               setErrorMessage(data);
+              swal('Unable to login with provided credentials', { buttons: false, timer: 3000 })
               console.log('400 ERRORRR');
               break;
             case 401:
               setErrorMessage(
                 'Unauthenticated ! Please login to continue ' + data
               );
+              swal('Unauthenticated ! Please login to continue', { buttons: false,timer: 2000 })
               console.log('401 ERRORRR');
-              navigate('/employee/dashboard', { replace: true });
+              navigate('/login', { replace: true });
+              window.location.reload();
               break;
             case 403:
               console.log('403 error! ' + data);
@@ -166,6 +169,7 @@ function Login(props) {
               break;
             case 500:
               console.log('500 ERROR ' + data);
+              swal('Server Error. Please try again', { buttons: false,timer: 2000 })
               setErrorMessage('Server Error. Please try again ' + data);
               break;
             default:

@@ -238,6 +238,22 @@ export default function Basic(props) {
     })();
   }, [inputSearch3, inputValue3]);
 
+  // const validate = (fieldValues = values) => {
+  //   let temp = { ...errors }
+  //   if ('first_name' in fieldValues)
+  //     temp.first_name = fieldValues.first_name ? "" : "This field is required."
+  //   if ('last_name' in fieldValues)
+  //     temp.last_name = fieldValues.last_name ? "" : "This field is required."
+  //   if ('email' in fieldValues)
+  //     temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+  //   setErrors({
+  //     ...temp
+  //   })
+  //   if (fieldValues === values)
+  //     return Object.values(temp).every(x => x === "")
+  // }
+
+
   //-----------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <div className={classes.root}>
@@ -298,7 +314,7 @@ export default function Basic(props) {
                   values.assigned_volunteers = [...AllVolunteers];
                   values.assigned_coordinators = [...AllCoordinators];
                   values.company = AllComapnies;
-
+                  console.log(values);
                   DriveService.addSingleDrive(values)
                     .then(result => {
                       console.log('Data Added:', result);
@@ -309,7 +325,6 @@ export default function Basic(props) {
                       console.log(error);
                       alert('Operation Failed');
                     });
-                  console.log(values);
                 }}
               >
                 {({ values, errors }) => (

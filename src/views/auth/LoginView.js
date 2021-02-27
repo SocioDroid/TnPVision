@@ -14,8 +14,8 @@ import {
 import Page from '../../components/controls/Page';
 import axios from 'axios';
 import clsx from 'clsx';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
+import ProgressBar from '../../components/controls/ProgressBar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -179,7 +179,8 @@ const LoginView = () => {
                     >
                       Sign In
                     </Button>
-                    {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    {/* {loading && <CircularProgress size={24} className={classes.buttonProgress} />} */}
+                    {loading && <ProgressBar/>}
 
                 </Box>
                 <Typography

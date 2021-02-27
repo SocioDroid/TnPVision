@@ -188,12 +188,8 @@ export default function ReviewTabs(props) {
               noValidate
             >
               <Grid container spacing={2}>
-                <Grid item xs={4}>
-                  <Typography
-                    className={classes.bold}
-                    variant="h6"
-                    component="span"
-                  >
+                <Grid item xs={12} md ={4} sm={12}>
+                  <Typography className={classes.bold} variant="h6">
                     Technical
                   </Typography>
                   <Rating
@@ -207,7 +203,7 @@ export default function ReviewTabs(props) {
                     }}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md ={4} sm={12}>
                   <Typography className={classes.bold} variant="h6">
                     Communication
                   </Typography>
@@ -222,7 +218,7 @@ export default function ReviewTabs(props) {
                     }}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md ={4} sm={12}>
                   <Typography className={classes.bold} variant="h6">
                     Personality
                   </Typography>

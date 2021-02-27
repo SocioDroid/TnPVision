@@ -40,10 +40,6 @@ const Password = ({ className, ...rest }) => {
 		},
 		onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);  
-      console.log("Change Password");
-      console.log("New Password", values.old_password);
-      console.log("New Password", values.new_password);
-      console.log("New Password", value.confirm);
       if(value.confirm === values.new_password){
         LoginService.changePassword({old_password: values.old_password, new_password : values.new_password})
           .then( result=>{

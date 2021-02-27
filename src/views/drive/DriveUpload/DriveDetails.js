@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   topmargin: {
-    paddingTop: '10px'
+    paddingTop: '20px'
   }
 }));
 
@@ -285,7 +285,7 @@ export default function DriveDetails(drive) {
       </div>
 
       <div>
-        <Typography variant="h3" color="primary">
+        <Typography className={classes.topmargin} variant="h3" color="primary">
           Volunteers Manager
         </Typography>
         <Divider style={{ margin: 10 }} />
@@ -319,7 +319,7 @@ export default function DriveDetails(drive) {
       </div>
 
       <div>
-        <Typography variant="h3" color="primary">
+        <Typography className={classes.topmargin} variant="h3" color="primary">
           Coordinators Manager
         </Typography>
         <Divider style={{ margin: 10 }} />
@@ -352,7 +352,7 @@ export default function DriveDetails(drive) {
         </div>
       </div>
       <div>
-        <Typography variant="h3" color="primary">
+        <Typography className={classes.topmargin} variant="h3" color="primary">
           Interviewer Manager
         </Typography>
         <Divider style={{ margin: 10 }} />

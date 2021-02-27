@@ -101,7 +101,7 @@ export default function CenteredGrid() {
       <div className={classes.root}>
         
         <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Paper className={classes.paper2}>
                   <Typography variant="h2">{student.user.first_name} {student.user.last_name}</Typography>
                   <Typography variant="h6">{student.user.email}</Typography><br/><br/>
@@ -116,7 +116,7 @@ export default function CenteredGrid() {
                   <Divider/>  
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           {/* <Paper className={classes.paper2}> */}
             {/* <Typography variant="h3">Reviews</Typography> */}
             {rounds && <ReviewTabs roundId={roundId} rounds={rounds} drive_id={drive.id} student_id={student.id}/>}

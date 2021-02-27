@@ -50,8 +50,7 @@ const initialFValues = {
 
 const PersonalData = ({ userData }) => {
 
-  console.log("in personalData", userData);
-
+  //console.log("in personalData", userData);
 
   const [values, setValues] = useState({
     email: "",
@@ -101,11 +100,10 @@ const PersonalData = ({ userData }) => {
   };
 
   const [datevalues, setDatevalues] = useState({
-    date: new Date()
+    date: new Date().toISOString().slice(0,10)
   })
 
   const handDateChange = (event) => {
-    console.log("date event", new Date(event).toISOString())
     setDatevalues({date: event})
   }
 
@@ -133,26 +131,23 @@ const PersonalData = ({ userData }) => {
         "parentsEmail": values.parentsEmail,
         "parentsMobileNumber": values.parentsMobileNumber,
       }
-    }
-    console.log("data.dob  -===========> ",JSON.stringify(datevalues.date).slice(1,11))
+    }    
       StudentService.updateStudent(data)
         .then(res => {
           console.log("res", res);
         }).catch(error => {
           console.log(error);
         });
-      // setTimeout(window.location.reload(false), 40000);
     }
   }
 
   useEffect(() => {
     if (userData != null) {
-      console.log(userData.dob)
+
       setDatevalues({
         ...datevalues,
-        "date": userData.user && userData.dob ? userData.dob : "",
+        "date": userData.user && userData.dob ? userData.dob : new Date().toISOString().slice(0,10),
       })
-
       setValues({
         ...values,
         "email": userData.user && userData.user.email ? userData.user.email : "",
@@ -315,18 +310,16 @@ const PersonalData = ({ userData }) => {
                 xs={12}
               >
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-
                 <KeyboardDatePicker
                   fullWidth
                   label="Date of Birth"
                   inputVariant="outlined"
-                  format="yyyy/MM/dd"
+                  format="yyyy-MM-dd"
                   value={datevalues.date}
                   onChange={handDateChange}
                   InputLabelProps={{ shrink: true }}
                 />
-   
-              </MuiPickersUtilsProvider>
+                </MuiPickersUtilsProvider>
               </Grid>
               <Grid
                 item
@@ -402,18 +395,10 @@ const PersonalData = ({ userData }) => {
               </Grid>
             </Grid>
             <Divider style={{ marginTop: 10 }} />
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              p={2}
-            >
-              <Button
-                color="primary"
-                variant="contained"
-                type="submit"
-              >
+            <Box display="flex" justifyContent="flex-end" p={2}>
+              <Button color="primary" variant="contained" type="submit">
                 Save details
-                            </Button>
+              </Button>
             </Box>
           </CardContent>
         </Card>

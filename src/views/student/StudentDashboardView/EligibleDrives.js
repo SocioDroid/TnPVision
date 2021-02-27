@@ -6,6 +6,7 @@ import StudentService from '../../../services/StudentService';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 const EligibleDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
+  const [emptyData, setEmptyData] = useState(false)
 
   const numberFormat = value =>
     new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(
@@ -38,6 +40,10 @@ const EligibleDrives = ({ className, ...rest }) => {
     StudentService.getEligibleDrives()
       .then(res => {
         setDrives(res.data);
+        if(res.data.length === 0){
+          setEmptyData(true)
+          console.log("empty data"+ emptyData)
+         }
       })
       .catch(function(error) {
         setDrives(false);
@@ -135,7 +141,7 @@ const EligibleDrives = ({ className, ...rest }) => {
         })}
       </Grid>
     </div>
-  ): null;
+  ): (!emptyData && <ProgressBar/>);
 };
 
 EligibleDrives.propTypes = {

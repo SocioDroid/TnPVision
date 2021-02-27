@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Avatar, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
 import StudentService from '../../../services/StudentService';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,10 +31,16 @@ const useStyles = makeStyles(theme => ({
 const VolunteeringDrives = ({ className, ...rest }) => {
   const classes = useStyles();
   const [drives, setDrives] = useState([]);
+  const [emptyData, setEmptyData] = useState(false)
+
   useEffect(() => {
     StudentService.getVolunteeringDrives()
       .then(res => {
         setDrives(res.data);
+         if(res.data.length === 0){
+          setEmptyData(true)
+          console.log("empty data"+ emptyData)
+         }
       })
       .catch(function(error) {
         setDrives(false);;
@@ -102,7 +109,7 @@ const VolunteeringDrives = ({ className, ...rest }) => {
         })}
       </Grid>
     </div>
-  ): null;
+  ): (!emptyData && <ProgressBar/>);
 };
 
 VolunteeringDrives.propTypes = {

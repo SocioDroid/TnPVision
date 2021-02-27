@@ -6,6 +6,7 @@ import InterviewerRoundView from './InterviewerRoundView';
 import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InterviewerService from '../../../services/InterviewerService';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,27 +42,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function CircularProgressWithLabel(props) {
-  return (
-    <Box position="relative" display="inline-flex">
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
-          props.value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+// function CircularProgressWithLabel(props) {
+//   return (
+//     <Box position="relative" display="inline-flex">
+//       {/* <CircularProgress variant="determinate" {...props} /> */}
+//       < ProgressBar />
+//       <Box
+//         top={0}
+//         left={0}
+//         bottom={0}
+//         right={0}
+//         position="absolute"
+//         display="flex"
+//         alignItems="center"
+//         justifyContent="center"
+//       >
+//         <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
+//           props.value,
+//         )}%`}</Typography>
+//       </Box>
+//     </Box>
+//   );
+// }
 
 const Interviewerdrive = ({ className, Drive ,...rest }) => {
   const classes = useStyles();
@@ -148,8 +150,9 @@ const Interviewerdrive = ({ className, Drive ,...rest }) => {
   }
   return (
     <div className={classes.progressRoot}>
-      <CircularProgressWithLabel size={70} value={progress} />
-      <Typography variant="h3" color="primary">Loading...</Typography>
+      {/* <CircularProgressWithLabel size={70} value={progress} />
+      <Typography variant="h3" color="primary">Loading...</Typography> */}
+      < ProgressBar />
     </div>
   );
 };
@@ -157,6 +160,6 @@ const Interviewerdrive = ({ className, Drive ,...rest }) => {
 export default Interviewerdrive;
 
 
-CircularProgressWithLabel.propTypes = {
-  value: PropTypes.number.isRequired,
-};
+// CircularProgressWithLabel.propTypes = {
+//   value: PropTypes.number.isRequired,
+// };

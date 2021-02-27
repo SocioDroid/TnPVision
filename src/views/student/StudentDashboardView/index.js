@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = props => {
   const classes = useStyles();
   return (
-    Auth.isUserAuthenticated() ? (
+    
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>        
           <EligibleDrives />
@@ -30,7 +30,7 @@ const Dashboard = props => {
         <VolunteeringDrives />  
       </Container >
     </Page >
-    ) : <p>Loading</p>
+    
   );
 };
 

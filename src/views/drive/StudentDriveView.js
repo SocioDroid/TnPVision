@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Button, Box } from '@material-ui/core';
+import { Card, Button } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from 'react-router-dom';
@@ -12,8 +12,7 @@ import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import LanguageOutlinedIcon from '@material-ui/icons/Language';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import Divider from '@material-ui/core/Divider';
-import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import ProgressBar from '../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,37 +50,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function CircularProgressWithLabel(props) {
-  return (
-    <Box position="relative" display="inline-flex">
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
-          props.value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
-
 
 export default function StudentDriveView() {
   const classes = useStyles();
   const { id } = useParams();
   const [driveDetails, setDriveDetails] = useState(null);
   const [postedDays, setPostedDays] = useState(null);
-  const [progress, setProgress] = useState(10);
-
-  
 
   useEffect(() => {
     // Getting Drive Details
@@ -106,16 +80,8 @@ export default function StudentDriveView() {
       .catch(err => {
         console.log(err);
       });
-  }, [driveDetails.createdAt, id]);
+  }, [id]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   if (driveDetails) {
     return (
@@ -306,15 +272,7 @@ export default function StudentDriveView() {
     );
   } else {
     return (
-      <div className={classes.progressRoot}>
-        <CircularProgressWithLabel size={70} value={progress} />
-        <Typography variant="h3" color="primary">Loading...</Typography>
-      </div>
+      <ProgressBar />
     );
   }
 }
-
-
-CircularProgressWithLabel.propTypes = {
-  value: PropTypes.number.isRequired,
-};

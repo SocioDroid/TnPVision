@@ -8,6 +8,7 @@ import Page from '../../../components/controls/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
 import StudentService from '../../../services/StudentService';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,7 @@ const Account = () => {
             md={12}
             xs={12}
           >
-            {userData && <ProfileDetails  userData={userData} /> }
+            {userData ? ( <ProfileDetails  userData={userData} /> ) : (<ProgressBar />) }
             
           </Grid>
         </Grid>
