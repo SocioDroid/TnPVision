@@ -15,6 +15,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import RoundService from '../../../services/RoundService';
+import CloseIcon from '@material-ui/icons/Close';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const Results = props => {
   const [round, setRound] = useState({})
@@ -28,7 +30,20 @@ const Results = props => {
     RoundService.getAllStudentOfRound(driveId, roundId)
       .then(res => {
         setRound(res.data)
-        setStudents([...res.data.students]);
+        const data = []
+        res.data.pending.map((student) => {
+          student.status = "pending"
+          // data.push(student)
+        })
+        res.data.accepted.map((student) => {
+          student.status = "accepted"
+          // data.push(student)
+        })
+        res.data.rejected.map((student) => {
+          student.status = "rejected"
+          // data.push(student)
+        })
+        setStudents([...res.data.pending, ...res.data.accepted, ...res.data.rejected]);
         changeUpdated(0)
       })
       .catch(err => {
@@ -45,16 +60,18 @@ const Results = props => {
       setFlag(!flag);
       getAllStudentOfRound(driveId, props.round.number)      
     }
-  }, [driveId, flag, getAllStudentOfRound, props.round.number, students]);
+  }, [driveId, flag, props.round.number, students]);
 
 
 
-  const putStudentToNextRound = (roundId, studentId) => {
+  const addOrRejectStudent = (roundId, studentId, status) => {
     console.log(roundId, driveId, studentId, 'From put student');
-    RoundService.addStudentToNextRound(driveId, roundId + 1, {student_id:studentId})
+    RoundService.addStudentToNextRound(driveId, roundId, {student_id:studentId, status: status})
       .then(res => {
-        console.log("Done")
-        changeUpdated(round.number + 1)
+        if(status ==="accepted")
+          changeUpdated(round.number + 1)
+
+        setFlag(true)
       })
       .catch(res => {
 
@@ -65,7 +82,7 @@ const Results = props => {
     RoundService.deleteStudentFromRound(driveId, roundId, studentId)
       .then(res => {
         console.log("Done")
-        changeUpdated(round.number)
+        setFlag(true)
       })
       .catch(res => {
 
@@ -99,6 +116,7 @@ const Results = props => {
                 <TableCell>ID</TableCell>
                 <TableCell>Full Name</TableCell>
                 <TableCell>Email</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
@@ -110,13 +128,20 @@ const Results = props => {
                     {`${student.user.first_name} ${student.user.last_name}`}
                   </TableCell>
                   <TableCell>{student.user.email}</TableCell>
+                  <TableCell>{student.status}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => { putStudentToNextRound(round.number, student.id) }}>
+                  <Tooltip title="Qualified for next round">
+                    <IconButton onClick={() => { addOrRejectStudent(round.number+1, student.id, "accepted") }}>
                       <NavigateNextIcon />
+                    </IconButton>
+                    </Tooltip>
+
+                    <IconButton onClick={() => { addOrRejectStudent(round.number, student.id, "rejected") }}>
+                      <CloseIcon />
                     </IconButton>
 
                     <IconButton onClick={() => { deleteStudentFromRound(round.number, student.id) }}>
-                    <DeleteIcon />
+                      <DeleteIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>

@@ -1,9 +1,9 @@
 import axios from "axios";
 import Auth from './../auth';
-
+import baseURL from './BaseUrl'
 
 export default axios.create({
-  baseURL: "http://20.37.50.140:8000",
+  baseURL: baseURL(),
   headers: {
     "Content-type": "application/json",
     "X-Requested-With": "XMLHttpRequest",

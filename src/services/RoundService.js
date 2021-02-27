@@ -6,7 +6,7 @@ class RoundsService {
     }
     
     getAllStudentOfRound(driveId, roundId){
-        return http.get('/api/drive/' + driveId + '/round/' + roundId)
+        return http.get('/api/drive/' + driveId + '/round/' + roundId+'/')
     }    
 
     addStudentToNextRound(driveId, roundId, data){
