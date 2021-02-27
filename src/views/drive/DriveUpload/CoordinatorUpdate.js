@@ -13,11 +13,15 @@ import {
   IconButton,
   TextField,
   TablePagination,
-  Grid
+  Grid,
+  Divider,
+  makeStyles
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
 import EmployeeServices from '../../../services/EmployeeServices';
+import MaterialTable from 'material-table';
+import Fab from '@material-ui/core/Fab';
 
 function debounce(func, wait) {
   let timeout;
@@ -31,8 +35,17 @@ function debounce(func, wait) {
   };
 }
 
+const useStyles = makeStyles(theme => ({
+  root: {},
+  delete: {
+    backgroundColor: 'red',
+    marginLeft: '5px'
+  }
+}));
+
 function CoordinatorUpdate(props) {
   const {staffForEdit, setStaffForEdit, recordForEdit } = props;
+  const classes = useStyles();
 
   const deleteCoordinatorForDrive = staffId => {
     DriveService.deleteDriveCoordinators(recordForEdit, staffId)
@@ -113,7 +126,7 @@ const addCoordinatorForDrive = (driveId, datavalue) => {
   //---------------------------------------------------------------------------------------------------------------------------------------
     return (
       <Card>
-        <PerfectScrollbar>
+        {/* <PerfectScrollbar>
           <Box minWidth={1050} margin={3} border={1} borderColor="grey.500">
             <Grid container spacing={3}>
               <Grid item md={1} xs={12} />
@@ -220,8 +233,122 @@ const addCoordinatorForDrive = (driveId, datavalue) => {
             </Grid>
           </Box>
         </PerfectScrollbar>
-        
+         */}
             
+
+            <PerfectScrollbar>
+          <Card>
+          <Grid container spacing={3}>
+              <Grid item md={1} xs={12} />
+              <Grid item md={8} xs={12}>
+                <br />
+                <br />
+                <Autocomplete
+                  fullWidth
+                  multiple
+                  filterSelectedOptions
+                  value={branchvalue1}
+                  onChange={(event, newValue) => {
+                    setBranchvalue1([
+                      ...fixedOptions1,
+                      ...newValue.filter(
+                        option => fixedOptions1.indexOf(option) === -1
+                      )
+                    ]);
+                    setCoordinator(newValue);
+                    console.log('selected value', staffForEdit);
+                  }}
+                  options={options1}
+                  getOptionLabel={option =>
+                    option.first_name + ' ' + option.last_name
+                  }
+                  open={open1}
+                  onOpen={() => {
+                    setOpen1(true);
+                  }}
+                  onClose={() => {
+                    setOpen1(false);
+                    handleChange1('');
+                  }}
+                  autoComplete
+                  loading={loading1}
+                  inputValue={inputValue1}
+                  includeInputInList
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Search Coordinators"
+                      variant="outlined"
+                      onChange={event => handleChange1(event.target.value)}
+                      fullWidth
+                    />
+                  )}
+                  renderOption={option => {
+                    return (
+                      <div>{option.first_name + ' ' + option.last_name}</div>
+                    );
+                  }}
+                />
+              </Grid>
+              <Grid item md={1} xs={12}>
+                <br />
+                <br />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Add Coordinators
+                </Button>
+              </Grid>
+              </Grid>
+              <br/><br/>
+              <Divider/>
+            <MaterialTable
+              //className={classes.table}
+              title="Coordinator Details"
+              columns={[
+                {
+                  title: 'ID',
+                  tableLayout: 'auto',
+                  field: 'id',
+                  //filtering: false
+                },
+                { title: 'First Name', field: 'first_name' }, 
+                { title: 'Last Name', field: 'last_name' },                              
+                {
+                  title: 'Actions',
+                  field: 'action',
+                  filtering: false,
+                  render: rowData => (
+                    <React.Fragment>                
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        className={classes.delete}
+                        aria-label="delete"
+                        onClick={() => {
+                          deleteCoordinatorForDrive(rowData.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </React.Fragment>
+                  )
+                }
+              ]}
+              data={staffForEdit}
+              options={{
+                filtering: true,
+                rowStyle: {
+                  fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
+                }
+              }}
+              //isLoading={isDataLoading}
+            />
+          </Card>
+        </PerfectScrollbar>
+
       </Card>
     );
   }

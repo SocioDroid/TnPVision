@@ -17,6 +17,7 @@ import AccordionActions from '@material-ui/core/AccordionActions';
 import SaveIcon from '@material-ui/icons/Save';
 import axios from 'axios';
 import Auth from '../../../auth';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 // import Round from './Rounds';
 
@@ -179,6 +180,7 @@ export default function DriveDetails(drive) {
   };
   //const uploadInputRef = useRef(null);
 
+  if(recordForEdit){
   return (
     <div>
       <div>
@@ -386,4 +388,9 @@ export default function DriveDetails(drive) {
       </div>
     </div>
   );
+
+}
+else{
+  return <ProgressBar/>
+}
 }

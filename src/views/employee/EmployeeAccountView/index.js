@@ -4,6 +4,7 @@ import Page from '../../../components/controls/Page';
 import Profile from './Profile';
 import ProfileDetails from './ProfileDetails';
 import EmployeeService from '../../../services/EmployeeServices';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,7 +65,7 @@ const Account = () => {
             {isUserDataSet && <Profile userData={userData} />}
           </Grid>
           <Grid item lg={8} md={6} xs={12}>
-            {isUserDataSet && <ProfileDetails userData={userData} /> }
+            {isUserDataSet ? ( <ProfileDetails  userData={userData} /> ) : (<ProgressBar />) }
           </Grid>
         </Grid>
       </Container>

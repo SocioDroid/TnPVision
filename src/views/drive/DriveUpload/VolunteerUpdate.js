@@ -2,22 +2,26 @@ import React, { useState, useEffect } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Button,
-  IconButton,
+  // Box,
+  // Table,
+  // TableBody,
+  // TableCell,
+  // TableHead,
+  // TableRow,
+  // IconButton,
+  // TablePagination,
   TextField,
-  TablePagination,
-  Grid
+  Card,
+  Button,
+  Grid,
+  makeStyles,
+  Divider
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
 import StudentService from '../../../services/StudentService';
+import MaterialTable from 'material-table';
+import Fab from '@material-ui/core/Fab';
 
 function debounce(func, wait) {
   let timeout;
@@ -31,8 +35,16 @@ function debounce(func, wait) {
   };
 }
 
-function VolunteerUpdate2(props) {
+const useStyles = makeStyles(theme => ({
+  root: {},
+  delete: {
+    backgroundColor: 'red',
+    marginLeft: '5px'
+  }
+}));
+function VolunteerUpdate(props) {
   const {studentForEdit, setStudentForEdit, recordForEdit } = props;
+  const classes = useStyles();
 
   const deleteVolunteerForDrive = studentId => {
     DriveService.deleteDriveVolunteers(recordForEdit, studentId)
@@ -100,20 +112,20 @@ const addVolunteerForDrive = (driveId, datavalue) => {
     console.log('Final Volunteers List', data);
   };
 
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [page, setPage] = React.useState(0);
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
+    // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    // const [page, setPage] = React.useState(0);
+    // const handleChangePage = (event, newPage) => {
+    //   setPage(newPage);
+    // };
 
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPage(0);
-    };
+    // const handleChangeRowsPerPage = (event) => {
+    //   setRowsPerPage(parseInt(event.target.value, 10));
+    //   setPage(0);
+    // };
   //---------------------------------------------------------------------------------------------------------------------------------------
     return (
       <Card>
-        <PerfectScrollbar>
+        {/* <PerfectScrollbar>
           <Box minWidth={1050} margin={3} border={1} borderColor="grey.500">
             <Grid container spacing={3}>
               <Grid item md={1} xs={12} />
@@ -221,10 +233,124 @@ const addVolunteerForDrive = (driveId, datavalue) => {
             </Grid>
           </Box>
         </PerfectScrollbar>
-        
+         */}
+
+        <PerfectScrollbar>
+          <Card>
+          <Grid container spacing={3}>
+              <Grid item md={1} xs={12} />
+              <Grid item md={8} xs={12}>
+                <br />
+                <br />
+                <Autocomplete
+                  fullWidth
+                  multiple
+                  filterSelectedOptions
+                  value={branchvalue1}
+                  onChange={(event, newValue) => {
+                    setBranchvalue1([
+                      ...fixedOptions1,
+                      ...newValue.filter(
+                        option => fixedOptions1.indexOf(option) === -1
+                      )
+                    ]);
+                    setVolunteers(newValue);
+                    console.log('selected value', studentForEdit);
+                  }}
+                  options={options1}
+                  getOptionLabel={option =>
+                    option.first_name + ' ' + option.last_name
+                  }
+                  open={open1}
+                  onOpen={() => {
+                    setOpen1(true);
+                  }}
+                  onClose={() => {
+                    setOpen1(false);
+                    handleChange1('');
+                  }}
+                  autoComplete
+                  loading={loading1}
+                  inputValue={inputValue1}
+                  includeInputInList
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Search Volunteer"
+                      variant="outlined"
+                      onChange={event => handleChange1(event.target.value)}
+                      fullWidth
+                    />
+                  )}
+                  renderOption={option => {
+                    return (
+                      <div>{option.first_name + ' ' + option.last_name}</div>
+                    );
+                  }}
+                />
+              </Grid>
+              <Grid item md={1} xs={12}>
+                <br />
+                <br />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Add Volunteers
+                </Button>
+              </Grid>
+              </Grid>
+              <br/><br/>
+              <Divider/>
+            <MaterialTable
+              //className={classes.table}
+              title="Volunteer Details"
+              columns={[
+                {
+                  title: 'ID',
+                  tableLayout: 'auto',
+                  field: 'id',
+                  //filtering: false
+                },
+                { title: 'First Name', field: 'first_name' }, 
+                { title: 'Last Name', field: 'last_name' },                              
+                {
+                  title: 'Actions',
+                  field: 'action',
+                  filtering: false,
+                  render: rowData => (
+                    <React.Fragment>                
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        className={classes.delete}
+                        aria-label="delete"
+                        onClick={() => {
+                          deleteVolunteerForDrive(rowData.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </React.Fragment>
+                  )
+                }
+              ]}
+              data={studentForEdit}
+              options={{
+                filtering: true,
+                rowStyle: {
+                  fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
+                }
+              }}
+              //isLoading={isDataLoading}
+            />
+          </Card>
+        </PerfectScrollbar>
+
             
       </Card>
     );
   }
 
-export default VolunteerUpdate2;
+export default VolunteerUpdate;

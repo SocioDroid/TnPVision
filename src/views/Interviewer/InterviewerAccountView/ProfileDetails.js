@@ -148,6 +148,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
+                disabled
                 fullWidth
                 label="Email Address"
                 name="email"

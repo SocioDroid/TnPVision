@@ -5,7 +5,8 @@ import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, make
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
-import DriveService from '../../../services/DriveService'
+import DriveService from '../../../services/DriveService';
+import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -161,7 +162,7 @@ const EligibleDrives = ({ className, ...rest }) => {
         })}
       </Grid>
     </div>
-  ): null;
+  ): <ProgressBar/>;
 };
 
 EligibleDrives.propTypes = {

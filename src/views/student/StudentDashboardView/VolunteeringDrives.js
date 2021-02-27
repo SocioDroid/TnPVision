@@ -87,7 +87,7 @@ const VolunteeringDrives = ({ className, ...rest }) => {
                           className={classes.text}
                           variant="h3"
                         >
-                          {drive.company.name[0].toUpperCase()}
+                          {drive.company_name[0].toUpperCase()}
                         </Typography>
                         </Avatar>
                       </Grid>

@@ -11,12 +11,15 @@ import {
   Button,
   IconButton,
   TablePagination,
-  Grid
+  Grid,
+  Divider
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DriveService from '../../../services/DriveService';
 import { ReactMultiEmail } from 'react-multi-email';
 import 'react-multi-email/style.css';
+import MaterialTable from 'material-table';
+import Fab from '@material-ui/core/Fab';
 
 function InterviewerUpdate(props) {
   const { interviewerForEdit, setInterviewerForEdit, recordForEdit } = props;
@@ -56,20 +59,20 @@ function InterviewerUpdate(props) {
     console.log('Final Interviewer List', data);
   };
 
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [page, setPage] = React.useState(0);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [page, setPage] = React.useState(0);
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = event => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
   //---------------------------------------------------------------------------------------------------------------------------------------
   return (
     <Card>
-      <PerfectScrollbar>
+      {/* <PerfectScrollbar>
         <Box minWidth={1050} margin={3} border={1} borderColor="grey.500">
           <Grid container spacing={3}>
             <Grid item md={1} xs={12} />
@@ -102,8 +105,9 @@ function InterviewerUpdate(props) {
             <Grid item md={1} xs={12}>
               <br />
               <br />
-              {/* <h4>react-multi-email value</h4> */}
-              {/* <p>{interviewerEmails.join(', ') || 'empty'}</p> */}
+              
+              {<h4>react-multi-email value</h4>
+              <p>{interviewerEmails.join(', ') || 'empty'}</p>}
 
               <Button
                 color="primary"
@@ -158,7 +162,98 @@ function InterviewerUpdate(props) {
             </Grid>
           </Grid>
         </Box>
-      </PerfectScrollbar>
+      </PerfectScrollbar> */}
+
+        <PerfectScrollbar>
+          <Card>
+          <Grid container spacing={3}>
+            <Grid item md={1} xs={12} />
+            <Grid item md={8} xs={12}>
+              <br />
+              <br />
+              <ReactMultiEmail
+                placeholder="Enter your Email Address"
+                emails={interviewerEmails}
+                onChange={_emails => {
+                  setInterviewerEmails(_emails);
+                }}
+                getLabel={(
+                  email: string,
+                  index: number,
+                  removeEmail: (index: number) => void
+                ) => {
+                  return (
+                    <div data-tag key={index}>
+                      {email}
+                      <span data-tag-handle onClick={() => removeEmail(index)}>
+                        ×
+                      </span>
+                      <br />
+                    </div>
+                  );
+                }} 
+              />
+            </Grid>
+            <Grid item md={1} xs={12}>
+              <br />
+              <br />
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleSubmit}
+              >
+                Add Interviewers
+              </Button>
+            </Grid>
+            </Grid>
+            <br /><br />
+            <Divider/>
+            <MaterialTable
+              //className={classes.table}
+              title="Interviewer Details"
+              columns={[
+                {
+                  title: 'ID',
+                  tableLayout: 'auto',
+                  field: 'id',
+                  //filtering: false
+                },
+                { title: 'First Name', field: 'first_name' }, 
+                { title: 'Last Name', field: 'last_name' }, 
+                { title: 'Email', field: 'email' },                              
+                {
+                  title: 'Actions',
+                  field: 'action',
+                  filtering: false,
+                  render: rowData => (
+                    <React.Fragment>                
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        //className={classes.delete}
+                        aria-label="delete"
+                        onClick={() => {
+                          deleteInterviewersForDrive(rowData.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </React.Fragment>
+                  )
+                }
+              ]}
+              data={interviewerForEdit}
+              options={{
+                filtering: true,
+                rowStyle: {
+                  fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
+                }
+              }}
+              //isLoading={isDataLoading}
+            />
+          </Card>
+        </PerfectScrollbar>
+
     </Card>
   );
 }
