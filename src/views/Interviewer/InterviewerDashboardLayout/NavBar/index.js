@@ -88,15 +88,8 @@ const useStyles = makeStyles(theme => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(false);
-  const [userData, setUserData] = useState({
-    email: "",
-    first_name: "",
-    last_name: "",
-    gender: "",
-    group: 0,
-    id: 0,
-  })
-
+  const userData = Auth.getUser();
+  
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const changeError = () => {
@@ -104,6 +97,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   };
   const classes = useStyles();
   const [company, setCompany] = useState({});
+  
   
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -160,33 +154,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         });
     };
     getCompanyData();
-    InterviewerService.getInterviewerDetails()
-    .then(function (res) {
-      const { data } = res;
-      console.log("data: ", data);
-      setUserData({
-        email: data.user.email,
-        first_name: data.user.first_name,
-        last_name: data.user.last_name,
-        gender: data.gender,
-        group: data.group,
-        id: data.id,
-      });
-      setData(true)
-    }).catch(error => {
-      if (error.response.status === 401) {
-        Auth.deauthenticateUser();
-        setData(false)
-        console.log("Deauthenticate user")
-        window.location.reload();
-      } 
-    })
+
   }, []);
 
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
-      {data ? (
-      <>
+      
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className= {userData.first_name ? classes.avatar : classes.avatarW}
@@ -208,8 +181,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </Typography>
       </Box>
       <Divider />
-      </>
-      ) : ""}
+     
+     
       <Box p={2}>
         <List>
           {items.map(item => (

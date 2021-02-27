@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 	const classes = useStyles();
 	useEffect((props) => {
 		if(Auth.isUserAuthenticated){
-			console.log("gfhdgifdgohdfoighodfhgodfho             ", Auth.getGroup())
 		}	
 	}, [])
 	

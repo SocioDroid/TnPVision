@@ -117,41 +117,13 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
-  const [userData, setUserData] = useState({
-    email: '',
-    first_name: '',
-    last_name: '',
-    gender: '',
-    group: 0,
-    id: 0
-  });
+  const userData = Auth.getUser();
 
   const navigate = useNavigate();
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
-    }
-    EmployeeServices.getEmployeeDetail()
-      .then(function(res) {
-        const { data } = res;
-        console.log('data: ', data);
-        setUserData({
-          email: data.user.email,
-          first_name: data.user.first_name,
-          last_name: data.user.last_name,
-          gender: data.gender,
-          group: data.group,
-          id: data.id
-        });
-      })
-      .catch(error => {
-        if (error.response.status === 401) {
-          Auth.deauthenticateUser();
-          console.log('Deauthenticate user');
-          console.log(error);
-          navigate('/logout', { replace: true });
-        }
-      });
+    }    
   }, [location.pathname]);
 
   const content = (

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -71,8 +71,6 @@ function Login(props) {
   const [loginOpen, setLoginOpen] = React.useState(false);
   const [isSubmitionCompleted, setSubmitionCompleted] = React.useState(false);
 
-  const UseContext = useContext(UserContext);
-
   const handleLoginOpen = () => {
     setSubmitionCompleted(false);
     setLoginOpen(true);
@@ -104,44 +102,30 @@ function Login(props) {
             Auth.authenticateUser(
               result.data.data.token,
               result.data.data.expiry,
-              result.data.data.group
+              result.data.data.group,
+              {
+                first_name: result.data.data.first_name,
+                last_name: result.data.data.last_name,
+                email: result.data.data.email
+              }
             );
-			// alert("Setting user data");
-			
-			UseContext.setUserData({"1": "Data", "12":"data2"});
-			console.log("Context cha data : ", UseContext);
-			
-			
-            UseContext.setUserData({
-				"first_name": result.data.data.first_name,
-				"last_name": result.data.data.last_name,
-				"email": result.data.data.email
-            });
-			console.log("Context cha data : ", UseContext);
-			// alert(UseContext.userData);
-			// alert(UseContext.userData);
-			// alert(UseContext.userData);
-			console.log("User", UseContext);
-			// alert(UseContext.userData);
+
 
             if (result.data.data.group === 'student')
               navigate('/student/dashboard', { replace: true });
-            // <Navigate to="/student/dashboard" />
-            // return <SDashboardLayout />
             else if (
               result.data.data.group === 'employee' ||
               result.data.data.group === 'employee' ||
               result.data.data.group === 'employee'
             )
-              // return <EDashboardLayout />
               navigate('/employee/dashboard');
-            // <Navigate to="/employee/dashboard" />
             else if (result.data.data.group === 'interviewer')
               navigate('/interviewer/dashboard');
             window.location.reload();
           }
         })
         .catch(error => {
+          setSubmitting(false);
           const data = error.response.data
             ? JSON.stringify(error.response.data)
             : 'Error!';
