@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   delete: {
     backgroundColor: 'red',
-    marginLeft: '5px'
+    marginLeft: '5px',
   },
   accepted: {
     backgroundColor: 'green',
@@ -133,14 +133,12 @@ const Results = props => {
 
   return (
     <Card
-    // className={clsx(classes.root, className)}
-    // {...rest}
+    style={{minWidth:"100%"}}
     >
-      <PerfectScrollbar>
-        <Card>
+      <PerfectScrollbar >
           <MaterialTable
             style={{
-              fontSize: "14px"
+              fontSize: "14px",
             }}           
             className={classes.table}
             title=""
@@ -248,7 +246,6 @@ const Results = props => {
             }}
             // isLoading={isDataLoading}
           />
-        </Card>
       </PerfectScrollbar>
     </Card>
   );

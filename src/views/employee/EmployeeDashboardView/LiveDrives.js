@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles } from '@material-ui/core';
@@ -70,6 +71,7 @@ const EligibleDrives = ({ className, ...rest }) => {
         setDrives(false);
       });
   }, []);
+  const navigate = useNavigate();
 
   return drives.length > 0 ?(
     <div>
@@ -82,8 +84,7 @@ const EligibleDrives = ({ className, ...rest }) => {
         {drives.map(drive => {
           return (
             <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
-              <a href={'/employee/drive/' + drive.id}>
-                <Card className={clsx(classes.root, className)} {...rest}>
+                <Card className={clsx(classes.root, className)} {...rest} onClick={() => navigate('/employee/drive/' + drive.id, {replace:true})}>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
                       <Grid item sm={8} xs={10}>
@@ -156,7 +157,6 @@ const EligibleDrives = ({ className, ...rest }) => {
                       </Grid>
                   </CardContent>
                 </Card>
-              </a>
             </Grid>
           );
         })}

@@ -62,7 +62,26 @@ export default function SimpleTabs(props) {
 
   useEffect(() => {
     InterviewerService.getStudentsFromRound().then(res => {
-      setRoundStudents(res.data);
+      console.log(res.data);
+      res.data.map((round, index) => {
+        round.pending.map(student => {
+          student.status = 'pending';
+          // data.push(student)
+        });
+        round.accepted.map(student => {
+          student.status = 'accepted';
+          // data.push(student)
+        });
+        round.rejected.map(student => {
+          student.status = 'rejected';
+          // data.push(student)
+        });
+        let a = roundStudents
+        a[index] = [...round.pending,
+          ...round.accepted,
+          ...round.rejected]
+        setRoundStudents(a);
+      });
     });
   }, [rounds]);
 
@@ -90,7 +109,7 @@ export default function SimpleTabs(props) {
         {rounds.map((round, index) => (
           <TabPanel value={value} key={index} index={round.number - 1}>
             <RoundStudent
-              students={roundStudents[index].students}
+              students={roundStudents[index]}
               roundId={round.number}
             />
           </TabPanel>

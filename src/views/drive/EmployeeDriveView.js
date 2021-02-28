@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import DriveService from '../../services/DriveService';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-import LatestOrders from '../employee/EmployeeDashboardView/LatestOrders';
+import DriveRounds from './DriveRounds';
 import ProgressBar from '../../components/controls/ProgressBar';
 
 
@@ -111,7 +111,7 @@ export default function StudentDriveView() {
               xl={9}
               xs={12}
             >
-              <LatestOrders DriveId={driveDetails.id} />
+              <DriveRounds driveId={driveDetails.id} />
             </Grid>
           </Grid>
             

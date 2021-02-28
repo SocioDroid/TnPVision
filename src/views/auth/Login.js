@@ -126,6 +126,7 @@ function Login(props) {
         })
         .catch(error => {
           setSubmitting(false);
+          console.log(error)
           const data = error.response.data
             ? JSON.stringify(error.response.data)
             : 'Error!';
