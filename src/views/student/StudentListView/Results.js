@@ -177,6 +177,9 @@ const Results = ({ className, ...rest }) => {
       <PerfectScrollbar>
         <Card>
           <MaterialTable
+            style={{
+              fontSize: "14px"
+            }}
             className={classes.table}
             title="Student Details"
             columns={[
@@ -221,6 +224,7 @@ const Results = ({ className, ...rest }) => {
             ]}
             data={posts}
             options={{
+              emptyRowsWhenPaging: false,
               filtering: true,
               rowStyle: {
                 fontFamily: 'Roboto, Helvetica , Arial, sans-serif'

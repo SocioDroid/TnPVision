@@ -305,6 +305,9 @@ const addCoordinatorForDrive = (driveId, datavalue) => {
               <br/><br/>
               <Divider/>
             <MaterialTable
+            style={{
+              fontSize: "14px"
+            }}
               //className={classes.table}
               title="Coordinator Details"
               columns={[
@@ -339,6 +342,7 @@ const addCoordinatorForDrive = (driveId, datavalue) => {
               ]}
               data={staffForEdit}
               options={{
+                emptyRowsWhenPaging: false,
                 filtering: true,
                 rowStyle: {
                   fontFamily: 'Roboto, Helvetica , Arial, sans-serif'

@@ -304,6 +304,9 @@ const addVolunteerForDrive = (driveId, datavalue) => {
               <br/><br/>
               <Divider/>
             <MaterialTable
+            style={{
+              fontSize: "14px"
+            }}
               //className={classes.table}
               title="Volunteer Details"
               columns={[
@@ -338,6 +341,7 @@ const addVolunteerForDrive = (driveId, datavalue) => {
               ]}
               data={studentForEdit}
               options={{
+                emptyRowsWhenPaging: false,
                 filtering: true,
                 rowStyle: {
                   fontFamily: 'Roboto, Helvetica , Arial, sans-serif'

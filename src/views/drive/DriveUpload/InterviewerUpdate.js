@@ -3,14 +3,8 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
   Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Button,
   IconButton,
-  TablePagination,
   Grid,
   Divider
 } from '@material-ui/core';
@@ -55,25 +49,14 @@ function InterviewerUpdate(props) {
       interviewers: interviewerEmails
     };
     addInterviewersForDrive(recordForEdit.id, data);
-    
+
     console.log('Final Interviewer List', data);
   };
 
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  // const [page, setPage] = React.useState(0);
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = event => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-  //---------------------------------------------------------------------------------------------------------------------------------------
   return (
     <Card>
-      {/* <PerfectScrollbar>
-        <Box minWidth={1050} margin={3} border={1} borderColor="grey.500">
+      <PerfectScrollbar>
+        <Card>
           <Grid container spacing={3}>
             <Grid item md={1} xs={12} />
             <Grid item md={8} xs={12}>
@@ -99,16 +82,12 @@ function InterviewerUpdate(props) {
                       <br />
                     </div>
                   );
-                }} 
+                }}
               />
             </Grid>
             <Grid item md={1} xs={12}>
               <br />
               <br />
-              
-              {<h4>react-multi-email value</h4>
-              <p>{interviewerEmails.join(', ') || 'empty'}</p>}
-
               <Button
                 color="primary"
                 variant="contained"
@@ -116,144 +95,56 @@ function InterviewerUpdate(props) {
               >
                 Add Interviewers
               </Button>
-            </Grid>
-            <Grid item md={12} xs={12}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Full Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {interviewerForEdit
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(interviewer => (
-                      <TableRow key={interviewer.id}>
-                        <TableCell>{interviewer.id}</TableCell>
-                        <TableCell>
-                          {`${interviewer.first_name} ${interviewer.last_name}`}
-                        </TableCell>
-                        <TableCell>{`${interviewer.email}`}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            onClick={() => {
-                              deleteInterviewersForDrive(interviewer.id);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 50]}
-                component="div"
-                count={interviewerForEdit.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-              />
             </Grid>
           </Grid>
-        </Box>
-      </PerfectScrollbar> */}
-
-        <PerfectScrollbar>
-          <Card>
-          <Grid container spacing={3}>
-            <Grid item md={1} xs={12} />
-            <Grid item md={8} xs={12}>
-              <br />
-              <br />
-              <ReactMultiEmail
-                placeholder="Enter your Email Address"
-                emails={interviewerEmails}
-                onChange={_emails => {
-                  setInterviewerEmails(_emails);
-                }}
-                getLabel={(
-                  email: string,
-                  index: number,
-                  removeEmail: (index: number) => void
-                ) => {
-                  return (
-                    <div data-tag key={index}>
-                      {email}
-                      <span data-tag-handle onClick={() => removeEmail(index)}>
-                        ×
-                      </span>
-                      <br />
-                    </div>
-                  );
-                }} 
-              />
-            </Grid>
-            <Grid item md={1} xs={12}>
-              <br />
-              <br />
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Add Interviewers
-              </Button>
-            </Grid>
-            </Grid>
-            <br /><br />
-            <Divider/>
-            <MaterialTable
-              //className={classes.table}
-              title="Interviewer Details"
-              columns={[
-                {
-                  title: 'ID',
-                  tableLayout: 'auto',
-                  field: 'id',
-                  //filtering: false
-                },
-                { title: 'First Name', field: 'first_name' }, 
-                { title: 'Last Name', field: 'last_name' }, 
-                { title: 'Email', field: 'email' },                              
-                {
-                  title: 'Actions',
-                  field: 'action',
-                  filtering: false,
-                  render: rowData => (
-                    <React.Fragment>                
-                      <Fab
-                        size="small"
-                        color="secondary"
-                        //className={classes.delete}
-                        aria-label="delete"
-                        onClick={() => {
-                          deleteInterviewersForDrive(rowData.id);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </Fab>
-                    </React.Fragment>
-                  )
-                }
-              ]}
-              data={interviewerForEdit}
-              options={{
-                filtering: true,
-                rowStyle: {
-                  fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
-                }
-              }}
-              //isLoading={isDataLoading}
-            />
-          </Card>
-        </PerfectScrollbar>
-
+          <br />
+          <br />
+          <Divider />
+          <MaterialTable
+            style={{
+              fontSize: '14px'
+            }}
+            title="Interviewer Details"
+            columns={[
+              {
+                title: 'ID',
+                tableLayout: 'auto',
+                field: 'id'
+                //filtering: false
+              },
+              { title: 'First Name', field: 'first_name',emptyValue:'-'},
+              { title: 'Last Name', field: 'last_name', emptyValue:'-' },
+              { title: 'Email', field: 'email' },
+              {
+                title: 'Actions',
+                field: 'action',
+                filtering: false,
+                render: rowData => (
+                  <React.Fragment>
+                    <IconButton
+                      size="small"                      
+                      onClick={() => {
+                        deleteInterviewersForDrive(rowData.id);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </React.Fragment>
+                )
+              }
+            ]}
+            data={interviewerForEdit}
+            options={{
+              emptyRowsWhenPaging: false,
+              filtering: true,
+              rowStyle: {
+                fontFamily: 'Roboto, Helvetica , Arial, sans-serif'
+              }
+            }}
+            //isLoading={isDataLoading}
+          />
+        </Card>
+      </PerfectScrollbar>
     </Card>
   );
 }

@@ -275,7 +275,6 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
         >
           Edit
         </MenuItem>
-        <MenuItem>
           <NavLink
             className={classes.blackColor}
             activeClassName="is-active"
@@ -283,9 +282,10 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
               pathname: '/employee/afterdrive/' + row.id
             }}
           >
+        <MenuItem>
             Details
-          </NavLink>
         </MenuItem>
+          </NavLink>
         <MenuItem
           onClick={() => {
             downloadEligible(row);
