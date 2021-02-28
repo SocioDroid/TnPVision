@@ -115,82 +115,59 @@ const PastAcademicData = ({ userData }) => {
     }
   }
 
-  useEffect(() => {
-    if (userData != null) {
-      setValues({
-        ...values,
-        "tenthPercentage": userData && userData.tenthPercentage ? userData.tenthPercentage :"",
-        "tenthBoardOfExamination": userData && userData.tenthBoardOfExamination ? userData.tenthBoardOfExamination: "",
-        "tenthYearOfPassing": userData && userData.tenthYearOfPassing ? userData.tenthYearOfPassing: "",
-        "twelthPercentage": userData && userData.twelthPercentage ? userData.twelthPercentage : 0,
-        "twelfthBoardOfExamination": userData && userData.twelfthBoardOfExamination ? userData.twelfthBoardOfExamination: "",
-        "twelfthYearOfPassing": userData && userData.twelfthYearOfPassing ? userData.twelfthYearOfPassing : "",
-        "isDiploma": userData && userData.isDiploma ? userData.isDiploma: false,
-        "diplomaPercentage": userData && userData.diplomaPercentage ? userData.diplomaPercentage: 0,
-        "diplomaBoardOfExamination": userData && userData.diplomaBoardOfExamination ? userData.diplomaBoardOfExamination: "",
-        "diplomaYearOfPassing": userData && userData.diplomaYearOfPassing ? userData.diplomaYearOfPassing: "",
-        "EnggQualifyingExamYear": userData && userData.EnggQualifyingExamYear ? userData.EnggQualifyingExamYear: "",
-        "EnggQualifyingExamScore": userData && userData.EnggQualifyingExamScore ? userData.EnggQualifyingExamScore: "",
-        "isDeleted": userData && userData.isDeleted ? userData.isDeleted: "",
-        "isVolunteer": userData && userData.isVolunteer ? userData.isVolunteer: false,
-        "isProfileComplete": userData && userData.isProfileComplete ? userData.isProfileComplete: "",
-      })
-      setDiplomaValue(userData && userData.isDiploma ? 'D': 'T')
-      console.log("diplomaValue",diplomaValue)
-    }
-  }, [userData])
+  function Twelth(){
+    return(
+      <div>
+    <Grid container spacing={3}>
+      <Grid item md={12} xs={12}>
+        <Typography> Twelth </Typography> 
+        <Divider style={{marginTop: "5px"}}/>               
+      </Grid> 
+      <Grid item md={4} xs={12}>
+        <TextField
+          fullWidth
+          type="number"
+          label="Percentage"
+          name="twelthPercentage"
+          onChange={handleChange}
+          required
+          value={values.twelthPercentage}
+          variant="outlined"
+          
+        />
+      </Grid>
+      <Grid item md={4} xs={12}>
+        <TextField
+          fullWidth
+          label="Examination Board"
+          name="twelfthBoardOfExamination"
+          onChange={handleChange}
+          required
+          value={values.twelfthBoardOfExamination}
+          variant="outlined"
+          key="rushikesh"
+        />
+      </Grid>
+      <Grid item md={4} xs={12}>
+        <TextField
+          fullWidth
+          label="Year of Passing"
+          name="twelfthYearOfPassing"
+          onChange={handleChange}
+          required
+          value={values.twelfthYearOfPassing}
+          variant="outlined"
+          key="rushikesh"
+        />
+      </Grid>
+    </Grid>
+</div>
+    )
+  }
 
-  function TwelthOrDiploma(props){
-    const isTwelth = props.isTwelth;
-    if (isTwelth) {
-      return (
-        <div>
-            <Grid container spacing={3}>
-              <Grid item md={12} xs={12}>
-                <Typography> Twelth </Typography> 
-                <Divider style={{marginTop: "5px"}}/>               
-              </Grid> 
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label="Percentage"
-                  name="twelthPercentage"
-                  onChange={handleChange}
-                  required
-                  value={values.twelthPercentage}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Examination Board"
-                  name="twelfthBoardOfExamination"
-                  onChange={handleChange}
-                  required
-                  value={values.twelfthBoardOfExamination}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Year of Passing"
-                  name="twelfthYearOfPassing"
-                  onChange={handleChange}
-                  required
-                  value={values.twelfthYearOfPassing}
-                  variant="outlined"
-                />
-              </Grid>
-            </Grid>
-        </div>
-      ); 
-    }
-    else{
-      return (
-        <div>
+  function Diploma(){
+    return(
+      <div>
           <Grid container spacing={3}>
             <Grid item md={12} xs={12}>
                 <Typography> Diploma </Typography> 
@@ -232,9 +209,34 @@ const PastAcademicData = ({ userData }) => {
               </Grid>                            
           </Grid>              
         </div>
-      );
-    }
+    )
   }
+
+  useEffect(() => {
+    if (userData != null) {
+      setValues({
+        ...values,
+        "tenthPercentage": userData && userData.tenthPercentage ? userData.tenthPercentage :"",
+        "tenthBoardOfExamination": userData && userData.tenthBoardOfExamination ? userData.tenthBoardOfExamination: "",
+        "tenthYearOfPassing": userData && userData.tenthYearOfPassing ? userData.tenthYearOfPassing: "",
+        "twelthPercentage": userData && userData.twelthPercentage ? userData.twelthPercentage : 0,
+        "twelfthBoardOfExamination": userData && userData.twelfthBoardOfExamination ? userData.twelfthBoardOfExamination: "",
+        "twelfthYearOfPassing": userData && userData.twelfthYearOfPassing ? userData.twelfthYearOfPassing : "",
+        "isDiploma": userData && userData.isDiploma ? userData.isDiploma: false,
+        "diplomaPercentage": userData && userData.diplomaPercentage ? userData.diplomaPercentage: 0,
+        "diplomaBoardOfExamination": userData && userData.diplomaBoardOfExamination ? userData.diplomaBoardOfExamination: "",
+        "diplomaYearOfPassing": userData && userData.diplomaYearOfPassing ? userData.diplomaYearOfPassing: "",
+        "EnggQualifyingExamYear": userData && userData.EnggQualifyingExamYear ? userData.EnggQualifyingExamYear: "",
+        "EnggQualifyingExamScore": userData && userData.EnggQualifyingExamScore ? userData.EnggQualifyingExamScore: "",
+        "isDeleted": userData && userData.isDeleted ? userData.isDeleted: "",
+        "isVolunteer": userData && userData.isVolunteer ? userData.isVolunteer: false,
+        "isProfileComplete": userData && userData.isProfileComplete ? userData.isProfileComplete: "",
+      })
+      setDiplomaValue(userData && userData.isDiploma ? 'D': 'T')
+      console.log("diplomaValue",diplomaValue)
+    }
+  }, [userData])
+
 
   return (
     <div>
@@ -299,91 +301,8 @@ const PastAcademicData = ({ userData }) => {
                   items={PostmatricItems}
                 />
                 <br/><br/>
-                <TwelthOrDiploma isTwelth={diplomaValue !== 'D'? true: false} />
-              </Grid>
-              
-              {/* <Grid item md={12} xs={12}>
-                <Typography> Twelth </Typography> 
-                <Divider style={{marginTop: "5px"}}/>               
-              </Grid> 
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label="Percentage"
-                  name="twelthPercentage"
-                  onChange={handleChange}
-                  required
-                  value={values.twelthPercentage}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Examination Board"
-                  name="twelfthBoardOfExamination"
-                  onChange={handleChange}
-                  required
-                  value={values.twelfthBoardOfExamination}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Year of Passing"
-                  name="twelfthYearOfPassing"
-                  onChange={handleChange}
-                  required
-                  value={values.twelfthYearOfPassing}
-                  variant="outlined"
-                />
-              </Grid>
-              
-              <Grid item md={12} xs={12}>
-                <Typography> Diploma </Typography> 
-                <Divider style={{marginTop: "5px"}}/>               
-              </Grid> 
-              <Grid
-                item
-                md={4}
-                xs={12}
-              >
-                <TextField
-                  fullWidth
-                  type="number"
-                  label="Percentage"
-                  name="diplomaPercentage"
-                  onChange={handleChange}
-                  required
-                  value={values.diplomaPercentage}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Examination Board"
-                  name="diplomaBoardOfExamination"
-                  onChange={handleChange}
-                  required
-                  value={values.diplomaBoardOfExamination}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Year of Passing"
-                  name="diplomaYearOfPassing"
-                  onChange={handleChange}
-                  required
-                  value={values.diplomaYearOfPassing}
-                  variant="outlined"
-                />
-              </Grid>                             */}
-              
+                {diplomaValue !== 'D'? Twelth(): Diploma()}
+              </Grid>                                        
               <Grid item md={12} xs={12}>
                 <Typography> Engineering </Typography> 
                 <Divider style={{marginTop: "5px"}}/>               
