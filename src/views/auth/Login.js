@@ -133,6 +133,21 @@ function Login(props) {
           const statuscode = error.response.status;
 
           switch (statuscode) {
+            case 302:
+              console.log('302 error! ' + data);
+                Auth.authenticateUser(
+                  error.response.data.token,
+                  error.response.data.expiry,
+                  error.response.data.group,
+                  {
+                    first_name: error.response.data.first_name,
+                    last_name: error.response.data.last_name,
+                    email: error.response.data.email
+                  }
+                );
+                navigate(error.response.data.redirect);
+                window.location.reload();
+              break;
             case 400:
               console.log(data);
               setErrorMessage(data);
