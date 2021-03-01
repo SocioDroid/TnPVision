@@ -14,6 +14,7 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import LoginService from '../../../services/LoginService';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles(({
   root: {}
@@ -24,8 +25,7 @@ const Password = ({ className, ...rest }) => {
   const [value, setValue] = useState({
     confirm: ''
   });
-  
-  const [isSubmitting, setSubmitionCompleted] = React.useState(false);
+  const [isDataSubmitted, setDataSubmitted] = React.useState(false);
 
   const handleChange = (event) => {
     setValue({
@@ -37,35 +37,60 @@ const Password = ({ className, ...rest }) => {
 		initialValues: {
       old_password: '',
       new_password:'',
+      confirm: ''
 		},
-		onSubmit: (values, { setSubmitting }) => {
+		onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);  
-      if(value.confirm === values.new_password){
+      if(values.confirm === values.new_password){
         LoginService.changePassword({old_password: values.old_password, new_password : values.new_password})
           .then( result=>{
-            console.log("Password Changes successfully");
-            setSubmitionCompleted(false);
+            swal({
+              title: "Thank You!",
+              text: "Password Updated Successfully!",
+              icon: "success",
+              button: "Close!",
+              timer: 1500
+            });
+            setDataSubmitted(false);
+            resetForm({})
+          
           })
           .catch(error => {
             console.log(error);
-            setSubmitionCompleted(false);
+            setSubmitting(false)
+            setDataSubmitted(false);
+            swal({
+              title: "Error Occured?",
+              icon: "warning",
+              button: "Close!",
+              timer: 1500
+            })
+            
           })
           
       }
       else{
         console.log("Password not matching")
-        setSubmitionCompleted(false);
+        setDataSubmitted(false);
+        swal({
+          title: "Error Occured?",
+          icon: "warning",
+          button: "Close!",
+          timer: 1500
+        })
       }	
       
 		},
 		validationSchema: Yup.object({
-      // email: Yup.string().email('Invalid Email').required('Required'),
-      // password: Yup.string().min(5, 'Minimum 5 characters required').required('Required'),
-			// password: Yup.string().min(5, 'Minimum 5 characters required').required('Required'),
+    //   old_password: Yup.string().required('Required'),
+    //   new_password: Yup.string().min(5, 'Minimum 5 characters required').required('Required'),
+		// 	confirm: Yup.string().oneOf([Yup.ref('new_password'), null], 'Passwords must match')
 		})
   });
   
   return (
+    <div>
+    {!isDataSubmitted && <React.Fragment>
     <form 
     onSubmit={formik.handleSubmit}
       className={clsx(classes.root, className)}
@@ -85,6 +110,9 @@ const Password = ({ className, ...rest }) => {
             name="old_password"
             id="old_password"
             onChange={formik.handleChange}
+            value={formik.values.old_password}
+            error={formik.errors.old_password && formik.touched.old_password}
+            helperText= {(formik.errors.old_password && formik.touched.old_password) && formik.errors.old_password}
             type="password"
             variant="outlined"
           />
@@ -95,6 +123,9 @@ const Password = ({ className, ...rest }) => {
             name="new_password"
             id="new_password"
             onChange={formik.handleChange}
+            value={formik.values.new_password}
+            error={formik.errors.new_password && formik.touched.new_password}
+            helperText= {(formik.errors.new_password && formik.touched.new_password) && formik.errors.new_password}
             type="password"
             variant="outlined"
           />
@@ -103,9 +134,11 @@ const Password = ({ className, ...rest }) => {
             label="Confirm password"
             margin="normal"
             name="confirm"
-            onChange={handleChange}
+            onChange={formik.handleChange}
             type="password"
-            value={value.confirm}
+            value={formik.values.confirm}
+            error={formik.errors.confirm && formik.touched.confirm}
+            helperText= {(formik.errors.confirm && formik.touched.confirm) && formik.errors.confirm}
             variant="outlined"
           />
         </CardContent>
@@ -120,13 +153,16 @@ const Password = ({ className, ...rest }) => {
             variant="contained"
             // onClick = {changePassword}
             type="submit" 
-            disabled={isSubmitting}
+            disabled={formik.isSubmitting}
           >
             Update
           </Button>
         </Box>
       </Card>
     </form>
+    </React.Fragment>
+  }
+  </div>
   );
 };
 

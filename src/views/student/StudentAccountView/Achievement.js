@@ -11,6 +11,7 @@ import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import StudentService from '../../../services/StudentService';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -60,10 +61,11 @@ const Achievement = () => {
             .then(res => {
                 console.log("setAchievementData data", res);
                 setAchievementData(res.data)
+                
             })
             .catch(error => {
                 console.log(error);
-
+                
             })
     }, [])
 
@@ -132,8 +134,21 @@ const Achievement = () => {
                         .then(res => {
                             console.log("", res);
                             setAchievementData(res.data)
+                            swal({
+                                title: "Thank You!",
+                                text: "Achievement Added Successfully!",
+                                icon: "success",
+                                button: "Close!",
+                                timer: 1500
+                              });
                         }).catch(error => {
                             console.log(error);
+                            swal({
+                                title: "Error Occured?",
+                                icon: "warning",
+                                button: "Close!",
+                                timer: 1500
+                              })
                         });
                 }}
             >

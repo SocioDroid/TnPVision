@@ -110,7 +110,6 @@ function Login(props) {
               }
             );
 
-
             if (result.data.data.group === 'student')
               navigate('/student/dashboard', { replace: true });
             else if (

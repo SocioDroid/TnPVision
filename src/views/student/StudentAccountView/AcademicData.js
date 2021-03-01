@@ -11,6 +11,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import StudentService from '../../../services/StudentService';
+import swal from 'sweetalert';  
 
 const collegeItems = [
   { id: 'DYPIEMR', title: 'DYPIEMR' },
@@ -88,8 +89,21 @@ const AcademicData = ({ userData }) => {
     StudentService.updateStudent(acadData)
       .then(res => {
         console.log("res", res);
+        swal({
+          title: "Thank You!",
+          text: "Academic Data Updated!",
+          icon: "success",
+          button: "Close!",
+          timer: 1500
+        });
       }).catch(error => {
         console.log(error);
+        swal({
+          title: "Error Occured?",
+          icon: "warning",
+          button: "Close!",
+          timer: 1500
+        })
       });
   }
 

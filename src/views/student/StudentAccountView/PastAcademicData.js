@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, CardHeader, Divider, Grid, TextField, T
 import { useForm } from '../../../components/controls/useForm';
 import Controls from "../../../components/controls/Controls";
 import StudentService from '../../../services/StudentService';
-
+import swal from 'sweetalert';  
 
 const PostmatricItems = [
   { id: 'D', title: 'Diploma' },
@@ -109,8 +109,21 @@ const PastAcademicData = ({ userData }) => {
     StudentService.updateStudent(pastAcadData)
         .then(res => {
           console.log("res", res);
+          swal({
+            title: "Thank You!",
+            text: "Past Academic Data Updated!",
+            icon: "success",
+            button: "Close!",
+            timer: 1500
+          });
         }).catch(error => {
           console.log(error);
+          swal({
+            title: "Error Occured?",
+            icon: "warning",
+            button: "Close!",
+            timer: 1500
+          })
         });
     }
   }

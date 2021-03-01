@@ -13,6 +13,10 @@ class Auth {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
+  static storeUser(user){
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
   static authNotified() {
     localStorage.setItem('authNotified', true);
   }

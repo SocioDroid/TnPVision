@@ -81,8 +81,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-    {data ? (
-      <>
       <Box
         alignItems="center"
         display="flex"
@@ -118,8 +116,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </Typography>
       </Box>
       <Divider />
-      </>
-      ) : ""}
       <Box p={2}>
         <List>
           {items.map((item) => (
