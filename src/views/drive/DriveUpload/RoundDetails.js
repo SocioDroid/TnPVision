@@ -1,18 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import {
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  IconButton,
-  makeStyles
-} from '@material-ui/core';
+import { Card, IconButton, makeStyles } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import RoundService from '../../../services/RoundService';
@@ -22,6 +11,8 @@ import MaterialTable from 'material-table';
 import Chip from '@material-ui/core/Chip';
 import DoneIcon from '@material-ui/icons/Done';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import swal from 'sweetalert';
+import UserContext from '../../../UserContext'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -30,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   delete: {
     backgroundColor: 'red',
-    marginLeft: '5px',
+    marginLeft: '5px'
   },
   accepted: {
     backgroundColor: 'green',
@@ -54,7 +45,8 @@ const Results = props => {
   const changeUpdated = props.changeUpdated;
   const roundNumber = props.roundNumber;
   const driveId = props.driveId;
-
+  const { isActive, setIsActive } = useContext(UserContext);
+  console.log("isActive", isActive);
   const getAllStudentOfRound = useCallback((driveId, roundId) => {
     RoundService.getAllStudentOfRound(driveId, roundId)
       .then(res => {
@@ -96,17 +88,34 @@ const Results = props => {
   }, [driveId, flag, props.round.number, students]);
 
   const addOrRejectStudent = (roundId, studentId, status) => {
-    console.log(roundId, driveId, studentId, 'From put student');
-    RoundService.addStudentToNextRound(driveId, roundId, {
-      student_id: studentId,
-      status: status
-    })
-      .then(res => {
-        if (status === 'accepted') changeUpdated(round.number + 1);
+    swal({
+      title: 'Are you sure?',
+      text: 'Once ' + status + ', you will not be able to revert back!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
 
-        setFlag(true);
-      })
-      .catch(res => {});
+      showLoaderOnConfirm: true
+    }).then(okay => {
+      if (okay) {
+        setIsActive(true);
+        RoundService.addStudentToNextRound(driveId, roundId, {
+          student_id: studentId,
+          status: status
+        })
+          .then(res => {
+            if (status === 'accepted') changeUpdated(round.number + 1);
+            setFlag(true);
+            setIsActive(false);
+            swal('Student has been ' + status + '!', {
+              icon: 'success'
+            });
+          })
+          .catch(res => {
+            setIsActive(false);
+          });
+      }
+    });
   };
 
   const deleteStudentFromRound = (roundId, studentId) => {
@@ -132,14 +141,12 @@ const Results = props => {
   };
 
   return (
-    <Card
-    style={{minWidth:"100%"}}
-    >
-      <PerfectScrollbar >
+      <Card style={{ minWidth: '100%' }}>
+        <PerfectScrollbar>
           <MaterialTable
             style={{
-              fontSize: "14px",
-            }}           
+              fontSize: '14px'
+            }}
             className={classes.table}
             title=""
             columns={[
@@ -177,12 +184,16 @@ const Results = props => {
                           : classes.pending
                       }
                       icon={
-                        rowData.status === 'accepted'
-                          ? <DoneIcon  style={{ color: 'white' }}/>
-                          : rowData.status === 'rejected'
-                          ? <CloseIcon style={{ color: 'white' }}/>
-                          : <CircularProgress size={14} style={{ color: 'white' }}/>
-
+                        rowData.status === 'accepted' ? (
+                          <DoneIcon style={{ color: 'white' }} />
+                        ) : rowData.status === 'rejected' ? (
+                          <CloseIcon style={{ color: 'white' }} />
+                        ) : (
+                          <CircularProgress
+                            size={14}
+                            style={{ color: 'white' }}
+                          />
+                        )
                       }
                       size="small"
                       label={rowData.status}
@@ -246,8 +257,8 @@ const Results = props => {
             }}
             // isLoading={isDataLoading}
           />
-      </PerfectScrollbar>
-    </Card>
+        </PerfectScrollbar>
+      </Card>
   );
 };
 
