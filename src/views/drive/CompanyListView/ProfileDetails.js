@@ -11,8 +11,16 @@ import {
   Grid,
   CardHeader,
   Divider,
-  TextField
+  TextField,
+  makeStyles
 } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  cId:{
+  textAlign: "center",
+  alignSelf: 'flex-start'
+  }
+}));
 
 const initialFValues = {
   id: 0,
@@ -22,6 +30,7 @@ const initialFValues = {
 };
 
 export default function ProfileDetails(props) {
+  const classes = useStyles()
   const [values, setValues] = useState({
     id: 0,
     name: '',
@@ -106,8 +115,8 @@ export default function ProfileDetails(props) {
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              {isUpdating && <Typography variant="h6">Company ID: {values.id}</Typography>}
+            <Grid item md={6} xs={12} className={classes.cId}>
+              {isUpdating && <Typography variant="h4">Company ID: {values.id}</Typography>}
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField

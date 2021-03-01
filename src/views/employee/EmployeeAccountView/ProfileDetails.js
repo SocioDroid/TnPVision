@@ -24,6 +24,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios';
 import { useForm } from '../../../components/controls/useForm';
 import Auth from '../../../auth';
+import swal from 'sweetalert';
 
 
 const departmentItems = [
@@ -159,9 +160,22 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         })
         .then(res => {
           console.log('res', res);
+          swal({
+            title: "Thank You!",
+            text: "Profile Updated Successfully!",
+            icon: "success",
+            button: "Close!",
+            timer: 1500
+          });
         })
         .catch(error => {
           console.log(error);
+          swal({
+            title: "Error Occured?",
+            icon: "warning",
+            button: "Close!",
+            timer: 1500
+          })
         });
     }
   };
