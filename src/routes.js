@@ -76,7 +76,7 @@ const routes = [
       { path: 'drive/:id', element: <EmployeeDriveView /> },
       { path: '*', element: <Navigate to="/404" /> },
       {
-        path: 'cube/explore', 
+        path: 'cube/explore/:id', 
         element: <App children={<ExplorePage/>}/>,
       },    
       {
@@ -99,6 +99,14 @@ const routes = [
   {
     path: '/',
     children: [
+      {
+        path: 'cube/explore', 
+        element: <App children={<ExplorePage/>}/>,
+      },    
+      {
+        path: 'cube/dashboard', 
+        element: <App children={<DashboardPage/>}/>,
+      },    
       {
         path: 'login', 
         element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <LoginView />,

@@ -16,7 +16,7 @@ const DashboardItemDropdown = ({
   });
   const dashboardItemDropdownMenu = <Menu>
       <Menu.Item>
-        <Link to={`/explore?itemId=${itemId}`}>Edit</Link>
+        <Link to={`/employee/cube/explore/${itemId}`}>Edit</Link>
       </Menu.Item>
       <Menu.Item onClick={() => Modal.confirm({
       title: 'Are you sure you want to delete this item?',

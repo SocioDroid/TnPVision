@@ -23,6 +23,7 @@ import CustomSnackbar from '../../components/Snackbar/CustomSnackbar';
 import Auth from '../../auth';
 import UserContext from '../../UserContext';
 import swal from 'sweetalert';
+import EmployeeServices from '../../services/EmployeeServices';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -121,7 +122,7 @@ function Login(props) {
               navigate('/employee/dashboard');
             else if (result.data.data.group === 'interviewer')
               navigate('/interviewer/dashboard');
-            window.location.reload();
+            window.location.reload()
           }
         })
         .catch(error => {

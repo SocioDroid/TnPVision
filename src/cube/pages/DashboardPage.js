@@ -48,7 +48,7 @@ const DashboardPage = () => {
     padding: 12
   }}>
       <h2>There are no charts on this dashboard</h2>
-      <Link to="/explore">
+      <Link to="/employee/cube/explore">
         <Button type="primary" size="large" icon={<Icon type="plus" />}>
           Add chart
         </Button>

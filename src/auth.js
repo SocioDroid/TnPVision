@@ -7,19 +7,19 @@ class Auth {
   /* eslint-disable no-undef */
 
   static authenticateUser(token, expiry, group, user,cubejsjwt) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('expiry', expiry);
-    localStorage.setItem('group', group);
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('cubejs-jwt', cubejsjwt);
+    window.localStorage.setItem('token', token);
+    window.localStorage.setItem('expiry', expiry);
+    window.localStorage.setItem('group', group);
+    window.localStorage.setItem('user', JSON.stringify(user));
+    window.localStorage.setItem('cubejs-jwt', cubejsjwt);
   }
 
   static storeUser(user){
-    localStorage.setItem('user', JSON.stringify(user));
+    window.localStorage.setItem('user', JSON.stringify(user));
   }
 
   static authNotified() {
-    localStorage.setItem('authNotified', true);
+    window.localStorage.setItem('authNotified', true);
   }
 
   static getAuthNotified() {
@@ -27,7 +27,7 @@ class Auth {
   }
 
   static storeReferer(path) {
-    localStorage.setItem('referer', path);
+    window.localStorage.setItem('referer', path);
   }
 
   static getReferer() {
