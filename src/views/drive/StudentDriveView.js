@@ -13,6 +13,7 @@ import LanguageOutlinedIcon from '@material-ui/icons/Language';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import Divider from '@material-ui/core/Divider';
 import ProgressBar from '../../components/controls/ProgressBar';
+import ReactHTMLParser from 'react-html-parser'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -149,99 +150,8 @@ export default function StudentDriveView() {
               Roles and Responsibilities
             </Typography>
             <Typography style={{ paddingLeft: "10px" }} >
-
-              <li>Sint id nulla ea aliqua non magna esse veniam anim commodo.</li>
-              <li>irure dolor qui sint anim commodo exercitation velit dolore</li>
-
-              <li>reprehenderit laboris do laboris. Quis aute magna culpa tempor</li>
-
-              <li>aliquip. Est magna est nulla culpa dolor sunt ipsum ea fugiat</li>
-
-              <li>esse Lorem. Non cillum do minim dolore ex amet mollit nisi amet</li>
-
-              <li>sunt mollit. Aliquip aliqua veniam fugiat elit et. Qui velit</li>
-
-              <li>veniam irure nostrud. Anim esse commodo pariatur sint. Dolore</li>
-            </Typography>
-            <Typography variant="h5" style={{ marginBottom: "5px", marginTop: "15px" }} >
-              Perks and Benefits
-            </Typography>
-            <Typography component="p" style={{ paddingLeft: "10px" }} >
-              <table style={{ width: "50%" }}>
-                <tr>
-                  <td style={{ color: "#9e9e9e" }}>
-                    Role
-                  </td>
-                  <td>
-                    Software Developer
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ color: "#9e9e9e" }}>
-                    Industry Type
-                  </td>
-                  <td>
-                    IT-Software
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ color: "#9e9e9e" }}>
-                    Functional Area
-                  </td>
-                  <td>
-                  IT Software - Application Programming, Maintenance
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ color: "#9e9e9e" }}>
-                  Employment Type
-                  </td>
-                  <td>
-                    Full Time
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ color: "#9e9e9e" }}>
-                  Role Category
-                  </td>
-                  <td>
-                    Programming {'&'} Design
-                  </td>
-                </tr>
-              </table>
-            </Typography>
-            <Typography variant="h5" style={{ marginBottom: "5px", marginTop: "15px" }} >
-              Education
-            </Typography>
-            <Typography component="p" style={{ paddingLeft: "10px" }} >
-              <table style={{ width: "100%" }}>
-                <tr>
-                  <td style={{ color: "#9e9e9e" }}>
-                    UG
-                  </td>
-                  <td>
-                  B.Sc in Any Specialization, B.Tech/B.E. in Any Specialization, BCA in Any Specialization
-                  </td>
-                </tr>
-              </table>
-            </Typography>
-            <Typography variant="h5" style={{ marginBottom: "5px", marginTop: "15px" }} >
-              Skills
-            </Typography>
-            <div style={{display: 'flex', alignItems: 'center', overflowX: 'auto', paddingLeft: "10px"}}>
-            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
-              Python
-            </Typography>
-            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
-              Java
-            </Typography>
-            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
-              C++
-            </Typography>
-            <Typography component="p" style={{ paddingLeft: "10px" }} className={classes.skills} >
-              MySQL
-            </Typography>
-            </div>
+              {driveDetails.description ? ReactHTMLParser(driveDetails.description): ""}              
+            </Typography>            
           </CardContent>
         </Card >
 

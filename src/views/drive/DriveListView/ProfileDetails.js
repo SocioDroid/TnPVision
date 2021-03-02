@@ -25,6 +25,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import CompanyService from '../../../services/CompanyService';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import ReactHTMLParser from 'react-html-parser'
+import { textSpanContainsPosition } from 'typescript';
 
 function debounce(func, wait) {
   let timeout;
@@ -83,7 +88,8 @@ const initialFValues = {
   live_backlog: 0,
   dead_backlog: 0,
   drive_type: '',
-  rounds: [{ name: '', number: '', description: '' }]
+  rounds: [{ name: '', number: '', description: '' }],
+  description: ''
 };
 
 const initialDValues = {
@@ -91,6 +97,7 @@ const initialDValues = {
 };
 export default function ProfileDetails(props) {
   const { addOrEdit, recordForEdit } = props;
+  const [txt, setTxt] = useState(recordForEdit && recordForEdit.description ? recordForEdit.description : "");
 
   //--------------------------------------------------------------Company------------------------------------------------------------------------------------
   const [inputValue, setInputValue] = useState('');
@@ -192,7 +199,8 @@ export default function ProfileDetails(props) {
     year_down: 0,
     drive_type: 'ON',
     employment_type: 'Internship',
-    rounds: [{ name: '', number: 1, description: '', students: [] }]
+    rounds: [{ name: '', number: 1, description: '', students: [] }],
+    description: ''
   });
 
   const validate = (fieldValues = values) => {
@@ -266,9 +274,7 @@ export default function ProfileDetails(props) {
   //--------------------------------------------------------general----------------------------------------------------------------------------------------------------------
   const handleSubmit = e => {
     e.preventDefault();
-    //console.log(company3)
-    //console.log("branch:", eligibleBranches)
-    //values.date = new Date(selectedDate).toISOString();
+
     if (validate()) {
       const data = {
         id: values.id,
@@ -291,17 +297,17 @@ export default function ProfileDetails(props) {
         employment_type: values.employment_type,
         company: company3.id ? company3.id : values.company.id,
         date: new Date(datevalues.date).toISOString(),
-        rounds: roundDetails
+        rounds: roundDetails,
+        description: txt
       };
 
-      
+      console.log("txt",txt)
       axios
       .patch('http://20.37.50.140:8000/api/drive/' + values.id + '/', data)
       .then(res => {
           console.log('res', res);
           addOrEdit(values, resetForm);
-          alert('Drive Updated Sucessfully');
-          // setTimeout(window.location.reload(false), 5000);
+          alert('Drive Updated Sucessfully');          
         })
         .catch(error => {
           const data = error.response.data
@@ -337,12 +343,11 @@ export default function ProfileDetails(props) {
           setIsError(true);
         });
 
-      console.log('updated values', data);
+      //console.log('updated values', data);
     }
   };
   useEffect(() => {
     if (recordForEdit != null) {
-      console.log('record to be edited------------------------------>', recordForEdit);
 
       setDatevalues({
         ...datevalues,
@@ -385,8 +390,11 @@ export default function ProfileDetails(props) {
         employment_type:  recordForEdit && recordForEdit.employment_type ? recordForEdit.employment_type: "",
         rounds:recordForEdit && recordForEdit.rounds ? recordForEdit.rounds: "",
         assigned_coordinators:  recordForEdit && recordForEdit.assigned_coordinators ? recordForEdit.assigned_coordinators : "",
-        assigned_volunteers:  recordForEdit && recordForEdit.assigned_volunteers? recordForEdit.assigned_volunteers : ""
+        assigned_volunteers:  recordForEdit && recordForEdit.assigned_volunteers? recordForEdit.assigned_volunteers : "",
+        description: recordForEdit && recordForEdit.description ? recordForEdit.description : "",
       });
+
+      console.log(values.description);
     }
   }, [recordForEdit]);
 
@@ -407,8 +415,7 @@ export default function ProfileDetails(props) {
             <br />
 
             <Grid container spacing={3}>
-              {/*=====================================================Everything works fine below this========================================================= */}
-
+              
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
@@ -477,6 +484,16 @@ export default function ProfileDetails(props) {
                   value={values.login_time}
                   variant="outlined"
                   type="text"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <CKEditor
+                    editor={ ClassicEditor }
+                    data={txt}                                                                
+                    onChange={ ( event, editor ) => {                            
+                        const data = editor.getData();
+                        setTxt(data);                            
+                    } }                       
                 />
               </Grid>
               <Grid item md={6} xs={12}>
