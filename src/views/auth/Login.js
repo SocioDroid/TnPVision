@@ -107,7 +107,8 @@ function Login(props) {
                 first_name: result.data.data.first_name,
                 last_name: result.data.data.last_name,
                 email: result.data.data.email
-              }
+              },
+              result.data.data.cube_js_jwt
             );
 
             if (result.data.data.group === 'student')

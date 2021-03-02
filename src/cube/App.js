@@ -10,9 +10,9 @@ import client from './graphql/client';
 import Header from './components/Header';
 import ExplorePage from './pages/ExplorePage';
 import DashboardPage from './pages/DashboardPage';
-const API_URL = 'http://localhost:4000';
-const CUBEJS_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQ1OTM2MDIsImV4cCI6MTYxNDY4MDAwMn0.rZXcgYT_VCnxiUAuo7f0xdV10jSHqztpEPP5XibnoqI';
+import Auth from '../auth';
+const API_URL = 'http://20.37.50.140:4000';
+const CUBEJS_TOKEN = Auth.getCubejsjwt();
 const cubejsApi = cubejs(CUBEJS_TOKEN, {
   apiUrl: `${API_URL}/cubejs-api/v1`
 });
@@ -24,9 +24,7 @@ const AppLayout = ({ children }) => (
     }}
   >
     {/* <Header /> */}
-    <Layout.Content>
-      {children}
-    </Layout.Content>
+    <Layout.Content>{children}</Layout.Content>
   </Layout>
 );
 
