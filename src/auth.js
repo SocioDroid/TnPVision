@@ -6,11 +6,12 @@ class Auth {
    */
   /* eslint-disable no-undef */
 
-  static authenticateUser(token, expiry, group, user) {
+  static authenticateUser(token, expiry, group, user,cubejsjwt) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiry', expiry);
     localStorage.setItem('group', group);
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('cubejs-jwt', cubejsjwt);
   }
 
   static storeUser(user){
@@ -36,6 +37,9 @@ class Auth {
   static getGroup() {
     return localStorage.getItem('group');
   }
+  static getCubejsjwt() {
+    return localStorage.getItem('cubejs-jwt');
+  }
 
   static isTokenExpired() {
     const getExpiry = localStorage.getItem('expiry');
@@ -45,6 +49,7 @@ class Auth {
       localStorage.removeItem('expiry');
       localStorage.removeItem('group');
       localStorage.removeItem('user');
+      localStorage.removeItem('cubejs-jwt');
       return true;
     }
     return false;
@@ -69,6 +74,7 @@ class Auth {
     localStorage.removeItem('expiry');
     localStorage.removeItem('group');
     localStorage.removeItem('user');
+    localStorage.removeItem('cubejs-jwt');
   }
 
   /**
