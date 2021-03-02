@@ -23,6 +23,11 @@ import { ReactMultiEmail } from 'react-multi-email';
 import StudentService from '../../../services/StudentService';
 import 'react-multi-email/style.css';
 import EmployeeServices from '../../../services/EmployeeServices';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import ReactHTMLParser from 'react-html-parser'
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -84,6 +89,9 @@ export default function Basic(props) {
   const [interviewerEmails, setInterviewerEmails] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
   const [coordinators, setCoordinators] = useState([]);
+
+  const [txt, setTxt] = useState("");
+
   const [selectedDate, handleDateChange] = useState(
     new Date('2018-01-01T00:00:00.000Z')
   );
@@ -297,7 +305,8 @@ export default function Basic(props) {
                   ],
                   assigned_coordinators: [3],
                   assigned_volunteers: [4],
-                  interviewers: []
+                  interviewers: [],
+                  description: ''
                 }}
                 onSubmit={async values => {
                   handleResult1();
@@ -314,12 +323,13 @@ export default function Basic(props) {
                   values.assigned_volunteers = [...AllVolunteers];
                   values.assigned_coordinators = [...AllCoordinators];
                   values.company = AllComapnies;
-                  console.log(values);
+                  values.description = txt;
+
                   DriveService.addSingleDrive(values)
                     .then(result => {
                       console.log('Data Added:', result);
                       alert('Drive Added Sucessfully');
-                      navigate('/employee/alldrives', {inplace:true});
+                      //navigate('/employee/alldrives', {inplace:true});
                     })
                     .catch(error => {
                       console.log(error);
@@ -403,6 +413,28 @@ export default function Basic(props) {
                       </Grid>
                     </Grid>
 
+                    
+                    <CKEditor
+                        editor={ ClassicEditor }
+                        data=""
+                        // onReady={ editor => {                            
+                        //     console.log( 'Editor is ready to use!', editor );
+                        // } }                                                
+                        onChange={ ( event, editor ) => {
+                            config.fillEmptyBlocks = false;
+                            const data = editor.getData();
+                            setTxt(data);
+                            //console.log( data );
+                        } }
+                        
+                        // onBlur={ ( event, editor ) => {
+                        //     console.log( 'Blur.', editor );
+                        // } }
+                        // onFocus={ ( event, editor ) => {
+                        //     console.log( 'Focus.', editor );
+                        // } }
+                    />
+                    <div>{txt ? ReactHTMLParser(txt) : ""}</div>
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
