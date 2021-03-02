@@ -11,6 +11,7 @@ import { KeyboardDatePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import StudentService from '../../../services/StudentService';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles(theme => ({
     divider: {
@@ -61,10 +62,11 @@ const Certificates = ({ userData }) => {
             .then(res => {
                 // console.log("cert data", res);
                 setCertificateData(res.data)
+                
             })
             .catch(error => {
                 console.log(error);
-
+                
             })
     }, [])
 
@@ -138,8 +140,21 @@ const Certificates = ({ userData }) => {
                     .then(res => {
                             console.log("res", res);
                             setCertificateData(res.data)
+                            swal({
+                                title: "Thank You!",
+                                text: "Certificate Added Successfully!",
+                                icon: "success",
+                                button: "Close!",
+                                timer: 1500
+                              });
                         }).catch(error => {
                             console.log(error);
+                            swal({
+                                title: "Error Occured?",
+                                icon: "warning",
+                                button: "Close!",
+                                timer: 1500
+                            })
                         });
                 }}
             >

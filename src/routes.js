@@ -27,6 +27,10 @@ import StudentDriveView from './views/drive/StudentDriveView';
 import EmployeeDriveView from './views/drive/EmployeeDriveView'
 import InterviewerDrive from './views/Interviewer/InterviewerDashboardView/InterviewerDrive'
 import StudentInformation from './views/Interviewer/InterviewerDashboardView/StudentInformation'
+import Index from "./cube/index"
+import ExplorePage from './cube/pages/ExplorePage';
+import DashboardPage from './cube/pages/DashboardPage';
+import App from './cube/App';
 
 const isAuthenticated = Auth.isUserAuthenticated();
 const group = Auth.getGroup();
@@ -44,7 +48,15 @@ const routes = [
       { path: 'dashboard', element: <StudentDashboardView /> },
       { path: 'drive/:id', element: <StudentDriveView /> },
       { path: 'settings', element: <SettingsView /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
+      {
+        path: 'cube/explore', 
+        element: <App children={<ExplorePage/>}/>,
+      },    
+      {
+        path: 'cube/dashboard', 
+        element: <App children={<DashboardPage/>}/>,
+      }, 
     ]
   },
   {
@@ -62,7 +74,15 @@ const routes = [
       { path: 'afterdrive/:id', element: <AfterDriveView /> },
       { path: 'importstudent', element: <ImportStudent /> },
       { path: 'drive/:id', element: <EmployeeDriveView /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
+      {
+        path: 'cube/explore/:id', 
+        element: <App children={<ExplorePage/>}/>,
+      },    
+      {
+        path: 'cube/dashboard', 
+        element: <App children={<DashboardPage/>}/>,
+      },    
     ]
   },
   {
@@ -80,9 +100,17 @@ const routes = [
     path: '/',
     children: [
       {
+        path: 'cube/explore', 
+        element: <App children={<ExplorePage/>}/>,
+      },    
+      {
+        path: 'cube/dashboard', 
+        element: <App children={<DashboardPage/>}/>,
+      },    
+      {
         path: 'login', 
         element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <LoginView />,
-      },
+      },    
       {
         path: 'register', 
         element: isAuthenticated  ? <Navigate to={dashboardRoute}/> : <RegisterView />,

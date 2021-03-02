@@ -15,6 +15,8 @@ import { useForm } from '../../../components/controls/useForm';
 import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import StudentService from '../../../services/StudentService';
+import swal from 'sweetalert';
+import Auth from '../../../auth';
 
 const genderItems = [
   { id: 'M', title: 'Male' },
@@ -135,8 +137,26 @@ const PersonalData = ({ userData }) => {
       StudentService.updateStudent(data)
         .then(res => {
           console.log("res", res);
+          Auth.storeUser({
+            first_name: res.data.first_name,
+            last_name: res.data.last_name,
+            email: values.email
+          })
+          swal({
+            title: "Thank You!",
+            text: "Personal Data Updated!",
+            icon: "success",
+            button: "Close!",
+            timer: 1500
+          });
         }).catch(error => {
           console.log(error);
+          swal({
+            title: "Error Occured?",
+            icon: "warning",
+            button: "Close!",
+            timer: 1500
+          })
         });
     }
   }
@@ -167,7 +187,7 @@ const PersonalData = ({ userData }) => {
         "fatherOccupation": userData && userData.fatherOccupation ? userData.fatherOccupation : "",
         "motherOccupation": userData && userData.motherOccupation ? userData.motherOccupation : "",
         "parentsEmail": userData && userData.parentsEmail ? userData.parentsEmail : "",
-        "parentsMobileNumber": userData && userData.pparentsMobileNumber ?  userData.pparentsMobileNumber : "",
+        "parentsMobileNumber": userData && userData.parentsMobileNumber ?  userData.parentsMobileNumber : "",
       })
     }
   }, [userData])

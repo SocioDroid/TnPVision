@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useChangeTheme } from '../../DarkModeTheme/ThemeProvider';
 import { AppBar, useTheme, Toolbar, Typography, IconButton, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -50,8 +51,9 @@ function Header(props) {
 	const theme = useTheme();
 	const changeTheme = useChangeTheme();
 
+	const navigate = useNavigate()
 	const handleHomepage = () => {
-		props.history.push('/');
+		navigate('/')
 	}
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
