@@ -11,14 +11,17 @@ import TitleModal from '../components/TitleModal.js';
 const ExplorePage = props => {
   const [addingToDashboard, setAddingToDashboard] = useState(false);
   const location = useLocation();
-  console.log(location, 'Location');
-  const itemId = location.itemId;
+  // console.log(location, 'Location');
+  console.log('history', props);
+  const params = useParams()
+  const itemId = params.id;
   const { loading, error, data } = useQuery(GET_DASHBOARD_ITEM, {
     variables: {
       id: itemId
     },
     skip: !itemId
   });
+  console.log('loading', loading)
   const [vizState, setVizState] = useState(null);
   const finalVizState =
     vizState ||

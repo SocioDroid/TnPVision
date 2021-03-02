@@ -51,6 +51,11 @@ if (group === 2) {
       title: 'Drives'
     },
     {
+      href: '/employee/cube/explore ',
+      icon: faCog,
+      title: 'Explore'
+    },
+    {
       href: '/employee/settings',
       icon: faCog,
       title: 'Settings'
