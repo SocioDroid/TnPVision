@@ -6,12 +6,18 @@ class Auth {
    */
   /* eslint-disable no-undef */
 
-  static authenticateUser(token, expiry, group, user,cubejsjwt) {
+  static authenticateUser(token, expiry, group, user,cubejsjwt, dashboardItems) {
     window.localStorage.setItem('token', token);
     window.localStorage.setItem('expiry', expiry);
     window.localStorage.setItem('group', group);
     window.localStorage.setItem('user', JSON.stringify(user));
     window.localStorage.setItem('cubejs-jwt', cubejsjwt);
+    console.log(dashboardItems.length, "length")
+    if (dashboardItems.length > 0){
+      dashboardItems = JSON.parse(window.atob(dashboardItems))
+      window.localStorage.setItem('dashboardItems', JSON.stringify(dashboardItems));
+      window.localStorage.setItem('dashboardIdCounter', dashboardItems.length);
+    }
   }
 
   static storeUser(user){
@@ -50,6 +56,8 @@ class Auth {
       localStorage.removeItem('group');
       localStorage.removeItem('user');
       localStorage.removeItem('cubejs-jwt');
+      localStorage.removeItem('dashboardItems');
+      localStorage.removeItem('dashboardIdCounter');
       return true;
     }
     return false;
@@ -75,6 +83,8 @@ class Auth {
     localStorage.removeItem('group');
     localStorage.removeItem('user');
     localStorage.removeItem('cubejs-jwt');
+    localStorage.removeItem('dashboardItems');
+    localStorage.removeItem('dashboardIdCounter');
   }
 
   /**

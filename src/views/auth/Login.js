@@ -109,7 +109,8 @@ function Login(props) {
                 last_name: result.data.data.last_name,
                 email: result.data.data.email
               },
-              result.data.data.cube_js_jwt
+              result.data.data.cube_js_jwt,
+              result.data.data.dashboardQuery,
             );
 
             if (result.data.data.group === 'student')

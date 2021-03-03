@@ -80,6 +80,10 @@ const routes = [
         element: <App children={<ExplorePage/>}/>,
       },    
       {
+        path: 'cube/explore', 
+        element: <App children={<ExplorePage/>}/>,
+      },    
+      {
         path: 'cube/dashboard', 
         element: <App children={<DashboardPage/>}/>,
       },    
