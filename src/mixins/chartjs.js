@@ -30,7 +30,7 @@ function draw() {
   if (!vm.horizontal) {
     // bar
     left = vm.x - vm.width / 2;
-    right = vm.x + vm.width / 2;
+    right = vm.x /*+ vm.width / 2*/;
     top = vm.y;
     bottom = vm.base;
     signX = 1;
