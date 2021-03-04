@@ -45,12 +45,19 @@ const EligibleDrives = ({ className, ...rest }) => {
       const date1 = new Date(d[i].date);
       const date2 = new Date();
       const diffDays = date1.getDate() - date2.getDate(); 
+<<<<<<< HEAD
       //console.log(diffDays + " days");
       if (diffDays <= 1000)
         //console.log("Valid", d[i]);
+=======
+      console.log(diffDays + " days");
+      if (diffDays <= 1000){
+        console.log("Valid", d[i]);
+>>>>>>> 2a0127df77a5f4b80168a855b3e1266c30bd6bd8
         continue;
+      }
       else{
-        //console.log("Invalid", d[i]);
+        console.log("Invalid", d[i]);
         delete d[i];
       }
     }
@@ -64,13 +71,14 @@ const EligibleDrives = ({ className, ...rest }) => {
       .then(res => {
         filterDrive(res.data);
         setDrives(res.data);
-        // console.log('Response Received : ', res);
+        console.log('Response Received : ', res.data);
       })
       .catch(function(error) {
         //console.log('Error Fetching data');
         setDrives(false);
       });
   }, []);
+  console.log(drives, "Drives : ");
   const navigate = useNavigate();
 
   return drives.length > 0 ?(

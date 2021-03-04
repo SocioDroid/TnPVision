@@ -6,19 +6,26 @@ class Auth {
    */
   /* eslint-disable no-undef */
 
-  static authenticateUser(token, expiry, group, user) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('expiry', expiry);
-    localStorage.setItem('group', group);
-    localStorage.setItem('user', JSON.stringify(user));
+  static authenticateUser(token, expiry, group, user,cubejsjwt, dashboardItems) {
+    window.localStorage.setItem('token', token);
+    window.localStorage.setItem('expiry', expiry);
+    window.localStorage.setItem('group', group);
+    window.localStorage.setItem('user', JSON.stringify(user));
+    window.localStorage.setItem('cubejs-jwt', cubejsjwt);
+    console.log(dashboardItems.length, "length")
+    if (dashboardItems.length > 0){
+      dashboardItems = JSON.parse(window.atob(dashboardItems))
+      window.localStorage.setItem('dashboardItems', JSON.stringify(dashboardItems));
+      window.localStorage.setItem('dashboardIdCounter', dashboardItems.length);
+    }
   }
 
   static storeUser(user){
-    localStorage.setItem('user', JSON.stringify(user));
+    window.localStorage.setItem('user', JSON.stringify(user));
   }
 
   static authNotified() {
-    localStorage.setItem('authNotified', true);
+    window.localStorage.setItem('authNotified', true);
   }
 
   static getAuthNotified() {
@@ -26,7 +33,7 @@ class Auth {
   }
 
   static storeReferer(path) {
-    localStorage.setItem('referer', path);
+    window.localStorage.setItem('referer', path);
   }
 
   static getReferer() {
@@ -35,6 +42,9 @@ class Auth {
 
   static getGroup() {
     return localStorage.getItem('group');
+  }
+  static getCubejsjwt() {
+    return localStorage.getItem('cubejs-jwt');
   }
 
   static isTokenExpired() {
@@ -45,6 +55,9 @@ class Auth {
       localStorage.removeItem('expiry');
       localStorage.removeItem('group');
       localStorage.removeItem('user');
+      localStorage.removeItem('cubejs-jwt');
+      localStorage.removeItem('dashboardItems');
+      localStorage.removeItem('dashboardIdCounter');
       return true;
     }
     return false;
@@ -69,6 +82,9 @@ class Auth {
     localStorage.removeItem('expiry');
     localStorage.removeItem('group');
     localStorage.removeItem('user');
+    localStorage.removeItem('cubejs-jwt');
+    localStorage.removeItem('dashboardItems');
+    localStorage.removeItem('dashboardIdCounter');
   }
 
   /**

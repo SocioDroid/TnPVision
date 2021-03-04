@@ -23,6 +23,7 @@ import CustomSnackbar from '../../components/Snackbar/CustomSnackbar';
 import Auth from '../../auth';
 import UserContext from '../../UserContext';
 import swal from 'sweetalert';
+import EmployeeServices from '../../services/EmployeeServices';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -107,7 +108,9 @@ function Login(props) {
                 first_name: result.data.data.first_name,
                 last_name: result.data.data.last_name,
                 email: result.data.data.email
-              }
+              },
+              result.data.data.cube_js_jwt,
+              result.data.data.dashboardQuery,
             );
 
             if (result.data.data.group === 'student')
@@ -120,7 +123,7 @@ function Login(props) {
               navigate('/employee/dashboard');
             else if (result.data.data.group === 'interviewer')
               navigate('/interviewer/dashboard');
-            window.location.reload();
+            window.location.reload()
           }
         })
         .catch(error => {

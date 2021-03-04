@@ -12,7 +12,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavItem from './NavItem';
-import StudentService from '../../../../services/StudentService';
 import {  faCog,  faUserCircle,  faChartLine}  from '@fortawesome/free-solid-svg-icons'
 import Auth from '../../../../auth';
 
