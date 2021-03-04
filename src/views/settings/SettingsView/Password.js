@@ -82,9 +82,9 @@ const Password = ({ className, ...rest }) => {
       
 		},
 		validationSchema: Yup.object({
-    //   old_password: Yup.string().required('Required'),
-    //   new_password: Yup.string().min(5, 'Minimum 5 characters required').required('Required'),
-		// 	confirm: Yup.string().oneOf([Yup.ref('new_password'), null], 'Passwords must match')
+      old_password: Yup.string().required('Required'),
+      new_password: Yup.string().min(5, 'Minimum 5 characters required').required('Required'),
+			confirm: Yup.string().oneOf([Yup.ref('new_password'), null], 'Passwords must match')
 		})
   });
   

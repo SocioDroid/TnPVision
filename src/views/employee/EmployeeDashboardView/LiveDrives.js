@@ -46,7 +46,7 @@ const EligibleDrives = ({ className, ...rest }) => {
       const date2 = new Date();
       const diffDays = date1.getDate() - date2.getDate(); 
       //console.log(diffDays + " days");
-      if (diffDays <= 10)
+      if (diffDays <= 1000)
         //console.log("Valid", d[i]);
         continue;
       else{
@@ -64,7 +64,7 @@ const EligibleDrives = ({ className, ...rest }) => {
       .then(res => {
         filterDrive(res.data);
         setDrives(res.data);
-        //console.log('Response Received : ', res.data);
+        // console.log('Response Received : ', res);
       })
       .catch(function(error) {
         //console.log('Error Fetching data');
