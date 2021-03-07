@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Button, CardContent, Typography, Grid } from '@material-ui/core';
+import { Card, Button, CardContent, CardHeader, Typography, Grid } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import DriveService from '../../services/DriveService';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import DriveRounds from './DriveRounds';
 import ProgressBar from '../../components/controls/ProgressBar';
+import RejectedStudentsPreview from '../employee/EmployeeDashboardView/RejectedStudentsPreview';
+import AcceptedStudentsPreview from '../employee/EmployeeDashboardView/AcceptedStudentsPreview';
+import PendingStudentsPreview from '../employee/EmployeeDashboardView/PendingStudentsPreview';
 
 
 const useStyles = makeStyles(theme => ({
@@ -116,7 +119,50 @@ export default function StudentDriveView() {
           </Grid>
             
           </CardContent>
-        </Card>       
+        </Card> 
+
+            <Grid
+              container
+              spacing={3}
+            >
+              <Grid
+                item              
+                sm={12}                
+                xs={12}
+              >       
+                <Card className={classes.root}>
+                <CardHeader  title="Rejected Student Evaluation"/>
+                  <CardContent>
+                  { driveDetails && <RejectedStudentsPreview DriveId={driveDetails.id}/> }  
+                  </CardContent>         
+                </Card>                  
+              </Grid>
+              <Grid
+                item                
+                sm={12}
+                xs={12}
+              >
+                <Card className={classes.root}>
+                <CardHeader  title="Accepted Student Evaluation"/>
+                  <CardContent>
+                  { driveDetails && <AcceptedStudentsPreview DriveId={driveDetails.id}/> }
+                  </CardContent>         
+                </Card>                               
+              </Grid>
+              <Grid
+                item                
+                sm={12}                
+                xs={12}
+              >
+                <Card className={classes.root}>
+                <CardHeader  title="Pending Student Evaluation"/>
+                  <CardContent>
+                    { driveDetails && <PendingStudentsPreview DriveId={driveDetails.id}/> }             
+                  </CardContent>         
+                </Card>                 
+              </Grid>
+            </Grid>      
+
       </div>
     );
   } else {

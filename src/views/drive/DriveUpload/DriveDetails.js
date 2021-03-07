@@ -157,7 +157,7 @@ export default function DriveDetails(drive) {
     console.log(selectedFile);
     axios
       .put(
-        'http://20.37.50.140:8000/api/drive/' +
+        'http://20.37.243.248:8000/api/drive/' +
           drive.drive +
           '/upload/round/' +
           roundNumber +

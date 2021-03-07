@@ -44,6 +44,7 @@ const ExplorePage = props => {
 
   return (
     <div>
+      
       <TitleModal
         history={props.history}
         itemId={itemId}
@@ -68,6 +69,7 @@ const ExplorePage = props => {
           </Button>
         ]}
       />
+      {console.log("honey explore test", finalVizState)}
     </div>
   );
 };

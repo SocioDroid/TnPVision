@@ -3,22 +3,37 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { SchemaLink } from 'apollo-link-schema';
 import { makeExecutableSchema } from 'graphql-tools';
+import EmployeeServices from '../../services/EmployeeServices';
 const cache = new InMemoryCache();
 const defaultDashboardItems = [];
 
-const getDashboardItems = () => JSON.parse(window.localStorage.getItem('dashboardItems')) || defaultDashboardItems;
+const getDashboardItems = () =>
+  JSON.parse(window.localStorage.getItem('dashboardItems')) ||
+  defaultDashboardItems;
 
-const setDashboardItems = items => window.localStorage.setItem('dashboardItems', JSON.stringify(items));
+const setDashboardItems = items => {
+  window.localStorage.setItem('dashboardItems', JSON.stringify(items));
+
+  EmployeeServices.setCubeDashboard({
+    dashboardQuery: window.btoa(JSON.stringify(items))
+  })
+    .then(res => {
+      //alert('Done chart dataset');
+      console.log('data set!', res.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 const nextId = () => {
-  const currentId = parseInt(window.localStorage.getItem('dashboardIdCounter'), 10) || 1;
+  const currentId =
+    parseInt(window.localStorage.getItem('dashboardIdCounter'), 10) || 1;
   window.localStorage.setItem('dashboardIdCounter', currentId + 1);
   return currentId.toString();
 };
 
-const toApolloItem = i => ({ ...i,
-  __typename: 'DashboardItem'
-});
+const toApolloItem = i => ({ ...i, __typename: 'DashboardItem' });
 
 const typeDefs = `
   type DashboardItem {
@@ -54,49 +69,33 @@ const schema = makeExecutableSchema({
         return dashboardItems.map(toApolloItem);
       },
 
-      dashboardItem(_, {
-        id
-      }) {
+      dashboardItem(_, { id }) {
         const dashboardItems = getDashboardItems();
         return toApolloItem(dashboardItems.find(i => i.id.toString() === id));
       }
-
     },
     Mutation: {
-      createDashboardItem: (_, {
-        input: { ...item
-        }
-      }) => {
+      createDashboardItem: (_, { input: { ...item } }) => {
         const dashboardItems = getDashboardItems();
-        item = { ...item,
-          id: nextId(),
-          layout: JSON.stringify({})
-        };
+        item = { ...item, id: nextId(), layout: JSON.stringify({}) };
         dashboardItems.push(item);
         setDashboardItems(dashboardItems);
         return toApolloItem(item);
       },
-      updateDashboardItem: (_, {
-        id,
-        input: { ...item
-        }
-      }) => {
+      updateDashboardItem: (_, { id, input: { ...item } }) => {
         const dashboardItems = getDashboardItems();
-        item = Object.keys(item).filter(k => !!item[k]).map(k => ({
-          [k]: item[k]
-        })).reduce((a, b) => ({ ...a,
-          ...b
-        }), {});
+        item = Object.keys(item)
+          .filter(k => !!item[k])
+          .map(k => ({
+            [k]: item[k]
+          }))
+          .reduce((a, b) => ({ ...a, ...b }), {});
         const index = dashboardItems.findIndex(i => i.id.toString() === id);
-        dashboardItems[index] = { ...dashboardItems[index],
-          ...item
-        };
+        dashboardItems[index] = { ...dashboardItems[index], ...item };
         setDashboardItems(dashboardItems);
         return toApolloItem(dashboardItems[index]);
       },
-      deleteDashboardItem: (_, {
-        id
-      }) => {
+      deleteDashboardItem: (_, { id }) => {
         const dashboardItems = getDashboardItems();
         const index = dashboardItems.findIndex(i => i.id.toString() === id);
         const [removedItem] = dashboardItems.splice(index, 1);

@@ -135,7 +135,7 @@ import PropTypes from 'prop-types';
 import { useCubeQuery } from '@cubejs-client/react';
 import { Spin, Row, Col, Statistic, Table } from 'antd';
 import { Line, Bar, Pie } from 'react-chartjs-2';
-const COLORS_SERIES = ['#00FF00','#FF6492', '#141446', '#7A77FF', '#FF00FF', '#00FFFF', '#FFFF00', '#0000FF'];
+const COLORS_SERIES = ['#FF6492', '#141446', '#7A77FF','#96ceb4' ,'#ffeead' , '#ff6f69' ,'#ffcc5c', '#88d8b0','#ee4035', '#f37736', '#fdf498', '#7bc043','#0392cf'];
 const commonOptions = {
   maintainAspectRatio: false,
 };
@@ -265,3 +265,6 @@ ChartRenderer.defaultProps = {
   cubejsApi: null,
 };
 export default ChartRenderer;
+
+
+//ssh -i C:\Users\HP\Desktop\BEProject\tnpvision.pem tnp@20.37.243.248 

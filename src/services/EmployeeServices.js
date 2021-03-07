@@ -6,6 +6,10 @@ class EmployeeServices{
         return httpauth.get('/api/employees/')
     }
 
+    setCubeDashboard(data) {
+        return httpauth.post('/api/user/cubedashboard',data )
+    }
+
     getSingleEmployee(data){
         return httpauth.get(`/api/employee/${data.id}`)
     }

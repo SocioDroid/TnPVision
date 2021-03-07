@@ -303,7 +303,7 @@ export default function ProfileDetails(props) {
 
       console.log("txt",txt)
       axios
-      .patch('http://20.37.50.140:8000/api/drive/' + values.id + '/', data)
+      .patch('http://20.37.243.248:8000/api/drive/' + values.id + '/', data)
       .then(res => {
           console.log('res', res);
           addOrEdit(values, resetForm);

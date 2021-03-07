@@ -1,3 +1,3 @@
 export default function baseURL(){
-return "http://20.37.50.140:8000/"
+return "http://20.37.243.248:8000/"
 }
