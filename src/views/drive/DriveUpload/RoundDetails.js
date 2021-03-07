@@ -45,8 +45,8 @@ const Results = props => {
   const changeUpdated = props.changeUpdated;
   const roundNumber = props.roundNumber;
   const driveId = props.driveId;
-  const { isActive, setIsActive } = useContext(UserContext);
-  console.log("isActive", isActive);
+  const Context = useContext(UserContext);
+  console.log("isActive", Context.value.isActive);
   const getAllStudentOfRound = useCallback((driveId, roundId) => {
     RoundService.getAllStudentOfRound(driveId, roundId)
       .then(res => {
@@ -98,7 +98,7 @@ const Results = props => {
       showLoaderOnConfirm: true
     }).then(okay => {
       if (okay) {
-        setIsActive(true);
+        Context.value.setIsActive(true);
         RoundService.addStudentToNextRound(driveId, roundId, {
           student_id: studentId,
           status: status
@@ -106,13 +106,13 @@ const Results = props => {
           .then(res => {
             if (status === 'accepted') changeUpdated(round.number + 1);
             setFlag(true);
-            setIsActive(false);
+            Context.value.setIsActive(false);
             swal('Student has been ' + status + '!', {
               icon: 'success'
             });
           })
           .catch(res => {
-            setIsActive(false);
+            Context.value.setIsActive(false);
           });
       }
     });

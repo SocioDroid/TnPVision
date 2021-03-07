@@ -76,10 +76,8 @@ export default function SimpleTabs(props) {
           student.status = 'rejected';
           // data.push(student)
         });
-        let a = roundStudents
-        a[index] = [...round.pending,
-          ...round.accepted,
-          ...round.rejected]
+        let a = roundStudents;
+        a[index] = [...round.pending, ...round.accepted, ...round.rejected];
         setRoundStudents(a);
       });
     });
@@ -109,6 +107,7 @@ export default function SimpleTabs(props) {
         {rounds.map((round, index) => (
           <TabPanel value={value} key={index} index={round.number - 1}>
             <RoundStudent
+              round={round}
               students={roundStudents[index]}
               roundId={round.number}
             />
