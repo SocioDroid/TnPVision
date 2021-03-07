@@ -12,8 +12,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { TextField, Button } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import UserContext from '../../../UserContext';
-
+import Auth from '../../../auth'
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -57,17 +56,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function ReviewTabs(props) {
   const { roundId, rounds, drive_id, student_id } = props;
-  const UseContext = useContext(UserContext);
-  console.log("Context Data", UseContext.userData); 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  
   const [technical, setTechnical] = React.useState([]);
   const [communication, setCommunication] = React.useState([]);
   const [personality, setPersonality] = React.useState([]);
   const [comment, setComment] = React.useState([]);
   const [reviewPresent, setReviewPresent] = React.useState([]);
-  const [reviewReceived, setReviewReceived] = React.useState(false);
+  const [reviewReceived, setReviewReceived] = React.useState([]);
+  const [reviewReceivedMain, setReviewReceivedMain] = React.useState(false);
   const [filtered_rounds, setFilteredRounds] = React.useState([]);
   const [interviewedBy, setInterviewedBy] = React.useState([]);
   const handleTabChange = (event, newValue) => {
@@ -100,12 +98,12 @@ export default function ReviewTabs(props) {
     InterviewerService.submitReview(data)
       .then(res => {
         console.log('res', res);
-        let rev = [...reviewPresent];
+        let rev = [...reviewReceived];
         rev[round_number] = true;
         setReviewReceived([...rev]);
 
         let inter = [...interviewedBy];
-        inter[round_number] = UseContext.userData.first_name+" "+UseContext.userData.last_name
+        inter[round_number] = Auth.getUser().first_name+" "+Auth.getUser().last_name
         setInterviewedBy([...inter]);
 
         swal('Review Submitted Successsfully', 'Thank You!', 'success');
@@ -129,10 +127,11 @@ export default function ReviewTabs(props) {
         let commu = [...communication];
         let pers = [...personality];
         let comm = [...comment];
-        let rev = [...reviewPresent];
+        let rev = [...reviewReceived];
         let inter = [...interviewedBy];
 
-        console.log('Student Review--- ', res.data);
+        console.log('Student Review--- ', res.data, Object.keys(res.data).length);
+        if (Object.keys(res.data).length>0){
         res.data.reviewData.forEach(review => {
           tech[review.round_number] = review.technical;
           commu[review.round_number] = review.communication;
@@ -149,6 +148,8 @@ export default function ReviewTabs(props) {
         setComment([...comm]);
         setReviewReceived([...rev]);
         setInterviewedBy([...inter]);
+      }
+      setReviewReceivedMain(true);
         // setDrive(res.data);
       })
       .catch(error => {
@@ -158,7 +159,7 @@ export default function ReviewTabs(props) {
 
   useEffect(() => {}, [reviewReceived]);
 
-  if (reviewReceived) {
+  if (reviewReceivedMain) {
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default">
@@ -171,6 +172,7 @@ export default function ReviewTabs(props) {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
+            {console.log(filtered_rounds, "Filtered Rounds")}
             {filtered_rounds.map((round, index) => (
               <Tab
                 key={round.number}
