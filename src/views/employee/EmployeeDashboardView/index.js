@@ -9,8 +9,6 @@ import Page from '../../../components/controls/Page';
 import LiveDrive from './LiveDrives';
 import App from '../../../cube/App';
 import CubeDashboard from '../../../cube/pages/DashboardPage';
-import NivoBarGraph from './NivoBarGraph'
-import data from './data'
 
 const useStyles = makeStyles((theme) => ({
   root: {

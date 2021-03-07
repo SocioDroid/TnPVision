@@ -3,7 +3,6 @@ import { Container, makeStyles } from '@material-ui/core';
 import Page from '../../../components/controls/Page';
 import EligibleDrives from './EligibleDrives';
 import VolunteeringDrives from './VolunteeringDrives';
-import NivoBarGraph from './NivoBarGraph';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,9 +27,6 @@ const Dashboard = props => {
         </Container>
       <Container maxWidth={false}>      
         <VolunteeringDrives />  
-      </Container >
-      <Container maxWidth={false}>      
-        <NivoBarGraph />  
       </Container >
     </Page >
     
