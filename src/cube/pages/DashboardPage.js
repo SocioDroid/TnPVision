@@ -7,7 +7,6 @@ import { GET_DASHBOARD_ITEMS } from '../graphql/queries';
 import ChartRenderer from '../components/ChartRenderer';
 import Dashboard from '../components/Dashboard';
 import DashboardItem from '../components/DashboardItem';
-import NivoBarGraph from './NivoBarGraph';
 import { useCubeQuery } from '@cubejs-client/react';
 
 
