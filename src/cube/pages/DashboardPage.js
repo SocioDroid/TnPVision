@@ -7,6 +7,8 @@ import { GET_DASHBOARD_ITEMS } from '../graphql/queries';
 import ChartRenderer from '../components/ChartRenderer';
 import Dashboard from '../components/Dashboard';
 import DashboardItem from '../components/DashboardItem';
+import { useCubeQuery } from '@cubejs-client/react';
+
 
 const deserializeItem = i => ({ ...i,
   layout: JSON.parse(i.layout) || {},
@@ -29,6 +31,11 @@ const DashboardPage = () => {
     data
   } = useQuery(GET_DASHBOARD_ITEMS);
 
+  const { resultSet } = useCubeQuery({
+    measures: ["DriveDrive.count"],
+    dimensions: ["DriveDrive.driveType"],
+  });
+
   if (loading) {
     return <Spin />;
   }
@@ -37,10 +44,15 @@ const DashboardPage = () => {
     return <Alert message="Error occured while loading your query" description={error.toString()} type="error" />;
   }
 
-  const dashboardItem = item => <div key={item.id} data-grid={defaultLayout(item)}>
+  const dashboardItem = item => 
+  
+    <div key={item.id} data-grid={defaultLayout(item)}>      
       <DashboardItem key={item.id} itemId={item.id} title={item.name}>
         <ChartRenderer vizState={item.vizState} />
-      </DashboardItem>
+        {/* {console.log("honey resultSet check", resultSet ? resultSet.loadResponses[0].data : "")} */}
+        {/* {console.log("honey resultSet check", item.vizState)}
+        <NivoBarGraph data={resultSet ? resultSet.loadResponses[0].data: ""}/> */}
+      </DashboardItem>      
     </div>;
 
   const Empty = () => <div style={{

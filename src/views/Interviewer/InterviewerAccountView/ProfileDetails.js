@@ -77,7 +77,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         }
       };
       axios
-        .put('http://20.37.50.140:8000/api/user/', data, {
+        .put('http://20.37.243.248:8000/api/user/', data, {
           headers: {
             'Content-type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',

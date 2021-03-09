@@ -11,15 +11,22 @@ import LoadingOverlay from 'react-loading-overlay';
 
 const App = () => {
   const [isActive, setIsActive] = useState(null);
+  const [user, setUser] = useState({first_name:"", last_name:""});
+
   const value = useMemo(() => ({ isActive, setIsActive }), [
     isActive,
     setIsActive
   ]);
 
+  const userValue = useMemo(() => ({ user, setUser }), [
+    user,
+    setUser
+  ]);
+
   const routing = useRoutes(routes);
   return (
     <ThemeProvider theme={theme}>
-      <UserContext.Provider value={value}>
+      <UserContext.Provider value={{userValue, value}}>
         <LoadingOverlay active={isActive} spinner>
           <GlobalStyles />
           {routing}

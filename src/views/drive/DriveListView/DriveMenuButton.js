@@ -196,7 +196,7 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
     console.log(selectedFile);
     axios
       .post(
-        'http://20.37.50.140:8000/api/drive/' + id + '/shortlisted/',
+        'http://20.37.243.248:8000/api/drive/' + id + '/shortlisted/',
         data,
         {
           headers: {

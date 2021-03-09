@@ -18,7 +18,7 @@ const setDashboardItems = items => {
     dashboardQuery: window.btoa(JSON.stringify(items))
   })
     .then(res => {
-      alert('Done chart dataset');
+      //alert('Done chart dataset');
       console.log('data set!', res.data);
     })
     .catch(function(error) {

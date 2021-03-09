@@ -50,7 +50,7 @@ const EligibleDrives = ({ className, ...rest }) => {
 
   useEffect(() => {
     axios
-      .get('http://20.37.50.140:8000/api/student/eligibleDrives', {
+      .get('http://20.37.243.248:8000/api/student/eligibleDrives', {
         headers: {
           Authorization: 'Token ' + Auth.getToken() //the token is a variable which holds the token
         }

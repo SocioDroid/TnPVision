@@ -30,14 +30,15 @@ const Dashboard = (props) => {
       <Container maxWidth={false} style={{ marginLeft: '1%' }}>
         <LiveDrive />
       </Container>
+      {/* <Container maxWidth={false} style={{ marginLeft: '1%' }}>
+        <NivoBarGraph data={data}/>
+      </Container> */}
       <Container maxWidth={false} style={{ margin: '1%' }}>
         <Typography variant="h3" color="primary">
           Statistics
         </Typography>
-        <Divider style={{ margin: 10 }} />
-        
-          <App children={<CubeDashboard />} />
-        
+        <Divider style={{ margin: 10 }} />        
+          <App children={<CubeDashboard />} />        
       </Container>
     </Page>
   );

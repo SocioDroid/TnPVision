@@ -50,7 +50,7 @@ const EligibleDrives = ({ className, ...rest }) => {
       if (diffDays <= 1000){
         console.log("Valid", d[i]);
         continue;
-      }
+      }      
       else{
         console.log("Invalid", d[i]);
         delete d[i];
