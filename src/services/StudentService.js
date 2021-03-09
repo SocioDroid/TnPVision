@@ -107,6 +107,10 @@ class StudentService {
     uploadStudents(data) {
         return httpauth.post('/api/upload/', data)
     }
+
+    getStudentReviews(){
+        return httpauth.get(`/api/review/`)
+    }
 }
 
 
