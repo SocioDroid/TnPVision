@@ -58,7 +58,7 @@ export default function StudentDriveView() {
   if (driveDetails) {
     return (
       <div>
-        <Card className={classes.root}>
+        {/* <Card className={classes.root}>
           <CardContent>
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
@@ -100,9 +100,9 @@ export default function StudentDriveView() {
               </Grid>
             </Grid>
           </CardContent>
-        </Card>
+        </Card> */}
 
-        <Card className={classes.root}>
+        {/* <Card className={classes.root}>
           <CardContent><Grid
             container
             spacing={3}
@@ -119,8 +119,7 @@ export default function StudentDriveView() {
           </Grid>
             
           </CardContent>
-        </Card> 
-
+        </Card>  */}
             <Grid
               container
               spacing={3}
@@ -130,7 +129,7 @@ export default function StudentDriveView() {
                 sm={12}                
                 xs={12}
               >       
-                <Card className={classes.root}>
+                <Card>
                 <CardHeader  title="Rejected Student Evaluation"/>
                   <CardContent>
                   { driveDetails && <RejectedStudentsPreview DriveId={driveDetails.id}/> }  
@@ -142,7 +141,7 @@ export default function StudentDriveView() {
                 sm={12}
                 xs={12}
               >
-                <Card className={classes.root}>
+                <Card>
                 <CardHeader  title="Accepted Student Evaluation"/>
                   <CardContent>
                   { driveDetails && <AcceptedStudentsPreview DriveId={driveDetails.id}/> }
@@ -154,7 +153,7 @@ export default function StudentDriveView() {
                 sm={12}                
                 xs={12}
               >
-                <Card className={classes.root}>
+                <Card>
                 <CardHeader  title="Pending Student Evaluation"/>
                   <CardContent>
                     { driveDetails && <PendingStudentsPreview DriveId={driveDetails.id}/> }             

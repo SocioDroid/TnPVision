@@ -45,6 +45,7 @@ const EligibleDrives = ({ className, ...rest }) => {
       const date1 = new Date(d[i].date);
       const date2 = new Date();
       const diffDays = date1.getDate() - date2.getDate(); 
+
       console.log(diffDays + " days");
       if (diffDays <= 1000){
         console.log("Valid", d[i]);
