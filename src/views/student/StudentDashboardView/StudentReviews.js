@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import StudentService from '../../../services/StudentService';
-import ReactHTMLParser from 'react-html-parser';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,7 +25,36 @@ export default function InteractiveList() {
   const classes = useStyles();
   const [dense, setDense] = React.useState(false);
   const [reviews, setReviews] = React.useState(null);
-  const reactStringReplace = require('react-string-replace')
+  const reactStringReplace = require('react-string-replace');
+
+  function highlightReviews(review) {
+    let replacedText;
+    replacedText = reactStringReplace(
+      review,
+      /(?<=<green>)(.*?)(?=<\/green>)/g,
+      (match, i) => (
+        <span style={{ color: 'green' }} key={match + i}>
+          {match}
+        </span>
+      )
+    );
+
+    replacedText = reactStringReplace(
+      replacedText,
+      /(?<=<red>)(.*?)(?=<\/red>)/g,
+      (match, i) => (
+        <span style={{ color: 'red' }} key={match + i}>
+          {match}
+        </span>
+      )
+    );
+
+    replacedText = reactStringReplace(replacedText, /<.+?>/g, (match, i) => (
+      <span key={match + i}>{match}</span>
+    ));
+
+    return replacedText;
+  }
 
   useEffect(() => {
     StudentService.getStudentReviews().then(res => {
@@ -44,17 +72,9 @@ export default function InteractiveList() {
             </Typography>
             <div className={classes.demo}>
               <List dense={dense}>
-                {reviews.map((value, index) => (
+                {reviews.map((review, index) => (
                   <ListItem key={index}>
-                    <ListItemText
-                      primary={
-                        <Typography type="body2">
-                          {reactStringReplace(value, '<green>', (match, i) => (
-                            <Chip label={match}/>
-                          ))}
-                        </Typography>
-                      }
-                    />
+                    <ListItemText primary={highlightReviews(review)} />
                   </ListItem>
                 ))}
               </List>
