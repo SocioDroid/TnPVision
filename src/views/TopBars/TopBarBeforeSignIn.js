@@ -16,9 +16,13 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 	},
+	linkTitle: {
+		color: theme.palette.primary.contrastText,
+	},
 	//Header Style
 	title: {
 		flexGrow: 1,
+		color: theme.palette.primary.contrastText,
 		[theme.breakpoints.up('sm')]: {
 			display: 'block',
 			width: 'auto',
@@ -97,7 +101,7 @@ function Header(props) {
 			<AppBar className='header' color='primary' position='static'>
 				<Toolbar>
 					<Typography className={classes.title} variant="h3" noWrap>
-						<Link onClick={handleHomepage} color='inherit' underline='none'>TnPVision</Link>
+						<Link onClick={handleHomepage} className={classes.linkTitle} underline='none'>TnPVision</Link>
 					</Typography>
 					<div className={classes.sectionDesktop}>
 						<IconButton title="Toggle light/dark mode" style={{ color: 'white' }} onClick={() => changeTheme()}>
