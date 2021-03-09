@@ -60,7 +60,7 @@ const EligibleDrives = ({ className, ...rest }) => {
       <Grid container spacing={3}>
         {drives.map(drive => {
           return (
-            <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
+            <Grid item lg={4} sm={4} xl={4} xs={12} key={drive.id}>
               <a href={'/student/drive/' + drive.id}>
                 <Card className={clsx(classes.root, className)} {...rest}>
                   <CardContent>
