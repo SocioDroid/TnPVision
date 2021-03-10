@@ -56,12 +56,12 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
     setAnchorEl(null);
   };
 
-  function downloadEligible(id) {
-    DriveService.downloadEligible({ id: id.id }).then(({ data }) => {
+  function downloadEligible(drive) {
+    DriveService.downloadEligible(drive.id).then(({ data }) => {
       const downloadUrl = window.URL.createObjectURL(new Blob([data]));
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.setAttribute('download', id.jobtitle + '_Eligible_Students.xlsx'); //any other extension
+      link.setAttribute('download', drive.jobtitle + '_Eligible_Students.xlsx'); //any other extension
       document.body.appendChild(link);
       link.click();
       link.remove();
