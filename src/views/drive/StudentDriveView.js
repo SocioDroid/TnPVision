@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from 'react-router-dom';
 import DriveService from '../../services/DriveService';
+import StudentService from '../../services/StudentService';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +14,8 @@ import LanguageOutlinedIcon from '@material-ui/icons/Language';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import Divider from '@material-ui/core/Divider';
 import ProgressBar from '../../components/controls/ProgressBar';
-import ReactHTMLParser from 'react-html-parser'
+import ReactHTMLParser from 'react-html-parser';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 275,
     margin: theme.spacing(40),
     textAlign: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   bullet: {
     display: 'inline-block',
@@ -40,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   alignToBottom: {
     alignSelf: 'flex-end'
   },
-  skills:{
+  skills: {
     backgroundColor: '#d2e4fc',
     padding: '2px 10px',
     marginRight: '5px',
@@ -48,41 +50,59 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     color: '#636363',
     cursor: 'pointer'
+  },
+  disabledButton: {
+        backgroundColor: "#21b6ae",
   }
 }));
-
 
 export default function StudentDriveView() {
   const classes = useStyles();
   const { id } = useParams();
   const [driveDetails, setDriveDetails] = useState(null);
   const [postedDays, setPostedDays] = useState(null);
+  const [isApplied, setIsApplied] = useState(false);
+
+  function applyDrive(id) {
+    StudentService.applyDrive(id, 'apply')
+      .then(res => {     
+        setIsApplied(true)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   useEffect(() => {
     // Getting Drive Details
-    function generatePostedDays() {
+    function generatePostedDays(driveDetails) {
       // Modify this field
       const date1 = new Date(driveDetails.createdAt);
       const date2 = new Date();
       const diffDays = date2.getDate() - date1.getDate();
-      console.log(diffDays + " days");
-      if (diffDays > 0)
-        setPostedDays(diffDays);
-      else
-        setPostedDays("Today")
+      if (diffDays > 0) setPostedDays(diffDays + " days ago");
+      else setPostedDays('Today');
     }
 
     DriveService.getSingleDrive({ id: id })
       .then(res => {
         setDriveDetails(res.data);
-        generatePostedDays();
+        console.log("Received Response")
+        generatePostedDays(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
+    StudentService.applyDrive(id, 'check')
+      .then(res => {
+        setIsApplied(res.data.isApplied);
       })
       .catch(err => {
         console.log(err);
       });
   }, [id]);
-
+  useEffect(() => {}, [isApplied]);
 
   if (driveDetails) {
     return (
@@ -92,10 +112,7 @@ export default function StudentDriveView() {
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
                 <Grid item xs={12} sm container>
-                  <Typography
-                    className={classes.pos}
-                    variant="h3"
-                  >
+                  <Typography className={classes.pos} variant="h3">
                     {driveDetails.jobtitle}
                   </Typography>
                 </Grid>
@@ -105,33 +122,50 @@ export default function StudentDriveView() {
                   </Typography>
                 </Grid>
                 <div>
-                  <Typography color="textSecondary" >
-                    <AccountBalanceWalletOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
-                    {'  '}{driveDetails.min_salary} - {driveDetails.max_salary} P.A.
-                </Typography>
-                </div>
-                <div style={{ marginTop: "5px" }}>
                   <Typography color="textSecondary">
-                    <LocationOnOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
-                    {' '} {driveDetails.drive_location}
+                    <AccountBalanceWalletOutlinedIcon
+                      fontSize="small"
+                      style={{ verticalAlign: 'sub' }}
+                    />
+                    {'  '}
+                    {driveDetails.min_salary} - {driveDetails.max_salary} P.A.
+                  </Typography>
+                </div>
+                <div style={{ marginTop: '5px' }}>
+                  <Typography color="textSecondary">
+                    <LocationOnOutlinedIcon
+                      fontSize="small"
+                      style={{ verticalAlign: 'sub' }}
+                    />{' '}
+                    {driveDetails.drive_location}
                   </Typography>
                 </div>
               </Grid>
 
-              <Grid
-                item
-                md={4}
-                xs={12}
-                className={classes.alignToBottom}
-              >
-                <Button variant="contained" color="primary">
-                  Apply Drive
-                </Button>
+              <Grid item md={4} xs={12} className={classes.alignToBottom}>
+                {isApplied ? (
+                  <Button
+                    variant="contained"
+                    disabled                    
+                    classes={{ disabled: classes.disabledButton }}
+                    endIcon={<CheckIcon />}
+                  >
+                    
+                    Applied
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      applyDrive(driveDetails.id);
+                    }}
+                  >
+                    Apply Drive
+                  </Button>
+                )}
               </Grid>
-              <Grid
-                item
-                xs={12}
-              >
+              <Grid item xs={12}>
                 <Divider />
                 <Typography color="textSecondary">
                   Posted: {postedDays}
@@ -143,46 +177,62 @@ export default function StudentDriveView() {
 
         <Card className={classes.root}>
           <CardContent>
-            <Typography component="h2" variant="h4" style={{ marginBottom: "10px" }} >
+            <Typography
+              component="h2"
+              variant="h4"
+              style={{ marginBottom: '10px' }}
+            >
               Job Description
             </Typography>
-            <Typography variant="h5" style={{ marginBottom: "5px" }} >
+            <Typography variant="h5" style={{ marginBottom: '5px' }}>
               Roles and Responsibilities
             </Typography>
-            <Typography style={{ paddingLeft: "10px" }} >
-              {driveDetails.description ? ReactHTMLParser(driveDetails.description): ""}              
-            </Typography>            
+            <Typography style={{ paddingLeft: '10px' }}>
+              {driveDetails.description
+                ? ReactHTMLParser(driveDetails.description)
+                : ''}
+            </Typography>
           </CardContent>
-        </Card >
+        </Card>
 
-      <Card className={classes.root}>
-        <CardContent>
-          <Typography component="h2" variant="h4">
-            About Company
+        <Card className={classes.root}>
+          <CardContent>
+            <Typography component="h2" variant="h4">
+              About Company
             </Typography>
-          <Typography component="p" className={classes.pos}>
-            Company domain
+            <Typography component="p" className={classes.pos}>
+              Company domain
             </Typography>
-          <Typography>
-            <WorkOutlineOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
-            {'  '}{driveDetails.company.industry}
-          </Typography>
-          <Typography>
-            <LanguageOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} />
-            <a href={driveDetails.company.website}>
-              {'  '}{driveDetails.company.website}
-            </a>
-          </Typography>
-          <Typography>
-            <HomeWorkOutlinedIcon fontSize="small" style={{ verticalAlign: "sub" }} /> Company Address
+            <Typography>
+              <WorkOutlineOutlinedIcon
+                fontSize="small"
+                style={{ verticalAlign: 'sub' }}
+              />
+              {'  '}
+              {driveDetails.company.industry}
             </Typography>
-        </CardContent>
-      </Card>
-      </div >
+            <Typography>
+              <LanguageOutlinedIcon
+                fontSize="small"
+                style={{ verticalAlign: 'sub' }}
+              />
+              <a href={driveDetails.company.website}>
+                {'  '}
+                {driveDetails.company.website}
+              </a>
+            </Typography>
+            <Typography>
+              <HomeWorkOutlinedIcon
+                fontSize="small"
+                style={{ verticalAlign: 'sub' }}
+              />{' '}
+              Company Address
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
     );
   } else {
-    return (
-      <ProgressBar />
-    );
+    return <ProgressBar />;
   }
 }

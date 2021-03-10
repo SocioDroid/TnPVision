@@ -1,125 +1,116 @@
 import httpauth from './AuthorizedHttpUrl';
 
 class StudentService {
+  volunteerSearch(inputValue) {
+    return httpauth.get('api/volunteer/search/?q=' + inputValue);
+  }
 
-    volunteerSearch(inputValue) {
-        return httpauth.get("api/volunteer/search/?q=" + inputValue)
-    }
+  getAllStudents() {
+    return httpauth.get('/api/students/');
+  }
 
-    getAllStudents() {
-        return httpauth.get('/api/students/')
-    }
+  getSingleStudent(data) {
+    return httpauth.get(`/api/student/${data.id}`);
+  }
 
-    getSingleStudent(data) {
-        return httpauth.get(`/api/student/${data.id}`)
-    }
+  getSingleStudentwithid(id) {
+    return httpauth.get(`/api/student/${id}`);
+  }
 
-    getSingleStudentwithid(id) {
-        return httpauth.get(`/api/student/${id}`)
-    }
+  getUserDetail() {
+    return httpauth.get('/api/user/');
+  }
 
-    getUserDetail() {
-        return httpauth.get('/api/user/')
-    }
+  deleteStudent(data) {
+    return httpauth.delete(`/api/student/${data.id}`);
+  }
 
-    deleteStudent(data) {
-        return httpauth.delete(`/api/student/${data.id}`)
-    }
+  getVolunteeringDrives() {
+    return httpauth.get('/api/student/volunteeringDrives');
+  }
 
-    getVolunteeringDrives() {
-        return httpauth.get('/api/student/volunteeringDrives')
-    }
+  getEligibleDrives() {
+    return httpauth.get('/api/student/eligibleDrives');
+  }
 
-    getEligibleDrives() {
-        return httpauth.get('/api/student/eligibleDrives')
-    }
+  updateSingleStudent(id, data) {
+    return httpauth.patch('/api/student/' + id, data);
+  }
 
-    updateSingleStudent(id, data) {
-        return httpauth.patch('/api/student/' + id, data)
-    }
+  updateStudent(acadData) {
+    return httpauth.put('/api/user/', acadData);
+  }
 
-    updateStudent(acadData) {
-        return httpauth.put('/api/user/', acadData)
-    }
+  getAchievement() {
+    return httpauth.get('api/student/achievement/');
+  }
 
-    getAchievement() {
-        return httpauth.get('api/student/achievement/')
-    }
+  updateAchievement(data) {
+    return httpauth.put('api/student/achievement/', data);
+  }
 
-    updateAchievement(data) {
-        return httpauth.put('api/student/achievement/', data)
-    }
+  updateIndividualAchievement(data) {
+    return httpauth.patch('api/student/achievement/', data);
+  }
 
-    updateIndividualAchievement(data) {
-        return httpauth.patch('api/student/achievement/', data)
-    }
+  getCertificate() {
+    return httpauth.get('api/student/certificate/');
+  }
 
-    getCertificate() {
-        return httpauth.get('api/student/certificate/')
-    }
+  updateCertificate(data) {
+    return httpauth.put('api/student/certificate/', data);
+  }
 
-    updateCertificate(data) {
-        return httpauth.put('api/student/certificate/', data)
-    }
+  updateIndividualCertificate(data) {
+    return httpauth.patch('api/student/certificate/', data);
+  }
 
-    updateIndividualCertificate(data) {
-        return httpauth.patch('api/student/certificate/', data)
-    }
+  getCurricular() {
+    return httpauth.get('api/student/curricular/');
+  }
 
+  updateCurricular(data) {
+    return httpauth.put('api/student/curricular/', data);
+  }
 
-    getCurricular() {
-        return httpauth.get('api/student/curricular/')
-    }
+  updateIndividualCurricular(data) {
+    return httpauth.patch('api/student/curricular/', data);
+  }
 
-    updateCurricular(data) {
-        return httpauth.put('api/student/curricular/', data)
-    }
+  getProject() {
+    return httpauth.get('api/student/project/');
+  }
 
-    updateIndividualCurricular(data) {
-        return httpauth.patch('api/student/curricular/', data)
-    }
+  updateProject(data) {
+    return httpauth.put('api/student/project/', data);
+  }
 
-    getProject() {
-        return httpauth.get('api/student/project/')
-    }
+  updateIndividualProject(data) {
+    return httpauth.patch('api/student/project/', data);
+  }
 
-    updateProject(data) {
-        return httpauth.put('api/student/project/', data)
-    }
+  getExperience() {
+    return httpauth.get('api/student/experience/');
+  }
 
-    updateIndividualProject(data) {
-        return httpauth.patch('api/student/project/', data)
-    }
+  updateExperience(data) {
+    return httpauth.put('api/student/experience/', data);
+  }
 
+  updateIndividualExperience(data) {
+    return httpauth.patch('api/student/experience/', data);
+  }
 
-    getExperience() {
-        return httpauth.get('api/student/experience/')
-    }
+  uploadStudents(data) {
+    return httpauth.post('/api/upload/', data);
+  }
 
-    updateExperience(data) {
-        return httpauth.put('api/student/experience/', data)
-    }
-
-    updateIndividualExperience(data) {
-        return httpauth.patch('api/student/experience/', data)
-    }
-
-    uploadStudents(data) {
-        return httpauth.post('/api/upload/', data)
-    }
-
-    getStudentReviews(){
-        return httpauth.get(`/api/review/`)
-    }
+  getStudentReviews() {
+    return httpauth.get(`/api/review/`);
+  }
+  applyDrive(id, type) {
+    return httpauth.get(`/api/student/drive/${id}/apply/?type=${type}`);
+  }
 }
-
-
-
-
-
-
-
-
-
 
 export default new StudentService();
