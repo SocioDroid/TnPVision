@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
+import {Grid, Card} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import StudentService from '../../../services/StudentService';
@@ -76,15 +76,18 @@ export default function InteractiveList() {
         <Divider style={{ margin: 10 }} />
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>            
-            <div className={classes.demo}>
+            <Card className={classes.demo} elevation={10}>
               <List dense={dense}>
                 {reviews.map((review, index) => (
+                  <>
                   <ListItem key={index}>
                     <ListItemText primary={highlightReviews(review)} />
                   </ListItem>
+                  <Divider style={{ marginLeft: 10, marginRight: 10}} />
+                  </>
                 ))}
               </List>
-            </div>
+            </Card>
           </Grid>
         </Grid>
       </div>
