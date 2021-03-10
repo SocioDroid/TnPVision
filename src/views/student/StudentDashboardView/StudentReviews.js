@@ -35,7 +35,7 @@ export default function InteractiveList() {
       /(?<=<green>)(.*?)(?=<\/green>)/g,
       (match, i) => (
         <Tooltip title="Positve Point">
-          <span style={{ color: 'green' }} key={match + i}>
+          <span style={{ color: 'green'}} key={match + i}>
             {match}       
           </span>
         </Tooltip>        
