@@ -1,8 +1,8 @@
+import React from 'react';
 import cubejs from '@cubejs-client/core';
 import { QueryRenderer } from '@cubejs-client/react';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
-import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
 
@@ -41,44 +41,44 @@ return <Pie data={data} options={options} />;
 };
 
 const ChartRenderer = (props) => {
-  console.log("Drive ID by props: ",props.DriveId)
+  //console.log("Drive ID by props: ",props.DriveId)
   return (
     
     <QueryRenderer
       query={{
-  "measures": [
-    "DriveDriveRoundsPendingId.RoundsPendingIdIdxCount"
-  ],
-  "timeDimensions": [],
-  "order": {},
-  "dimensions": [
-    "DriveDriveRounds.roundsName"
-  ],
-  "filters": [
-    {
-      "member": "DriveDrive.id",
-      "operator": "equals",
-      "values": [
-        props.DriveId.toString()
-      ]
-    }
-  ]
-}}
+        "measures": [
+          "DriveDriveRoundsPendingId.RoundsPendingIdIdxCount"
+        ],
+        "timeDimensions": [],
+        "order": {},
+        "dimensions": [
+          "DriveDriveRounds.roundsName"
+        ],
+        "filters": [
+          {
+            "member": "DriveDrive.id",
+            "operator": "equals",
+            "values": [
+              props.DriveId.toString()
+            ]
+          }
+        ]
+      }}
       cubejsApi={cubejsApi}
       resetResultSetOnChange={false}
       render={(props) => renderChart({
         ...props,
         chartType: 'pie',
         pivotConfig: {
-  "x": [
-    "DriveDriveRounds.roundsName"
-  ],
-  "y": [
-    "measures"
-  ],
-  "fillMissingDates": true,
-  "joinDateRange": false
-}
+          "x": [
+            "DriveDriveRounds.roundsName"
+          ],
+          "y": [
+            "measures"
+          ],
+          "fillMissingDates": true,
+          "joinDateRange": false
+        }
       })}
     />
   );
