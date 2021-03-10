@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Menu,
-  MenuItem,
-  makeStyles
-} from '@material-ui/core';
+import { Button, Menu, MenuItem, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import Auth from '../../../auth';
 
@@ -51,7 +46,7 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
   const handlePopClose = () => {
     setAnchorElPop(null);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -67,12 +62,17 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
       link.remove();
     });
   }
+  function eligibleToShortlisted(drive) {
+    DriveService.eligibleToShortlisted(drive.id).then(res => {
+      console.log('Shortlisted all the eligible students!', res);
+    });
+  }
 
   const deleteDrive = id => {
     console.log('Student in func : ' + id);
     DriveService.deleteDrive({ id: id })
       .then(res => {
-        console.log('in Result  : ' , res);
+        console.log('in Result  : ', res);
         setPosts([...res.data]);
       })
       .catch(error => {
@@ -129,40 +129,43 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
       .catch(error => {
         if (error.response) {
           // Request made and server responded
-          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+          const data = error.response.data
+            ? JSON.stringify(error.response.data)
+            : 'Error!';
           const statuscode = error.response.status;
           switch (statuscode) {
             case 400:
-              console.log(data)
+              console.log(data);
               setErrorMessage(data);
-              console.log("400 ERRORRR")
+              console.log('400 ERRORRR');
               break;
             case 401:
-              setErrorMessage("Unauthenticated ! Please login to continue "+data);
-              console.log("401 ERRORRR")
+              setErrorMessage(
+                'Unauthenticated ! Please login to continue ' + data
+              );
+              console.log('401 ERRORRR');
               navigate('/login', { replace: true });
-              break;  
+              break;
             case 403:
-              console.log('403 error! '+data);
-              setErrorMessage("403 Error. Please try again "+data);
+              console.log('403 error! ' + data);
+              setErrorMessage('403 Error. Please try again ' + data);
               break;
             case 500:
-              console.log("500 ERROR "+data);
-              setErrorMessage("Server Error. Please try again "+data);
-              break
+              console.log('500 ERROR ' + data);
+              setErrorMessage('Server Error. Please try again ' + data);
+              break;
             default:
-              console.log("Navin Error "+data);
-              setErrorMessage("New Error, add it to catch block "+data);              
+              console.log('Navin Error ' + data);
+              setErrorMessage('New Error, add it to catch block ' + data);
           }
-          
         } else if (error.request) {
           // The request was made but no response was received
           console.log(error.request);
-          setErrorMessage("Server Error, Please try again");              
+          setErrorMessage('Server Error, Please try again');
         } else {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
-          setErrorMessage("Unknown error, please contact admin!");                      
+          setErrorMessage('Unknown error, please contact admin!');
         }
         setIsError(true);
       });
@@ -212,40 +215,43 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
       .catch(error => {
         if (error.response) {
           // Request made and server responded
-          const data = error.response.data?JSON.stringify(error.response.data):"Error!";
+          const data = error.response.data
+            ? JSON.stringify(error.response.data)
+            : 'Error!';
           const statuscode = error.response.status;
           switch (statuscode) {
             case 400:
-              console.log(data)
+              console.log(data);
               setErrorMessage(data);
-              console.log("400 ERRORRR")
+              console.log('400 ERRORRR');
               break;
             case 401:
-              setErrorMessage("Unauthenticated ! Please login to continue "+data);
-              console.log("401 ERRORRR")
+              setErrorMessage(
+                'Unauthenticated ! Please login to continue ' + data
+              );
+              console.log('401 ERRORRR');
               navigate('/login', { replace: true });
-              break;  
+              break;
             case 403:
-              console.log('403 error! '+data);
-              setErrorMessage("403 Error. Please try again "+data);
+              console.log('403 error! ' + data);
+              setErrorMessage('403 Error. Please try again ' + data);
               break;
             case 500:
-              console.log("500 ERROR "+data);
-              setErrorMessage("Server Error. Please try again "+data);
-              break
+              console.log('500 ERROR ' + data);
+              setErrorMessage('Server Error. Please try again ' + data);
+              break;
             default:
-              console.log("Navin Error "+data);
-              setErrorMessage("New Error, add it to catch block "+data);              
+              console.log('Navin Error ' + data);
+              setErrorMessage('New Error, add it to catch block ' + data);
           }
-          
         } else if (error.request) {
           // The request was made but no response was received
           console.log(error.request);
-          setErrorMessage("Server Error, Please try again");              
+          setErrorMessage('Server Error, Please try again');
         } else {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
-          setErrorMessage("Unknown error, please contact admin!");                      
+          setErrorMessage('Unknown error, please contact admin!');
         }
         setIsError(true);
       });
@@ -275,17 +281,15 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
         >
           Edit
         </MenuItem>
-          <NavLink
-            className={classes.blackColor}
-            activeClassName="is-active"
-            to={{
-              pathname: '/employee/afterdrive/' + row.id
-            }}
-          >
-        <MenuItem>
-            Details
-        </MenuItem>
-          </NavLink>
+        <NavLink
+          className={classes.blackColor}
+          activeClassName="is-active"
+          to={{
+            pathname: '/employee/afterdrive/' + row.id
+          }}
+        >
+          <MenuItem>Details</MenuItem>
+        </NavLink>
         <MenuItem
           onClick={() => {
             downloadEligible(row);
@@ -336,6 +340,14 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
           }}
         >
           Delete
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            eligibleToShortlisted(row);
+            handleClose();
+          }}
+        >
+          Shortlist all eligible students
         </MenuItem>
       </Menu>
 

@@ -83,7 +83,7 @@ export default function InteractiveList() {
                   <ListItem key={index}>
                     <ListItemText primary={highlightReviews(review)} />
                   </ListItem>
-                  <Divider style={{ marginLeft: 10, marginRight: 10}} />
+                    {reviews[index+1] ? <Divider style={{ marginLeft: 10, marginRight: 10}} /> : null}
                   </>
                 ))}
               </List>
