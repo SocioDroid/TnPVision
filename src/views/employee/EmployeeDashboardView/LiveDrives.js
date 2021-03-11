@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles } from '@material-ui/core';
+import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles, CardActionArea } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
@@ -88,6 +88,7 @@ const EligibleDrives = ({ className, ...rest }) => {
           return (
             <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
                 <Card className={clsx(classes.root, className)} {...rest} onClick={() => navigate('/employee/drive/' + drive.id, {replace:true})}>
+                <CardActionArea>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
                       <Grid item sm={8} xs={10}>
@@ -159,6 +160,7 @@ const EligibleDrives = ({ className, ...rest }) => {
                           </Typography>
                       </Grid>
                   </CardContent>
+                  </CardActionArea>
                 </Card>
             </Grid>
           );
