@@ -44,6 +44,12 @@ class DriveService {
     addDriveInterviewers(id,data){
         return http.patch(`/api/drive/${id}/interviewer/`, data)
     }
+    downloadEligible(id){
+        return http.get(`/api/drive/${id}/eligible/`)
+    }
+    eligibleToShortlisted(id){
+        return http.get(`/api/drive/${id}/eligibletoshortlisted/`)
+    }
 }
 
 export default new DriveService();
