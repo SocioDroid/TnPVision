@@ -12,10 +12,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    maxWidth: 752
+    maxWidth: 752,
   },
   demo: {
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    height: 369,
   },
   title: {
     margin: theme.spacing(4, 0, 2)
@@ -34,7 +35,7 @@ export default function InteractiveList() {
       review,
       /(?<=<green>)(.*?)(?=<\/green>)/g,
       (match, i) => (
-        <Tooltip title="Positve Point">
+        <Tooltip title="Positve Point">       
           <span style={{ color: 'green' }} key={match + i}>
             {match}
           </span>
@@ -71,7 +72,7 @@ export default function InteractiveList() {
     return (
       <div>
         <Typography variant="h3" color="primary">
-          Reviews received
+          Reviews Received
         </Typography>
         <Divider style={{ margin: 10 }} />
         <Grid container spacing={2}>
