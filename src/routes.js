@@ -24,10 +24,12 @@ import EmployeeAccountView from './views/employee/EmployeeAccountView';
 import InterviewerAccountView from './views/Interviewer/InterviewerAccountView'
 import AfterDriveView from './views/drive/DriveUpload/AfterDriveUpload';
 import StudentDriveView from './views/drive/StudentDriveView';
-import EmployeeDriveView from './views/drive/EmployeeDriveView'
-import InterviewerDrive from './views/Interviewer/InterviewerDashboardView/InterviewerDrive'
-import StudentInformation from './views/Interviewer/InterviewerDashboardView/StudentInformation'
-import Index from "./cube/index"
+import EmployeeDriveView from './views/drive/EmployeeDriveView';
+import InterviewerDrive from './views/Interviewer/InterviewerDashboardView/InterviewerDrive';
+import StudentInformation from './views/Interviewer/InterviewerDashboardView/StudentInformation';
+import EligibileDrive from './views/student/StudentDashboardView/EligibleDrives';
+import VolunteerDrive from './views/student/StudentDashboardView/VolunteeringDrives';
+import Index from "./cube/index";
 import ExplorePage from './cube/pages/ExplorePage';
 import DashboardPage from './cube/pages/DashboardPage';
 import App from './cube/App';
@@ -46,6 +48,8 @@ const routes = [
     children: [
       { path: 'account', element: <StudentAccountView /> },
       { path: 'dashboard', element: <StudentDashboardView /> },
+      { path: 'eligibledrive', element: <EligibileDrive /> },
+      { path: 'volunteerdrive', element: <VolunteerDrive /> },
       { path: 'drive/:id', element: <StudentDriveView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> },

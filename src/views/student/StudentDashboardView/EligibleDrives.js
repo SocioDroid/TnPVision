@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
+import { Container, Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
+import Page from '../../../components/controls/Page';
 import StudentService from '../../../services/StudentService';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
@@ -10,9 +11,10 @@ import ProgressBar from '../../../components/controls/ProgressBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%'
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
   },
-
   avatar: {
     backgroundColor: colors.red[600],
     height: 56,
@@ -42,7 +44,6 @@ const EligibleDrives = ({ className, ...rest }) => {
         setDrives(res.data);
         if(res.data.length === 0){
           setEmptyData(true)
-          console.log("empty data"+ emptyData)
          }
       })
       .catch(function(error) {
@@ -52,17 +53,17 @@ const EligibleDrives = ({ className, ...rest }) => {
 
   return drives.length > 0 ?(
     <div>
-      
-      <Typography variant="h3" color="primary">
-        Eligible Drives
-      </Typography>
-      <Divider style={{ margin: 10 }} />
-      <Grid container spacing={3}>
+      <Container maxWidth={false} className={classes.root}>
+        <Typography variant="h3" color="primary">
+          Eligible Drives
+        </Typography>
+        <Divider style={{ margin: 10 }} />
+        <Grid container spacing={3}>
         {drives.map(drive => {
           return (
             <Grid item lg={4} sm={4} xl={4} xs={12} key={drive.id}>
               <a href={'/student/drive/' + drive.id}>
-                <Card className={clsx(classes.root, className)} {...rest}>
+                <Card>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
                       <Grid item sm={8} xs={10}>
@@ -140,6 +141,7 @@ const EligibleDrives = ({ className, ...rest }) => {
           );
         })}
       </Grid>
+      </Container>
     </div>
   ): (!emptyData && <ProgressBar/>);
 };
