@@ -50,6 +50,9 @@ class DriveService {
     eligibleToShortlisted(id){
         return http.get(`/api/drive/${id}/eligibletoshortlisted/`)
     }
+    changeStatus(id, data){
+        return http.post(`/api/drive/${id}/status/`, data)
+    }
 }
 
 export default new DriveService();

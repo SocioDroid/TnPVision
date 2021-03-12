@@ -2,13 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles, CardActionArea } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  colors,
+  Divider,
+  makeStyles,
+  CardActionArea
+} from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
 import DriveService from '../../../services/DriveService';
 import ProgressBar from '../../../components/controls/ProgressBar';
-
+import DriveStatusComponent from '../../../components/DriveStatusComponent'
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%'
@@ -25,8 +36,8 @@ const useStyles = makeStyles(theme => ({
   differenceValue: {
     marginRight: theme.spacing(1)
   },
-  text:{
-    color: "#ffffff",
+  text: {
+    color: '#ffffff'
   }
 }));
 
@@ -39,20 +50,18 @@ const EligibleDrives = ({ className, ...rest }) => {
       value
     );
 
-  function filterDrive(d){
-    for(var i = 0; i<d.length; i++)
-    {
+  function filterDrive(d) {
+    for (var i = 0; i < d.length; i++) {
       const date1 = new Date(d[i].date);
       const date2 = new Date();
-      const diffDays = date1.getDate() - date2.getDate(); 
+      const diffDays = date1.getDate() - date2.getDate();
 
-      console.log(diffDays + " days");
-      if (diffDays <= 1000){
-        console.log("Valid", d[i]);
+      console.log(diffDays + ' days');
+      if (diffDays <= 1000) {
+        console.log('Valid', d[i]);
         continue;
-      }      
-      else{
-        console.log("Invalid", d[i]);
+      } else {
+        console.log('Invalid', d[i]);
         delete d[i];
       }
     }
@@ -60,7 +69,7 @@ const EligibleDrives = ({ className, ...rest }) => {
     //console.log("print=====")
     setDrives(d);
   }
-  
+
   useEffect(() => {
     DriveService.getAllDrives()
       .then(res => {
@@ -73,12 +82,11 @@ const EligibleDrives = ({ className, ...rest }) => {
         setDrives(false);
       });
   }, []);
-  console.log(drives, "Drives : ");
+  console.log(drives, 'Drives : ');
   const navigate = useNavigate();
 
-  return drives.length > 0 ?(
+  return drives.length > 0 ? (
     <div>
-      
       <Typography variant="h3" color="primary">
         Live Drives
       </Typography>
@@ -87,7 +95,13 @@ const EligibleDrives = ({ className, ...rest }) => {
         {drives.map(drive => {
           return (
             <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
-                <Card className={clsx(classes.root, className)} {...rest} onClick={() => navigate('/employee/drive/' + drive.id, {replace:true})}>
+              <Card
+                className={clsx(classes.root, className)}
+                {...rest}
+                onClick={() =>
+                  navigate('/employee/drive/' + drive.id, { replace: true })
+                }
+              >
                 <CardActionArea>
                   <CardContent>
                     <Grid container justify="space-between" spacing={3}>
@@ -110,15 +124,12 @@ const EligibleDrives = ({ className, ...rest }) => {
                           {drive.employment_type}
                         </Typography>
                       </Grid>
-                     
-                      <Grid item xs={12} sm >
+
+                      <Grid item xs={12} sm>
                         <Avatar className={classes.avatar}>
-                        <Typography
-                          className={classes.text}
-                          variant="h3"
-                        >
-                          {drive.company.name[0].toUpperCase()}
-                        </Typography>
+                          <Typography className={classes.text} variant="h3">
+                            {drive.company.name[0].toUpperCase()}
+                          </Typography>
                         </Avatar>
                       </Grid>
                     </Grid>
@@ -149,25 +160,43 @@ const EligibleDrives = ({ className, ...rest }) => {
                         {numberFormat(drive.max_salary)}
                       </Typography>
                     </Box>
-                    <Grid item>
-                      <br/>
+                    <br/>
+                    <Grid item container>
+                      <Grid item xs={6}>
                         <Typography
-                            color="textSecondary"
-                            gutterBottom
-                            variant="h6"
-                          >
-                            {moment (new Date(drive.date)).format("DD/MM/YYYY hh:mm A")}
-                          </Typography>
+                          color="textSecondary"
+                          gutterBottom
+                          variant="h6"
+                        >
+                          {moment(new Date(drive.date)).format(
+                            'DD/MM/YYYY hh:mm A'
+                          )}
+                        </Typography>
                       </Grid>
+                      <Grid item xs={3}>
+                        
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography
+                          color="textSecondary"
+                          gutterBottom
+                          variant="h6"
+                        >
+                          <DriveStatusComponent status={drive.status}/>
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </CardContent>
-                  </CardActionArea>
-                </Card>
+                </CardActionArea>
+              </Card>
             </Grid>
           );
         })}
       </Grid>
     </div>
-  ): <ProgressBar/>;
+  ) : (
+    <ProgressBar />
+  );
 };
 
 EligibleDrives.propTypes = {
@@ -175,5 +204,3 @@ EligibleDrives.propTypes = {
 };
 
 export default EligibleDrives;
-
-

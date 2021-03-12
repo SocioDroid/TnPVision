@@ -6,7 +6,7 @@ import { Box, Card, Button, makeStyles } from '@material-ui/core';
 import DriveService from '../../../services/DriveService';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 import MaterialTable from 'material-table'
-
+import DriveStatusComponent from '../../../components/DriveStatusComponent'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -213,6 +213,7 @@ const Results = ({ className, ...rest }) => {
                 { title: 'Tenth', field: 'tenth' },
                 { title: 'Twelth', field: 'twelth' },
                 { title: 'Diploma', field: 'diploma' },
+                { title: 'Status', field: 'status', lookup: { "completed": "completed", "live": "live", "inactive": "inactive", "paused": "paused"}, render: rowData => <DriveStatusComponent status={rowData.status}/> },
                 { title: 'Actions', field: 'action', filtering: false, render: rowData => <DriveMenuButton setIsEdited={setIsEdited} goToEdit={goToEdit} row={rowData} setPosts={setPosts} />, }
               ]}
               data={posts}
