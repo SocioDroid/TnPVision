@@ -53,6 +53,12 @@ const useStyles = makeStyles(theme => ({
   },
   disabledButton: {
         backgroundColor: "#21b6ae",
+  },
+  button: {
+    "&:disabled": {
+      backgroundColor: "green",
+      color: "white"
+    }
   }
 }));
 
@@ -146,8 +152,8 @@ export default function StudentDriveView() {
                 {isApplied ? (
                   <Button
                     variant="contained"
-                    disabled                    
-                    classes={{ disabled: classes.disabledButton }}
+                    disabled
+                    className={classes.button}                    
                     endIcon={<CheckIcon />}
                   >
                     
