@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
   Grid,
   Typography,
   colors,
   Divider,
   makeStyles,
-  CardActionArea
 } from '@material-ui/core';
-import Icon from '@mdi/react';
-import { mdiCurrencyInr } from '@mdi/js';
-import moment from 'moment';
+
 import DriveService from '../../../services/DriveService';
 import ProgressBar from '../../../components/controls/ProgressBar';
-import DriveStatusComponent from '../../../components/DriveStatusComponent'
+import DriveCard from '../../../components/DriveCardComponent'
+
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%'
@@ -65,8 +58,7 @@ const EligibleDrives = ({ className, ...rest }) => {
         delete d[i];
       }
     }
-    //console.table(d);
-    //console.log("print=====")
+   
     setDrives(d);
   }
 
@@ -95,100 +87,7 @@ const EligibleDrives = ({ className, ...rest }) => {
         {drives.map(drive => {
           return (
             <Grid item lg={3} sm={4} xl={3} xs={12} key={drive.id}>
-              <Card
-                className={clsx(classes.root, className)}
-                {...rest}
-                onClick={() =>
-                  navigate('/employee/drive/' + drive.id, { replace: true })
-                }
-              >
-                <CardActionArea>
-                  <CardContent>
-                    <Grid container justify="space-between" spacing={3}>
-                      <Grid item sm={8} xs={10}>
-                        <Typography
-                          color="textSecondary"
-                          gutterBottom
-                          variant="h6"
-                        >
-                          {drive.company.name}
-                        </Typography>
-                        <Typography noWrap color="textPrimary" variant="h3">
-                          {drive.jobtitle}
-                        </Typography>
-                        <Typography
-                          color="textSecondary"
-                          gutterBottom
-                          variant="h6"
-                        >
-                          {drive.employment_type}
-                        </Typography>
-                      </Grid>
-
-                      <Grid item xs={12} sm>
-                        <Avatar className={classes.avatar}>
-                          <Typography className={classes.text} variant="h3">
-                            {drive.company.name[0].toUpperCase()}
-                          </Typography>
-                        </Avatar>
-                      </Grid>
-                    </Grid>
-                    <Box mt={2} display="flex" alignItems="center">
-                      <Icon
-                        path={mdiCurrencyInr}
-                        title="Salary Min"
-                        size={0.8}
-                        color="green"
-                      />
-                      <Typography
-                        className={classes.differenceValue}
-                        variant="body2"
-                      >
-                        {numberFormat(drive.min_salary)}
-                      </Typography>
-                      <Typography>-</Typography>
-                      <Icon
-                        path={mdiCurrencyInr}
-                        title="Salary Min"
-                        size={0.8}
-                        color="green"
-                      />
-                      <Typography
-                        className={classes.differenceValue}
-                        variant="body2"
-                      >
-                        {numberFormat(drive.max_salary)}
-                      </Typography>
-                    </Box>
-                    <br/>
-                    <Grid item container>
-                      <Grid item xs={6}>
-                        <Typography
-                          color="textSecondary"
-                          gutterBottom
-                          variant="h6"
-                        >
-                          {moment(new Date(drive.date)).format(
-                            'DD/MM/YYYY'
-                          )}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography
-                          color="textSecondary"
-                          gutterBottom
-                          variant="h6"
-                        >
-                          <DriveStatusComponent status={drive.status}/>
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <DriveCard drive={drive} path={'/employee/drive/'}/>
             </Grid>
           );
         })}

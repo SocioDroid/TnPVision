@@ -141,7 +141,7 @@ const Interviewerdrive = ({ className, Drive ,...rest }) => {
             </Grid>
 
             <br/>
-              <InterviewerRoundView rounds = {drive.rounds}/>
+              <InterviewerRoundView driveId={drive.id} rounds = {drive.rounds}/>
           </CardContent>
         </Card>
 

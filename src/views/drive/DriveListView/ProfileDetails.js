@@ -273,6 +273,7 @@ export default function ProfileDetails(props) {
 
   //--------------------------------------------------------general----------------------------------------------------------------------------------------------------------
   const handleSubmit = e => {
+    console.log("Herers")
     e.preventDefault();
 
     if (validate()) {
@@ -344,6 +345,9 @@ export default function ProfileDetails(props) {
         });
 
       //console.log('updated values', data);
+    }
+    else{
+      alert("Invalid Details / Fill all the fields");
     }
   };
   useEffect(() => {

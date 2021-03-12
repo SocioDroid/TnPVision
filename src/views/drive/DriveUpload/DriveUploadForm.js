@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useNavigate} from 'react-router-dom';
-import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles, Avatar } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardContent,
+  Button,
+  Box,
+  Grid,
+  Typography,
+  MenuItem,
+  Slider,
+  makeStyles,
+  Avatar
+} from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -26,8 +37,7 @@ import EmployeeServices from '../../../services/EmployeeServices';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import ReactHTMLParser from 'react-html-parser'
-
+import ReactHTMLParser from 'react-html-parser';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 
 function debounce(func, wait) {
   let timeout;
-  return function (...args) {
+  return function(...args) {
     const context = this;
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -84,13 +94,13 @@ const driveType = [
 ];
 
 export default function Basic(props) {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const classes = useStyles();
   const [interviewerEmails, setInterviewerEmails] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
   const [coordinators, setCoordinators] = useState([]);
 
-  const [txt, setTxt] = useState("");
+  const [txt, setTxt] = useState('');
 
   const [selectedDate, handleDateChange] = useState(
     new Date('2018-01-01T00:00:00.000Z')
@@ -207,7 +217,7 @@ export default function Basic(props) {
     let active2 = true;
     (async () => {
       const response = await EmployeeServices.searchEmployee(inputValue2);
-      
+
       if (active2) {
         //console.log(response.data);
         setOptions2(response.data);
@@ -237,7 +247,7 @@ export default function Basic(props) {
     let active3 = true;
 
     (async () => {
-      const response = await await CompanyService.searchCompany(inputValue3)
+      const response = await await CompanyService.searchCompany(inputValue3);
 
       if (active3) {
         //console.log("Active: ",response.data);
@@ -260,7 +270,6 @@ export default function Basic(props) {
   //   if (fieldValues === values)
   //     return Object.values(temp).every(x => x === "")
   // }
-
 
   //-----------------------------------------------------------------------------------------------------------------------------------------------
   return (
@@ -390,6 +399,12 @@ export default function Basic(props) {
                               return <div>{option.name}</div>;
                             }}
                           />
+                          <Button
+                            variant="contained"
+                            style={{ color: 'black' }}
+                          >
+                            Testing
+                          </Button>
                         </Box>
                       </Grid>
                       <Grid item xs={6}>
@@ -413,28 +428,27 @@ export default function Basic(props) {
                       </Grid>
                     </Grid>
 
-                    
                     <CKEditor
-                        editor={ ClassicEditor }
-                        data=""
-                        // onReady={ editor => {                            
-                        //     console.log( 'Editor is ready to use!', editor );
-                        // } }                                                
-                        onChange={ ( event, editor ) => {
-                            config.fillEmptyBlocks = false;
-                            const data = editor.getData();
-                            setTxt(data);
-                            //console.log( data );
-                        } }
-                        
-                        // onBlur={ ( event, editor ) => {
-                        //     console.log( 'Blur.', editor );
-                        // } }
-                        // onFocus={ ( event, editor ) => {
-                        //     console.log( 'Focus.', editor );
-                        // } }
+                      editor={ClassicEditor}
+                      data=""
+                      // onReady={ editor => {
+                      //     console.log( 'Editor is ready to use!', editor );
+                      // } }
+                      onChange={(event, editor) => {
+                        config.fillEmptyBlocks = false;
+                        const data = editor.getData();
+                        setTxt(data);
+                        //console.log( data );
+                      }}
+
+                      // onBlur={ ( event, editor ) => {
+                      //     console.log( 'Blur.', editor );
+                      // } }
+                      // onFocus={ ( event, editor ) => {
+                      //     console.log( 'Focus.', editor );
+                      // } }
                     />
-                    <div>{txt ? ReactHTMLParser(txt) : ""}</div>
+                    {/* <div>{txt ? ReactHTMLParser(txt) : ''}</div> */}
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
