@@ -37,9 +37,9 @@ import EmployeeServices from '../../../services/EmployeeServices';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import ReactHTMLParser from 'react-html-parser';
 import Popup from '../../../components/controls/Popup';
 import ProfileDetails from '../CompanyListView/ProfileDetails';
+import { setEmitFlags } from 'typescript';
 
 
 const useStyles = makeStyles(theme => ({
@@ -113,6 +113,7 @@ export default function Basic(props) {
   const [posts, setPosts] = useState([]);
 
   const [salaryHideChange, setSalaryHideChange] = useState(false);
+  const [flag, setFlag] = useState(true);
 
   const handleSalaryHideChange = event => {
     setSalaryHideChange(!salaryHideChange);
@@ -135,6 +136,7 @@ export default function Basic(props) {
   const getAllCompanies = () => {
     CompanyService.getAllCompanies()
       .then(res => {
+        setFlag(false)
         setPosts(res.data);
       })
       .catch(err => {
@@ -143,8 +145,11 @@ export default function Basic(props) {
   };
 
   useEffect(props => {
-    getAllCompanies();
-  }, []);
+    if(flag){
+      console.log("in if of get companies")
+      getAllCompanies();
+    }
+  }, [flag]);
 
   //---------------------------------------------------Volunteers Search--------------------------------------------------------------------------
   const [options1, setOptions1] = useState([]);
@@ -236,7 +241,8 @@ export default function Basic(props) {
     setRecordForEdit(null);
     setOpenPopup(false);
     console.log('From add or edit');
-    getAllCompanies();
+    setFlag(true)
+    // getAllCompanies();
   };
   const openInPopup = item => {
     setRecordForEdit(item);
@@ -269,7 +275,7 @@ export default function Basic(props) {
         setOptions3(response.data);
       }
     })();
-  }, [inputSearch3, inputValue3]);
+  }, [inputSearch3, inputValue3, flag]);
 
   //-----------------------------------------------------------------------------------------------------------------------------------------------
   return (
@@ -422,7 +428,7 @@ export default function Basic(props) {
                         </Box>
                       </Grid>
                     </Grid>                    
-                    <CKEditor
+                    {/* <CKEditor
                         editor={ ClassicEditor }
                         data=""                                                           
                         onChange={ ( event, editor ) => {
@@ -442,7 +448,7 @@ export default function Basic(props) {
                         const data = editor.getData();
                         console.log({ event, editor, data });
                       }}
-                    />           
+                    />            */}
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
