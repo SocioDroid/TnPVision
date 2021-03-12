@@ -45,7 +45,7 @@ class DriveService {
         return http.patch(`/api/drive/${id}/interviewer/`, data)
     }
     downloadEligible(id){
-        return http.get(`/api/drive/${id}/eligible/`)
+        return http.get(`/api/drive/${id}/eligible/`, {responseType: 'blob'})
     }
     eligibleToShortlisted(id){
         return http.get(`/api/drive/${id}/eligibletoshortlisted/`)
