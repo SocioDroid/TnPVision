@@ -26,7 +26,8 @@ import EmployeeServices from '../../../services/EmployeeServices';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import ReactHTMLParser from 'react-html-parser'
+import Popup from '../../../components/controls/Popup';
+import ProfileDetails from '../CompanyListView/ProfileDetails';
 
 
 const useStyles = makeStyles(theme => ({
@@ -171,7 +172,6 @@ export default function Basic(props) {
       const item = volunteers1[i].id;
       AllVolunteers[i] = item;
     }
-    //console.log("All Volunteers: ",AllVolunteers)
   }
   useEffect(() => {
     let active1 = true;
@@ -201,7 +201,6 @@ export default function Basic(props) {
       const item = coordinators2[i].id;
       AllCoordinators[i] = item;
     }
-    console.log('All Coordinators: ', AllCoordinators);
   }
   useEffect(() => {
     let active2 = true;
@@ -209,11 +208,28 @@ export default function Basic(props) {
       const response = await EmployeeServices.searchEmployee(inputValue2);
       
       if (active2) {
-        //console.log(response.data);
         setOptions2(response.data);
       }
     })();
   }, [inputSearch2, inputValue2]);
+  //---------------------------------------------------------Company Add-----------------------------------------------------------------------
+  const [openPopup, setOpenPopup] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [recordForEdit, setRecordForEdit] = useState(null);
+
+  const addOrEdit = (company, resetForm) => {
+    if (company.id === 0) console.log('Inserted');
+    else console.log('Edited');
+    resetForm();
+    setRecordForEdit(null);
+    setOpenPopup(false);
+    console.log('From add or edit');
+    getAllCompanies();
+  };
+  const openInPopup = item => {
+    setRecordForEdit(item);
+    setOpenPopup(true);
+  };
 
   //---------------------------------------------------------Company Search--------------------------------------------------------------------
   const [inputValue3, setInputValue3] = useState('');
@@ -231,36 +247,17 @@ export default function Basic(props) {
   var AllComapnies = '';
   function handleResult3() {
     AllComapnies = company3.id;
-    //console.log("All Comapnies: ",AllComapnies)
   }
   useEffect(() => {
     let active3 = true;
 
     (async () => {
       const response = await await CompanyService.searchCompany(inputValue3)
-
       if (active3) {
-        //console.log("Active: ",response.data);
         setOptions3(response.data);
       }
     })();
   }, [inputSearch3, inputValue3]);
-
-  // const validate = (fieldValues = values) => {
-  //   let temp = { ...errors }
-  //   if ('first_name' in fieldValues)
-  //     temp.first_name = fieldValues.first_name ? "" : "This field is required."
-  //   if ('last_name' in fieldValues)
-  //     temp.last_name = fieldValues.last_name ? "" : "This field is required."
-  //   if ('email' in fieldValues)
-  //     temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
-  //   setErrors({
-  //     ...temp
-  //   })
-  //   if (fieldValues === values)
-  //     return Object.values(temp).every(x => x === "")
-  // }
-
 
   //-----------------------------------------------------------------------------------------------------------------------------------------------
   return (
@@ -369,8 +366,7 @@ export default function Basic(props) {
                             onChange={(event, newValue) => {
                               console.log('selected value', newValue);
                               setCompany3(newValue);
-                            }}
-                            // onSelect={handleResult3}
+                            }}                           
                             renderInput={params => (
                               <MaterialUiTextField
                                 {...params}
@@ -390,6 +386,8 @@ export default function Basic(props) {
                               return <div>{option.name}</div>;
                             }}
                           />
+                          <br/>
+                          <Button variant="contained" color="primary" onClick={() => { setOpenPopup(true); setIsUpdating(false); }}>Add New Company</Button>
                         </Box>
                       </Grid>
                       <Grid item xs={6}>
@@ -411,30 +409,28 @@ export default function Basic(props) {
                           />
                         </Box>
                       </Grid>
-                    </Grid>
-
-                    
+                    </Grid>                    
                     <CKEditor
                         editor={ ClassicEditor }
-                        data=""
-                        // onReady={ editor => {                            
-                        //     console.log( 'Editor is ready to use!', editor );
-                        // } }                                                
+                        data=""                                                           
                         onChange={ ( event, editor ) => {
                             config.fillEmptyBlocks = false;
                             const data = editor.getData();
-                            setTxt(data);
-                            //console.log( data );
-                        } }
-                        
-                        // onBlur={ ( event, editor ) => {
-                        //     console.log( 'Blur.', editor );
-                        // } }
-                        // onFocus={ ( event, editor ) => {
-                        //     console.log( 'Focus.', editor );
-                        // } }
-                    />
-                    <div>{txt ? ReactHTMLParser(txt) : ""}</div>
+                            setTxt(data);                            
+                        } }                      
+                    />     
+                    <CKEditor
+                      editor={ClassicEditor}
+                      data="<p>Hello from CKEditor 5!</p>"
+                      onInit={editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log("Editor is ready to use!", editor);
+                      }}
+                      onChange={(event, editor) => {
+                        const data = editor.getData();
+                        console.log({ event, editor, data });
+                      }}
+                    />           
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -523,7 +519,6 @@ export default function Basic(props) {
                           </MuiPickersUtilsProvider>
                         </Box>
                       </Grid>
-                      {/* <Grid container spacing={6}> */}
                       <Grid item xs={4}>
                         <Box
                           margin={2}
@@ -693,7 +688,6 @@ export default function Basic(props) {
                             loading={loading1}
                             inputValue={inputValue1}
                             includeInputInList
-                            //disableOpenOnFocus
                             onChange={(event, newValue) => {
                               setVolunteers1(newValue);
                             }}
@@ -740,7 +734,6 @@ export default function Basic(props) {
                             loading={loading2}
                             inputValue={inputValue2}
                             includeInputInList
-                            //disableOpenOnFocus
                             onChange={(event, newValue) => {
                               setCoordinators2(newValue);
                               console.log(newValue);
@@ -803,49 +796,6 @@ export default function Basic(props) {
                         </Box>
                       </Grid>
                     </Grid>
-
-                    {/* <Box margin={1} paddingBottom={2}>
-                                                <MultipleValueTextInput
-                                                        style={{height:"50px", color:"grey"}}
-                                                        onItemAdded={(item, allItems) => {setVolunteers(allItems)}}
-                                                        onItemDeleted={(item, allItems) => {setVolunteers(allItems)}}
-                                                        label="Volunteers"
-                                                        name="assigned_volunteers"
-                                                        placeholder="  Enter Volunteers"
-                                                        type="number"
-                                                />
-                                            </Box>
-                                            <Box margin={1} paddingBottom={2}>
-                                                    <MultipleValueTextInput
-                                                            style={{height:"50px", color:"grey"}}
-                                                            onItemAdded={(item, allItems) => {setCoordinators(allItems)}}
-                                                            onItemDeleted={(item, allItems) => {setCoordinators(allItems)}}
-                                                            label="Coordinators"
-                                                            name="assigned_coordinators"
-                                                            placeholder="  Enter Coordinators"
-                                                            type="number"
-                                                    />
-                                            </Box> */}
-                    {/* <Grid item xs={6}>
-                                            <Box margin={1} paddingBottom={2}>
-                                                <Field
-                                                    name="companytest"
-                                                    component={Autocomplete}
-                                                    options={posts}
-                                                    getOptionLabel={option => option.name}
-                                                    fullWidth
-                                                    renderInput={(params) => (
-                                                        <MuiTextField
-                                                        {...params}
-                                                        helperText="Add Company"
-                                                        label="Comapny Name"
-                                                        variant="outlined"
-                                                        />
-                                                    )}
-                                                /> 
-                                                <br/>
-                                            </Box>
-                                        </Grid> */}
                     <Box margin={1}>
                       <Typography variant="body1">
                         Enter Rounds Information
@@ -933,6 +883,13 @@ export default function Basic(props) {
         </Grid>
         <Grid item xs={false} sm={1} />
       </Grid>
+      <Popup
+        title="Company Form"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      >
+          <ProfileDetails recordForEdit={recordForEdit} addOrEdit={addOrEdit} isUpdating={isUpdating} />
+      </Popup>
     </div>
   );
 }
