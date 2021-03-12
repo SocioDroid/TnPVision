@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Container, Avatar, Box, Card, CardContent, Grid, Typography, colors, Divider, makeStyles} from '@material-ui/core';
-import Page from '../../../components/controls/Page';
 import StudentService from '../../../services/StudentService';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';

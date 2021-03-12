@@ -7,6 +7,7 @@ import DriveService from '../../../services/DriveService';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 import MaterialTable from 'material-table'
 import DriveStatusComponent from '../../../components/DriveStatusComponent'
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -203,7 +204,7 @@ const Results = ({ className, ...rest }) => {
                 { title: 'Job Title', field: 'jobtitle' },
                 { title: 'Location', field: 'drive_location' },
                 {
-                  title: 'Drive Date', field: 'date', dateSetting: { locale: 'en-US' }, type: 'datetime', cellStyle: {
+                  title: 'Drive Date', field: 'date', render: rowData => moment(rowData.date).format('DD MMM, YYYY'), cellStyle: {
                     width: 250,
                     maxWidth: 250,
                   }

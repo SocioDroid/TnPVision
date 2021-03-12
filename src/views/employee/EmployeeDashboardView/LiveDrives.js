@@ -169,7 +169,7 @@ const EligibleDrives = ({ className, ...rest }) => {
                           variant="h6"
                         >
                           {moment(new Date(drive.date)).format(
-                            'DD/MM/YYYY hh:mm A'
+                            'DD/MM/YYYY'
                           )}
                         </Typography>
                       </Grid>
