@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, IconButton } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import RoundService from '../../../services/RoundService';
 import swal from 'sweetalert';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import DeleteIcon from '@material-ui/icons/Delete';
+import UserContext from '../../../UserContext';
 
 const useStyles = makeStyles({
   root: {
@@ -35,12 +36,14 @@ const useStyles = makeStyles({
 });
 
 export default function RoundSudent(props) {
-  const { students, roundId, round } = props;
+  const { driveId, students, roundId, round, changeUpdated } = props;
   const classes = useStyles();
+  const [flag, setFlag] = useState(Boolean(true));
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const navigate = useNavigate();
-
+  const Context = useContext(UserContext);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -50,47 +53,56 @@ export default function RoundSudent(props) {
     setPage(0);
   };
   const addOrRejectStudent = (roundId, studentId, status) => {
-    // swal({
-    //   title: 'Are you sure?',
-    //   text: 'Once ' + status + ', you will not be able to revert back!',
-    //   icon: 'warning',
-    //   buttons: true,
-    //   dangerMode: true,
-    //   showLoaderOnConfirm: true
-    // }).then(okay => {
-    //   if (okay) {
-    //     setIsActive(true);
-    //     RoundService.addStudentToNextRound(driveId, roundId, {
-    //       student_id: studentId,
-    //       status: status
-    //     })
-    //       .then(res => {
-    //         if (status === 'accepted') changeUpdated(round.number + 1);
-    //         setFlag(true);
-    //         setIsActive(false);
-    //         swal('Student has been ' + status + '!', {
-    //           icon: 'success'
-    //         });
-    //       })
-    //       .catch(res => {
-    //         setIsActive(false);
-    //       });
-    //   }
-    // });
+    swal({
+      title: 'Are you sure?',
+      text: 'Once ' + status + ', you will not be able to revert back!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+
+      showLoaderOnConfirm: true
+    }).then(okay => {
+      if (okay) {
+        Context.value.setIsActive(true);
+        RoundService.addStudentToNextRound(driveId, roundId, {
+          student_id: studentId,
+          status: status
+        })
+          .then(res => {
+            if (status === 'accepted') changeUpdated(round.number + 1);
+            setFlag(true);
+            Context.value.setIsActive(false);
+            swal('Student has been ' + status + '!', {
+              icon: 'success'
+            });
+          })
+          .catch(res => {
+            Context.value.setIsActive(false);
+          });
+      }
+    });
   };
   const deleteStudentFromRound = (roundId, studentId) => {
-    // RoundService.deleteStudentFromRound(driveId, roundId, studentId)
-    //   .then(res => {
-    //     console.log('Done');
-    //     setFlag(true);
-    //   })
-    //   .catch(res => {});
-    // console.log('delet clicked');
+    Context.value.setIsActive(true);
+    RoundService.deleteStudentFromRound(driveId, roundId, studentId)
+      .then(res => {
+        console.log('Done');
+        changeUpdated(round.number + 1);
+        setFlag(true);
+        Context.value.setIsActive(false);
+      })
+      .catch(res => {});
+    console.log('delet clicked');
   };
   return (
     <Paper className={classes.root}>
       <MaterialTable
-        onRowClick={(event, rowData)=>{navigate(`/interviewer/studentinformation/${rowData.id}/${roundId}/`, { replace: true });}}
+        onRowClick={(event, rowData) => {
+          navigate(
+            `/interviewer/studentinformation/${rowData.id}/${roundId}/`,
+            { replace: true }
+          );
+        }}
         style={{
           fontSize: '14px'
         }}
@@ -151,12 +163,14 @@ export default function RoundSudent(props) {
               <React.Fragment>
                 <Tooltip title="Qualified for next round">
                   <IconButton
-                    onClick={() => {
+                    onClick={event => {
                       addOrRejectStudent(
                         round.number + 1,
                         rowData.id,
                         'accepted'
                       );
+                      event.stopPropagation();
+
                     }}
                   >
                     <NavigateNextIcon />
@@ -164,8 +178,9 @@ export default function RoundSudent(props) {
                 </Tooltip>
                 <Tooltip title="Rejected">
                   <IconButton
-                    onClick={() => {
+                    onClick={(event) => {
                       addOrRejectStudent(round.number, rowData.id, 'rejected');
+                      event.stopPropagation();
                     }}
                   >
                     <CloseIcon />
@@ -173,8 +188,9 @@ export default function RoundSudent(props) {
                 </Tooltip>
                 <Tooltip title="Delete student from round">
                   <IconButton
-                    onClick={() => {
+                    onClick={(event) => {
                       deleteStudentFromRound(round.number, rowData.id);
+                      event.stopPropagation();
                     }}
                   >
                     <DeleteIcon />

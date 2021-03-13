@@ -51,10 +51,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SimpleTabs(props) {
-  const { rounds } = props;
+  const { driveId, rounds } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [roundStudents, setRoundStudents] = useState([]);
+  const [roundNumber, setRoundNumber] = useState(0);
+
+  const changeUpdated = roundNumber => {
+    console.log('changeUpdated before', roundNumber);
+    setRoundNumber(roundNumber);
+    console.log('changeUpdated after', roundNumber);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -81,7 +88,7 @@ export default function SimpleTabs(props) {
         setRoundStudents(a);
       });
     });
-  }, [rounds]);
+  }, [rounds, roundNumber]);
 
   if (roundStudents.length > 0) {
     return (
@@ -107,9 +114,11 @@ export default function SimpleTabs(props) {
         {rounds.map((round, index) => (
           <TabPanel value={value} key={index} index={round.number - 1}>
             <RoundStudent
+              driveId={driveId}
               round={round}
               students={roundStudents[index]}
               roundId={round.number}
+              changeUpdated={changeUpdated}
             />
           </TabPanel>
         ))}
