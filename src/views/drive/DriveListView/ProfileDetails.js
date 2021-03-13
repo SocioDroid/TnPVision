@@ -370,18 +370,18 @@ export default function ProfileDetails(props) {
         ...values,
         id: recordForEdit && recordForEdit.id ? recordForEdit.id: "",
         jobtitle: recordForEdit && recordForEdit.jobtitle ? recordForEdit.jobtitle: "",
-        login_time: recordForEdit && recordForEdit.login_time ? recordForEdit.login_time: "",
+        login_time: recordForEdit && recordForEdit.login_time ? recordForEdit.login_time: 0,
         drive_location: recordForEdit && recordForEdit.drive_location ? recordForEdit.drive_location: "",
-        min_salary: recordForEdit && recordForEdit.min_salary ? recordForEdit.min_salary: "",
-        max_salary: recordForEdit && recordForEdit.max_salary ? recordForEdit.max_salary: "",
+        min_salary: recordForEdit && recordForEdit.min_salary ? recordForEdit.min_salary: 0,
+        max_salary: recordForEdit && recordForEdit.max_salary ? recordForEdit.max_salary: 0,
         tenth: recordForEdit && recordForEdit.tenth ? recordForEdit.tenth: "",
         twelth: recordForEdit && recordForEdit.twelth ? recordForEdit.twelth: "",
         diploma: recordForEdit && recordForEdit.diploma ? recordForEdit.diploma: "",
         engineering: recordForEdit && recordForEdit.engineering ? recordForEdit.engineering: "",
         educational_gap: recordForEdit && recordForEdit.educational_gap ? recordForEdit.educational_gap: 0,
         year_down: recordForEdit  && recordForEdit.year_down ? recordForEdit.year_down: 0,
-        live_backlog: recordForEdit && recordForEdit.live_backlog ? recordForEdit.live_backlog: "",
-        dead_backlog: recordForEdit && recordForEdit.dead_backlog ? recordForEdit.dead_backlog: "",
+        live_backlog: recordForEdit && recordForEdit.live_backlog ? recordForEdit.live_backlog: 0,
+        dead_backlog: recordForEdit && recordForEdit.dead_backlog ? recordForEdit.dead_backlog: 0,
         hideSalary: recordForEdit && recordForEdit.hideSalary ? recordForEdit.hideSalary: "",
         company: recordForEdit && recordForEdit.company ? recordForEdit.company: "",
         eligible_branches: recordForEdit && recordForEdit.eligible_branches ? recordForEdit.eligible_branches: "",
@@ -485,17 +485,7 @@ export default function ProfileDetails(props) {
                   variant="outlined"
                   type="text"
                 />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <CKEditor
-                    editor={ ClassicEditor }
-                    data={txt}                                                                
-                    onChange={ ( event, editor ) => {                            
-                        const data = editor.getData();
-                        setTxt(data);                            
-                    } }                       
-                />
-              </Grid>
+              </Grid>              
               <Grid item md={6} xs={12}>
                 <TextField
                   fullWidth
@@ -730,6 +720,17 @@ export default function ProfileDetails(props) {
                 </Grid>
               </MuiPickersUtilsProvider>
             </Grid>
+            <Grid item md={12} xs={12}>
+                <br/>
+                <CKEditor
+                    editor={ ClassicEditor }
+                    data={txt}                                                                
+                    onChange={ ( event, editor ) => {                            
+                        const data = editor.getData();
+                        setTxt(data);                            
+                    } }                       
+                />
+              </Grid>
             <Grid item md={12} xs={12}>
               {roundDetails.map((_, index) => (
                 <div key={index} style={{ padding: 20 }}>

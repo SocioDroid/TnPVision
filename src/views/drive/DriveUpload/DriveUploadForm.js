@@ -418,19 +418,8 @@ export default function Basic(props) {
                             const data = editor.getData();
                             setTxt(data);                            
                         } }                      
-                    />     
-                    <CKEditor
-                      editor={ClassicEditor}
-                      data="<p>Hello from CKEditor 5!</p>"
-                      onInit={editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log("Editor is ready to use!", editor);
-                      }}
-                      onChange={(event, editor) => {
-                        const data = editor.getData();
-                        console.log({ event, editor, data });
-                      }}
-                    />           
+                    /> 
+                          
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -519,7 +508,7 @@ export default function Basic(props) {
                           </MuiPickersUtilsProvider>
                         </Box>
                       </Grid>
-                      <Grid item xs={4}>
+                      {/* <Grid item xs={4}>
                         <Box
                           margin={2}
                           paddingBottom={1}
@@ -540,6 +529,30 @@ export default function Basic(props) {
                             valueLabelDisplay="auto"
                           ></Field>
                         </Box>
+                      </Grid> */}
+                      <Grid item xs={2}>  
+                      <Box margin={1} paddingBottom={0} paddingTop={2}>
+                        <Field
+                          fullWidth
+                          variant="outlined"
+                          component={TextField}
+                          name="min_salary"
+                          type="number"
+                          label="Min Salary"
+                        />   
+                        </Box>                                                            
+                      </Grid>
+                      <Grid item xs={2}>   
+                      <Box margin={1} paddingBottom={0} paddingTop={2}>                                 
+                        <Field
+                          fullWidth
+                          variant="outlined"
+                          component={TextField}
+                          name="max_salary"
+                          type="number"
+                          label="Max Salary"
+                        /> 
+                      </Box>                   
                       </Grid>
                       <Grid item xs={2}>
                         <Box margin={2} paddingBottom={1} paddingTop={1}>
@@ -559,8 +572,7 @@ export default function Basic(props) {
                             />
                           </Tooltip>
                         </Box>
-                      </Grid>
-                      {/* </Grid> */}
+                      </Grid>                     
                     </Grid>
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
@@ -766,8 +778,8 @@ export default function Basic(props) {
                       </Grid>
                       <Grid item xs={12}>
                         <Box margin={1} paddingBottom={2}>
-                          <ReactMultiEmail
-                            placeholder="Input your Email Address"
+                          <ReactMultiEmail                           
+                            placeholder="Input Interviewer's Email Addresses"
                             emails={interviewerEmails}
                             onChange={_emails => {
                               setInterviewerEmails(_emails);
@@ -791,8 +803,8 @@ export default function Basic(props) {
                               );
                             }}
                           />
-                          <h4>react-multi-email value</h4>
-                          <p>{interviewerEmails.join(', ') || 'empty'}</p>
+                          {/* <h4>react-multi-email value</h4>
+                          <p>{interviewerEmails.join(', ') || 'empty'}</p> */}
                         </Box>
                       </Grid>
                     </Grid>
