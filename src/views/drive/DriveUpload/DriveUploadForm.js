@@ -2,18 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useNavigate } from 'react-router-dom';
-import {
-  Card,
-  CardContent,
-  Button,
-  Box,
-  Grid,
-  Typography,
-  MenuItem,
-  Slider,
-  makeStyles,
-  Avatar
-} from '@material-ui/core';
+import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles, Avatar } from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -40,7 +29,8 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import Popup from '../../../components/controls/Popup';
 import ProfileDetails from '../CompanyListView/ProfileDetails';
 import { setEmitFlags } from 'typescript';
-
+import Editor from './Editor';
+import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -436,10 +426,6 @@ export default function Basic(props) {
                             const data = editor.getData();
                             setTxt(data);                            
                         } }                      
-<<<<<<< HEAD
-                    /> 
-                          
-=======
                     />     
                     <CKEditor
                       editor={ClassicEditor}
@@ -453,7 +439,10 @@ export default function Basic(props) {
                         console.log({ event, editor, data });
                       }}
                     />            */}
->>>>>>> 371320bac59599cafaedc1d93f45e65fb9a1b971
+                    <Box margin={1} paddingBottom={2} border={1} borderColor={"#C1C1C1"} borderRadius={5}>
+                      <Editor/>
+                    </Box>
+                    
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
