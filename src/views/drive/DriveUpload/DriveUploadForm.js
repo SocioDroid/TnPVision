@@ -30,7 +30,6 @@ import Popup from '../../../components/controls/Popup';
 import ProfileDetails from '../CompanyListView/ProfileDetails';
 import { setEmitFlags } from 'typescript';
 import Editor from './Editor';
-import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -440,7 +439,7 @@ export default function Basic(props) {
                       }}
                     />            */}
                     <Box margin={1} paddingBottom={2} border={1} borderColor={"#C1C1C1"} borderRadius={5}>
-                      <Editor/>
+                      <Editor/>                      
                     </Box>
                     
                     <Grid container spacing={3}>

@@ -8,6 +8,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 class EditorConvertToHTML extends Component {
   state = {
     editorState: EditorState.createEmpty(),
+    defaultEditorState: EditorState.createEmpty(),
   }
 
   onEditorStateChange = (editorState) => {
@@ -36,24 +37,5 @@ class EditorConvertToHTML extends Component {
     );
   }
 }
-
-// function MyEditor(){
-//     return(
-//         <div>
-//         <Editor
-//           editorState={editorState}
-//           wrapperClassName="demo-wrapper"
-//           editorClassName="demo-editor"
-//           onEditorStateChange={this.onEditorStateChange}          
-//           toolbarClassName="toolbarClassName"
-//         />
-//         <textarea
-//           disabled
-//           value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-//         />
-//         {console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
-//         </div>
-//     )
-// }
 
 export default EditorConvertToHTML; 

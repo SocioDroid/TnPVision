@@ -398,7 +398,7 @@ export default function ProfileDetails(props) {
         description: recordForEdit && recordForEdit.description ? recordForEdit.description : "",
       });
 
-      console.log(values.description);
+      console.log(values.description, "JD by Honey");
     }
   }, [recordForEdit]);
 
