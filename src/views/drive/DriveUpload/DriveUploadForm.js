@@ -12,8 +12,8 @@ import {
   MenuItem,
   Slider,
   makeStyles,
+  Tooltip,
   IconButton,
-   Tooltip,
   Avatar
 } from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
@@ -41,9 +41,9 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import Popup from '../../../components/controls/Popup';
 import ProfileDetails from '../CompanyListView/ProfileDetails';
 import { setEmitFlags } from 'typescript';
-
+import Editor from './Editor';
+import { grey } from '@material-ui/core/colors';
 import AddIcon from '@material-ui/icons/Add';
-
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -241,6 +241,7 @@ export default function Basic(props) {
   const [openPopup, setOpenPopup] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
+  const [jd, setJd] = useState("");
 
   const addOrEdit = (company, resetForm) => {
     if (company.id === 0) console.log('Inserted');
@@ -374,8 +375,8 @@ export default function Basic(props) {
                     </Box>
 
                     <Grid container spacing={3}>
-                      <Grid  item xs={5}>
-                        <Box margin={1} >
+                      <Grid item xs={5}>
+                        <Box margin={1}>
                           <MaterialUiAutocomplete
                             id="combo-box-demo"
                             options={options3}
@@ -412,19 +413,24 @@ export default function Basic(props) {
                               return <div>{option.name}</div>;
                             }}
                           />
-                          <br />                      
+                          <br />
                         </Box>
                       </Grid>
-                      <Grid item xs={1}   spacing={0}>
-                      <Tooltip title="Add Company">
-                      <Box margin={1} paddingTop={1.5} >
-                        <IconButton onClick={() => {
-                              setOpenPopup(true);
-                              setIsUpdating(false);
-                            }} size={'small'} color="primary" aria-label="add">
-                          <AddIcon />
-                        </IconButton>
-                        </Box>
+                      <Grid item xs={1} spacing={0}>
+                        <Tooltip title="Add Company">
+                          <Box margin={1} paddingTop={1.5}>
+                            <IconButton
+                              onClick={() => {
+                                setOpenPopup(true);
+                                setIsUpdating(false);
+                              }}
+                              size={'small'}
+                              color="primary"
+                              aria-label="add"
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          </Box>
                         </Tooltip>
                       </Grid>
                       <Grid item xs={6}>
@@ -468,6 +474,16 @@ export default function Basic(props) {
                         console.log({ event, editor, data });
                       }}
                     />            */}
+                    <Box
+                      margin={1}
+                      paddingBottom={2}
+                      border={1}
+                      borderColor={'#C1C1C1'}
+                      borderRadius={5}
+                    >
+                      <Editor jd={jd} setJd={setJd} />
+                    </Box>
+
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -556,7 +572,8 @@ export default function Basic(props) {
                           </MuiPickersUtilsProvider>
                         </Box>
                       </Grid>
-                      <Grid item xs={4}>
+
+                      {/* <Grid item xs={4}>
                         <Box
                           margin={2}
                           paddingBottom={1}
@@ -576,6 +593,30 @@ export default function Basic(props) {
                             max={50}
                             valueLabelDisplay="auto"
                           ></Field>
+                        </Box>
+                      </Grid> */}
+                      <Grid item xs={2}>
+                        <Box margin={1} paddingBottom={0} paddingTop={2}>
+                          <Field
+                            fullWidth
+                            variant="outlined"
+                            component={TextField}
+                            name="min_salary"
+                            type="number"
+                            label="Min Salary"
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Box margin={1} paddingBottom={0} paddingTop={2}>
+                          <Field
+                            fullWidth
+                            variant="outlined"
+                            component={TextField}
+                            name="max_salary"
+                            type="number"
+                            label="Max Salary"
+                          />
                         </Box>
                       </Grid>
                       <Grid item xs={2}>
@@ -597,7 +638,6 @@ export default function Basic(props) {
                           </Tooltip>
                         </Box>
                       </Grid>
-                      {/* </Grid> */}
                     </Grid>
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
@@ -804,7 +844,7 @@ export default function Basic(props) {
                       <Grid item xs={12}>
                         <Box margin={1} paddingBottom={2}>
                           <ReactMultiEmail
-                            placeholder="Input your Email Address"
+                            placeholder="Input Interviewer's Email Addresses"
                             emails={interviewerEmails}
                             onChange={_emails => {
                               setInterviewerEmails(_emails);
@@ -828,8 +868,8 @@ export default function Basic(props) {
                               );
                             }}
                           />
-                          <h4>react-multi-email value</h4>
-                          <p>{interviewerEmails.join(', ') || 'empty'}</p>
+                          {/* <h4>react-multi-email value</h4>
+                          <p>{interviewerEmails.join(', ') || 'empty'}</p> */}
                         </Box>
                       </Grid>
                     </Grid>
