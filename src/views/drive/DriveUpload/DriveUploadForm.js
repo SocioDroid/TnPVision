@@ -347,7 +347,7 @@ export default function Basic(props) {
                   values.assigned_volunteers = [...AllVolunteers];
                   values.assigned_coordinators = [...AllCoordinators];
                   values.company = AllComapnies;
-                  values.description = txt;
+                  values.description = jd;
 
                   DriveService.addSingleDrive(values)
                     .then(result => {

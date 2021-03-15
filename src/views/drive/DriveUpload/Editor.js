@@ -18,7 +18,6 @@ class EditorConvertToHTML extends Component {
   };
 
   render() {
-    console.log(this.props.jd, "JD");
     const { editorState } = this.state;
     return (
       <div>
@@ -33,7 +32,6 @@ class EditorConvertToHTML extends Component {
           disabled
           value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
         />
-        {console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
       </div>
     );
   }
