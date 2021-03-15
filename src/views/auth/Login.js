@@ -91,7 +91,7 @@ function Login(props) {
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: 'Test1234!'
+      password: ''
     },
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);

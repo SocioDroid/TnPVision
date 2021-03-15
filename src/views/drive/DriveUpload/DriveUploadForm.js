@@ -12,6 +12,8 @@ import {
   MenuItem,
   Slider,
   makeStyles,
+  IconButton,
+   Tooltip,
   Avatar
 } from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
@@ -29,7 +31,6 @@ import { TextField as MaterialUiTextField } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Tooltip from '@material-ui/core/Tooltip';
 import { ReactMultiEmail } from 'react-multi-email';
 import StudentService from '../../../services/StudentService';
 import 'react-multi-email/style.css';
@@ -41,6 +42,7 @@ import Popup from '../../../components/controls/Popup';
 import ProfileDetails from '../CompanyListView/ProfileDetails';
 import { setEmitFlags } from 'typescript';
 
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,6 +57,9 @@ const useStyles = makeStyles(theme => ({
   },
   divider: {
     margin: '10px'
+  },
+  gridCenter: {
+    alignSelf: 'center'
   }
 }));
 
@@ -136,7 +141,7 @@ export default function Basic(props) {
   const getAllCompanies = () => {
     CompanyService.getAllCompanies()
       .then(res => {
-        setFlag(false)
+        setFlag(false);
         setPosts(res.data);
       })
       .catch(err => {
@@ -144,12 +149,15 @@ export default function Basic(props) {
       });
   };
 
-  useEffect(props => {
-    if(flag){
-      console.log("in if of get companies")
-      getAllCompanies();
-    }
-  }, [flag]);
+  useEffect(
+    props => {
+      if (flag) {
+        console.log('in if of get companies');
+        getAllCompanies();
+      }
+    },
+    [flag]
+  );
 
   //---------------------------------------------------Volunteers Search--------------------------------------------------------------------------
   const [options1, setOptions1] = useState([]);
@@ -241,7 +249,7 @@ export default function Basic(props) {
     setRecordForEdit(null);
     setOpenPopup(false);
     console.log('From add or edit');
-    setFlag(true)
+    setFlag(true);
     // getAllCompanies();
   };
   const openInPopup = item => {
@@ -270,7 +278,7 @@ export default function Basic(props) {
     let active3 = true;
 
     (async () => {
-      const response = await await CompanyService.searchCompany(inputValue3)
+      const response = await await CompanyService.searchCompany(inputValue3);
       if (active3) {
         setOptions3(response.data);
       }
@@ -366,8 +374,8 @@ export default function Basic(props) {
                     </Box>
 
                     <Grid container spacing={3}>
-                      <Grid item xs={6}>
-                        <Box margin={1} paddingBottom={2}>
+                      <Grid  item xs={5}>
+                        <Box margin={1} >
                           <MaterialUiAutocomplete
                             id="combo-box-demo"
                             options={options3}
@@ -384,7 +392,7 @@ export default function Basic(props) {
                             onChange={(event, newValue) => {
                               console.log('selected value', newValue);
                               setCompany3(newValue);
-                            }}                           
+                            }}
                             renderInput={params => (
                               <MaterialUiTextField
                                 {...params}
@@ -404,9 +412,20 @@ export default function Basic(props) {
                               return <div>{option.name}</div>;
                             }}
                           />
-                          <br/>
-                          <Button variant="contained" color="primary" onClick={() => { setOpenPopup(true); setIsUpdating(false); }}>Add New Company</Button>
+                          <br />                      
                         </Box>
+                      </Grid>
+                      <Grid item xs={1}   spacing={0}>
+                      <Tooltip title="Add Company">
+                      <Box margin={1} paddingTop={1.5} >
+                        <IconButton onClick={() => {
+                              setOpenPopup(true);
+                              setIsUpdating(false);
+                            }} size={'small'} color="primary" aria-label="add">
+                          <AddIcon />
+                        </IconButton>
+                        </Box>
+                        </Tooltip>
                       </Grid>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -427,7 +446,7 @@ export default function Basic(props) {
                           />
                         </Box>
                       </Grid>
-                    </Grid>                    
+                    </Grid>
                     {/* <CKEditor
                         editor={ ClassicEditor }
                         data=""                                                           
@@ -906,7 +925,11 @@ export default function Basic(props) {
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
-          <ProfileDetails recordForEdit={recordForEdit} addOrEdit={addOrEdit} isUpdating={isUpdating} />
+        <ProfileDetails
+          recordForEdit={recordForEdit}
+          addOrEdit={addOrEdit}
+          isUpdating={isUpdating}
+        />
       </Popup>
     </div>
   );

@@ -23,7 +23,7 @@ if (status=="live"){
   return (
     <div className={classes.root}>
       <Tooltip title="Drive is live">
-      <CircularProgress size={25}  style={{ color: 'blue' }} />
+      <CircularProgress size={25}  style={{ color: 'red' }} />
       </Tooltip>
     </div>
   );

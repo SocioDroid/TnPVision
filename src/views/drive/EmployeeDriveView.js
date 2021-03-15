@@ -211,9 +211,7 @@ export default function StudentDriveView() {
             </Grid>
           </Grid>
         </div>
-        {/* <Fab className={classes.fab} color="primary" aria-label="add">
-          <AddIcon />
-        </Fab> */}
+
         <div className={classes.fab}>
           <Backdrop open={open} />
           <SpeedDial

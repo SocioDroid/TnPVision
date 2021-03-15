@@ -172,7 +172,6 @@ export default function ReviewTabs(props) {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
-            {console.log(filtered_rounds, "Filtered Rounds")}
             {filtered_rounds.map((round, index) => (
               <Tab
                 key={round.number}
