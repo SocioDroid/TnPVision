@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles, Avatar } from '@material-ui/core';
+import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles, Tooltip, IconButton, Avatar} from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -18,19 +18,14 @@ import { TextField as MaterialUiTextField } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Tooltip from '@material-ui/core/Tooltip';
 import { ReactMultiEmail } from 'react-multi-email';
 import StudentService from '../../../services/StudentService';
 import 'react-multi-email/style.css';
 import EmployeeServices from '../../../services/EmployeeServices';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { config } from '@fortawesome/fontawesome-svg-core';
 import Popup from '../../../components/controls/Popup';
 import ProfileDetails from '../CompanyListView/ProfileDetails';
-import { setEmitFlags } from 'typescript';
 import Editor from './Editor';
-
+import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -44,6 +39,9 @@ const useStyles = makeStyles(theme => ({
   },
   divider: {
     margin: '10px'
+  },
+  gridCenter: {
+    alignSelf: 'center'
   }
 }));
 
@@ -92,13 +90,9 @@ export default function Basic(props) {
   const [volunteers, setVolunteers] = useState([]);
   const [coordinators, setCoordinators] = useState([]);
 
-  const [txt, setTxt] = useState('');
-
   const [selectedDate, handleDateChange] = useState(
     new Date('2018-01-01T00:00:00.000Z')
   );
-  //const [value, setValue] = useState('');
-  const [val, setVal] = useState([0, 50]);
   const [posts, setPosts] = useState([]);
 
   const [salaryHideChange, setSalaryHideChange] = useState(false);
@@ -108,24 +102,10 @@ export default function Basic(props) {
     setSalaryHideChange(!salaryHideChange);
   };
 
-  const updateRange = (e, data) => {
-    setVal(data);
-  };
-  const mark = [
-    {
-      value: 0,
-      label: '0 CTC'
-    },
-    {
-      value: 50,
-      label: '50 CTC'
-    }
-  ];
-
   const getAllCompanies = () => {
     CompanyService.getAllCompanies()
       .then(res => {
-        setFlag(false)
+        setFlag(false);
         setPosts(res.data);
       })
       .catch(err => {
@@ -133,12 +113,14 @@ export default function Basic(props) {
       });
   };
 
-  useEffect(props => {
-    if(flag){
-      console.log("in if of get companies")
-      getAllCompanies();
-    }
-  }, [flag]);
+  useEffect(
+    props => {
+      if (flag) {        
+        getAllCompanies();
+      }
+    },
+    [flag]
+  );
 
   //---------------------------------------------------Volunteers Search--------------------------------------------------------------------------
   const [options1, setOptions1] = useState([]);
@@ -222,6 +204,7 @@ export default function Basic(props) {
   const [openPopup, setOpenPopup] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
+  const [jd, setJd] = useState("<p>Honey and rushikesh test</p>");
 
   const addOrEdit = (company, resetForm) => {
     if (company.id === 0) console.log('Inserted');
@@ -230,8 +213,7 @@ export default function Basic(props) {
     setRecordForEdit(null);
     setOpenPopup(false);
     console.log('From add or edit');
-    setFlag(true)
-    // getAllCompanies();
+    setFlag(true);
   };
   const openInPopup = item => {
     setRecordForEdit(item);
@@ -259,7 +241,7 @@ export default function Basic(props) {
     let active3 = true;
 
     (async () => {
-      const response = await await CompanyService.searchCompany(inputValue3)
+      const response = await await CompanyService.searchCompany(inputValue3);
       if (active3) {
         setOptions3(response.data);
       }
@@ -319,21 +301,17 @@ export default function Basic(props) {
                   values.assigned_volunteers = volunteers;
                   values.assigned_coordinators = coordinators;
                   values.interviewers = interviewerEmails;
-
-                  values.min_salary = val[0];
-                  values.max_salary = val[1];
                   values.hideSalary = salaryHideChange;
                   values.date = new Date(selectedDate).toISOString();
                   values.assigned_volunteers = [...AllVolunteers];
                   values.assigned_coordinators = [...AllCoordinators];
                   values.company = AllComapnies;
-                  values.description = txt;
+                  values.description = jd;
 
                   DriveService.addSingleDrive(values)
                     .then(result => {
                       console.log('Data Added:', result);
                       alert('Drive Added Sucessfully');
-                      //navigate('/employee/alldrives', {inplace:true});
                     })
                     .catch(error => {
                       console.log(error);
@@ -355,8 +333,8 @@ export default function Basic(props) {
                     </Box>
 
                     <Grid container spacing={3}>
-                      <Grid item xs={6}>
-                        <Box margin={1} paddingBottom={2}>
+                      <Grid item xs={5}>
+                        <Box margin={1}>
                           <MaterialUiAutocomplete
                             id="combo-box-demo"
                             options={options3}
@@ -373,7 +351,7 @@ export default function Basic(props) {
                             onChange={(event, newValue) => {
                               console.log('selected value', newValue);
                               setCompany3(newValue);
-                            }}                           
+                            }}
                             renderInput={params => (
                               <MaterialUiTextField
                                 {...params}
@@ -393,9 +371,25 @@ export default function Basic(props) {
                               return <div>{option.name}</div>;
                             }}
                           />
-                          <br/>
-                          <Button variant="contained" color="primary" onClick={() => { setOpenPopup(true); setIsUpdating(false); }}>Add New Company</Button>
+                          <br />
                         </Box>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Tooltip title="Add Company">
+                          <Box margin={1} paddingTop={1.5}>
+                            <IconButton
+                              onClick={() => {
+                                setOpenPopup(true);
+                                setIsUpdating(false);
+                              }}
+                              size={'small'}
+                              color="primary"
+                              aria-label="add"
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          </Box>
+                        </Tooltip>
                       </Grid>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -416,32 +410,16 @@ export default function Basic(props) {
                           />
                         </Box>
                       </Grid>
-                    </Grid>                    
-                    {/* <CKEditor
-                        editor={ ClassicEditor }
-                        data=""                                                           
-                        onChange={ ( event, editor ) => {
-                            config.fillEmptyBlocks = false;
-                            const data = editor.getData();
-                            setTxt(data);                            
-                        } }                      
-                    />     
-                    <CKEditor
-                      editor={ClassicEditor}
-                      data="<p>Hello from CKEditor 5!</p>"
-                      onInit={editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log("Editor is ready to use!", editor);
-                      }}
-                      onChange={(event, editor) => {
-                        const data = editor.getData();
-                        console.log({ event, editor, data });
-                      }}
-                    />            */}
-                    <Box margin={1} paddingBottom={2} border={1} borderColor={"#C1C1C1"} borderRadius={5}>
-                      <Editor/>                      
+                    </Grid>                                                   
+                    <Box
+                      margin={1}
+                      paddingBottom={2}
+                      border={1}
+                      borderColor={'#C1C1C1'}
+                      borderRadius={5}
+                    >
+                      <Editor jd={jd} setJd={setJd} />
                     </Box>
-                    
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
                         <Box margin={1} paddingBottom={2}>
@@ -529,52 +507,30 @@ export default function Basic(props) {
                             />
                           </MuiPickersUtilsProvider>
                         </Box>
-                      </Grid>
-                      {/* <Grid item xs={4}>
-                        <Box
-                          margin={2}
-                          paddingBottom={1}
-                          paddingLeft={2}
-                          paddingTop={1}
-                        >
-                          <Typography style={{ color: 'grey' }}>
-                            Salary Range
-                          </Typography>
+                      </Grid>                   
+                      <Grid item xs={2}>
+                        <Box margin={1} paddingBottom={0} paddingTop={2}>
                           <Field
-                            component={Slider}
-                            name="salary"
-                            value={val}
-                            onChange={updateRange}
-                            marks={mark}
-                            step={0.1}
-                            max={50}
-                            valueLabelDisplay="auto"
-                          ></Field>
+                            fullWidth
+                            variant="outlined"
+                            component={TextField}
+                            name="min_salary"
+                            type="number"
+                            label="Min Salary"
+                          />
                         </Box>
-                      </Grid> */}
-                      <Grid item xs={2}>  
-                      <Box margin={1} paddingBottom={0} paddingTop={2}>
-                        <Field
-                          fullWidth
-                          variant="outlined"
-                          component={TextField}
-                          name="min_salary"
-                          type="number"
-                          label="Min Salary"
-                        />   
-                        </Box>                                                            
                       </Grid>
-                      <Grid item xs={2}>   
-                      <Box margin={1} paddingBottom={0} paddingTop={2}>                                 
-                        <Field
-                          fullWidth
-                          variant="outlined"
-                          component={TextField}
-                          name="max_salary"
-                          type="number"
-                          label="Max Salary"
-                        /> 
-                      </Box>                   
+                      <Grid item xs={2}>
+                        <Box margin={1} paddingBottom={0} paddingTop={2}>
+                          <Field
+                            fullWidth
+                            variant="outlined"
+                            component={TextField}
+                            name="max_salary"
+                            type="number"
+                            label="Max Salary"
+                          />
+                        </Box>
                       </Grid>
                       <Grid item xs={2}>
                         <Box margin={2} paddingBottom={1} paddingTop={1}>
@@ -594,7 +550,7 @@ export default function Basic(props) {
                             />
                           </Tooltip>
                         </Box>
-                      </Grid>                     
+                      </Grid>
                     </Grid>
                     <Grid container spacing={3}>
                       <Grid item xs={6}>
@@ -800,7 +756,7 @@ export default function Basic(props) {
                       </Grid>
                       <Grid item xs={12}>
                         <Box margin={1} paddingBottom={2}>
-                          <ReactMultiEmail                           
+                          <ReactMultiEmail
                             placeholder="Input Interviewer's Email Addresses"
                             emails={interviewerEmails}
                             onChange={_emails => {
@@ -825,8 +781,6 @@ export default function Basic(props) {
                               );
                             }}
                           />
-                          {/* <h4>react-multi-email value</h4>
-                          <p>{interviewerEmails.join(', ') || 'empty'}</p> */}
                         </Box>
                       </Grid>
                     </Grid>
@@ -842,8 +796,7 @@ export default function Basic(props) {
                             {values.rounds.map((_, index) => (
                               <div key={index}>
                                 <Grid container item spacing={3}>
-                                  <Grid item>
-                                    {/* <Typography>{index + 1}</Typography> */}
+                                  <Grid item>                                    
                                     <Avatar>{index + 1}</Avatar>
                                   </Grid>
                                   <Grid item>
@@ -922,7 +875,11 @@ export default function Basic(props) {
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
-          <ProfileDetails recordForEdit={recordForEdit} addOrEdit={addOrEdit} isUpdating={isUpdating} />
+        <ProfileDetails
+          recordForEdit={recordForEdit}
+          addOrEdit={addOrEdit}
+          isUpdating={isUpdating}
+        />
       </Popup>
     </div>
   );

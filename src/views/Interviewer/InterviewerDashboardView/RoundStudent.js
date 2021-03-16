@@ -99,8 +99,8 @@ export default function RoundSudent(props) {
       <MaterialTable
         onRowClick={(event, rowData) => {
           navigate(
-            `/interviewer/studentinformation/${rowData.id}/${roundId}/`,
-            { replace: true }
+            `/interviewer/studentinformation/${rowData.id}/drive/${driveId}/round/${roundId}/`,
+            { replace: true, user: 'Lucy' }
           );
         }}
         style={{

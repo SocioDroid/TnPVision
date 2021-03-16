@@ -101,6 +101,7 @@ const routes = [
       { path: 'dashboard', element: <InterviewerDashboardView /> },
       { path: 'drive', element: <InterviewerDrive /> },
       { path: 'studentinformation/:id/:roundId/', element: <StudentInformation />},
+      { path: 'studentinformation/:id/drive/:driveId/round/:roundId/', element: <StudentInformation />},
       { path: '*', element: <Navigate to="/404" /> },
     ]
   },

@@ -5,31 +5,15 @@ import { useForm } from '../../../components/controls/useForm';
 import { Typography, MenuItem, Avatar } from '@material-ui/core';
 import { AllBranches } from '../data';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDateTimePicker
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  CardHeader,
-  Divider,
-  TextField
-} from '@material-ui/core';
+import { Box, Button, Card, CardContent, Grid, CardHeader, Divider, TextField } from '@material-ui/core';
 import CustomSnackbar from '../../../components/Snackbar/CustomSnackbar';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import CompanyService from '../../../services/CompanyService';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { config } from '@fortawesome/fontawesome-svg-core';
-import ReactHTMLParser from 'react-html-parser'
-import { textSpanContainsPosition } from 'typescript';
+import Editor from '../DriveUpload/Editor';
 
 function debounce(func, wait) {
   let timeout;
@@ -69,8 +53,6 @@ const employee_type = [
   }
 ];
 
-//const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
 const initialFValues = {
   id: 0,
   eligible_branches: [{ branch: '' }],
@@ -97,7 +79,7 @@ const initialDValues = {
 };
 export default function ProfileDetails(props) {
   const { addOrEdit, recordForEdit } = props;
-  const [txt, setTxt] = useState(recordForEdit && recordForEdit.description ? recordForEdit.description : "");
+  const [jd, setJd] = useState("");
 
   //--------------------------------------------------------------Company------------------------------------------------------------------------------------
   const [inputValue, setInputValue] = useState('');
@@ -134,7 +116,6 @@ export default function ProfileDetails(props) {
     (async () => {
       const response = await CompanyService.searchCompany(inputValue)
       if (active) {
-        console.log(response.data);
         setOptions(response.data);
       }
     })();
@@ -154,6 +135,7 @@ export default function ProfileDetails(props) {
   const [branchvalue, setBranchvalue] = useState([]);
 
   //------------------------------------------------------Rounds-------------------------------------------------------------------------------------------------------
+  
   const [roundDetails, setRoundDetails] = useState([
     { number: '', name: '', description: '' }
   ]);
@@ -165,25 +147,25 @@ export default function ProfileDetails(props) {
     newArr[roundNumber] = item;
     setRoundDetails(newArr);
   };
+
   //------------------------------------------------------Date----------------------------------------------------------------------------------------------------------
+  
   const [datevalues, setDatevalues] = useState({
     date: new Date()
   });
 
-  const handDateChange = event => {
-    console.log('date event', new Date(event).toISOString());
+  const handDateChange = event => {    
     setDatevalues({ date: event });
   };
 
-  // //------------------------------------------------------Values-------------------------------------------------------------------------------------------------------------
-
+  //------------------------------------------------------Values--------------------------------------------------------------------------------------------------------
+  
   const [values, setValues] = useState({
     id: 0,
     eligible_branches: [{ branch: '' }],
     company: [{ id: '', name: '', website: '', industry: '' }],
     isDeleted: false,
     jobtitle: '',
-    //date: new Date(),
     login_time: 0,
     drive_location: '',
     min_salary: 0,
@@ -264,7 +246,6 @@ export default function ProfileDetails(props) {
   );
 
   const handleChange = event => {
-    console.log('event value: ', event.target.value);
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -273,7 +254,6 @@ export default function ProfileDetails(props) {
 
   //--------------------------------------------------------general----------------------------------------------------------------------------------------------------------
   const handleSubmit = e => {
-    console.log("Herers")
     e.preventDefault();
 
     if (validate()) {
@@ -299,10 +279,9 @@ export default function ProfileDetails(props) {
         company: company3.id ? company3.id : values.company.id,
         date: new Date(datevalues.date).toISOString(),
         rounds: roundDetails,
-        description: txt
+        description: jd
       };
 
-      console.log("txt",txt)
       axios
       .patch('http://20.37.243.248:8000/api/drive/' + values.id + '/', data)
       .then(res => {
@@ -342,9 +321,7 @@ export default function ProfileDetails(props) {
               setErrorMessage('New Error, add it to catch block ' + data);
           }
           setIsError(true);
-        });
-
-      //console.log('updated values', data);
+        });      
     }
     else{
       alert("Invalid Details / Fill all the fields");
@@ -363,7 +340,6 @@ export default function ProfileDetails(props) {
         branch: recordForEdit.eligible_branches
       });
       setRoundDetails([
-        // ...roundschange,
         ...recordForEdit.rounds
       ]);
 
@@ -398,10 +374,10 @@ export default function ProfileDetails(props) {
         description: recordForEdit && recordForEdit.description ? recordForEdit.description : "",
       });
 
-      console.log(values.description, "JD by Honey");
+      setJd(recordForEdit && recordForEdit.description ? recordForEdit.description : "",);      
     }
   }, [recordForEdit]);
-
+  
   //------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   return (
@@ -450,8 +426,7 @@ export default function ProfileDetails(props) {
                   onInputChange={(event, newInputValue) => {
                     setInputValue(newInputValue);
                   }}
-                  onChange={(event, newValue) => {
-                    console.log('selected value', newValue);
+                  onChange={(event, newValue) => {              
                     setCompanyvalue(newValue);
                     setCompany3(newValue);
                   }}
@@ -701,8 +676,7 @@ export default function ProfileDetails(props) {
                   )}
                   value={branchvalue}
                   onChange={(event, newValue) => {
-                    setBranchvalue([
-                      //...fixedOptions,
+                    setBranchvalue([                      
                       ...newValue.filter(
                         option => fixedOptions.indexOf(option) === -1
                       )
@@ -723,24 +697,15 @@ export default function ProfileDetails(props) {
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item md={12} xs={12}>
-                <br/>
-                <CKEditor
-                    editor={ ClassicEditor }
-                    data={txt}                                                                
-                    onChange={ ( event, editor ) => {                            
-                        const data = editor.getData();
-                        setTxt(data);                            
-                    } }                       
-                />
-              </Grid>
+            </Grid>        
+              <Grid item md={12} xs={12}>
+                {jd &&  <Editor jd={jd} setJd={setJd}/>}
+              </Grid>             
             <Grid item md={12} xs={12}>
               {roundDetails.map((_, index) => (
                 <div key={index} style={{ padding: 20 }}>
                   <Grid container item spacing={5}>
-                    <Grid item>
-                      {/* <Typography>{index + 1}</Typography> */}
+                    <Grid item>                      
                       <Avatar>{index + 1}</Avatar>
                     </Grid>
                     <Grid item>
