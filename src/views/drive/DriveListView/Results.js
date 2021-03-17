@@ -98,18 +98,6 @@ const Results = ({ className, ...rest }) => {
     console.log(id);
   };
 
-  //Pagination
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  // const [page, setPage] = React.useState(0);
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = event => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
   return (
     <div>
       <Box
@@ -125,72 +113,7 @@ const Results = ({ className, ...rest }) => {
           Add Drive
         </Button>
      </Box>   
-      <Card
-      
-      >
-        {/* <PerfectScrollbar>
-          <Box>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Job Title</TableCell>
-                  <TableCell>Company</TableCell>
-                  <TableCell>Drive Location</TableCell>
-                  <TableCell>Drive Date</TableCell>
-                  <TableCell>Salary</TableCell>
-                  <TableCell>Tenth</TableCell>
-                  <TableCell>Twelfth</TableCell>
-                  <TableCell>Diploma</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {posts
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(drive =>(
-                      <TableRow key={drive.id}>
-                        <TableCell>{drive.id}</TableCell>
-                        <TableCell>{drive.jobtitle}</TableCell>
-                        <TableCell>{drive.company.name}</TableCell>
-                        <TableCell>{drive.drive_location}</TableCell>
-                        <TableCell>            
-                          {moment(new Date(drive.date)).format(
-                            'DD/MM/YYYY hh:mm a'
-                          )}
-                        </TableCell>
-                        
-                          <TableCell>
-                            {drive.min_salary} - {drive.max_salary}
-                          </TableCell>
-                       
-                        <TableCell>{drive.tenth}</TableCell>
-                        <TableCell>{drive.twelth}</TableCell>
-                        <TableCell>{drive.diploma}</TableCell>
-                        <TableCell>
-                          <DriveMenuButton setIsEdited={setIsEdited} goToEdit={goToEdit} row={drive} />
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, 50]}
-              component="div"
-              count={posts.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </Box>
-        </PerfectScrollbar>
-      
-      <br/>
-      <br/>
-       */}
-       
+      <Card>       
         <PerfectScrollbar>
           <Card>
             <MaterialTable
@@ -241,11 +164,6 @@ const Results = ({ className, ...rest }) => {
       </div>
     </div>
   );
-};
-
-Results.propTypes = {
-  // className: PropTypes.string,
-  // customers: PropTypes.array.isRequired
 };
 
 export default Results;

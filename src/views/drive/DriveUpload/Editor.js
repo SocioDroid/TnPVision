@@ -44,10 +44,10 @@ class EditorConvertToHTML extends Component {
           onEditorStateChange={this.onEditorStateChange}          
           toolbarClassName="toolbarClassName"
         />
-        <textarea
+        {/* <textarea
           disabled
           value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-        />
+        /> */}
       </div>
     );
     }

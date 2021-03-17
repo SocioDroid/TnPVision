@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, Slider, makeStyles, Tooltip, IconButton, Avatar} from '@material-ui/core';
+import { Card, CardContent, Button, Box, Grid, Typography, MenuItem, makeStyles, Tooltip, IconButton, Avatar} from '@material-ui/core';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -84,7 +83,6 @@ const driveType = [
 ];
 
 export default function Basic(props) {
-  const navigate = useNavigate();
   const classes = useStyles();
   const [interviewerEmails, setInterviewerEmails] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
@@ -200,7 +198,9 @@ export default function Basic(props) {
       }
     })();
   }, [inputSearch2, inputValue2]);
+
   //---------------------------------------------------------Company Add-----------------------------------------------------------------------
+  
   const [openPopup, setOpenPopup] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
@@ -249,6 +249,7 @@ export default function Basic(props) {
   }, [inputSearch3, inputValue3, flag]);
 
   //-----------------------------------------------------------------------------------------------------------------------------------------------
+  
   return (
     <div className={classes.root}>
       <Grid item container>

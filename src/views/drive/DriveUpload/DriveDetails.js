@@ -417,8 +417,6 @@ import SaveIcon from '@material-ui/icons/Save';
 import axios from 'axios';
 import Auth from '../../../auth';
 import ProgressBar from '../../../components/controls/ProgressBar';
-import Grid from '@material-ui/core/Grid';
-// import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -428,32 +426,26 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
-// import Round from './Rounds';
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%'
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    // flexBasis: '15.33%',
     flexShrink: 0
   },
   SettingHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    // flexBasis: '33.33%',
+    fontSize: theme.typography.pxToRem(15),    
     flexShrink: 0
   },
   roundName: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
-    // flexBasis: '5.33%',
     flexShrink: 0
   },
   roundDescription: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
-    // flexBasis: '5.33%',
     flexShrink: 0
   },
   innerAccordian: {
@@ -465,7 +457,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// const options = ['Create a merge commit', 'Squash and merge', 'Rebase and merge'];
 const options = ['All', 'Accepted', 'Rejected', 'Pending'];
 
 export default function DriveDetails(drive) {
@@ -492,9 +483,9 @@ export default function DriveDetails(drive) {
   };
   const addOrEdit = (drive, resetForm) => {
     if (drive.id === 0) console.log('Inserted');
-    else console.log('Edited');
+
+    setFlag(true);
     setRecordForEdit(null);
-    console.log('From add or edit');
   };
   const exportToExcel = round => {
     RoundService.exportRoundStudents(drive.drive, round.number).then(
@@ -510,11 +501,11 @@ export default function DriveDetails(drive) {
     );
   };
 
+  const [flag, setFlag] = useState(true);
   useEffect(() => {
-    console.log(drive, 'props');
 
     // Getting Drive Details
-
+    if(flag){
     DriveService.getSingleDrive({ id: drive.drive })
       .then(res => {
         setRecordForEdit(res.data);
@@ -548,7 +539,9 @@ export default function DriveDetails(drive) {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+      setFlag(false);
+    }
+  }, [flag]);
 
   const [roundNumber, setRoundNumber] = useState(0);
   const changeUpdated = roundNumber => {
@@ -590,16 +583,11 @@ export default function DriveDetails(drive) {
         console.log(error);
       });
   };
-  //const uploadInputRef = useRef(null);
 
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-  const handleClick1 = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -617,11 +605,6 @@ export default function DriveDetails(drive) {
 
     setOpen(false);
   };
-
-
-
-
-
 
   if (recordForEdit) {
     return (
@@ -679,7 +662,6 @@ export default function DriveDetails(drive) {
                     Round {round.number} : {round.name}
                   </Typography>
 
-                  {/* <Typography noWrap className={classes.roundDescription}></Typography> */}
                 </AccordionSummary>
                 <AccordionDetails className={classes.innerAccordian}>
                   <RoundDetails
@@ -691,16 +673,7 @@ export default function DriveDetails(drive) {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                  <React.Fragment>
-                    {/* <input
-                    ref={uploadInputRef}
-                    type="file"
-                    style={{ display: 'none' }}
-                    onChange={event => handleFileChange(event)}
-                  /> */}
-                    {/* <MyDocument /> */}
-
-
+                  <React.Fragment>          
                     <div className={classes.uploadArea}>
                       <input
                         type="file"
@@ -721,8 +694,7 @@ export default function DriveDetails(drive) {
                   </React.Fragment>
 
 
-                  <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
-                    {/* <Button onClick={handleClick1}></Button> */}
+                  <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">                    
                     <Button
                       color="primary"
                       className={classes.button}
@@ -770,9 +742,6 @@ export default function DriveDetails(drive) {
                       </Grow>
                     )}
                   </Popper>
-
-
-
                 </AccordionActions>
               </Accordion>
             </div>

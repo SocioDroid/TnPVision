@@ -699,7 +699,15 @@ export default function ProfileDetails(props) {
               </MuiPickersUtilsProvider>
             </Grid>        
               <Grid item md={12} xs={12}>
-                {jd &&  <Editor jd={jd} setJd={setJd}/>}
+                <br/>
+                <Box                  
+                  paddingBottom={2}
+                  border={1}
+                  borderColor={'#C1C1C1'}
+                  borderRadius={5}
+                >
+                  {jd &&  <Editor jd={jd} setJd={setJd}/>}
+                </Box>
               </Grid>             
             <Grid item md={12} xs={12}>
               {roundDetails.map((_, index) => (
