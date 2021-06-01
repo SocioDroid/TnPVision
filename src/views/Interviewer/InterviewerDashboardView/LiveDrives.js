@@ -12,13 +12,13 @@ import {
   Divider,
   makeStyles
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import MoneyIcon from '@material-ui/icons/Money';
 import Auth from '../../../auth';
 import axios from 'axios';
 import Icon from '@mdi/react';
 import { mdiCurrencyInr } from '@mdi/js';
 import moment from 'moment';
+import baseURL from '../../../services/BaseUrl'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,7 +50,7 @@ const EligibleDrives = ({ className, ...rest }) => {
 
   useEffect(() => {
     axios
-      .get('http://20.37.243.248:8000/api/student/eligibleDrives', {
+      .get(baseURL()+'api/student/eligibleDrives', {
         headers: {
           Authorization: 'Token ' + Auth.getToken() //the token is a variable which holds the token
         }

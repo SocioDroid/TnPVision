@@ -4,8 +4,8 @@ import { QueryRenderer } from '@cubejs-client/react';
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import React from 'react';
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import { Row, Col, Statistic, Table } from 'antd';
+import { Pie } from 'react-chartjs-2';
+import baseURL from '../../../services/BaseUrl'
 
 const COLORS_SERIES = ['#FF6492', '#141446', '#7A77FF'];
 const commonOptions = {
@@ -15,7 +15,7 @@ const commonOptions = {
 
 const cubejsApi = cubejs(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTUwMjI3NDUsImV4cCI6MTYxNTEwOTE0NX0.LqhFa480-O5Q173kliK4ysUCqT3dS0VIZX-imSChOyU',
-  { apiUrl: 'http://20.37.243.248:4000/cubejs-api/v1' }
+  { apiUrl: 'http://40.71.6.225:4000/cubejs-api/v1' }
 );
 
 const renderChart = ({ resultSet, error, pivotConfig }) => {

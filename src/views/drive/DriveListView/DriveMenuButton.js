@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Menu, MenuItem, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import Auth from '../../../auth';
-
+import baseURL from '../../../services/BaseUrl'
 import DriveService from '../../../services/DriveService';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -199,7 +199,7 @@ export function DriveMenuButton({ row, setIsEdited, setPosts, goToEdit }) {
     console.log(selectedFile);
     axios
       .post(
-        'http://20.37.243.248:8000/api/drive/' + id + '/shortlisted/',
+        baseURL()+'/api/drive/' + id + '/shortlisted/',
         data,
         {
           headers: {

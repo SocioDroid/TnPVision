@@ -18,7 +18,7 @@ class InterviewerService {
         return httpauth.get(`/api/review/${id}/`)
     }
     submitReview(data){
-        return httpauth.post('http://20.37.243.248:8000/api/review/', data)
+        return httpauth.post('/api/review/', data)
     }
 }
 

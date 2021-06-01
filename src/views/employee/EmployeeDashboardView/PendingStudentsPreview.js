@@ -14,7 +14,7 @@ const commonOptions = {
 
 const cubejsApi = cubejs(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTUwMjI3NDUsImV4cCI6MTYxNTEwOTE0NX0.LqhFa480-O5Q173kliK4ysUCqT3dS0VIZX-imSChOyU',
-  { apiUrl: 'http://20.37.243.248:4000/cubejs-api/v1' }
+  { apiUrl: 'http://40.71.6.225:4000/cubejs-api/v1' }
 );
 
 const renderChart = ({ resultSet, error, pivotConfig }) => {

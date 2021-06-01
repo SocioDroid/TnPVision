@@ -14,7 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import CompanyService from '../../../services/CompanyService';
 import Editor from '../DriveUpload/Editor';
-
+import baseURL from '../../../services/BaseUrl'
 function debounce(func, wait) {
   let timeout;
   return function(...args) {
@@ -283,7 +283,7 @@ export default function ProfileDetails(props) {
       };
 
       axios
-      .patch('http://20.37.243.248:8000/api/drive/' + values.id + '/', data)
+      .patch(baseURL()+'/api/drive/' + values.id + '/', data)
       .then(res => {
           console.log('res', res);
           addOrEdit(values, resetForm);

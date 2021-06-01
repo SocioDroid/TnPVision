@@ -27,6 +27,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import PlacedStudent from './PlacedStudent';
+import baseURL from '../../../services/BaseUrl'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -164,7 +165,7 @@ export default function DriveDetails(drive) {
     console.log(selectedFile);
     axios
       .put(
-        'http://20.37.243.248:8000/api/drive/' +
+        baseURL()+'/api/drive/' +
         drive.drive +
         '/upload/round/' +
         roundNumber +

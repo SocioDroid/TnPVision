@@ -25,6 +25,7 @@ import axios from 'axios';
 import { useForm } from '../../../components/controls/useForm';
 import Auth from '../../../auth';
 import swal from 'sweetalert';
+import baseURL from '../../../services/BaseUrl';
 
 
 const departmentItems = [
@@ -151,7 +152,7 @@ const ProfileDetails = ({ className, userData, ...rest }) => {
         }
       };
       axios
-        .put('http://20.37.243.248:8000/api/user/', data, {
+        .put(baseURL()+'/api/user/', data, {
           headers: {
             'Content-type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
