@@ -20,6 +20,10 @@ class RoundsService {
     exportRoundStudents(driveId,roundId){
         return http.get(`/api/drive/${driveId}/round/${roundId}/export/`,{responseType: 'blob'})
     }
+
+    getPlacedStudents(driveId){
+        return http.get('/api/drive/' + driveId + '/placed/' )
+    }
 }
 
 export default new RoundsService();
