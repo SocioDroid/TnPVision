@@ -8,7 +8,7 @@ import { Row, Col, Statistic } from 'antd';
 
 const cubejsApi = cubejs(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTUzNjA4MjUsImV4cCI6MTYxNTQ0NzIyNX0.fA2LpvwVkH9jFFLdLpgx193pFwVqEhDdRgGDgeWBc5E',
-  { apiUrl: 'http://40.71.6.225:4000/cubejs-api/v1' }
+  { apiUrl: 'https://tnpvision.eastus.cloudapp.azure.com:4000/cubejs-api/v1' }
 );
 
 const renderChart = ({ resultSet, error, pivotConfig }) => {

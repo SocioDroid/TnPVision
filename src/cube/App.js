@@ -11,7 +11,7 @@ import Header from './components/Header';
 import ExplorePage from './pages/ExplorePage';
 import DashboardPage from './pages/DashboardPage';
 import Auth from '../auth';
-const API_URL = 'http://40.71.6.225:4000';
+const API_URL = 'https://tnpvision.eastus.cloudapp.azure.com:4000';
 const CUBEJS_TOKEN = Auth.getCubejsjwt();
 const cubejsApi = cubejs(CUBEJS_TOKEN, {
   apiUrl: `${API_URL}/cubejs-api/v1`

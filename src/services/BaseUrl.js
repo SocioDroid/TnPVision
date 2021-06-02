@@ -1,3 +1,3 @@
 export default function baseURL(){
-    return "http://40.71.6.225:8000/"
+    return "https://tnpvision.eastus.cloudapp.azure.com:8000/"
 }
