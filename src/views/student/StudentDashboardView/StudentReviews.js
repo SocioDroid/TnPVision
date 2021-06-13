@@ -8,19 +8,26 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import StudentService from '../../../services/StudentService';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const useStyles = makeStyles(theme => ({
+    
+  
   root: {
     flexGrow: 1,
-    maxWidth: 752,
+    maxWidth: 752,  
   },
   demo: {
     backgroundColor: theme.palette.background.paper,
-    height: 369,
+    height: 369
+  },
+  scroll:{
+
   },
   title: {
     margin: theme.spacing(4, 0, 2)
   }
+  
 }));
 
 export default function InteractiveList() {
@@ -70,7 +77,7 @@ export default function InteractiveList() {
 
   if (reviews) {
     return (
-      <div>
+      <div className={classes.scroll}>
         <Typography variant="h3" color="primary">
           Reviews Received
         </Typography>
@@ -78,6 +85,7 @@ export default function InteractiveList() {
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
             <Card className={classes.demo} elevation={10}>
+          <Scrollbars style={{ height: 369 }}>
               <List dense={dense}>
                 {reviews.map((review, index) => (
                   <>
@@ -90,6 +98,7 @@ export default function InteractiveList() {
                   </>
                 ))}
               </List>
+            </Scrollbars>
             </Card>
           </Grid>
         </Grid>
