@@ -24,7 +24,7 @@ const Dashboard = props => {
 
   return (
     <Page className={classes.root} title="Interviewer Dashboard">
-      <Container maxWidth={false}>
+      {/* <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <Budget />
@@ -51,7 +51,7 @@ const Dashboard = props => {
             <LatestOrders />
           </Grid>
         </Grid>
-      </Container>
+      </Container> */}
     </Page>
   );
 };

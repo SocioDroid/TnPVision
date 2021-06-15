@@ -12,9 +12,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavItem from './NavItem';
-import EmployeeServices from '../../../../services/EmployeeServices';
+
 import Auth from '../../../../auth';
-import { faUserGraduate, faCog, faBuilding, faUserCircle, faBriefcase, faChartLine, faUserTag}  from '@fortawesome/free-solid-svg-icons'
+import { faUserGraduate, faCog, faBuilding, faUserCircle, faBriefcase, faChartLine, faUserTag, faToolbox}  from '@fortawesome/free-solid-svg-icons'
 
 var items;
 let group = 2;
@@ -52,7 +52,7 @@ if (group === 2) {
     },
     {
       href: '/employee/cube/explore ',
-      icon: faCog,
+      icon: faToolbox,
       title: 'Explore'
     },
     {
