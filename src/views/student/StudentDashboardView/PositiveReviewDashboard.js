@@ -74,12 +74,13 @@ const Budget = ({ className, ...rest }) => {
           alignItems="center"
         >
           <ArrowUpwardIcon className={classes.differenceIcon} />
-          {/* <Typography
+          <Typography
             className={classes.differenceValue}
+            color="textSecondary"
             variant="body2"
           >
-            12%
-          </Typography> */}
+            2
+          </Typography>
           <Typography
             color="textSecondary"
             variant="caption"

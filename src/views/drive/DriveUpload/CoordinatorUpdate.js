@@ -125,7 +125,7 @@ const addCoordinatorForDrive = (driveId, datavalue) => {
     };
   //---------------------------------------------------------------------------------------------------------------------------------------
     return (
-      <Card>
+      <Card  style={{ minWidth: '100%' }}>
         {/* <PerfectScrollbar>
           <Box minWidth={1050} margin={3} border={1} borderColor="grey.500">
             <Grid container spacing={3}>

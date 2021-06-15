@@ -105,11 +105,9 @@ const addVolunteerForDrive = (driveId, datavalue) => {
     const data2 = {
       assigned_volunteers: volunteers.length !== 0 ? volunteers : studentForEdit
     };
-    const data = {  
-      student_id: data2.assigned_volunteers[0].id
-    };
-    addVolunteerForDrive(recordForEdit.id, data);
-    console.log('Final Volunteers List', data);
+
+    addVolunteerForDrive(recordForEdit.id, [data2.assigned_volunteers[0].id]);
+    // console.log('Final Volunteers List', data);
   };
 
     // const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -124,9 +122,9 @@ const addVolunteerForDrive = (driveId, datavalue) => {
     // };
   //---------------------------------------------------------------------------------------------------------------------------------------
     return (
-      <Card>
+      <Card  style={{ minWidth: '100%' }}>
         <PerfectScrollbar>
-          <Card>
+          <Card >
           <Grid container spacing={3}>
               <Grid item md={1} xs={12} />
               <Grid item md={8} xs={12}>
@@ -197,7 +195,7 @@ const addVolunteerForDrive = (driveId, datavalue) => {
             style={{
               fontSize: "14px"
             }}
-              //className={classes.table}
+              className={classes.table}
               title="Volunteer Details"
               columns={[
                 {

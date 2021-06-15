@@ -54,7 +54,7 @@ function InterviewerUpdate(props) {
   };
 
   return (
-    <Card>
+    <Card  style={{ minWidth: '100%' }}>
       <PerfectScrollbar>
         <Card>
           <Grid container spacing={3}>

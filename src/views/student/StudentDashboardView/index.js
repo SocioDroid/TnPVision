@@ -46,7 +46,7 @@ const Dashboard = props => {
             <MasterValueSales />
           </Grid>    
           <Grid item lg={8} md={12} xl={9} xs={12}>
-            <Typography variant="h3" color="primary">
+            {/* <Typography variant="h3" color="primary">
               Drives Per Day Evaluation
             </Typography>
             <Divider style={{ margin: 10 }} />
@@ -55,14 +55,15 @@ const Dashboard = props => {
               <br/>
               <DrivesPerDayDashboard/>
             </CardContent>
-            </Card>
+            </Card> */}
+            <EligibleDashboard />
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
             <StudentReviews />
           </Grid>
         </Grid>
       </Container>
-      <Container maxWidth={false}>
+      {/* <Container maxWidth={false}>
         <br/>
         <Grid container spacing={3}>       
           <Grid item lg={12} md={12} xl={12} xs={12}>
@@ -78,12 +79,22 @@ const Dashboard = props => {
             </Card>
           </Grid>        
         </Grid>
-      </Container>
+      </Container> */}
       <Container maxWidth={false}>
         <br/>
         <Grid container spacing={3}>
             <Grid item lg={8} md={12} xl={9} xs={12}>            
-              <EligibleDashboard />
+            <Typography variant="h3" color="primary">
+              Drives Per Day Evaluation
+            </Typography>
+            <Divider style={{ margin: 10 }} />
+            <Card className={classes.demo} elevation={10}>
+            <CardContent>
+              <br/>
+              <DrivesPerDayDashboard/>
+            </CardContent>
+            </Card>
+              {/* <EligibleDashboard /> */}
             </Grid>
             <Grid item lg={4} md={6} xl={3} xs={12}>          
               <VolunteerDashboard/>
