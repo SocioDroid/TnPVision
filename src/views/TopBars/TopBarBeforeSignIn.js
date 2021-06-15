@@ -104,9 +104,9 @@ function Header(props) {
 						<Link onClick={handleHomepage} className={classes.linkTitle} underline='none'>TnPVision</Link>
 					</Typography>
 					<div className={classes.sectionDesktop}>
-						<IconButton title="Toggle light/dark mode" style={{ color: 'white' }} onClick={() => changeTheme()}>
+						{/* <IconButton title="Toggle light/dark mode" style={{ color: 'white' }} onClick={() => changeTheme()}>
 							{theme.palette.type === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-						</IconButton>
+						</IconButton> */}
 						{/* <Button onClick={()=>{navigate('/login', { replace: true });}}>Login</Button> */}
 						<div><Login /></div>
 						<div><Register /></div>
