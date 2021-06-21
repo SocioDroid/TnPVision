@@ -38,9 +38,7 @@
 ```sh
 npm i
 ```
-* Libraries used : Material UI, Material Table, Axios, Cube.js
-
-Side Note: 
+Libraries used : Material UI, Material Table, Axios, Cube.js
 
 ## 🚀 Usage
 
