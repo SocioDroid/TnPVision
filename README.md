@@ -60,20 +60,28 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 <table>
   <tr>
     <td align="center">
-    <a href="https://www.linkedin.com/in/aishwarya-kendle/"><img src="https://avatars.githubusercontent.com/u/47445489?v=4?s=100" width="100px;" alt=""/><br />
-    <sub><b>Aishwarya Kendle</b></sub></a><br />
+      <img src="https://avatars.githubusercontent.com/u/47445489?v=4?s=100" width="100px;" alt=""/><br />
+      <sub><b>Aishwarya Kendle</b></sub><br /><br />
+      <a href="https://www.linkedin.com/in/aishwarya-kendle/"><img src="https://camo.githubusercontent.com/c8a9c5b414cd812ad6a97a46c29af67239ddaeae08c41724ff7d945fb4c047e5/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6c696e6b6564696e2e737667" width="25px" height="25px" alt="linkedin"></a>
+      <a href="mailto:aishkendle6999@gmail.com"><img src="https://camo.githubusercontent.com/4a3dd8d10a27c272fd04b2ce8ed1a130606f95ea6a76b5e19ce8b642faa18c27/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f676d61696c2e737667" width="25px" height="25px" alt="gmail"></a>
     </td>
     <td align="center">
-    <a href="https://www.linkedin.com/in/rushikesh-zanwar/"><img src="https://avatars.githubusercontent.com/u/38778340?v=4?s=100" width="100px;" alt=""/><br />
-    <sub><b>Rushikesh Zanwar</b></sub></a><br />
+      <img src="https://avatars.githubusercontent.com/u/38778340?v=4?s=100" width="100px;" alt=""/><br />
+      <sub><b>Rushikesh Zanwar</b></sub><br /><br />
+      <a href="https://www.linkedin.com/in/rushikesh-zanwar/"><img src="https://camo.githubusercontent.com/c8a9c5b414cd812ad6a97a46c29af67239ddaeae08c41724ff7d945fb4c047e5/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6c696e6b6564696e2e737667" width="25px" height="25px" alt="linkedin"></a>
+      <a href="mailto:zrushi24@gmail.com"><img src="https://camo.githubusercontent.com/4a3dd8d10a27c272fd04b2ce8ed1a130606f95ea6a76b5e19ce8b642faa18c27/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f676d61696c2e737667" width="25px" height="25px" alt="gmail"></a>
     </td>
     <td align="center">
-    <a href="https://www.linkedin.com/in/honey-patre/"><img src="https://avatars.githubusercontent.com/u/53349141?v=4?s=100" width="100px;" alt=""/><br />
-    <sub><b>Honey Patre</b></sub></a><br />
-    </td>
+      <img src="https://avatars.githubusercontent.com/u/53349141?v=4?s=100" width="100px;" alt=""/><br />
+      <sub><b>Honey Patre</b></sub><br /><br />
+      <a href="https://www.linkedin.com/in/honey-patre/"><img src="https://camo.githubusercontent.com/c8a9c5b414cd812ad6a97a46c29af67239ddaeae08c41724ff7d945fb4c047e5/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6c696e6b6564696e2e737667" width="25px" height="25px" alt="linkedin"></a>
+      <a href="mailto:honeypatre019@gmail.com"><img src="https://camo.githubusercontent.com/4a3dd8d10a27c272fd04b2ce8ed1a130606f95ea6a76b5e19ce8b642faa18c27/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f676d61696c2e737667" width="25px" height="25px" alt="gmail"></a>
+    </td> 
     <td align="center">
-    <a href="https://www.linkedin.com/in/mayurnagare/"><img src="https://avatars.githubusercontent.com/u/52483736?v=4?s=100" width="100px;" alt=""/><br />
-    <sub><b>Mayur Nagare</b></sub></a><br />
+      <img src="https://avatars.githubusercontent.com/u/52483736?v=4?s=100" width="100px;" alt=""/><br />
+      <sub><b>Mayur Nagare</b></sub><br /><br />
+      <a href="https://www.linkedin.com/in/mayurnagare/"><img src="https://camo.githubusercontent.com/c8a9c5b414cd812ad6a97a46c29af67239ddaeae08c41724ff7d945fb4c047e5/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6c696e6b6564696e2e737667" width="25px" height="25px" alt="linkedin"></a>
+      <a href="mailto:mayurnagre22@gmail.com"><img src="https://camo.githubusercontent.com/4a3dd8d10a27c272fd04b2ce8ed1a130606f95ea6a76b5e19ce8b642faa18c27/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f676d61696c2e737667" width="25px" height="25px" alt="gmail"></a>
     </td>
  </tr>
 </table>
