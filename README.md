@@ -20,12 +20,62 @@
 
 > TnPVision is an ERP system for Training and Placement Cells on college campuses. It is an integrated software platform focusing on student information management and analysis with a consideration of overall achievements and activities. It also give insights to students about their performance. This system provides a platform to recruiters to ease the recruiting process. It gives insight to all the stakeholders about placement activities.
 
-## ✨ [Demo](https://www.youtube.com/watch?v=8gXlJSIzfIo)
+## ✨ Demo
+
+To see the demo click on the image below:
+
 [![image](https://user-images.githubusercontent.com/52483736/122770154-caa17780-d2c2-11eb-955a-c4edff192195.png)](https://www.youtube.com/watch?v=8gXlJSIzfIo)
 
+## 📷 Glimpse
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122780791-caa67500-d2cc-11eb-95d2-b912898ad830.png" alt="Drivelist">
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778959-135d2e80-d2cb-11eb-9497-e76e5c80fe9e.png" alt="rounddetails">
+    </td> 
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778962-13f5c500-d2cb-11eb-9ea7-81446552d01f.png" alt="studentslist">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778964-15bf8880-d2cb-11eb-8d4f-89a4899f3ada.png" alt="TPOdashboard">
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122779131-3982ce80-d2cb-11eb-97c3-5ca5cbd5e5b3.png" alt="employeedetails">
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778935-0d674d80-d2cb-11eb-9a1d-df2e34f63d22.png" alt="employeeslist">
+    </td>
+  </tr>
+   <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778889-017b8b80-d2cb-11eb-9b80-1b01c25777a3.png" alt="Companydetails">
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778916-09d3c680-d2cb-11eb-838f-6ab7fc1c708c.png" alt="companylist">
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778860-faed1400-d2ca-11eb-85bd-f58dfccc60b5.png" alt="ChangePassword">
+    </td>
+  </tr>
+     <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778941-0f311100-d2cb-11eb-9530-d42d0f049378.png" alt="interviwerreview">
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122778955-12c49800-d2cb-11eb-8399-d36c21d88a32.png" alt="review">
+    </td>
+       <td align="center">
+      <img src="https://user-images.githubusercontent.com/52483736/122781429-6f28b700-d2cd-11eb-9458-c2888e0cb730.png" alt="output4">
+    </td>
 
-### 🏠 [Homepage](https://github.com/SocioDroid/TnPVision)
+  </tr>
+  
+  </table>
 
 ## Prerequisites
 
@@ -36,7 +86,7 @@
 - axios 0.21.1
 - Cube.js 
 
-## Install
+## 🛠Install
 
 ```sh
 npm i
@@ -49,6 +99,27 @@ Libraries used : Material UI, Material Table, Axios, Cube.js
 npm start
 ```
 
+## 🧬 REST API
+
+Refer to https://documenter.getpostman.com/view/13996975/TzeZG7Ck this Documentation to know more about APIs functionalities.
+- **Written In** : Python
+
+## 🔌 Backend
+
+- **Written In** : Python
+- **Framework** : Django
+- **Database** : MongoDB
+
+## 🏷 Resources
+
+- **create-react-app** : The following link has all the commands that can be used with create-react-app
+https://github.com/facebook/create-react-app
+
+- **ReactJS** : Refer to https://reactjs.org/ to understand the concepts of ReactJS
+
+- **Material-UI** : React components for faster and easier web development https://material-ui.com/
+
+- **Cube Js** : Cube Js is an open analytical API platform which is used for visualization of data across various metrics https://cube.dev/
 
 ## Code Contributors
 
