@@ -21,9 +21,9 @@
 > TnPVision is an ERP system for Training and Placement Cells on college campuses. It is an integrated software platform focusing on student information management and analysis with a consideration of overall achievements and activities. It also give insights to students about their performance. This system provides a platform to recruiters to ease the recruiting process. It gives insight to all the stakeholders about placement activities.
 
 ## ✨ [Demo](https://drive.google.com/file/d/1ILz1c6gFZJMhHwDQfRm8lMDnw63EjH1K/view?usp=sharing)
-[![image](https://user-images.githubusercontent.com/52483736/122768514-4b5f7400-d2c1-11eb-82fd-d109af14031a.png)](https://youtu.be/4KFVySixs_E)
+[![image](https://user-images.githubusercontent.com/52483736/122768514-4b5f7400-d2c1-11eb-82fd-d109af14031a.png)](https://www.youtube.com/embed/4KFVySixs_E)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4KFVySixs_E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 ### 🏠 [Homepage](https://github.com/SocioDroid/TnPVision)
 
