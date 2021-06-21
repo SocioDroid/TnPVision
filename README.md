@@ -51,7 +51,8 @@ npm start
 
 ## Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. 
+<!-- [[Contribute](CONTRIBUTING.md)]. -->
 <!-- <a href="https://github.com/SocioDroid/TnPVision/graphs/contributors"><img src="https://opencollective.com/readme-md-generator/contributors.svg?width=890&button=false" /></a>
  -->
 <!-- <a href="https://github.com/SocioDroid/TnPVision/graphs/contributors">
