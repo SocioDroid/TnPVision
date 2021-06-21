@@ -77,7 +77,7 @@ To see the demo click on the image below:
   
   </table>
 
-## Prerequisites
+## 🛒 Prerequisites
 
 - npm 6.14.5
 - node 14.17.0
@@ -121,7 +121,7 @@ https://github.com/facebook/create-react-app
 
 - **Cube Js** : Cube Js is an open analytical API platform which is used for visualization of data across various metrics https://cube.dev/
 
-## Code Contributors
+## 👬 Code Contributors
 
 This project exists thanks to all the people who contribute. 
 <!-- [[Contribute](CONTRIBUTING.md)]. -->
